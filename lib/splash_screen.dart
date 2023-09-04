@@ -125,22 +125,26 @@ class SplashScreenState extends State<SplashScreen> {
     const quickActions = QuickActions();
 
     quickActions.initialize((String shortcutType) async {
-      if(shortcutType == "new_dir") {
+
+      final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
+
+      if(getLocalUsername.isNotEmpty) {
+
+        if(shortcutType == "new_dir") {
+          
+          await _navigateToNextScreen();
+          _openCreateDirectoryDialog();
+
+        } else if (shortcutType == "offline") {
+
+          await DataCaller().offlineData();
+          setState(() {});
+
+        } 
         
-        await _navigateToNextScreen();
-        _openCreateDirectoryDialog();
-        
-      } else if (shortcutType == "offline") {
-
-        await DataCaller().offlineData();
-        setState(() {});
-
-      } else if (shortcutType == "new_txt") {
-
-        await _navigateToNextScreen();
-
+      } else {
         if(!mounted) return;
-        NavigatePage.goToPageCreateText(context);
+        NavigatePage.replacePageHome(context);
       }
     
     });
@@ -150,11 +154,6 @@ class SplashScreenState extends State<SplashScreen> {
         type: 'new_dir',
         localizedTitle: 'Create Directory',
         icon: 'dir_icon'
-      ),
-      const ShortcutItem(
-        type: 'new_txt',
-        localizedTitle: 'Create Text File',
-        icon: 'txt_icon'
       ),
       const ShortcutItem(
         type: 'offline',
