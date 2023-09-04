@@ -1,0 +1,64 @@
+name: flowstorage_fsc
+description: Flowstorage App.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  mysql_client: ^0.0.27
+  encrypt: ^5.0.1
+  file_picker: ^5.2.4 
+  gallery_saver: ^2.3.2
+  path_provider: ^2.0.12
+  intl: ^0.18.0
+  image_gallery_saver: ^2.0.3
+  webview_flutter: ^4.0.7
+  clipboard: ^0.1.3
+  google_fonts: ^4.0.3
+  syncfusion_flutter_charts: ^21.1.39
+  flutter_launcher_icons: ^0.13.1
+  syncfusion_flutter_pdfviewer: ^21.1.41
+  just_audio: ^0.9.32 
+  video_player: ^2.6.1
+  flutter_native_image: ^0.0.6+1
+  flutter_local_notifications: ^14.1.0
+  flutter_downloader: ^1.10.4
+  cunning_document_scanner: ^1.1.2
+  pdf: ^3.10.4  
+  flutter_secure_storage: ^8.0.0
+  flutter_cache_manager: ^3.3.0
+  logger: ^1.4.0
+  flutter_staggered_grid_view: ^0.4.0
+  open_file: ^3.3.2  
+  fluttertoast: ^8.2.2
+  video_thumbnail: ^0.5.3
+  image_picker_plus: ^0.5.9
+  provider: ^6.0.5
+  get_it: ^7.6.0
+  mailer: ^6.0.1
+  quick_actions: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon2.png"
