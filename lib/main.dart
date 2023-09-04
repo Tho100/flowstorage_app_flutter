@@ -184,7 +184,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   final focusNodeRedudane = FocusNode();
   final searchControllerRedudane = TextEditingController();
 
-  final appBarTitle = ValueNotifier<String>('');
   final sortingText = ValueNotifier<String>('Default');
   final searchHintText = ValueNotifier<String>('Search in Flowstorage');
 
@@ -452,7 +451,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   void _openDeleteSelectionDialog() {
     DeleteSelectionDialog().buildDeleteSelectionDialog(
       context: context, 
-      appBarNotifier: appBarTitle, 
+      appBarTitle: tempData.appBarTitle, 
       deleteOnPressed: () async {
 
         final countSelectedItems = checkedList.where((item) => item == true).length;
@@ -476,7 +475,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   String _getCurrentPageName() {
-    final getPageName = appBarTitle.value == "" ? "homeFiles" : appBarTitle.value;
+    final getPageName = tempData.appBarTitle == "" ? "homeFiles" : tempData.appBarTitle;
     return getPageName;
   }
 
@@ -505,7 +504,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     if(togglePhotosPressed) {
 
-      appBarTitle.value = "Photos";
+      tempData.setAppBarTitle("Photos");
       searchBarVisibileNotifier.value = false;
       staggeredListViewSelected.value = true;
 
@@ -516,7 +515,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } else {
 
-      appBarTitle.value = Globals.originToName[tempData.fileOrigin]!;
+      tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
       searchBarVisibileNotifier.value = true;
       staggeredListViewSelected.value = false;
 
@@ -579,7 +578,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
 
-    appBarTitle.value = "Home";
+    tempData.setAppBarTitle("Home");
     searchHintText.value = "Search in Flowstorage";
 
     tempData.setOrigin("homeFiles");
@@ -606,7 +605,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   void _clearSelectAll() {
-    appBarTitle.value = Globals.originToName[tempData.fileOrigin]!;
+    tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
     setState(() {
       itemIsChecked = false;
       editAllIsPressed = false;
@@ -981,7 +980,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       checkedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
     }
     if(!editAllIsPressed) {
-      appBarTitle.value = Globals.originToName[tempData.fileOrigin]!;
+      tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
       setState(() {
         itemIsChecked = false;
       });
@@ -994,7 +993,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       itemIsChecked = checkedList.where((item) => item == true).isNotEmpty ? true : false;
       value == true ? checkedItemsName.add(storageData.fileNamesFilteredList[index]) : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
-    appBarTitle.value = "${(checkedList.where((item) => item == true).length).toString()} item(s) selected";
+    tempData.setAppBarTitle("${(checkedList.where((item) => item == true).length).toString()} item(s) selected");
   }
 
   void _itemSearchingImplementation(String value) async {
@@ -1182,7 +1181,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     _clearGlobalData();
 
     await dataCaller.homeData();
-    appBarTitle.value = "Home";
+    tempData.setAppBarTitle("Home");
   }
 
   Future<void> _callOfflineData() async {
@@ -1192,7 +1191,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     await dataCaller.offlineData();
     setState(() {});
 
-    appBarTitle.value = "Offline";
+    tempData.setAppBarTitle("Offline");
     searchBarVisibileNotifier.value = true;
 
     _clearSelectAll(); 
@@ -1206,11 +1205,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     _clearGlobalData();
 
-    await dataCaller.directoryData(directoryName: appBarTitle.value);
+    await dataCaller.directoryData(directoryName: tempData.appBarTitle);
 
     _itemSearchingImplementation('');
     searchBarController.text = '';
-    searchHintText.value = "Search in ${appBarTitle.value}";
+    searchHintText.value = "Search in ${tempData.appBarTitle}";
 
   }
 
@@ -1230,7 +1229,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     await dataCaller.publicStorageData(context: context);
 
-    appBarTitle.value = "Public Storage";
+    tempData.setAppBarTitle("Public Storage");
     psButtonTextNotifier.value = "My Files";
 
     searchBarVisibileNotifier.value = false;
@@ -1251,7 +1250,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     await dataCaller.myPublicStorageData(context: context);
 
-    appBarTitle.value = "My Public Storage";
+    tempData.setAppBarTitle("My Public Storage");
     psButtonTextNotifier.value = "Back";
     
     _itemSearchingImplementation('');
@@ -1263,7 +1262,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Future<void> _callFolderData(String folderTitle) async {
 
-    if(appBarTitle.value == folderTitle) {
+    if(tempData.appBarTitle == folderTitle) {
       return;
     }
 
@@ -1276,7 +1275,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     _floatingButtonVisiblity(false);
     _navDirectoryButtonVisibility(false);
     
-    appBarTitle.value = tempData.folderName;
+    tempData.setAppBarTitle(tempData.folderName);
 
     searchBarController.text = '';
     searchBarVisibileNotifier.value = true;
@@ -1299,7 +1298,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       await _callOfflineData();
     } else if (tempData.fileOrigin == "psFiles") {
 
-      appBarTitle.value == "Public Storage" 
+      tempData.appBarTitle == "Public Storage" 
       ? await _refreshPublicStorage()
       : await _callMyPublicStorageData();
 
@@ -2219,7 +2218,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     if(tempData.fileOrigin == "psFiles") {
       headerText = "Upload to Public Storage";
     } else if (tempData.fileOrigin == "dirFiles") {
-      headerText = "Add item to ${appBarTitle.value}";
+      headerText = "Add item to ${tempData.appBarTitle}";
     } else {
       headerText = "Add item to Flowstorage";
     }
@@ -2368,7 +2367,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       sharedToMeOnPressed: () async {
 
         tempData.setOrigin("sharedToMe");
-        appBarTitle.value = "Shared to me";
+        tempData.setAppBarTitle("Shared to me");
         _floatingButtonVisiblity(false);
         _navDirectoryButtonVisibility(false);
         Navigator.pop(context);
@@ -2377,7 +2376,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }, 
       sharedToOthersOnPressed: () async {
         tempData.setOrigin("sharedFiles");
-        appBarTitle.value = "Shared files";
+        tempData.setAppBarTitle("Shared files");
         
         _floatingButtonVisiblity(false);
         _navDirectoryButtonVisibility(false);
@@ -2958,19 +2957,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: ValueListenableBuilder<String>(
-                      valueListenable: appBarTitle,
-                      builder: (BuildContext context, String value, Widget? child) {
-                        return Text(
-                          value,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        );
-                      }
-                    )
+                    child: Text(
+                      tempData.appBarTitle,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -3069,7 +3063,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   PreferredSizeWidget _buildCustomAppBar() {
 
-    final appBarTitleValue = appBarTitle.value == '' ? 'Home' : appBarTitle.value;
+    final appBarTitleValue = tempData.appBarTitle == '' ? 'Home' : tempData.appBarTitle;
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(65),
@@ -3172,7 +3166,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       
       tempData.setOrigin("dirFiles");
       tempData.setCurrentDirectory(tempData.selectedFileName);
-      appBarTitle.value = tempData.selectedFileName;
+      tempData.setAppBarTitle(tempData.selectedFileName);
 
       _navDirectoryButtonVisibility(false);
       

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class DeleteSelectionDialog {
   Future buildDeleteSelectionDialog({
     required BuildContext context,
-    required ValueNotifier<String> appBarNotifier,
+    required String appBarTitle,
     required VoidCallback deleteOnPressed
   }) {
     return showDialog(
@@ -15,16 +15,11 @@ class DeleteSelectionDialog {
             borderRadius: BorderRadius.circular(12)
           ),
           backgroundColor: ThemeColor.darkGrey,
-          title: ValueListenableBuilder<String>(
-            valueListenable: appBarNotifier,
-            builder: (BuildContext context, String value, Widget? child) {
-              return Text(
-                value,
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                ),
-              );
-            }
+          title: Text(
+            appBarTitle,
+            style: const TextStyle(
+              color: ThemeColor.justWhite,
+            ),
           ),
           content: const Text(
             'Delete these items? Action is permanent.',

@@ -26,7 +26,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
 
   BuildContext? loginContext;
 
-  final isCheckedNotifier = ValueNotifier<bool>(false); 
+  final isCheckedNotifier = ValueNotifier<bool>(true); 
   final visiblePasswordNotifier = ValueNotifier<bool>(false); 
 
   final emailController = TextEditingController();
@@ -265,7 +265,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
                       return Checkbox(
                         value: value,
                         onChanged: (checkedValue) {
-                          isCheckedNotifier.value = checkedValue ?? false;
+                          isCheckedNotifier.value = checkedValue ?? true;
                         },
                       );
                     },

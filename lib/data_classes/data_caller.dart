@@ -50,6 +50,7 @@ class DataCaller {
     }
 
     tempData.setOrigin("offlineFiles");
+    tempData.setAppBarTitle("Offline");
 
     final files = offlineDirPath.listSync().whereType<File>().toList();
 
