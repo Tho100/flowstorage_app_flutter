@@ -94,6 +94,32 @@ class SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  void _openCreateDirectoryDialog() {
+    CreateDirectoryDialog().buildCreateDirectoryDialog(
+      context: context, 
+      createOnPressed: () async {
+        
+        final getDirectoryTitle = CreateDirectoryDialog.directoryNameController.text.trim();
+
+        if(getDirectoryTitle.isEmpty) {
+          return;
+        }
+
+        if(storageData.fileNamesList.contains(getDirectoryTitle)) {
+          CallToast.call(message: "Directory with this name already exists.");
+          return;
+        }
+
+        await _buildDirectory(getDirectoryTitle);
+        setState(() {});
+
+        CreateDirectoryDialog.directoryNameController.clear();
+
+      }
+
+    );
+  }
+
   void _initializeQuickActions() {
 
     const quickActions = QuickActions();
@@ -102,35 +128,18 @@ class SplashScreenState extends State<SplashScreen> {
       if(shortcutType == "new_dir") {
         
         await _navigateToNextScreen();
-
-        if(!mounted) return;
-        CreateDirectoryDialog().buildCreateDirectoryDialog(
-          context: context, 
-          createOnPressed: () async {
-            
-            final getDirectoryTitle = CreateDirectoryDialog.directoryNameController.text.trim();
-
-            if(getDirectoryTitle.isEmpty) {
-              return;
-            }
-
-            if(storageData.fileNamesList.contains(getDirectoryTitle)) {
-              CallToast.call(message: "Directory with this name already exists.");
-              return;
-            }
-
-            await _buildDirectory(getDirectoryTitle);
-            setState(() {});
-
-            CreateDirectoryDialog.directoryNameController.clear();
-
-          }
-
-        );
+        _openCreateDirectoryDialog();
+        
       } else if (shortcutType == "offline") {
+
         await DataCaller().offlineData();
         setState(() {});
+
       } else if (shortcutType == "new_txt") {
+
+        await _navigateToNextScreen();
+
+        if(!mounted) return;
         NavigatePage.goToPageCreateText(context);
       }
     
