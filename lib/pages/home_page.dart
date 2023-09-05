@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
       style: GoogleFonts.poppins(
         textStyle: const TextStyle(
           color: ThemeColor.justWhite,
-          fontSize: 46,
+          fontSize: 45,
           fontWeight: FontWeight.w800,
         ),
       ),

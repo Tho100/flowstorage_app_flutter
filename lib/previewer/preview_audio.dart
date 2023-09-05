@@ -147,7 +147,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     return StreamBuilder<double>(
       stream: sliderValueController.stream,
       initialData: 0.0,
-      builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+      builder: (context, AsyncSnapshot<double> snapshot) {
         return ValueListenableBuilder<double>(
           valueListenable: audioPositionNotifier,
           builder: (context, audioPosition, _) {
@@ -178,7 +178,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                     children: [
                       ValueListenableBuilder<String>(
                         valueListenable: currentAudioDuration,
-                        builder: (BuildContext context, String value, Widget? child) {
+                        builder: (context, value, child) {
                           return Text(
                             value,
                             style: const TextStyle(
@@ -215,7 +215,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       height: 72,
       child: ValueListenableBuilder(
         valueListenable: iconPausePlayNotifier,
-        builder: (BuildContext context, IconData value, Widget? child) {
+        builder: (context, value, child) {
           return Container(
             decoration: BoxDecoration(
               color: ThemeColor.justWhite,
@@ -292,7 +292,7 @@ class PreviewAudioState extends State<PreviewAudio> {
         child: InkWell(
           child: ValueListenableBuilder(
             valueListenable: isKeepPlayingEnabledNotifier,
-            builder: (BuildContext context, bool value, Widget? child) {
+            builder: (context, value, child) {
               return IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () {

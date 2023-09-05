@@ -2676,7 +2676,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           
                 ValueListenableBuilder<bool>(
                   valueListenable: navDirectoryButtonVisible,
-                  builder: (BuildContext context, bool value, Widget? child) {
+                  builder: (context, value, child) {
                     return Visibility(
                       visible: value,
                       child: ElevatedButton(
@@ -2736,7 +2736,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                 ),
                 child: ValueListenableBuilder<String>(
                   valueListenable: sortingText,
-                  builder: (BuildContext context, String value, Widget? child) {
+                  builder: (context, value, child) {
                     return Row(
                       children: [
                         Text(
@@ -2748,7 +2748,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                         ),
                         ValueListenableBuilder(
                           valueListenable: ascendingDescendingIconNotifier, 
-                          builder: (BuildContext context, IconData value, Widget? child) {
+                          builder: (context, value, child) {
                             return Icon(value, color: Colors.white);
                           }
                         ),
@@ -2800,7 +2800,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                   children: [
                     ValueListenableBuilder<bool>(
                       valueListenable: staggeredListViewSelected,
-                      builder: (BuildContext context, bool value, Widget? child) {
+                      builder: (context, value, child) {
                         return value == false ? const Icon(Icons.grid_view,size: 23) : const Icon(Icons.format_list_bulleted_outlined,size: 25);
                       }
                     ),
@@ -2820,7 +2820,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   Widget _buildSearchBar() {
     return ValueListenableBuilder(
       valueListenable: searchBarVisibileNotifier,
-      builder: (BuildContext context, bool value, Widget? child) {
+      builder: (context, value, child) {
         return Visibility(
           visible: value,
           child: GestureDetector(
@@ -3876,7 +3876,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         height: mediaHeight,
         child: ValueListenableBuilder<bool>(
           valueListenable: staggeredListViewSelected,
-          builder: (BuildContext context, bool value, Widget? child) {
+          builder: (context, value, child) {
             return value == false ? _buildListView() : _buildStaggeredListView();
           }
         ),
@@ -3908,7 +3908,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         style: GlobalsStyle.btnNavigationBarStyle,
         child: ValueListenableBuilder(
           valueListenable: psButtonTextNotifier,
-          builder: (BuildContext context, String value, Widget? child) {
+          builder: (context, value, child) {
             return Text(
               value,
               style: const TextStyle(

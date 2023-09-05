@@ -176,7 +176,7 @@ class PsCommentDialog {
                     padding: const EdgeInsets.only(left: 5.0),
                     child: ValueListenableBuilder<String>(
                       valueListenable: selectedTagValue,
-                      builder: (BuildContext context, String value, Widget? child) {
+                      builder: (context, value, child) {
                         return Visibility(
                           visible: value != "",
                           child: Text(

@@ -154,7 +154,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
                   ),
                   child: ValueListenableBuilder(
                     valueListenable: visiblePasswordNotifier,
-                    builder: (BuildContext context, bool value, Widget? child) {
+                    builder: (context, value, child) {
                       return TextFormField(
                         style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                         enabled: true,
@@ -261,7 +261,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
                 children: [
                   ValueListenableBuilder(
                     valueListenable: isCheckedNotifier,
-                    builder: (BuildContext context, bool value, Widget? child) {
+                    builder: (context, value, child) {
                       return Checkbox(
                         value: value,
                         onChanged: (checkedValue) {

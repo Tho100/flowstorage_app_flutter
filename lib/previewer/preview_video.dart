@@ -104,7 +104,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       ),
       child: ValueListenableBuilder(
         valueListenable: notifier,
-        builder: (BuildContext context, String value, Widget? child) {
+        builder: (context, value, child) {
           return Text(
             value,
             style: const TextStyle(
@@ -224,7 +224,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                       },
                       icon: ValueListenableBuilder(
                         valueListenable: iconPausePlayNotifier,
-                        builder: (BuildContext context, IconData value, Widget? child) {
+                        builder: (context, value, child) {
                           return Icon(
                             value,
                             size: 40,
@@ -305,7 +305,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             padding: const EdgeInsets.only(bottom: 25.0),
             child: ValueListenableBuilder(
               valueListenable: videoIsTappedNotifier,
-              builder: (BuildContext context, bool value, Widget? child) {
+              builder: (context, value, child) {
                 return Visibility(
                   visible: value && videoBytes.isNotEmpty,
                   child: buildButtons(),

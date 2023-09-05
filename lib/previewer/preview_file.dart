@@ -637,7 +637,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
               width: double.infinity,
               child: ValueListenableBuilder(
                 valueListenable: uploaderNameNotifer,
-                builder: (BuildContext context, String value, Widget? child) {
+                builder: (context, value, child) {
                   return Text(
                     value,
                     textAlign: TextAlign.start,
@@ -807,14 +807,14 @@ class CakePreviewFileState extends State<CakePreviewFile> {
                   const SizedBox(height: 8),
                   ValueListenableBuilder(
                     valueListenable: fileResolutionNotifier, 
-                    builder: (BuildContext context, String value, Widget? child) {
+                    builder: (context, value, child) {
                       return _buildFileInfoHeader("File Resolution", value);
                     }
                   ),
                   const SizedBox(height: 8),
                   ValueListenableBuilder(
                     valueListenable: fileSizeNotifier,
-                    builder: (BuildContext context, String value, Widget? child) {
+                    builder: (context, value, child) {
                       return _buildFileInfoHeader("File Size", "$value Mb");
                     }
                   ),
@@ -898,7 +898,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
           onTap: () { _copyAppBarTitle(); },
           child: ValueListenableBuilder<bool>(
             valueListenable: bottomBarVisibleNotifier,
-            builder: (BuildContext context, bool value, Widget? child) {
+            builder: (context, value, child) {
               return Visibility(
                 visible: currentTable == GlobalsTable.homeImage || currentTable == GlobalsTable.psImage ? bottomBarVisibleNotifier.value : true,
                 child: AppBar(
@@ -928,7 +928,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
                   ? const SizedBox()
                   : ValueListenableBuilder<String>(
                     valueListenable: appBarTitleNotifier,
-                    builder: (BuildContext context, String value, Widget? child) {
+                    builder: (context, value, child) {
                       return Text(value, style: GlobalsStyle.appBarTextStyle);
                     },
                   ),
@@ -949,7 +949,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
             ),
             ValueListenableBuilder<bool>(
               valueListenable: bottomBarVisibleNotifier,
-              builder: (BuildContext context, bool value, Widget? child) {
+              builder: (context, value, child) {
                 return Visibility(
                   visible: value,
                   child: FutureBuilder<Widget>(

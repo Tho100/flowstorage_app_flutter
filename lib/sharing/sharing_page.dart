@@ -238,7 +238,7 @@ class SharingPageState extends State<SharingPage> {
   Widget _buildPreviewer(String encodedValues) {
     return ValueListenableBuilder<bool>(
       valueListenable: previewerIsVisibleNotifier,
-      builder: (BuildContext context, bool value, Widget? child) {
+      builder: (context, value, child) {
         return Visibility(
           visible: value,
           child: Center(

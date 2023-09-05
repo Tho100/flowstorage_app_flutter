@@ -80,7 +80,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
               BottomNavigationBarItem(
                 icon: ValueListenableBuilder(
                   valueListenable: isPhotosPressedNotifier,
-                  builder: (BuildContext context, bool value, Widget? child) {
+                  builder: (context, value, child) {
                     return value == false 
                       ? const Icon(Icons.photo_outlined) 
                       : const Icon(Icons.photo);
