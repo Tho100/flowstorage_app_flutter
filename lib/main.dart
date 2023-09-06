@@ -941,7 +941,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       tempData.fileOrigin != "offlineFiles" ? await crud.delete(query: query, params: params) : null;
       await Future.delayed(const Duration(milliseconds: 855));
 
-      _removeFileFromListView(fileName: checkedItemsName.elementAt(i),isFromSelectAll: true, onTextChanged: _itemSearchingImplementation);
+      _removeFileFromListView(fileName: checkedItemsName.elementAt(i),isFromSelectAll: true);
 
     }
 
@@ -1127,10 +1127,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       await deleteClass.deletionParams(folderName: folderName);
 
-      setState(() {
-        storageData.foldersNameList.remove(folderName);
-        tempData.setOrigin("homeFiles");
-      });
+      storageData.foldersNameList.remove(folderName);
+      tempData.setOrigin("homeFiles");
 
       await _refreshListView();
       _navDirectoryButtonVisibility(true);
@@ -1373,7 +1371,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     tempData.fileOrigin == "homeFiles" ? storageData.homeImageBytesList.clear() : null;
     tempData.fileOrigin == "homeFiles" ? storageData.homeImageBytesList.clear() : null;
     
-    _removeFileFromListView(fileName: fileName, isFromSelectAll: false, onTextChanged: onTextChanged);
+    _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
 
   }
 
@@ -1548,28 +1546,25 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   void _removeFileFromListView({
     required String fileName, 
     required bool isFromSelectAll, 
-    required Function onTextChanged
   }) {
 
     int indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
 
-    setState(() {
-      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
-        storageData.fileNamesList.removeAt(indexOfFile);
-        storageData.fileNamesFilteredList.removeAt(indexOfFile);
-        storageData.imageBytesList.removeAt(indexOfFile);
-        storageData.imageBytesFilteredList.removeAt(indexOfFile);
-        storageData.fileDateList.removeAt(indexOfFile);
-        storageData.fileDateFilteredList.removeAt(indexOfFile);
-        leadingImageSearchedValue = null;
-        fileTitleSearchedValue = null;  
-      }
-      if (!isFromSelectAll) {
-        Navigator.pop(context);
-      }
-    });
+    if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+      storageData.fileNamesList.removeAt(indexOfFile);
+      storageData.fileNamesFilteredList.removeAt(indexOfFile);
+      storageData.imageBytesList.removeAt(indexOfFile);
+      storageData.imageBytesFilteredList.removeAt(indexOfFile);
+      storageData.fileDateList.removeAt(indexOfFile);
+      storageData.fileDateFilteredList.removeAt(indexOfFile);
+      leadingImageSearchedValue = null;
+      fileTitleSearchedValue = null;  
+    }
+    if (!isFromSelectAll) {
+      Navigator.pop(context);
+    }
 
-    onTextChanged('');
+    _itemSearchingImplementation('');
 
   }
 
