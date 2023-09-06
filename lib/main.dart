@@ -19,7 +19,6 @@ import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
@@ -40,6 +39,7 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/public_storage/ps_comment_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_filter.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_selected_items.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_shared.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_sorting.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
@@ -2162,6 +2162,23 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     });
   }
 
+  Future _callSelectedItemsBottomTrailing() {
+    return BottomTrailingSelectedItems().buildTrailing(
+      context: context, 
+      makeAoOnPressed: () async {
+        await _processSaveOfflineFileSelectAll(
+          count: checkedItemsName.length);
+      }, 
+      saveOnPressed: () async {
+        await _selectDirectoryMultipleSave(
+          checkedItemsName.length);
+      }, 
+      deleteOnPressed: () {
+        _openDeleteSelectionDialog();
+      }
+    );
+  }
+
   Future _callBottomTrailling(int index) {
 
     final fileName = storageData.fileNamesFilteredList[index];
@@ -2929,105 +2946,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     selectAllItemsIsPressedNotifier.value = !selectAllItemsIsPressedNotifier.value;
   }
 
-  Future _buildBottomSelectedItems() {
-    return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
-      context: context,
-      shape: GlobalsStyle.bottomDialogBorderStyle,
-      builder: (context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      tempData.appBarTitle,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                await _selectDirectoryMultipleSave(checkedItemsName.length);
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.download_rounded),
-                  SizedBox(width: 10.0),
-                  Text(
-                    'Save to device',
-                    style: GlobalsStyle.btnBottomDialogTextStyle,
-                  ),
-                ],
-              ),
-            ),
-
-            Visibility(
-              visible: VisibilityChecker.setNotVisible("offlineFiles"),
-              child: ElevatedButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  await _processSaveOfflineFileSelectAll(count: checkedItemsName.length);
-                },
-                style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-                child: const Row(
-                  children: [
-                    Icon(Icons.offline_bolt_rounded),
-                    SizedBox(width: 10.0),
-                    Text(
-                      'Make available offline',
-                      style: GlobalsStyle.btnBottomDialogTextStyle,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                _openDeleteSelectionDialog();
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.delete,color: ThemeColor.darkRed),
-                  SizedBox(width: 10.0),
-                  Text('Delete',
-                    style: TextStyle(
-                      color: ThemeColor.darkRed,
-                      fontSize: 17,
-                    )
-                  ),
-                ],
-              ),
-            ),
-
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildMoreOptionsOnSelect() {
     return Visibility(
       visible: itemIsChecked,
       child: IconButton(
         icon: const Icon(Icons.more_vert),
         onPressed: () {
-          _buildBottomSelectedItems();
+          _callSelectedItemsBottomTrailing();
         }
       ),
     );
