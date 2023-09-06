@@ -17,7 +17,6 @@ import '../main.dart';
 import '../pages/create_text.dart';
 import '../pages/statistics_page.dart';
 import '../sharing/sharing_options.dart';
-import '../sharing/sharing_page.dart';
 import '../upgrades/upgrade_page.dart';
 import '../pages/settings_page.dart';
 
@@ -64,15 +63,6 @@ class NavigatePage {
     );
   }
   
-  static void goToPageSharing(BuildContext context) {
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (_) => const SharingPage(),
-      ),
-    );
-  }
-
   static void goToPageStatistics(BuildContext context) {
     Navigator.push(
       context, 

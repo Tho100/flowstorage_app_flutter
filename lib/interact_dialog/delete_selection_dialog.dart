@@ -41,8 +41,8 @@ class DeleteSelectionDialog {
                 elevation: 0,
               ),
               onPressed: () {
-                deleteOnPressed();
                 Navigator.pop(context);
+                deleteOnPressed();
               },
               child: const Text(
                 'Delete',

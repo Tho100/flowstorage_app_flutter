@@ -528,8 +528,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     if(tempData.fileOrigin == "psFiles") {
 
       _clearPublicStorageData(clearImage: true);
-      await _callHomeData();
-
       _returnBackHomeFiles();
       await _refreshListView();
       
@@ -564,7 +562,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     if (tempData.fileOrigin == "homeFiles" && togglePhotosPressed) {
       _returnBackHomeFiles();
     } else {
-      await _callHomeData();
       _returnBackHomeFiles();
       await _refreshListView();
     }
@@ -1113,11 +1110,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   void _returnBackHomeFiles() {
-    setState(() { 
-      tempData.setOrigin("homeFiles");
-      tempData.setCurrentFolder('');
-      tempData.setCurrentDirectory('');
-    });
+    tempData.setOrigin("homeFiles");
+    tempData.setCurrentFolder('');
+    tempData.setCurrentDirectory('');
   }
   
   Future<Uint8List> _callData(String selectedFilename,String tableName) async {
@@ -1160,9 +1155,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
       if(indexOldFolder != -1) {
-        setState(() {
-          storageData.foldersNameList[indexOldFolder] = newFolderName;
-        });
+        storageData.foldersNameList[indexOldFolder] = newFolderName;
       }
 
       if(!mounted) return;
@@ -1331,14 +1324,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final directoryImage = await GetAssets().loadAssetsFile('dir1.png');
 
-      setState(() {
-
-        storageData.fileDateFilteredList.add("Directory");
-        storageData.fileDateList.add("Directory");
-        storageData.imageBytesList.add(directoryImage.readAsBytesSync());
-        storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
-
-      });
+      storageData.fileDateFilteredList.add("Directory");
+      storageData.fileDateList.add("Directory");
+      storageData.imageBytesList.add(directoryImage.readAsBytesSync());
+      storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
 
       storageData.directoryImageBytesList.clear();
       storageData.fileNamesFilteredList.add(directoryName);
