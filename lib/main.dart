@@ -154,8 +154,6 @@ class Mainboard extends StatefulWidget {
 
 class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin { 
 
-  String shortcutActions = 'no action';
-
   final _locator = GetIt.instance;
 
   late final UserDataProvider userData;
@@ -163,6 +161,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   late final PsStorageDataProvider psStorageData;
   late final PsUploadDataProvider psUploadData;
   late final TempDataProvider tempData;
+
+  late List<bool> checkedList = [];
 
   final fileNameGetterHome = NameGetter();
   final dataGetterHome = DataRetriever();
@@ -205,8 +205,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
   bool itemIsChecked = false;
-
-  late List<bool> checkedList = [];
 
   Set<String> checkedItemsName = {};
 
@@ -1093,8 +1091,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
 
-      final int maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
-      final int percentage = ((storageData.fileNamesList.length/maxValue) * 100).toInt();
+      final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
+      final percentage = ((storageData.fileNamesList.length/maxValue) * 100).toInt();
 
       return percentage;
 
@@ -1160,7 +1158,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final renameClass = RenameFolder();
       await renameClass.renameParams(oldFolderTitle: oldFolderName, newFolderTitle: newFolderName);
 
-      int indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
+      final indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
       if(indexOldFolder != -1) {
         setState(() {
           storageData.foldersNameList[indexOldFolder] = newFolderName;

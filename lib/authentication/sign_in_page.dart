@@ -7,7 +7,6 @@ import 'package:flowstorage_fsc/widgets/main_text_field.dart';
 import 'package:flowstorage_fsc/data_classes/login_process.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
