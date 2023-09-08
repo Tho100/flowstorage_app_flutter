@@ -1,8 +1,12 @@
 import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class BottomTrailingSorting {
+
+  final tempData = GetIt.instance<TempDataProvider>();
 
   Future buildTrailing({
     required BuildContext context,
@@ -10,6 +14,7 @@ class BottomTrailingSorting {
     required VoidCallback sortItemNameOnPressed,
     required VoidCallback sortDefaultOnPressed
   }) {
+    
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -35,7 +40,8 @@ class BottomTrailingSorting {
                 ),
               ],
             ),
-              
+            
+            if(tempData.fileOrigin != "offlineFiles")
             ElevatedButton(
               onPressed: sortUploadDateOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,

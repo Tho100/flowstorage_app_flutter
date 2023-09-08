@@ -8,7 +8,8 @@ import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
-import 'package:flowstorage_fsc/provider/user_data_provider.dart';import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -421,8 +422,8 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildUpgradeButton(BuildContext context) {
     return SizedBox(
-        height: 55,
-        width: MediaQuery.of(context).size.width-165,
+        height: 65,
+        width: MediaQuery.of(context).size.width-150,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkPurple,
@@ -456,7 +457,7 @@ class StatsPageState extends State<StatisticsPage> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        height: 245,
+        height: 255,
         width: MediaQuery.of(context).size.width-25,
         child: Container(
           decoration: BoxDecoration(

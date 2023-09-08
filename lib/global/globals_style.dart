@@ -99,6 +99,7 @@ class GlobalsStyle {
   static final btnNavigationBarStyle = ElevatedButton.styleFrom(
     backgroundColor: ThemeColor.mediumGrey,
     elevation: 0,
+    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 14),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     )

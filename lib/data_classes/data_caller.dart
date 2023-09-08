@@ -43,7 +43,10 @@ class DataCaller {
   final _sharingDataRetriever = SharingDataReceiver();
 
   Future<void> offlineData() async {
-    
+
+    tempData.setOrigin("offlineFiles");
+    tempData.setAppBarTitle("Offline");
+
     final getAssets = GetAssets();
     final offlineDirPath = await _offlineMode.returnOfflinePath();
 
@@ -130,9 +133,6 @@ class DataCaller {
     storageData.setFilesDate(setDateValues);
     storageData.setImageBytes(imageByteValues);
     storageData.setFilteredImageBytes(filteredSearchedBytes);
-
-    tempData.setOrigin("offlineFiles");
-    tempData.setAppBarTitle("Offline");
 
   }
 

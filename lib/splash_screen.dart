@@ -42,6 +42,8 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
 
+  final selectedActionNotifier = ValueNotifier<String>('');
+
   final logger = Logger();
 
   final nameGetterStartup = NameGetter();
@@ -126,22 +128,20 @@ class SplashScreenState extends State<SplashScreen> {
 
     quickActions.initialize((String shortcutType) async {
 
+      selectedActionNotifier.value = shortcutType;
+
       final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
 
       if(getLocalUsername.isNotEmpty) {
 
         if(shortcutType == "new_dir") {
-          
-          await _navigateToNextScreen();
+
           _openCreateDirectoryDialog();
 
         } else if (shortcutType == "offline") {
 
           final dataCaller = DataCaller();
           await dataCaller.offlineData();
-
-          tempData.setOrigin("offlineFiles");
-          tempData.setAppBarTitle("Offline");
 
           setState(() {});
 
@@ -204,7 +204,10 @@ class SplashScreenState extends State<SplashScreen> {
         userData.setAccountType(getLocalAccountType);
         userData.setUsername(getLocalUsername);
         userData.setEmail(getLocalEmail);
-        tempData.setOrigin("homeFiles");
+
+        selectedActionNotifier.value == "offline" 
+            ? tempData.setOrigin("offlineFiles") 
+            : tempData.setOrigin("homeFiles");
 
         if(isPassCodeExists) {
 

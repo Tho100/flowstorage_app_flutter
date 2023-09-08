@@ -2614,16 +2614,16 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-    
+
           tempData.fileOrigin == "psFiles" 
           ? const SizedBox(height: 0)
-          : const SizedBox(height: 8),
+          : const SizedBox(height: 10),
     
           if(tempData.fileOrigin != "psFiles") ... [
             Row(
             
               children: [
-          
+                
                 const SizedBox(width: 16),
           
                 ElevatedButton(
