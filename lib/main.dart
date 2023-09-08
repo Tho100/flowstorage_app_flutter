@@ -1663,6 +1663,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       }
 
+      setState(() {});
+
     } catch (err, st) {
       logger.e('Exception from _deletionFile {main}',err,st);
       SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}",context);

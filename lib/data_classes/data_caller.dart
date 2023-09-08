@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/directory_query/directory_data.dart';
 import 'package:flowstorage_fsc/extra_query/crud.dart';
 import 'package:flowstorage_fsc/folder_query/folder_data_retriever.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -18,6 +19,7 @@ import 'package:flowstorage_fsc/sharing/sharing_data_receiver.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -39,7 +41,7 @@ class DataCaller {
   
   final _directoryDataReceiver = DirectoryDataReceiver();
   final _sharingDataRetriever = SharingDataReceiver();
-  
+
   Future<void> offlineData() async {
     
     final getAssets = GetAssets();
@@ -48,10 +50,7 @@ class DataCaller {
     if(!offlineDirPath.existsSync()) { 
       offlineDirPath.createSync();
     }
-
-    tempData.setOrigin("offlineFiles");
-    tempData.setAppBarTitle("Offline");
-
+    
     final files = offlineDirPath.listSync().whereType<File>().toList();
 
     List<String> fileValues = [];
@@ -61,6 +60,10 @@ class DataCaller {
     List<Uint8List> filteredSearchedBytes = [];
 
     for (var file in files) {
+
+      final lastModified = file.lastModifiedSync();
+      final formattedDate = DateFormat('MMM d yyyy')
+                              .format(lastModified);
 
       String fileName = path.basename(file.path);
       String? fileType = fileName.split('.').last;
@@ -116,7 +119,7 @@ class DataCaller {
 
       fileValues.add(fileName);
       filteredSearchedFiles.add(fileName);
-      setDateValues.add(actualFileSize);
+      setDateValues.add("$actualFileSize ${GlobalsStyle.dotSeperator} $formattedDate");
       imageByteValues.add(imageBytes);
       filteredSearchedBytes.add(imageBytes);
     }
@@ -127,7 +130,10 @@ class DataCaller {
     storageData.setFilesDate(setDateValues);
     storageData.setImageBytes(imageByteValues);
     storageData.setFilteredImageBytes(filteredSearchedBytes);
-    
+
+    tempData.setOrigin("offlineFiles");
+    tempData.setAppBarTitle("Offline");
+
   }
 
   Future<void> homeData({bool? isFromStatistics = false}) async {

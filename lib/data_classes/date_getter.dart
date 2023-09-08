@@ -4,13 +4,6 @@ import 'package:intl/intl.dart';
 
 class DateGetter {
 
-  String formatDate(String dateString) {
-    final originalFormat = DateFormat('dd/MM/yyyy');
-    final newFormat = DateFormat('MMM d yyyy');
-    final date = originalFormat.parse(dateString);
-    return newFormat.format(date);
-  }
-
   Future<List<String>> getDateParams(String? username, String? tableName) async {
     
 

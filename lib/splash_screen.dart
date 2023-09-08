@@ -137,7 +137,12 @@ class SplashScreenState extends State<SplashScreen> {
 
         } else if (shortcutType == "offline") {
 
-          await DataCaller().offlineData();
+          final dataCaller = DataCaller();
+          await dataCaller.offlineData();
+
+          tempData.setOrigin("offlineFiles");
+          tempData.setAppBarTitle("Offline");
+
           setState(() {});
 
         } 
