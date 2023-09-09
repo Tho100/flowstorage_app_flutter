@@ -46,7 +46,7 @@ class DirectoryDataReceiver {
 
     final userData = _locator<UserDataProvider>();
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final encryptedDirectoryName = encryption.encrypt(dirName);
 
@@ -64,7 +64,7 @@ class DirectoryDataReceiver {
       late String encryptedFileNames;
       late String decryptedFileNames;
 
-      final result = await connection.execute(querySelectMetadata, params);
+      final result = await conn.execute(querySelectMetadata, params);
       final dataSet = <Map<String, dynamic>>[];
       
       for (final row in result.rows) {
@@ -76,7 +76,7 @@ class DirectoryDataReceiver {
         if(Globals.imageType.contains(fileType)) {
 
           final encryptedImageBase64 = await retrieveFiles(
-            conn: connection, 
+            conn: conn, 
             directoryTitle: encryptedDirectoryName, 
             query: querySelectImage,
             fileName: encryptedFileNames, 
@@ -88,7 +88,7 @@ class DirectoryDataReceiver {
         } else if (Globals.videoType.contains(fileType)) {
 
           final thumbnailBase64 = await retrieveFiles(
-            conn: connection, 
+            conn: conn, 
             directoryTitle: encryptedDirectoryName, 
             query: querySelectThumbnail, 
             fileName: encryptedFileNames,

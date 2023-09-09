@@ -136,6 +136,8 @@ class SplashScreenState extends State<SplashScreen> {
 
         if(shortcutType == "new_dir") {
 
+          await _navigateToNextScreen();
+
           _openCreateDirectoryDialog();
 
         } else if (shortcutType == "offline") {
@@ -216,10 +218,10 @@ class SplashScreenState extends State<SplashScreen> {
 
         } else {
 
-          final conn = await SqlConnection.insertValueParams();
+          final conn = await SqlConnection.initializeConnection();
 
           if(!mounted) return;
-          await _callData(conn,getLocalUsername,getLocalEmail,getLocalAccountType,context);
+          await _callData(conn, getLocalUsername, getLocalEmail, getLocalAccountType, context);
           
           if(!mounted) return;
           NavigatePage.permanentPageMainboard(context);
@@ -293,11 +295,11 @@ class SplashScreenState extends State<SplashScreen> {
       ];
 
       final futures = tablesToCheck.map((table) async {
-        final fileNames = await nameGetterStartup.retrieveParams(conn,savedCustUsername, table);
-        final bytes = await dataGetterStartup.getLeadingParams(conn,savedCustUsername, table);
+        final fileNames = await nameGetterStartup.retrieveParams(conn, savedCustUsername, table);
+        final bytes = await dataGetterStartup.getLeadingParams(conn, savedCustUsername, table);
         final dates = table == GlobalsTable.directoryInfoTable
             ? List.generate(1, (_) => "Directory")
-            : await dateGetterStartup.getDateParams(savedCustUsername, table);
+            : await dateGetterStartup.getDateParams(conn, savedCustUsername, table);
         return [fileNames, bytes, dates];
       }).toList();
 

@@ -67,11 +67,11 @@ class SignInUser {
     ];
 
     final futures = tablesToCheck.map((table) async {
-      final fileNames = await nameGetterLogin.retrieveParams(conn,custUsernameGetter, table);
-      final bytes = await loginGetterLogin.getLeadingParams(conn,custUsernameGetter, table);
+      final fileNames = await nameGetterLogin.retrieveParams(conn, custUsernameGetter, table);
+      final bytes = await loginGetterLogin.getLeadingParams(conn, custUsernameGetter, table);
       final dates = table == GlobalsTable.directoryInfoTable
           ? List.generate(1,(_) => "Directory")
-          : await dateGetterLogin.getDateParams(custUsernameGetter, table);
+          : await dateGetterLogin.getDateParams(conn, custUsernameGetter, table);
       return [fileNames, bytes, dates];
     }).toList();
   
@@ -152,7 +152,7 @@ class SignInUser {
   Future<void> logParams(
     String? email, String? auth0, String? auth1, bool isChecked, BuildContext context) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     try {
 
@@ -169,8 +169,6 @@ class SignInUser {
         final case1 = AuthModel().computeAuth(auth1!) == custPinOriginal;
 
         if (case0 && case1) {
-
-          final conn = await SqlConnection.insertValueParams();
           
           final justLoading = JustLoading();
 

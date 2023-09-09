@@ -4,7 +4,7 @@ class SharingOptions {
 
   static Future<void> disableSharing(String username) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = "UPDATE sharing_info SET DISABLED = 1 WHERE CUST_USERNAME = :username";
     final params = {'username': username};
@@ -15,7 +15,7 @@ class SharingOptions {
 
   static Future<void> enableSharing(String username) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = "UPDATE sharing_info SET DISABLED = 0 WHERE CUST_USERNAME = :username";
     final params = {'username': username};
@@ -26,7 +26,7 @@ class SharingOptions {
 
   static Future<String> retrieveDisabled(String username) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = "SELECT DISABLED FROM sharing_info WHERE CUST_USERNAME = :username";
     final params = {'username': username};
@@ -45,7 +45,7 @@ class SharingOptions {
 
  static Future<String> retrievePassword(String username) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = "SELECT SET_PASS FROM sharing_info WHERE CUST_USERNAME = :username";
     final params = {'username': username};

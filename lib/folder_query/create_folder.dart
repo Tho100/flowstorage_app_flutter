@@ -23,7 +23,7 @@ class CreateFolder {
     
     final userData = _locator<UserDataProvider>();
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = 
     "INSERT INTO folder_upload_info VALUES (:folder_name,:username,:file_data,:file_type,:upload_date,:file_name,:thumbnail)";

@@ -83,11 +83,11 @@ class PasscodePageState extends State<PasscodePage> {
       ];
 
       final futures = tablesToCheck.map((table) async {
-        final fileNames = await fileNameGetterStartup.retrieveParams(conn,savedCustUsername, table);
-        final bytes = await dataGetterStartup.getLeadingParams(conn,savedCustUsername, table);
+        final fileNames = await fileNameGetterStartup.retrieveParams(conn, savedCustUsername, table);
+        final bytes = await dataGetterStartup.getLeadingParams(conn, savedCustUsername, table);
         final dates = table == GlobalsTable.directoryInfoTable
             ? List.generate(1, (_) => "Directory")
-            : await dateGetterStartup.getDateParams(savedCustUsername, table);
+            : await dateGetterStartup.getDateParams(conn, savedCustUsername, table);
         return [fileNames, bytes, dates];
       }).toList();
 
@@ -149,7 +149,7 @@ class PasscodePageState extends State<PasscodePage> {
         isPasscodeIncorrectNotifier.value = false;
         isButtonsEnabledNotifier.value = true;
 
-        final conn = await SqlConnection.insertValueParams();
+        final conn = await SqlConnection.initializeConnection();
 
         final justLoading = JustLoading();
 

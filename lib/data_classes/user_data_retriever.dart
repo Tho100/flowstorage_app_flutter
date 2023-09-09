@@ -8,7 +8,7 @@ class UserDataRetriever {
     required String? email
   }) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const retrieveCase =
         "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
@@ -27,7 +27,7 @@ class UserDataRetriever {
 
   Future<String> retrieveUsername({required String? email}) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const query = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
     final params = {'email': email};
@@ -45,7 +45,7 @@ class UserDataRetriever {
     
     try {
 
-      final conn = await SqlConnection.insertValueParams();
+      final conn = await SqlConnection.initializeConnection();
 
       const query = "SELECT CUST_EMAIL FROM information WHERE CUST_USERNAME = :username";
       final params = {'username': username};
@@ -70,7 +70,7 @@ class UserDataRetriever {
     required String? email
   }) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const retrieveCase1 =
         "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";

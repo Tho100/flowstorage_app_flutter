@@ -12,7 +12,7 @@ class SqlConnection {
     maxConnections: 12,
   );
 
-  static Future<MySQLConnectionPool> insertValueParams() async {
+  static Future<MySQLConnectionPool> initializeConnection() async {
     return dbClusterFsc;
   }
 }

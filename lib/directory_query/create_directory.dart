@@ -11,7 +11,7 @@ class DirectoryClass {
     
     try {
 
-      final conn = await SqlConnection.insertValueParams();
+      final conn = await SqlConnection.initializeConnection();
 
       const query = "INSERT INTO file_info_directory(DIR_NAME,CUST_USERNAME) VALUES (:dirname,:username)";
       final params = {'dirname': encryption.encrypt(directoryName),'username': username};

@@ -423,13 +423,13 @@ class StatsPageState extends State<StatisticsPage> {
   Widget _buildUpgradeButton(BuildContext context) {
     return SizedBox(
         height: 65,
-        width: MediaQuery.of(context).size.width-150,
+        width: MediaQuery.of(context).size.width-145,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkPurple,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),  
         ),
 

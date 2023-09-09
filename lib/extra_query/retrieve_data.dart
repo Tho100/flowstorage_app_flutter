@@ -80,10 +80,10 @@ class RetrieveData {
     String? originFrom,
   ) async {
 
-    final fscDbCon = await SqlConnection.insertValueParams();
+    final initializedConn = await SqlConnection.initializeConnection();
 
     return await retrieveDataModules(
-      fscDbCon,
+      initializedConn,
       username,
       fileName,
       tableName,

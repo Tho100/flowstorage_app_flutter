@@ -27,7 +27,7 @@ class InsertData {
     dynamic vidThumb,
   }) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final encryptedFilePath = encryption.encrypt(filePath);
     final encryptedFileVal = encryption.encrypt(fileVal);

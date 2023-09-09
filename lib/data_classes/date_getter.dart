@@ -1,14 +1,11 @@
-import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:intl/intl.dart';
+import 'package:mysql_client/mysql_client.dart';
 
 class DateGetter {
 
-  Future<List<String>> getDateParams(String? username, String? tableName) async {
+  Future<List<String>> getDateParams(MySQLConnectionPool conn, String? username, String? tableName) async {
     
-
-    final conn = await SqlConnection.insertValueParams();
-
     final selectUploadDate =
         "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
 

@@ -49,11 +49,11 @@ class CommentPageState extends State<CommentPage> {
 
   Future<String> _shareToOtherName() async {
 
-    final connection = await SqlConnection.insertValueParams();
-    
+    final conn = await SqlConnection.initializeConnection();
+
     const query = "SELECT CUST_TO FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename";
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? sharedToName;
     for(final row in results.rows) {
@@ -66,11 +66,11 @@ class CommentPageState extends State<CommentPage> {
 
   Future<String> _sharedFileComment() async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename AND CUST_TO = :sharedto";
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': await _shareToOtherName()};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? decryptedComment;
     for(final row in results.rows) {
@@ -83,11 +83,11 @@ class CommentPageState extends State<CommentPage> {
 
   Future<String> _sharerName() async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_FROM FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? sharedToMeName;
     for(final row in results.rows) {
@@ -100,11 +100,11 @@ class CommentPageState extends State<CommentPage> {
 
   Future<String> _sharedToMeComment() async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': await _sharerName()};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? decryptedComment;
     for(final row in results.rows) {
@@ -120,11 +120,11 @@ class CommentPageState extends State<CommentPage> {
     final fileType = tempData.selectedFileName.split('.').last;
     final tableName = Globals.fileTypesToTableNamesPs[fileType];
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     final query = "SELECT CUST_COMMENT FROM $tableName WHERE CUST_FILE_PATH = :filename";
     final params = {'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? decryptedComment;
     for(final row in results.rows) {

@@ -13,12 +13,12 @@ class UploaderName {
     required Set fileValues
   }) async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     List<String> uploaderNameList = <String>[];
 
     final query = 'SELECT CUST_USERNAME FROM $tableName';
-    final results = await connection.execute(query);
+    final results = await conn.execute(query);
 
     String? uploaderName;
     for(final row in results.rows) {

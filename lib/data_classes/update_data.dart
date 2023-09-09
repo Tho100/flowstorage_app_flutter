@@ -18,7 +18,7 @@ class UpdateValues  {
   
     final tempData = GetIt.instance<TempDataProvider>();
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     late final String encryptedFilePath;
     late final String encryptedFileVal;

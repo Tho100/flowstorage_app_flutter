@@ -1180,7 +1180,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     await dataCaller.offlineData();
     setState(() {});
 
-    tempData.setAppBarTitle("Offline");
     searchBarVisibileNotifier.value = true;
 
     _clearSelectAll(); 

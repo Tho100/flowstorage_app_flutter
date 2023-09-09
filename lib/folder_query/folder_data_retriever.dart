@@ -43,7 +43,7 @@ class FolderDataReceiver {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     const querySelectThumbnail = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
     const querySelectImage = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
@@ -53,7 +53,7 @@ class FolderDataReceiver {
 
     try {
 
-      final result = await connection.execute(query, params);
+      final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>{};
 
       late Uint8List fileBytes = Uint8List(0);
@@ -72,7 +72,7 @@ class FolderDataReceiver {
         if (Globals.imageType.contains(fileType)) {
           
           final encryptedImageBase64 = await retrieveFiles(
-            conn: connection, 
+            conn: conn, 
             folderTitle: folderTitle, 
             query: querySelectImage, 
             fileName: encryptedFileNames,
@@ -84,7 +84,7 @@ class FolderDataReceiver {
         } else if (Globals.videoType.contains(fileType)) {
           
           final thumbnailBase64 = await retrieveFiles(
-            conn: connection,
+            conn: conn,
             folderTitle: folderTitle,
             query: querySelectThumbnail,
             fileName: encryptedFileNames,

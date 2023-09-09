@@ -7,12 +7,12 @@ class FolderRetriever {
 
   Future<List<String>> retrieveParams(String? custUsername) async {
 
-    final conn = await SqlConnection.insertValueParams();
-
     const query = 'SELECT FOLDER_TITLE FROM folder_upload_info WHERE CUST_USERNAME = :username';
     final params = {'username': custUsername};
 
     try {
+
+      final conn = await SqlConnection.initializeConnection();
 
       final retrieveNames = await conn.execute(query, params);
       final fileNameList = <String>{};

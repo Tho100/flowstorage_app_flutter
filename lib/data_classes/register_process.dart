@@ -23,7 +23,7 @@ class RegisterUser {
     required BuildContext context
   }) async {
     
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     final crud = Crud();
 
     final verifyUsernameQue = await conn.execute(
@@ -113,7 +113,7 @@ class RegisterUser {
 
     try {
       
-      final conn = await SqlConnection.insertValueParams();
+      final conn = await SqlConnection.initializeConnection();
 
       final String setTokRecov = generateRandomString(16) + userName!;
       final String removeSpacesSetRecov = EncryptionClass().encrypt(setTokRecov.replaceAll(RegExp(r'\s'), ''));

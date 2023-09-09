@@ -24,7 +24,7 @@ class PublicStorageDataRetriever {
 
     final userData = _locator<UserDataProvider>();
     
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     const tablesToCheck = GlobalsTable.tableNamesPs;
 
     if(isFromMyPs) {

@@ -10,7 +10,7 @@ class Crud {
     String? query,
     Map<String,dynamic>? params
   ) async {
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     await conn.execute(query!,params!);
   }
 
@@ -40,7 +40,7 @@ class Crud {
     required Map<String,String>? params
   }) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     final results = await conn.execute(query!,params!);
 
     int totalRow = 0;
@@ -57,7 +57,7 @@ class Crud {
     required Map<String,String>? params
   }) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     final results = await conn.execute(query!,params!);
 
@@ -70,7 +70,7 @@ class Crud {
 
     final userData = _locator<UserDataProvider>();
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final countRowQuery = "SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username";
     final params = {'username': userData.username};

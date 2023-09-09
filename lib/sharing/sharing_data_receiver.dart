@@ -35,15 +35,15 @@ class SharingDataReceiver {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String originFrom) async {
 
-    final connection = await SqlConnection.insertValueParams();
-
-    String query =
+    final query =
         'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM cust_sharing WHERE ${originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO'} = :username';
     final params = {'username': username};
 
     try {
 
-      final result = await connection.execute(query, params);
+      final conn = await SqlConnection.initializeConnection();
+
+      final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>[];
 
       late Uint8List fileBytes = Uint8List(0);
@@ -58,51 +58,38 @@ class SharingDataReceiver {
         decryptedFileNames = encryption.decrypt(encryptedFileNames);
         fileType = decryptedFileNames.split('.').last.toLowerCase();
 
-        switch (fileType) {
+        if(Globals.imageType.contains(fileType)) {
 
-          case 'jpg':
-          case 'png':
-          case 'jpeg':
-          case 'webp':
-
-            final retrieveEncryptedMetadata =
+          final retrieveEncryptedMetadata =
                 'SELECT CUST_FILE FROM cust_sharing WHERE ${originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO'} = :username AND CUST_FILE_PATH = :filename';
 
-            final encryptedBase64 = await retrieveFiles(
-              query: retrieveEncryptedMetadata, 
-              returnedColumn: "CUST_FILE", 
-              fileName: encryptedFileNames, 
-              username: username, 
-              connection: connection
-            );
+          final encryptedBase64 = await retrieveFiles(
+            query: retrieveEncryptedMetadata, 
+            returnedColumn: "CUST_FILE", 
+            fileName: encryptedFileNames, 
+            username: username, 
+            connection: conn
+          );
 
-            fileBytes = base64.decode(EncryptionClass().decrypt(encryptedBase64));
+          fileBytes = base64.decode(EncryptionClass().decrypt(encryptedBase64));
 
-            break;
+        } else if (Globals.videoType.contains(fileType)) {
 
-          case 'mp4':
-          case 'wmv':
-          case 'avi':
-          case 'mov':
-          case 'mkv':
-          
-            final querySelectThumbnail =
+          final querySelectThumbnail =
                 'SELECT CUST_THUMB FROM cust_sharing WHERE ${originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO'} = :username AND CUST_FILE_PATH = :filename';
 
-            final base64EncodedThumbnail = await retrieveFiles(
-              query: querySelectThumbnail, 
-              returnedColumn: "CUST_THUMB", 
-              fileName: encryptedFileNames, 
-              username: username, 
-              connection: connection
-            );
+          final base64EncodedThumbnail = await retrieveFiles(
+            query: querySelectThumbnail, 
+            returnedColumn: "CUST_THUMB", 
+            fileName: encryptedFileNames, 
+            username: username, 
+            connection: conn
+          );
 
-            fileBytes = base64.decode(base64EncodedThumbnail);
+          fileBytes = base64.decode(base64EncodedThumbnail);
 
-            break;
-
-          default:
-            fileBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
+        } else {
+          fileBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
         }
 
         final dateValue = row.assoc()['UPLOAD_DATE']!;

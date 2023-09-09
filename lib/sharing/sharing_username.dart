@@ -11,13 +11,13 @@ class SharingName {
 
   Future<String> shareToOtherName({required int usernameIndex}) async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     List<String> sharedToNameList = <String>[];
 
     const query = "SELECT CUST_TO FROM cust_sharing WHERE CUST_FROM = :from";
     final params = {'from': userData.username};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? sharedToName;
     for(final row in results.rows) {
@@ -31,11 +31,11 @@ class SharingName {
 
   Future<String> sharerName() async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_FROM FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await connection.execute(query,params);
+    final results = await conn.execute(query,params);
 
     String? sharedToMeName;
     for(final row in results.rows) {

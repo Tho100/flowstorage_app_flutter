@@ -13,7 +13,7 @@ class ThumbnailGetter {
 
   Future<List<Uint8List>> retrieveParams({required String? fileName}) async {
     
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     String query;
     Map<String, dynamic> params;
@@ -54,7 +54,7 @@ class ThumbnailGetter {
     String? subDirName
   }) async {
     
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     String? base64EncodeThumbnail;
 

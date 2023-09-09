@@ -138,7 +138,7 @@ class DataCaller {
 
   Future<void> homeData({bool? isFromStatistics = false}) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final dirListCount = await _crud.countUserTableRow(GlobalsTable.directoryInfoTable);
     final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
@@ -153,11 +153,11 @@ class DataCaller {
     ];
 
     final futures = tablesToCheck.map((table) async {
-      final fileNames = await _fileNameGetterHome.retrieveParams(conn,userData.username, table);
-      final bytes = await _dataGetterHome.getLeadingParams(conn,userData.username, table);
+      final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
+      final bytes = await _dataGetterHome.getLeadingParams(conn, userData.username, table);
       final dates = table == GlobalsTable.directoryInfoTable
           ? List.generate(1,(_) => "Directory")
-          : await _dateGetterHome.getDateParams(userData.username, table);
+          : await _dateGetterHome.getDateParams(conn, userData.username, table);
       return [fileNames, bytes, dates];
     }).toList();
 

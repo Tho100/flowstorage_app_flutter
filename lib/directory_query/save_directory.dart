@@ -23,7 +23,7 @@ class SaveDirectory {
   
   Future<List<Map<String, dynamic>>> retrieveParams(String username,String dirName) async {
 
-    final connection = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final directoryName = encryption.encrypt(dirName);
 
@@ -32,7 +32,7 @@ class SaveDirectory {
 
     try {
 
-      final result = await connection.execute(query, params);
+      final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>[];
 
       Uint8List fileBytes = Uint8List(0);

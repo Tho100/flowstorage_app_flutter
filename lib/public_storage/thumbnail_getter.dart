@@ -11,7 +11,7 @@ class ThumbnailGetterPs {
 
   Future<List<Uint8List>> retrieveParams() async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     const query = 'SELECT CUST_THUMB FROM ps_info_video ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
     
     final getThumbBytesQue = await conn.execute(query);
@@ -30,7 +30,7 @@ class ThumbnailGetterPs {
 
     final userData = _locator<UserDataProvider>();
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
     const query = "SELECT CUST_THUMB FROM ps_info_video WHERE CUST_USERNAME = :username";
     
     final params = {'username': userData.username};

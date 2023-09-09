@@ -22,14 +22,14 @@ class SaveFolder {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
 
-    final connection = await SqlConnection.insertValueParams();
-
     const query = 'SELECT CUST_FILE_PATH, CUST_FILE FROM folder_upload_info WHERE FOLDER_TITLE = :foldtitle AND CUST_USERNAME = :username';
     final params = {'username': username,'foldtitle': encryption.encrypt(folderTitle)};
 
     try {
 
-      final result = await connection.execute(query, params);
+      final conn = await SqlConnection.initializeConnection();
+
+      final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>{};
 
       Uint8List fileBytes = Uint8List(0);

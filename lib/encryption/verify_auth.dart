@@ -4,7 +4,7 @@ class Verification {
 
   Future<bool> notEqual(String getUsername,String getAuthString,String columnName) async {
 
-    final conn = await SqlConnection.insertValueParams();
+    final conn = await SqlConnection.initializeConnection();
 
     final que = "SELECT $columnName FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': getUsername};
