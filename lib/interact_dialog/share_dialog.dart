@@ -58,7 +58,7 @@ class SharingDialog {
   }
 
   Future<Uint8List> _callData(String selectedFilename,String tableName) async {
-    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName,tempData.fileOrigin);
+    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
   }
 
   Future<void> _prepareFileToShare({

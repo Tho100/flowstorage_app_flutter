@@ -42,50 +42,44 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
-class CakePreviewFile extends StatefulWidget {
+class PreviewFile extends StatefulWidget {
 
-  final String custUsername;
-  final List<String> fileValues;
   final String selectedFilename;
-  final String originFrom;
   final String fileType;
   final int tappedIndex;
 
-  const CakePreviewFile({
+  const PreviewFile({
     Key? key,
-    required this.custUsername,
-    required this.fileValues,
     required this.selectedFilename,
-    required this.originFrom,
     required this.fileType,
     required this.tappedIndex
   }) : super(key: key);
 
   @override
-  CakePreviewFileState createState() => CakePreviewFileState();
+  PreviewFileState createState() => PreviewFileState();
 }
 
-class CakePreviewFileState extends State<CakePreviewFile> {
+class PreviewFileState extends State<PreviewFile> {
 
-  final retrieveData = RetrieveData();
+  static final bottomBarVisibleNotifier = ValueNotifier<bool>(true);
 
+  late String originFrom;
   late String fileType;
   late String currentTable;
 
-  static final tempData = GetIt.instance<TempDataProvider>();
+  late final ValueNotifier<String> appBarTitleNotifier = 
+                                    ValueNotifier<String>('');
 
+  final retrieveData = RetrieveData();
+
+  final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   
   final textController = TextEditingController();
 
-  static final bottomBarVisibleNotifier = ValueNotifier<bool>(true);
-
   final uploaderNameNotifer = ValueNotifier<String>('');
-
-  final appBarTitleNotifier = ValueNotifier<String>(
-                                tempData.selectedFileName);
 
   final fileSizeNotifier = ValueNotifier<String>('');
   final fileResolutionNotifier = ValueNotifier<String>('');
@@ -102,6 +96,8 @@ class CakePreviewFileState extends State<CakePreviewFile> {
   void initState() {
     super.initState();
     fileType = widget.fileType;
+    originFrom = tempData.fileOrigin;
+    appBarTitleNotifier.value = tempData.selectedFileName;
     _initializeTableName();
     _initializeUploaderName();
   }
@@ -153,11 +149,8 @@ class CakePreviewFileState extends State<CakePreviewFile> {
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => CakePreviewFile(
-          custUsername: userData.username,
-          fileValues: storageData.fileNamesList,
+        pageBuilder: (_, __, ___) => PreviewFile(
           selectedFilename: selectedFileName,
-          originFrom: tempData.fileOrigin,
           fileType: fileType,
           tappedIndex: fileIndex,
         ),
@@ -304,35 +297,20 @@ class CakePreviewFileState extends State<CakePreviewFile> {
 
   Widget _buildFileDataWidget() {
 
-    Widget previewWidget;
+    if(Globals.imageType.contains(fileType)) {
+      return PreviewImage(onPageChanged: _onSlidingUpdate);
 
-    Map<String, Widget Function()> previewMap = {
+    } else if (Globals.videoType.contains(fileType)) {
+      return const PreviewVideo();
 
-      'png': () => PreviewImage(onPageChanged: _onSlidingUpdate),
-      'jpeg': () => PreviewImage(onPageChanged: _onSlidingUpdate),
-      'jpg': () => PreviewImage(onPageChanged: _onSlidingUpdate),
-      'webp': () => PreviewImage(onPageChanged: _onSlidingUpdate),
-      'gif': () => PreviewImage(onPageChanged: _onSlidingUpdate),
+    } else if (fileType == "pdf") {
+      return const PreviewPdf();
 
-      'pdf': () => const PreviewPdf(),
-      'ppt': () => const PreviewPdf(),
-      'pptx': () => const PreviewPdf(),
-      'docx': () => const PreviewPdf(),
-      'doc': () => const PreviewPdf(),
-
-      'mp4': () => const PreviewVideo(),
-      'mov': () => const PreviewVideo(),
-      'wmv': () => const PreviewVideo(),
-      'avi': () => const PreviewVideo(),
-    };
-
-    if (previewMap.containsKey(fileType)) {
-      previewWidget = previewMap[fileType]!();
     } else {
-      previewWidget = _buildPreviewerUnavailable();
-    }
+      return _buildPreviewerUnavailable();
 
-    return previewWidget;
+    }
+    
   }
 
   Widget _buildPreviewerUnavailable() {
@@ -373,8 +351,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
     return await retrieveData.retrieveDataParams(
       userData.username,
       widget.selectedFilename,
-      currentTable,
-      widget.originFrom
+      currentTable
     );
   }
 
@@ -568,16 +545,16 @@ class CakePreviewFileState extends State<CakePreviewFile> {
     const localOriginFrom = {"homeFiles","folderFiles","dirFiles"};
     const sharingOriginFrom = {"sharedFiles","sharedToMe"};
 
-    if(localOriginFrom.contains(widget.originFrom)) {
+    if(localOriginFrom.contains(originFrom)) {
       
       uploaderNameNotifer.value = userData.username;
 
-    } else if (sharingOriginFrom.contains(widget.originFrom)) {
-      uploaderNameNotifer.value = widget.originFrom == "sharedFiles" 
+    } else if (sharingOriginFrom.contains(originFrom)) {
+      uploaderNameNotifer.value = originFrom == "sharedFiles" 
       ? await SharingName().shareToOtherName(usernameIndex: widget.tappedIndex) 
       : await SharingName().sharerName();
 
-    } else if (widget.originFrom == "psFiles") {
+    } else if (originFrom == "psFiles") {
 
       final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
@@ -598,7 +575,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
     };
 
     return Text(
-      generalOrigin.contains(widget.originFrom) 
+      generalOrigin.contains(originFrom) 
       ? "   Uploaded By" : "   Shared To",
       textAlign: TextAlign.start,
       style: const TextStyle(
@@ -693,7 +670,7 @@ class CakePreviewFileState extends State<CakePreviewFile> {
   }
 
   Future<Uint8List> _callFileSize() async {
-    return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable, widget.originFrom);
+    return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
   }
 
   Future<String> _getFileSize() async {

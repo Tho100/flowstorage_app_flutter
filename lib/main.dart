@@ -1116,7 +1116,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
   
   Future<Uint8List> _callData(String selectedFilename,String tableName) async {
-    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName,tempData.fileOrigin);
+    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
   }
 
   Future<void> _deleteFolder(String folderName) async {
@@ -3059,11 +3059,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CakePreviewFile(
-            custUsername: userData.username,
-            fileValues: storageData.fileNamesList,
+          builder: (_) => PreviewFile(
             selectedFilename: tempData.selectedFileName,
-            originFrom: tempData.fileOrigin,
             fileType: fileExtension,
             tappedIndex: index
           ),

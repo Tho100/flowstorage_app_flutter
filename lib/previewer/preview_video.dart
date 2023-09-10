@@ -282,8 +282,8 @@ class PreviewVideoState extends State<PreviewVideo> {
         GestureDetector(
           onTap: () {
             videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
-            CakePreviewFileState.bottomBarVisibleNotifier.value =
-                !CakePreviewFileState.bottomBarVisibleNotifier.value;
+            PreviewFileState.bottomBarVisibleNotifier.value =
+                !PreviewFileState.bottomBarVisibleNotifier.value;
           },
           child: Center(
             child: Padding(
@@ -382,7 +382,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       iconPausePlayNotifier.value = Icons.replay;
       videoIsEnded = true;
       videoIsTappedNotifier.value = true;
-      CakePreviewFileState.bottomBarVisibleNotifier.value = true;
+      PreviewFileState.bottomBarVisibleNotifier.value = true;
     }
   }
 
@@ -402,7 +402,7 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   @override
   void dispose() {
-    CakePreviewFileState.bottomBarVisibleNotifier.value = true;
+    PreviewFileState.bottomBarVisibleNotifier.value = true;
     videoPlayerController.removeListener(videoPlayerListener);
     videoPlayerController.dispose();
     videoDurationNotifier.dispose();

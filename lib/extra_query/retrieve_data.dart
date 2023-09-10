@@ -16,25 +16,24 @@ import 'package:mysql_client/mysql_client.dart';
 class RetrieveData {
 
   final encryption = EncryptionClass();
+  
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   Future<Uint8List> retrieveDataModules(
     MySQLConnectionPool fscDbCon,
     String? username,
     String? fileName,
     String? tableName,
-    String? originFrom
   ) async {
-
-    final tempData = GetIt.instance<TempDataProvider>();
 
     final encryptedFileName = encryption.encrypt(fileName!);
 
     late final String query;
     late final Map<String, String> queryParams;
 
-    switch(originFrom) {
+    switch(tempData.fileOrigin) {
       case "homeFiles":
         query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "filename": encryptedFileName};
@@ -59,7 +58,7 @@ class RetrieveData {
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "filename": encryptedFileName};
         break;
-        
+
       case "psFiles":
         final toPsFileName = GlobalsTable.tableNames.contains(tableName)
           ? GlobalsTable.publicToPsTables[tableName]!
@@ -83,8 +82,7 @@ class RetrieveData {
   Future<Uint8List> retrieveDataParams(
     String? username,
     String? fileName,
-    String? tableName,
-    String? originFrom,
+    String? tableName
   ) async {
 
     final initializedConn = await SqlConnection.initializeConnection();
@@ -93,8 +91,7 @@ class RetrieveData {
       initializedConn,
       username,
       fileName,
-      tableName,
-      originFrom
+      tableName
     );
   }
 

@@ -28,8 +28,7 @@ class CallPreviewData {
     final fileBytesData = await retrieveData.retrieveDataParams(
       uploaderUsername,
       tempData.selectedFileName,
-      tableName,
-      tempData.fileOrigin,
+      tableName
     );
 
     return fileBytesData;
