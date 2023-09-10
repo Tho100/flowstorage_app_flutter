@@ -34,36 +34,43 @@ class RetrieveData {
     late final String query;
     late final Map<String, String> queryParams;
 
-    if (originFrom == "homeFiles") {
-      query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": username!, "filename": encryptedFileName};
-    } else if (originFrom == "sharedToMe") {
-      query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": username!, "filename": encryptedFileName};
-    } else if (originFrom == "sharedFiles") {
-      query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": username!, "filename": encryptedFileName};
-    } else if (originFrom == "folderFiles") {
-      query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": username!, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
-    } else if (originFrom == "dirFiles") {
-      query = "SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": username!, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
-    } else if (originFrom == "psFiles") {
+    switch(originFrom) {
+      case "homeFiles":
+        query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": username!, "filename": encryptedFileName};
+        break;
 
-      late String toPsFileName = "";
+      case "folderFiles":
+        query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": username!, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
+        break;
 
-      if(GlobalsTable.tableNames.contains(tableName)) {
-        toPsFileName = GlobalsTable.publicToPsTables[tableName]!;
-      } else {
-        toPsFileName = tableName!;
-      }
+      case "dirFiles":
+        query = "SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": username!, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
+        break;
 
-      final indexUploaderName = storageData.fileNamesFilteredList.indexOf(fileName);
-      final uploaderName = psStorageData.psUploaderList[indexUploaderName];
+      case "sharedToMe":
+        query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": username!, "filename": encryptedFileName};
+        break;
 
-      query = "SELECT CUST_FILE FROM $toPsFileName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-      queryParams = {"username": uploaderName, "filename": encryptedFileName};
+      case "sharedFiles":
+        query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": username!, "filename": encryptedFileName};
+        break;
+        
+      case "psFiles":
+        final toPsFileName = GlobalsTable.tableNames.contains(tableName)
+          ? GlobalsTable.publicToPsTables[tableName]!
+          : tableName!;
+
+        final indexUploaderName = storageData.fileNamesFilteredList.indexOf(fileName);
+        final uploaderName = psStorageData.psUploaderList[indexUploaderName];
+
+        query = "SELECT CUST_FILE FROM $toPsFileName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
+        queryParams = {"username": uploaderName, "filename": encryptedFileName};
+        break;
 
     }
 

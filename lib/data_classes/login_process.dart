@@ -70,7 +70,7 @@ class SignInUser {
       final fileNames = await nameGetterLogin.retrieveParams(conn, custUsernameGetter, table);
       final bytes = await loginGetterLogin.getLeadingParams(conn, custUsernameGetter, table);
       final dates = table == GlobalsTable.directoryInfoTable
-          ? List.generate(1,(_) => "Directory")
+          ? ["Directory"]
           : await dateGetterLogin.getDateParams(conn, custUsernameGetter, table);
       return [fileNames, bytes, dates];
     }).toList();

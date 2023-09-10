@@ -156,7 +156,7 @@ class DataCaller {
       final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
       final bytes = await _dataGetterHome.getLeadingParams(conn, userData.username, table);
       final dates = table == GlobalsTable.directoryInfoTable
-          ? List.generate(1,(_) => "Directory")
+          ? ["Directory"]
           : await _dateGetterHome.getDateParams(conn, userData.username, table);
       return [fileNames, bytes, dates];
     }).toList();

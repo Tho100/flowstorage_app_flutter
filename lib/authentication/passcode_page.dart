@@ -86,7 +86,7 @@ class PasscodePageState extends State<PasscodePage> {
         final fileNames = await fileNameGetterStartup.retrieveParams(conn, savedCustUsername, table);
         final bytes = await dataGetterStartup.getLeadingParams(conn, savedCustUsername, table);
         final dates = table == GlobalsTable.directoryInfoTable
-            ? List.generate(1, (_) => "Directory")
+            ? ["Directory"]
             : await dateGetterStartup.getDateParams(conn, savedCustUsername, table);
         return [fileNames, bytes, dates];
       }).toList();

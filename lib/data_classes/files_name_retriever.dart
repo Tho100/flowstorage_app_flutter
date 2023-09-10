@@ -6,7 +6,7 @@ class NameGetter {
 
   static final encryption = EncryptionClass();
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn,String custUsername, String tableName) async {
+  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String custUsername, String tableName) async {
 
     try {
 

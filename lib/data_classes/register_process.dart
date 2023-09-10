@@ -5,12 +5,12 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/crud.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'dart:math';
 
 class RegisterUser {
 
@@ -115,10 +115,10 @@ class RegisterUser {
       
       final conn = await SqlConnection.initializeConnection();
 
-      final String setTokRecov = generateRandomString(16) + userName!;
+      final String setTokRecov = Generator.generateRandomString(16) + userName!;
       final String removeSpacesSetRecov = EncryptionClass().encrypt(setTokRecov.replaceAll(RegExp(r'\s'), ''));
 
-      final String setTokAcc = (generateRandomString(12) + userName).toLowerCase();
+      final String setTokAcc = (Generator.generateRandomString(12) + userName).toLowerCase();
       final String removeSpacesSetTokAcc = AuthModel().computeAuth(setTokAcc.replaceAll(RegExp(r'\s'), ''));
 
       await conn.execute(
@@ -133,15 +133,6 @@ class RegisterUser {
       // TODO: Ignore
     } 
   }
-
-  String generateRandomString(int length) {
-    final random = Random();
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    return String.fromCharCodes(
-      Iterable.generate(length, (_) => chars.codeUnitAt(random.nextInt(chars.length))),
-    ).toUpperCase();
-  }
-
 
   Future<void> setupAutoLogin(String custUsername,String email) async {
     
