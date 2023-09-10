@@ -257,7 +257,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             onPressed: () async {
               forwardingImplementation("negative");
             },
-            icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.justWhite, size: 50),
+            icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 50),
           ),
         ),
       ),
@@ -276,7 +276,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             onPressed: () {
               forwardingImplementation("positive");
             },
-            icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.justWhite, size: 50),
+            icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 50),
           ),
         ),
       )
