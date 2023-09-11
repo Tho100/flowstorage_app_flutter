@@ -1330,6 +1330,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       storageData.fileNamesFilteredList.add(directoryName);
       storageData.fileNamesList.add(directoryName);
 
+      setState(() {});
+
       if (!mounted) return;
       SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check, context: context);
 

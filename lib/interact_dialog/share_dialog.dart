@@ -197,6 +197,7 @@ class SharingDialog {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 22), 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
@@ -263,7 +264,8 @@ class SharingDialog {
               ),
 
               const Divider(color: ThemeColor.lightGrey),
-              const SizedBox(height: 8),
+
+              const SizedBox(height: 5),
 
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -283,11 +285,11 @@ class SharingDialog {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
+                    border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
                   ),
                   child: TextFormField(
                     style: const TextStyle(color: ThemeColor.secondaryWhite),
@@ -299,66 +301,61 @@ class SharingDialog {
               ),
 
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
+                      border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
                     ),
                     child: TextFormField(
                       style: const TextStyle(color: ThemeColor.secondaryWhite),
                       enabled: true,
                       controller: commentController,
-                      maxLines: 5,
+                      maxLines: 4,
                       decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment"),
                     ),
                   
                 ),
               ),
-
+              
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
                   const SizedBox(width: 5),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: MainDialogButton(
-                        text: "Close",
-                        onPressed: () {
-                          shareToController.clear();
-                          commentController.clear();
-                          Navigator.pop(context);
-                        },
-                        isButtonClose: true,
-                      ),
-                    ),
+
+                  MainDialogButton(
+                    text: "Close",
+                    onPressed: () {
+                      shareToController.clear();
+                      commentController.clear();
+                      Navigator.pop(context);
+                    },
+                    isButtonClose: true,
                   ),
+                  
+                  const SizedBox(width: 10),
 
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: MainDialogButton(
-                        text: "Share",
-                        onPressed: () {
+                  MainDialogButton(
+                    text: "Share",
+                    onPressed: () {
 
-                          final shareToInput = shareToController.text;
-                          final comment = commentController.text;
+                      final shareToInput = shareToController.text;
+                      final comment = commentController.text;
 
-                          _onSharePressed(
-                            receiverUsername: shareToInput,
-                            fileName: fileName,
-                            commentInput: comment,
-                            context: context
-                          );
-                        },
-                        isButtonClose: false
-                      )
-                    ),
+                      _onSharePressed(
+                        receiverUsername: shareToInput,
+                        fileName: fileName,
+                        commentInput: comment,
+                        context: context
+                      );
+                    },
+                    isButtonClose: false
                   ),
-
+                  const SizedBox(width: 18),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 12),
             ],
           ),
         );

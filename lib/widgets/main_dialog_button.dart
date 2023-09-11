@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
@@ -16,42 +15,33 @@ class MainDialogButton extends StatelessWidget {
   });
 
   Widget buildCloseButton() {
-    return SizedBox(
-      width: 85,
-      height: 45,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: const BorderSide(
-              color: ThemeColor.darkPurple,
-              width: 2
-            ),
-          ),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 16, color: ThemeColor.darkPurple)
-        ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 2), 
+        backgroundColor: ThemeColor.darkBlack,
+        elevation: 0,
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 16, color: ThemeColor.secondaryWhite)
       ),
     );
   }
 
   Widget buildDefaultButton() {
-    return SizedBox(
-      width: 85,
-      height: 45,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: GlobalsStyle.btnMainStyle,
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 16)
-        ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 5), 
+        backgroundColor: ThemeColor.darkBlack,
+        elevation: 0,
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 16, color: ThemeColor.darkPurple),
       ),
     );
   }

@@ -15,6 +15,7 @@ class CreateDirectoryDialog {
       context: context,
       builder: (context) {
         return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 22), 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
@@ -27,12 +28,12 @@ class CreateDirectoryDialog {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(18.0),
+                    padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
                     child: Text(
-                      "Create new Directory",
+                      "Create new directory",
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
+                        fontSize: 17,
                         overflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w500,
                       ),
@@ -40,12 +41,13 @@ class CreateDirectoryDialog {
                   ),
                 ],
               ),
+              const Divider(color: ThemeColor.lightGrey),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
+                    border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
                   ),
                   child: TextFormField(
                     autofocus: true,
@@ -56,41 +58,34 @@ class CreateDirectoryDialog {
                   ),
                 ),
               ),
-              const SizedBox(height: 5),
+
+              const SizedBox(height: 10),
+
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const SizedBox(width: 5),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: MainDialogButton(
-                        text: "Cancel",
-                        onPressed: () {
-                          directoryNameController.clear();
-                          Navigator.pop(context);
-                        },
-                        isButtonClose: true,
-                      )
-                    ),
+                  MainDialogButton(
+                    text: "Cancel",
+                    onPressed: () {
+                      directoryNameController.clear();
+                      Navigator.pop(context);
+                    },
+                    isButtonClose: true,
                   ),
-
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: MainDialogButton(
-                        text: "Create",
-                        onPressed: () async {
-                          createOnPressed();
-                          Navigator.pop(context);
-                        },
-                        isButtonClose: false,
-                      ),
-                    ),
+                  const SizedBox(width: 10),
+                  MainDialogButton(
+                    text: "Create",
+                    onPressed: () async {
+                      createOnPressed();
+                      Navigator.pop(context);
+                    },
+                    isButtonClose: false,
                   ),
-
+                  const SizedBox(width: 18),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 12),
             ],
           ),
         );
