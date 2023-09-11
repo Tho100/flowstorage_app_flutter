@@ -6,18 +6,9 @@ import 'package:mysql_client/mysql_client.dart';
 
 class DateGetterPs {
 
-  final _locator = GetIt.instance;
-
-  String formatDate(String dateString) {
-    final originalFormat = DateFormat('dd/MM/yyyy');
-    final newFormat = DateFormat('MMM d yyyy');
-    final date = originalFormat.parse(dateString);
-    return newFormat.format(date);
-  }
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<List<String>> myGetDateParams(MySQLConnectionPool conn, String tableName) async {
-    
-    final userData = _locator<UserDataProvider>();
 
     final selectUploadDate = "SELECT UPLOAD_DATE, CUST_TAG FROM $tableName WHERE CUST_USERNAME = :username";
 

@@ -126,9 +126,9 @@ class PreviewFileState extends State<PreviewFile> {
     final fileType = selectedFileName.split('.').last;
     final fileIndex = storageData.fileNamesFilteredList.indexOf(selectedFileName);
 
-    if (Globals.videoType.contains(fileType) || Globals.audioType.contains(fileType) || Globals.textType.contains(fileType) || Globals.excelType.contains(fileType) || Globals.wordType.contains(fileType) || Globals.excelType.contains("pdf")) {
+    if (Globals.videoType.contains(fileType) || Globals.audioType.contains(fileType) || Globals.textType.contains(fileType) || Globals.excelType.contains(fileType) || Globals.wordType.contains(fileType) || fileType == "pdf") {
       _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
-    }
+    } 
 
     if (tempData.fileOrigin == "homeFiles") {
       currentTable = Globals.fileTypesToTableNames[fileType]!;

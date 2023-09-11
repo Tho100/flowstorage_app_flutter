@@ -16,13 +16,11 @@ class PublicStorageDataRetriever {
 
   final dataSet = <Map<String, dynamic>>[];
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<List<Map<String, dynamic>>> retrieveParams({
     required bool isFromMyPs
   }) async {
-
-    final userData = _locator<UserDataProvider>();
     
     final conn = await SqlConnection.initializeConnection();
     const tablesToCheck = GlobalsTable.tableNamesPs;

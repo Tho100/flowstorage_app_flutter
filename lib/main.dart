@@ -1274,16 +1274,22 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     if(tempData.fileOrigin == "homeFiles") {
       await _callHomeData();
+      
     } else if (tempData.fileOrigin == "sharedFiles") {
       await _callSharingData("sharedFiles");
+
     } else if (tempData.fileOrigin == "sharedToMe") {
       await _callSharingData("sharedToMe");
+
     } else if (tempData.fileOrigin == "folderFiles") {
       await _callFolderData(tempData.folderName);
+      
     } else if (tempData.fileOrigin == "dirFiles") {
       await _callDirectoryData();
+
     } else if (tempData.fileOrigin == "offlineFiles") {
       await _callOfflineData();
+
     } else if (tempData.fileOrigin == "psFiles") {
 
       tempData.appBarTitle == "Public Storage" 
