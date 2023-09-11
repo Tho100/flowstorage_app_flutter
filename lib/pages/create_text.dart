@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,95 +68,87 @@ class CreateTextPageState extends State<CreateText> {
       .fileNamesList.contains(EncryptionClass().decrypt(fileName));
   }
 
-  Future _askFileName() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: ThemeColor.darkBlack,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(18.0),
-                    child: Text(
-                      "Save Text File",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
-                  ),
-                  child: TextFormField(
-                    autofocus: true,
-                    style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
-                    enabled: true,
-                    controller: fileNameController,
-                    decoration: GlobalsStyle.setupTextFieldDecoration("filename.txt")
-                  ),
+  Future _buildSaveFileDialog() {
+    return InteractDialog().buildDialog(
+      context: context, 
+      childrenWidgets: <Widget>[
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+              child: Text(
+                "Save Text File",
+                style: TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 17,
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 5),
-              Row(
-                children: [
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: MainDialogButton(
-                        text: "Cancel", 
-                        onPressed: () {
-                          fileNameController.clear();
-                          Navigator.pop(context);
-                        }, 
-                        isButtonClose: true
-                      ),
-                    ),
-                  ),
+            ),
+          ],
+        ),
 
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: MainDialogButton(
-                        text: "Save", 
-                        onPressed: () async {
+        const Divider(color: ThemeColor.lightGrey),
 
-                          final getFileTitle = fileNameController.text.trim();
-                          if (getFileTitle.isEmpty) {
-                            return;
-                          }
-                          
-                          await _saveText(textEditingController.text);
-
-                        }, 
-                        isButtonClose: false
-                      ),
-                    ),
-                  ),
-
-                ],
-              ),
-              const SizedBox(height: 15),
-            ],
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+            ),
+            child: TextFormField(
+              autofocus: true,
+              style: const TextStyle(color: ThemeColor.justWhite),
+              enabled: true,
+              controller: fileNameController,
+              decoration: GlobalsStyle.setupTextFieldDecoration("Untitled text file")
+            ),
           ),
-        );
-      },
-    ); 
+        ),
+
+        const SizedBox(height: 10),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+
+            const SizedBox(width: 5),
+
+            MainDialogButton(
+              text: "Cancel", 
+              onPressed: () {
+                fileNameController.clear();
+                Navigator.pop(context);
+              }, 
+              isButtonClose: true
+            ),
+            
+            const SizedBox(width: 10),
+            
+            MainDialogButton(
+              text: "Save", 
+              onPressed: () async {
+
+                final getFileTitle = fileNameController.text.trim();
+                if (getFileTitle.isEmpty) {
+                  return;
+                }
+                
+                await _saveText(textEditingController.text);
+
+              }, 
+              isButtonClose: false
+            ),
+            
+            const SizedBox(width: 18),
+          ],
+        ),
+        const SizedBox(height: 12),
+      ]
+    );
   }
 
   String _tableToUploadTo() {
@@ -314,7 +307,7 @@ class CreateTextPageState extends State<CreateText> {
             visible: saveVisibility,
             child: TextButton(
               onPressed: () {
-                _askFileName();
+                _buildSaveFileDialog();
               },
               child: const Text("Save",
                 style: TextStyle(

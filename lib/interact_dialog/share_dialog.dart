@@ -19,6 +19,7 @@ import 'package:flowstorage_fsc/sharing/verify_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
+import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
 
 import 'package:flutter/material.dart';
@@ -192,174 +193,159 @@ class SharingDialog {
     String? fileName,
     BuildContext? context
   }) {
-    return showDialog(
-      context: context!,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.symmetric(horizontal: 22), 
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
-          ),
-          backgroundColor: ThemeColor.darkBlack,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+    return InteractDialog().buildDialog(
+      context: context!, 
+      childrenWidgets: <Widget>[
+        Row(
+          children: [
 
-              Row(
-                children: [
-
-                  Stack(
-                    children: [
-                      
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image(
-                            width: 55,
-                            height: 55,
-                            fit: BoxFit.cover,
-                            image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
-                          ),
-                        ),
-                      ),
-
-                      if(Globals.videoType.contains(fileName!.split('.').last))
-                      Padding(
-                        padding: const EdgeInsets.only(top: 22.0, left: 24.0),
-                        child: Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: ThemeColor.mediumGrey.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          ShortenText().cutText(fileName, customLength: 42),
-                          style: const TextStyle(
-                            color: ThemeColor.justWhite,
-                            fontSize: 15,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+            Stack(
+              children: [
+                
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image(
+                      width: 55,
+                      height: 55,
+                      fit: BoxFit.cover,
+                      image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),
-                  ),
-                  
-                ],
-              ),
-
-              const Divider(color: ThemeColor.lightGrey),
-
-              const SizedBox(height: 5),
-
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 18.0),
-                    child: Text(
-                      "Share this file",
-                      style: TextStyle(
-                        color: ThemeColor.secondaryWhite,
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
-                  ),
-                  child: TextFormField(
-                    style: const TextStyle(color: ThemeColor.secondaryWhite),
-                    enabled: true,
-                    controller: shareToController,
-                    decoration: GlobalsStyle.setupTextFieldDecoration("Enter receiver username"),
                   ),
                 ),
-              ),
 
-              Padding(
-                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
+                if(Globals.videoType.contains(fileName!.split('.').last))
+                Padding(
+                  padding: const EdgeInsets.only(top: 22.0, left: 24.0),
                   child: Container(
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+                      color: ThemeColor.mediumGrey.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: TextFormField(
-                      style: const TextStyle(color: ThemeColor.secondaryWhite),
-                      enabled: true,
-                      controller: commentController,
-                      maxLines: 4,
-                      decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment"),
+                    child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
+                  ),
+                ),
+              ],
+            ),
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    ShortenText().cutText(fileName, customLength: 42),
+                    style: const TextStyle(
+                      color: ThemeColor.justWhite,
+                      fontSize: 15,
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
                     ),
-                  
+                  ),
                 ),
               ),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+            ),
+            
+          ],
+        ),
 
-                  const SizedBox(width: 5),
+        const Divider(color: ThemeColor.lightGrey),
 
-                  MainDialogButton(
-                    text: "Close",
-                    onPressed: () {
-                      shareToController.clear();
-                      commentController.clear();
-                      Navigator.pop(context);
-                    },
-                    isButtonClose: true,
-                  ),
-                  
-                  const SizedBox(width: 10),
+        const SizedBox(height: 5),
 
-                  MainDialogButton(
-                    text: "Share",
-                    onPressed: () {
-
-                      final shareToInput = shareToController.text;
-                      final comment = commentController.text;
-
-                      _onSharePressed(
-                        receiverUsername: shareToInput,
-                        fileName: fileName,
-                        commentInput: comment,
-                        context: context
-                      );
-                    },
-                    isButtonClose: false
-                  ),
-                  const SizedBox(width: 18),
-                ],
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 18.0),
+              child: Text(
+                "Share this file",
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontSize: 16,
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              const SizedBox(height: 12),
-            ],
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+            ),
+            child: TextFormField(
+              style: const TextStyle(color: ThemeColor.secondaryWhite),
+              enabled: true,
+              controller: shareToController,
+              decoration: GlobalsStyle.setupTextFieldDecoration("Enter receiver username"),
+            ),
           ),
-        );
-      },
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+              ),
+              child: TextFormField(
+                style: const TextStyle(color: ThemeColor.secondaryWhite),
+                enabled: true,
+                controller: commentController,
+                maxLines: 4,
+                decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment"),
+              ),
+            
+          ),
+        ),
+        
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+
+            const SizedBox(width: 5),
+
+            MainDialogButton(
+              text: "Close",
+              onPressed: () {
+                shareToController.clear();
+                commentController.clear();
+                Navigator.pop(context);
+              },
+              isButtonClose: true,
+            ),
+            
+            const SizedBox(width: 10),
+
+            MainDialogButton(
+              text: "Share",
+              onPressed: () {
+
+                final shareToInput = shareToController.text;
+                final comment = commentController.text;
+
+                _onSharePressed(
+                  receiverUsername: shareToInput,
+                  fileName: fileName,
+                  commentInput: comment,
+                  context: context
+                );
+              },
+              isButtonClose: false
+            ),
+            const SizedBox(width: 18),
+          ],
+        ),
+        const SizedBox(height: 12),
+      ]
     );
   }
 
