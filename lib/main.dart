@@ -2841,7 +2841,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                 borderRadius: BorderRadius.circular(25),
                 color: ThemeColor.mediumGrey,
               ),
-              height: 48,
+              height: 50,
               child: FractionallySizedBox(
                 widthFactor: 0.94, 
                 child: Row(

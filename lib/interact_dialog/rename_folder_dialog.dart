@@ -32,18 +32,12 @@ class RenameFolderDialog {
         const Divider(color: ThemeColor.lightGrey),
 
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
-            ),
-            child: TextFormField(
-              style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
-              enabled: true,
-              controller: folderRenameController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter new name"),
-            ),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 8.0),
+          child: TextFormField(
+            style: const TextStyle(color: ThemeColor.justWhite),
+            enabled: true,
+            controller: folderRenameController,
+            decoration: GlobalsStyle.setupTextFieldDecoration("Enter new name"),
           ),
         ),
 

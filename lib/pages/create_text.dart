@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -64,8 +63,7 @@ class CreateTextPageState extends State<CreateText> {
   }
 
   Future<bool> _isFileExists(String fileName) async {
-    return storageData
-      .fileNamesList.contains(EncryptionClass().decrypt(fileName));
+    return storageData.fileNamesFilteredList.contains(fileName);
   }
 
   Future _buildSaveFileDialog() {
@@ -187,7 +185,9 @@ class CreateTextPageState extends State<CreateText> {
 
     try {
 
-      if (await _isFileExists(EncryptionClass().encrypt("$inputValue.txt"))) {
+      final getFileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
+
+      if (await _isFileExists(getFileName)) {
         if (!mounted) return;
         CustomAlertDialog.alertDialog("File with this name already exists.", context);
         return;
@@ -195,7 +195,6 @@ class CreateTextPageState extends State<CreateText> {
 
       final toUtf8Bytes = utf8.encode(inputValue);
       final base64Encoded = base64.encode(toUtf8Bytes);
-      final getFileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
 
       await _insertUserFile(
         table: _tableToUploadTo(),

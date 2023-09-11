@@ -88,18 +88,12 @@ class RenameDialog {
         const Divider(color: ThemeColor.lightGrey),
 
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
-            ),
-            child: TextFormField(
-              style: const TextStyle(color: ThemeColor.secondaryWhite),
-              enabled: true,
-              controller: renameController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter new name"),
-            ),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 8.0),
+          child: TextFormField(
+            style: const TextStyle(color: ThemeColor.secondaryWhite),
+            enabled: true,
+            controller: renameController,
+            decoration: GlobalsStyle.setupTextFieldDecoration("Enter new name"),
           ),
         ),
 
