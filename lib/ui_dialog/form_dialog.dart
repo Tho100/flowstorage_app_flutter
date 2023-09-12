@@ -1,11 +1,12 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
 class CustomFormDialog {
 
-  static Future startDialog(String headMessage,String subMessage, BuildContext context) {
+  static Future startDialog(String headMessage, String subMessage) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(

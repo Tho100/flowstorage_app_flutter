@@ -173,24 +173,24 @@ class ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
-    final authCase0 = await _verifyAuth(currentAuth, "CUST_PASSWORD", context);
-    final authCase1 = await _verifyAuth(curPin, "CUST_PIN", context);
+    final authCase0 = await _verifyAuth(currentAuth, "CUST_PASSWORD");
+    final authCase1 = await _verifyAuth(curPin, "CUST_PIN");
     
     if (!authCase0 && !authCase1) {
 
       await _updateAuth(newAuth);
 
-      CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.", context);
+      CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
 
     } else if (authCase0) {
-      CustomAlertDialog.alertDialog("Password is incorrect.", context);
+      CustomAlertDialog.alertDialog("Password is incorrect.");
     } else {
-      CustomAlertDialog.alertDialog("PIN key is incorrect.", context);
+      CustomAlertDialog.alertDialog("PIN key is incorrect.");
     }
 
   }
 
-  Future<bool> _verifyAuth(String inputStr,String columnName,BuildContext context) async {
+  Future<bool> _verifyAuth(String inputStr,String columnName) async {
 
     final userData = _locator<UserDataProvider>();
 

@@ -162,12 +162,12 @@ class BackupRecovery extends StatelessWidget {
       }
 
       if(await _incorrectAuth(userData.username, AuthModel().computeAuth(auth0),"CUST_PIN")) {
-        CustomAlertDialog.alertDialog("Entered PIN is incorrect.", context);
+        CustomAlertDialog.alertDialog("Entered PIN is incorrect.");
         return;
       }
 
       if(await _incorrectAuth(userData.username, AuthModel().computeAuth(auth1),"CUST_PASSWORD")) {
-        CustomAlertDialog.alertDialog("Password is incorrect.", context);
+        CustomAlertDialog.alertDialog("Password is incorrect.");
         return;
 
       } 
@@ -177,12 +177,10 @@ class BackupRecovery extends StatelessWidget {
 
       CustomFormDialog.startDialog(
         "Recovery key has been backed up",
-        "Location path: $saveBackup",
-        context,
-      );
+        "Location path: $saveBackup");
 
     } catch (err) {
-      CustomAlertDialog.alertDialog("Failed to backup your recovery key.",context);
+      CustomAlertDialog.alertDialog("Failed to backup your recovery key.");
     }
   }
 

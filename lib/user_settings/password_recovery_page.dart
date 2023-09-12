@@ -184,7 +184,7 @@ class ResetBackupState extends State<ResetBackup> {
 
       if(await retrieveRecovery(username) != recoveryToken) {
         if(!mounted) return;
-        CustomAlertDialog.alertDialog("Invalid recovery key.", context);
+        CustomAlertDialog.alertDialog("Invalid recovery key.");
         return;
       }  
 
@@ -199,7 +199,7 @@ class ResetBackupState extends State<ResetBackup> {
                             custEmail: email)));
 
     } catch (exportBackupFailed) {
-      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to export your recovery key. Please try again later",context);
+      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to export your recovery key. Please try again later");
     }
   }
 

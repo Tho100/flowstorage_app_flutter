@@ -6,17 +6,16 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class CustomSideBarMenu {
+class CustomSideBarMenu extends StatelessWidget {
 
-  final BuildContext context;
   final Future<int> usageProgress;
   final VoidCallback offlinePageOnPressed;
 
   CustomSideBarMenu({
-    required this.context,
     required this.usageProgress,
-    required this.offlinePageOnPressed
-  });
+    required this.offlinePageOnPressed,
+    Key? key
+  }) : super(key: key);
 
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
@@ -49,7 +48,8 @@ class CustomSideBarMenu {
     );
   }
 
-  Widget buildSidebarMenu() {
+  @override
+  Widget build(BuildContext context) {
     return Drawer(
       child: Container(
         color: ThemeColor.darkBlack,

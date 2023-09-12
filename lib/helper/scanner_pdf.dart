@@ -59,7 +59,7 @@ class ScannerPdf {
       await file.writeAsBytes(await pdf.save());
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to save PDF",context!);
+      SnakeAlert.errorSnake("Failed to save PDF");
     }
   }
 }

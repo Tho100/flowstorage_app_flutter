@@ -1,11 +1,12 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
 class SnakeAlert {
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> errorSnake(String message, BuildContext context) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> errorSnake(String message) {
 
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Row( 
@@ -23,11 +24,10 @@ class SnakeAlert {
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> okSnake({
     required String message,
-    IconData? icon,
-    required BuildContext context,
+    IconData? icon
   }) {
     
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Row(

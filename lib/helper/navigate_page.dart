@@ -88,8 +88,7 @@ class NavigatePage {
 
   static void goToPageSettings(BuildContext context) async {
 
-    final locator = GetIt.instance;
-    final userData = locator<UserDataProvider>();
+    final userData = GetIt.instance<UserDataProvider>();
 
     final username = userData.username;
     final email = userData.email;
@@ -103,7 +102,6 @@ class NavigatePage {
       } 
 
       _openSettingsPage(
-        context: context, 
         email: email,
         username: username,
         accountType: accountType,
@@ -112,13 +110,13 @@ class NavigatePage {
 
     } catch (err, st) {
 
-      SnakeAlert.errorSnake("No internet connection.", context);
+      SnakeAlert.errorSnake("No internet connection.");
       Logger().e("Exception on goToPageSettings (NavigatePage)", err, st);
       
       await Future.delayed(const Duration(milliseconds: 990));
 
       _openSettingsPage(
-        context: context, sharingDisabledStatus: "0",
+        sharingDisabledStatus: "0",
         email: email,
         username: username,
         accountType: accountType,
@@ -128,14 +126,13 @@ class NavigatePage {
   }
 
   static void _openSettingsPage({
-    required BuildContext context, 
     required String email, 
     required String username,
     required String accountType,
     required String sharingDisabledStatus
   }) {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(
         builder: (context) => 
           CakeSettingsPage(

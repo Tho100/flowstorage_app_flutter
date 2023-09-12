@@ -52,22 +52,22 @@ class CakeSignInPageState extends State<CakeSignInPage> {
     final custEmailInput = emailController.text.trim();
 
     if (!EmailValidator().validateEmail(custEmailInput)) {
-      CustomAlertDialog.alertDialogTitle("Sign In Failed","Email address is not valid.", context);
+      CustomAlertDialog.alertDialogTitle("Sign In Failed","Email address is not valid.");
       return;
     }
 
     if (custAuth1Input.isEmpty) {
-      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your PIN key.",context);
+      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your PIN key.");
       return;
     }
 
     if (custEmailInput.isEmpty) {
-      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your email address.",context);
+      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your email address.");
       return;
     }
 
     if (custAuth0Input.isEmpty) {
-      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your password.",context);              
+      CustomAlertDialog.alertDialogTitle("Sign In Failed","Please enter your password.");              
       return;
     }
 

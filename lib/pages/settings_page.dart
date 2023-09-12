@@ -168,11 +168,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                             final getAddPassword = AddPasswordSharing();
                             getAddPassword.insertValuesParams(username: custUsername, newAuth: addPasswordController.text);
 
-                            CustomAlertDialog.alertDialogTitle("Added password for File Sharing", "Users are required to enter the password before they can share a file with you.", context);
+                            CustomAlertDialog.alertDialogTitle("Added password for File Sharing", "Users are required to enter the password before they can share a file with you.");
 
                           } catch (err, st) {
                             Logger().e("Exception from _buildAddPassword {settings_page}", err, st);
-                            CustomAlertDialog.alertDialogTitle("An error occurred", "Faild to add/update pasword for File Sharing. Please try again later.", context);
+                            CustomAlertDialog.alertDialogTitle("An error occurred", "Faild to add/update pasword for File Sharing. Please try again later.");
                           }
 
                         },
@@ -494,9 +494,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                 userData.setSharingStatus(updatedStatus);
 
                 final conclusionSubMsg = sharingStatus == "Disabled" ? fileSharingDisabledMsg : fileSharingEnabledMsg;
-
-                if(!mounted) return;
-                CustomAlertDialog.alertDialogTitle("Sharing $sharingStatus", conclusionSubMsg, context);
+                CustomAlertDialog.alertDialogTitle("Sharing $sharingStatus", conclusionSubMsg);
               }
             ),
       

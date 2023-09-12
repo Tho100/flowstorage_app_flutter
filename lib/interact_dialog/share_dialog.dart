@@ -79,14 +79,14 @@ class SharingDialog {
 
     if (await VerifySharing().isAlreadyUploaded(encryptedFileName, username, userData.username)) {
       if(context.mounted) {
-        CustomAlertDialog.alertDialogTitle("Sharing Failed", "You've already shared this file.", context);
+        CustomAlertDialog.alertDialogTitle("Sharing Failed", "You've already shared this file.");
       }
       return;
     }
 
     if (await VerifySharing().unknownUser(username)) {
       if(context.mounted) {
-        CustomAlertDialog.alertDialogTitle("Sharing Failed", "User `$username` not found.", context);
+        CustomAlertDialog.alertDialogTitle("Sharing Failed", "User `$username` not found.");
       }
       return;
     }
@@ -95,7 +95,7 @@ class SharingDialog {
 
     if(getReceiverDisabled == '1') {
       if(context.mounted) {
-        CustomAlertDialog.alertDialogTitle('Sharing Failed', 'User $username disabled their file sharing.', context);
+        CustomAlertDialog.alertDialogTitle('Sharing Failed', 'User $username disabled their file sharing.');
       }
       return;
     }
@@ -172,12 +172,12 @@ class SharingDialog {
   }) async {
 
     if (receiverUsername.isEmpty) {
-      CustomAlertDialog.alertDialog("Please enter the receiver username.", context);
+      CustomAlertDialog.alertDialog("Please enter the receiver username.");
       return;
     }
     
     if (receiverUsername == userData.username) {
-      CustomAlertDialog.alertDialog("You cannot share to yourself.", context);
+      CustomAlertDialog.alertDialog("You cannot share to yourself.");
       return;
     }
 

@@ -1,0 +1,104 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flowstorage_fsc/extra_query/insert_data.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
+import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:get_it/get_it.dart';
+
+class UpdateListView {
+
+  final tempData = GetIt.instance<TempDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final psStorageData = GetIt.instance<PsStorageDataProvider>();
+
+  final insertData = InsertData();
+
+  void addItemToListView({required String fileName}) {
+    storageData.fileDateFilteredList.add("Just now");
+    storageData.fileDateList.add("Just now");
+    storageData.fileNamesList.add(fileName);
+    storageData.updateFilteredFilesName(fileName);
+  }
+
+  Future<void> _insertUserFile({
+    required String table,
+    required String filePath,
+    required dynamic fileValue,
+    dynamic vidThumbnail,
+  }) async {
+
+    List<Future<void>> isolatedFileFutures = [];
+
+    isolatedFileFutures.add(insertData.insertValueParams(
+      tableName: table,
+      filePath: filePath,
+      userName: userData.username,
+      fileVal: fileValue,
+      vidThumb: vidThumbnail,
+    ));
+
+    await Future.wait(isolatedFileFutures);
+  }
+
+  Future<void> processUpdateListView({
+    required String filePathVal,
+    required String selectedFileName,
+    required String tableName,
+    required String fileBase64Encoded,
+    File? newFileToDisplay,
+    dynamic thumbnailBytes,
+  }) async {
+
+    final List<Uint8List> newImageByteValues = [];
+    final List<Uint8List> newFilteredSearchedBytes = [];
+
+    final isHomeImageOrPsImage = tableName == GlobalsTable.homeImage || tableName == GlobalsTable.psImage;
+    final fileToDisplay = newFileToDisplay;
+
+    if (isHomeImageOrPsImage) {
+      newImageByteValues.add(File(filePathVal).readAsBytesSync());
+      newFilteredSearchedBytes.add(File(filePathVal).readAsBytesSync());
+    } else {
+      newImageByteValues.add(fileToDisplay!.readAsBytesSync());
+      newFilteredSearchedBytes.add(fileToDisplay.readAsBytesSync());
+    }
+
+    final verifyTableName = tempData.fileOrigin == "dirFiles" ? GlobalsTable.directoryUploadTable : tableName;
+    if (tempData.fileOrigin != "offlineFiles") {
+      await _insertUserFile(table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
+    } else {
+      final fileByteData = base64.decode(fileBase64Encoded);
+      await OfflineMode().processSaveOfflineFile(fileName: selectedFileName, fileData: fileByteData);
+    }
+
+    final homeImageData = storageData.homeImageBytesList;
+    final homeThumbnailData = storageData.homeThumbnailBytesList;
+
+    if (verifyTableName == GlobalsTable.homeImage) {
+      homeImageData.addAll(newFilteredSearchedBytes);
+      
+    } else if (verifyTableName == GlobalsTable.homeVideo) {
+      homeThumbnailData.add(thumbnailBytes);
+
+    } else if (verifyTableName == GlobalsTable.psImage) {
+      psStorageData.psImageBytesList.addAll(newFilteredSearchedBytes);
+      psStorageData.myPsImageBytesList.addAll(newFilteredSearchedBytes);
+
+    } else if (verifyTableName == GlobalsTable.psVideo) {
+      psStorageData.psThumbnailBytesList.add(thumbnailBytes);
+      psStorageData.myPsThumbnailBytesList.add(thumbnailBytes);
+
+    }
+
+    storageData.updateImageBytes(newImageByteValues);
+    storageData.updateFilteredImageBytes(newFilteredSearchedBytes);
+
+  }
+}

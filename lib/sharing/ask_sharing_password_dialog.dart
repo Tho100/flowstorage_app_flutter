@@ -108,7 +108,7 @@ class SharingPassword {
                             );
 
                           } else {
-                            CustomAlertDialog.alertDialogTitle("Sharing failed", "Entered password is incorrect.", context);
+                            CustomAlertDialog.alertDialogTitle("Sharing failed", "Entered password is incorrect.");
                           }
                           
                           loadingDialog.stopLoading();

@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
 class DeleteSelectionDialog {
+  
   Future buildDeleteSelectionDialog({
     required BuildContext context,
     required String appBarTitle,

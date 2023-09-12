@@ -100,12 +100,11 @@ class MyPlanPageState extends State<MyPlanPage> {
 
                 CustomAlertDialog.alertDialogTitle(
                   "Subscription plan cancelled successfully", 
-                  "Thank you for being previously a part of our customer!", 
-                  context
+                  "Thank you for being previously a part of our customer!"
                 );
 
               } catch (er) {
-                SnakeAlert.errorSnake("Subscription cancellation failed.", context);
+                SnakeAlert.errorSnake("Subscription cancellation failed.");
                 return;
               }
 

@@ -5,13 +5,13 @@ import 'package:get_it/get_it.dart';
 
 class FolderDialog {
 
+  final storageData = GetIt.instance<StorageDataProvider>();
+
   Future buildFolderDialog({
     required Function(int) folderOnPressed,
     required Function(int) trailingOnPressed,
     required BuildContext context
   }) async {
-
-    final storageData = GetIt.instance<StorageDataProvider>();
 
     return showDialog(
       context: context,

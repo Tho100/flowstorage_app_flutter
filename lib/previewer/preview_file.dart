@@ -190,11 +190,11 @@ class PreviewFileState extends State<PreviewFile> {
 
       if(!mounted) return;
 
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted",context: context);
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
       NavigatePage.permanentPageMainboard(context);
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}",context);
+      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
       Logger().e("Exception from _deletionFile {PreviewFile}", err, st);
     }
     
@@ -268,11 +268,11 @@ class PreviewFileState extends State<PreviewFile> {
         _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
 
         if (!mounted) return;
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.",context: context);
+        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
       }
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("Failed to rename this file.",context);
+      SnakeAlert.errorSnake("Failed to rename this file.");
       Logger().e("Exception from _renameFile {main}", err, st);
     }
   }
@@ -285,7 +285,7 @@ class PreviewFileState extends State<PreviewFile> {
       String newRenameValue = "$newItemValue.${fileName.split('.').last}";
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
-        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.", context);
+        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
       } else {
         await _renameFile(fileName, newRenameValue);
       }
@@ -412,11 +412,11 @@ class PreviewFileState extends State<PreviewFile> {
       } 
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
 
     } catch (err) {
 
-      SnakeAlert.errorSnake("Failed to save changes.",context);
+      SnakeAlert.errorSnake("Failed to save changes.");
 
     }
   }
@@ -432,7 +432,7 @@ class PreviewFileState extends State<PreviewFile> {
     final fileType = fileName.split('.').last;
 
     if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
-      CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.", context);
+      CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.");
       return;
     } 
 
@@ -446,7 +446,7 @@ class PreviewFileState extends State<PreviewFile> {
     }
     
     if(!mounted) return;
-    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData, context: context);
+    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
 
     singleLoading.stopLoading();
 
@@ -485,10 +485,10 @@ class PreviewFileState extends State<PreviewFile> {
       loadingDialog.stopLoading();
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}",context);
+      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
     }
 
   }

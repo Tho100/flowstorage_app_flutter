@@ -133,17 +133,16 @@ class OfflineMode {
   Future<void> processSaveOfflineFile({
     required String fileName, 
     required Uint8List fileData,
-    required BuildContext context
   }) async {
 
     try {
       
       await saveOfflineFile(fileName: fileName,fileData: fileData);
       
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check);
       
     } catch (err) {
-      SnakeAlert.errorSnake("An error occurred.",context);
+      SnakeAlert.errorSnake("An error occurred.");
     }
   }
 

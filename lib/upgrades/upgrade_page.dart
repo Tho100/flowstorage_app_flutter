@@ -674,11 +674,11 @@ class UpgradePageState extends State<UpradePage> {
         CallNotify().customNotification(title: "Account Upgraded", subMesssage: "Thank you for subscribing to our service! You subscribed for $userChoosenPlan plan");
 
         if(!mounted) return;
-        CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userChoosenPlan account plan.",context);
+        CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userChoosenPlan account plan.");
 
       } else {
         if(!mounted) return;
-        CustomAlertDialog.alertDialogTitle("Payment failed", "No payment has been made.", context);
+        CustomAlertDialog.alertDialogTitle("Payment failed", "No payment has been made.");
       }
 
       returnedEmail.clear();

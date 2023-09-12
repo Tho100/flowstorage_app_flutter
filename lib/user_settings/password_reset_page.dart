@@ -156,7 +156,7 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
       }
       
       if(newAuth != currentAuth) {
-        CustomAlertDialog.alertDialog("Password does not match.",context);
+        CustomAlertDialog.alertDialog("Password does not match.");
         return;
       }
 
@@ -165,10 +165,10 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
       await _updateAuth(newAuth, getUsername);
 
       if(!mounted) return;
-      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now", context);
+      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to update your password.", context);
+      SnakeAlert.errorSnake("Failed to update your password.");
     }
   }
 

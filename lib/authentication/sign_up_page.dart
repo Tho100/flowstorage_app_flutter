@@ -73,7 +73,7 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
       );
 
     } catch (exceptionConnectionFsc) {
-      CustomAlertDialog.alertDialogTitle("Something is wrong...", "No internet connection.", context);
+      CustomAlertDialog.alertDialogTitle("Something is wrong...", "No internet connection.");
     }
     
   }
@@ -90,52 +90,52 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
     var custAuth1Input = auth1Controller.text;
 
     if(custEmailInput.isEmpty && custUsernameInput.isEmpty && custAuth0Input.isEmpty && custAuth1Input.isEmpty) {
-      CustomAlertDialog.alertDialog("Please fill all the required forms.",context);
+      CustomAlertDialog.alertDialog("Please fill all the required forms.");
       return;
     }
 
     if (custUsernameInput.contains(RegExp(r'[&%;?]'))) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Username cannot contain special characters.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Username cannot contain special characters.");
       return;
     }
 
     if (custAuth0Input.contains(RegExp(r'[?!]'))) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Password cannot contain special characters.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Password cannot contain special characters.");
       return;
     }
 
     if (custAuth0Input.length <= 5) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Password must contain more than 5 characters.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Password must contain more than 5 characters.");
       return;
     }
 
     if (custAuth1Input.length != 3) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","PIN Number must have 3 digits.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","PIN Number must have 3 digits.");
       return;
     }
 
     if (custAuth1Input.isEmpty) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Please add a PIN number to protect your account.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Please add a PIN number to protect your account.");
       return;
     }
 
     if (!EmailValidator().validateEmail(custEmailInput)) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Email address is not valid.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Email address is not valid.");
       return;
     }
 
     if (custUsernameInput.isEmpty) {
-      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Please enter a username.",context);
+      CustomAlertDialog.alertDialogTitle("Sign Up Failed","Please enter a username.");
       return;
     }
 
     if (custAuth0Input.isEmpty) {
-      CustomAlertDialog.alertDialog("Please enter a password.",context);
+      CustomAlertDialog.alertDialog("Please enter a password.");
       return;
     }
 
     if (custEmailInput.isEmpty) {
-      CustomAlertDialog.alertDialog("Please enter your email.",context);
+      CustomAlertDialog.alertDialog("Please enter your email.");
       return;
     }
 

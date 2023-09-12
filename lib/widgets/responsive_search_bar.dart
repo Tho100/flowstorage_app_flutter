@@ -3,20 +3,31 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class ResponsiveSearchBar {
+class ResponsiveSearchBar extends StatelessWidget {
+
+  final TextEditingController controller;
+  final ValueNotifier visibility;
+  final FocusNode focusNode;
+  final String hintText;
+  final VoidCallback filterTypeOnPressed;
+  final Function(String) onChanged;
+
+  ResponsiveSearchBar({
+    required this.controller,
+    required this.visibility,
+    required this.focusNode,
+    required this.hintText,
+    required this.filterTypeOnPressed,
+    required this.onChanged,
+    Key? key
+  }) : super(key: key);
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Widget buildSearchBar({
-    required TextEditingController controller,
-    required ValueNotifier visibleNotifier,
-    required FocusNode focusNode,
-    required String hintText,
-    required Function(String) onChanged,
-    required VoidCallback filterTypeOnPressed
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: visibleNotifier,
+      valueListenable: visibility,
       builder: (context, value, child) {
         return Visibility(
           visible: value,

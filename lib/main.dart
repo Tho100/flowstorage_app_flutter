@@ -23,6 +23,7 @@ import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/upgrade_dialog.dart';
+import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
@@ -42,7 +43,9 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_filter.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_selected_items.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_shared.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_sorting.dart';
+import 'package:flowstorage_fsc/widgets/empty_body.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
+import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
 import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
@@ -94,6 +97,8 @@ import 'splash_screen.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void initializeLocators() {
   final locator = GetIt.instance;
   locator.registerLazySingleton<UserDataProvider>(() => UserDataProvider());
@@ -128,6 +133,7 @@ class MainRun extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         scaffoldBackgroundColor: ThemeColor.darkBlack,
         textTheme: const TextTheme(
@@ -173,6 +179,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   final retrieveData = RetrieveData();
   final insertData = InsertData();
   final dataCaller = DataCaller();
+  final updateListView = UpdateListView();
 
   final crud = Crud();
   final logger = Logger();
@@ -221,83 +228,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Timer? debounceSearchingTimer;
 
-  Future<void> _insertUserFile({
-    required String table,
-    required String filePath,
-    required dynamic fileValue,
-    dynamic vidThumbnail,
-  }) async {
-
-    List<Future<void>> isolatedFileFutures = [];
-
-    isolatedFileFutures.add(insertData.insertValueParams(
-      tableName: table,
-      filePath: filePath,
-      userName: userData.username,
-      fileVal: fileValue,
-      vidThumb: vidThumbnail,
-    ));
-
-    await Future.wait(isolatedFileFutures);
-  }
-
-
-  Future<void> _processUploadListView({
-    required String filePathVal,
-    required String selectedFileName,
-    required String tableName,
-    required String fileBase64Encoded,
-    File? newFileToDisplay,
-    dynamic thumbnailBytes,
-  }) async {
-
-    final List<Uint8List> newImageByteValues = [];
-    final List<Uint8List> newFilteredSearchedBytes = [];
-
-    final isHomeImageOrPsImage = tableName == GlobalsTable.homeImage || tableName == GlobalsTable.psImage;
-    final fileToDisplay = newFileToDisplay;
-
-    if (isHomeImageOrPsImage) {
-      newImageByteValues.add(File(filePathVal).readAsBytesSync());
-      newFilteredSearchedBytes.add(File(filePathVal).readAsBytesSync());
-    } else {
-      newImageByteValues.add(fileToDisplay!.readAsBytesSync());
-      newFilteredSearchedBytes.add(fileToDisplay.readAsBytesSync());
-    }
-
-    final verifyTableName = tempData.fileOrigin == "dirFiles" ? GlobalsTable.directoryUploadTable : tableName;
-    if (tempData.fileOrigin != "offlineFiles") {
-      await _insertUserFile(table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
-    } else {
-      final fileByteData = base64.decode(fileBase64Encoded);
-      await OfflineMode().processSaveOfflineFile(fileName: selectedFileName, fileData: fileByteData, context: context);
-    }
-
-    final homeImageData = storageData.homeImageBytesList;
-    final homeThumbnailData = storageData.homeThumbnailBytesList;
-
-    if (verifyTableName == GlobalsTable.homeImage) {
-      homeImageData.addAll(newFilteredSearchedBytes);
-      
-    } else if (verifyTableName == GlobalsTable.homeVideo) {
-      homeThumbnailData.add(thumbnailBytes);
-
-    } else if (verifyTableName == GlobalsTable.psImage) {
-      psStorageData.psImageBytesList.addAll(newFilteredSearchedBytes);
-      psStorageData.myPsImageBytesList.addAll(newFilteredSearchedBytes);
-
-    } else if (verifyTableName == GlobalsTable.psVideo) {
-      psStorageData.psThumbnailBytesList.add(thumbnailBytes);
-      psStorageData.myPsThumbnailBytesList.add(thumbnailBytes);
-
-    }
-
-    setState(() {});
-
-    storageData.imageBytesList.addAll(newImageByteValues);
-    storageData.imageBytesFilteredList.addAll(newFilteredSearchedBytes);
-
-  }
 
   void _openPsCommentDialog({
     required String filePathVal,
@@ -334,14 +264,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
 
-        await _processUploadListView(filePathVal: filePathVal, selectedFileName: fileName,tableName: tableName, fileBase64Encoded: base64Encoded, newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail);
+        await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: fileName,tableName: tableName, fileBase64Encoded: base64Encoded, newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail);
 
         psStorageData.psTagsList.add(psUploadData.psTagValue);
         psStorageData.psUploaderList.add(userData.username);
 
         scaffoldMessenger.hideCurrentSnackBar();
 
-        _addItemToListView(fileName: fileName);
+        UpdateListView().addItemToListView(fileName: fileName);
         _scrollEndListView();
 
         SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added");
@@ -415,7 +345,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           if (newFolderName.isNotEmpty) {
             await _renameFolder(folderName, newFolderName);
           } else {
-            CustomAlertDialog.alertDialog('Folder name cannot be empty.', context);
+            CustomAlertDialog.alertDialog('Folder name cannot be empty.');
           }
         }
 
@@ -466,13 +396,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       }
     );
-  }
-
-  void _addItemToListView({required String fileName}) {
-    storageData.fileDateFilteredList.add("Just now");
-    storageData.fileDateList.add("Just now");
-    storageData.fileNamesList.add(fileName);
-    storageData.fileNamesFilteredList.add(fileName);
   }
 
   String _getCurrentPageName() {
@@ -654,10 +577,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       loadingDialog.stopLoading();
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to save files.",context);
+      SnakeAlert.errorSnake("Failed to save files.");
     }
 
   }
@@ -698,12 +621,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final countSelectedItems = checkedList.where((item) => item == true).length;
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "$countSelectedItems Item(s) now available offline.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "$countSelectedItems Item(s) now available offline.",icon: Icons.check);
 
       _clearSelectAll();
 
     } catch (err) {
-      SnakeAlert.errorSnake("An error occurred.",context);
+      SnakeAlert.errorSnake("An error occurred.");
     }
   }
 
@@ -867,23 +790,25 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         _openPsCommentDialog(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
         return;
       } else {
-        await _processUploadListView(filePathVal: file.path,selectedFileName: "$generateFileName.pdf",tableName: "file_info_pdf", fileBase64Encoded: toBase64Encoded,newFileToDisplay: newFileToDisplay);
+        await UpdateListView().processUpdateListView(filePathVal: file.path,selectedFileName: "$generateFileName.pdf",tableName: "file_info_pdf", fileBase64Encoded: toBase64Encoded,newFileToDisplay: newFileToDisplay);
       }
 
-      _addItemToListView(fileName: "$generateFileName.pdf");
+      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
 
       await file.delete();
 
       await NotificationApi.stopNotification(0);
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
 
       await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
+      _itemSearchingImplementation('');
+
     } catch (err, st) {
       logger.e('Exception from _initializeCameraScanner {main}',err, st);
-      SnakeAlert.errorSnake("Failed to start scanner.",context);
+      SnakeAlert.errorSnake("Failed to start scanner.");
     }
   }
 
@@ -961,11 +886,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       await _deleteAllSelectedItems(count: count);
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check, context: context);
+      SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from _processDeletingAllItems {main}',err,st);
-      SnakeAlert.errorSnake("An error occurred.", context);
+      SnakeAlert.errorSnake("An error occurred.");
     } 
   }
 
@@ -1139,10 +1064,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       if(!mounted) return;
       Navigator.pop(context);
-      SnakeAlert.okSnake(message: "$folderName Folder has been deleted.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "$folderName Folder has been deleted.",icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to delete this folder.",context);
+      SnakeAlert.errorSnake("Failed to delete this folder.");
     }
 
   }
@@ -1160,10 +1085,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`", context: context);
+      SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to rename this folder.", context);
+      SnakeAlert.errorSnake("Failed to rename this folder.");
     }
 
   }
@@ -1317,7 +1242,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     if(storageData.fileNamesList.isEmpty) {
       if(!mounted) return;
-      _buildEmptyBody(context);
+      _buildEmptyBody();
     }
 
   }
@@ -1339,14 +1264,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       storageData.fileNamesFilteredList.add(directoryName);
       storageData.fileNamesList.add(directoryName);
 
-      setState(() {});
-
-      if (!mounted) return;
-      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check, context: context);
+      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from _buildDirectory {main}',err,st);
-      CustomAlertDialog.alertDialog('Failed to create directory.', context);
+      CustomAlertDialog.alertDialog('Failed to create directory.');
     }
   }
   
@@ -1359,11 +1281,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       storageData.directoryImageBytesList.clear();
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.",context: context);
+      SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {
       logger.e('Exception from _deletionDirectory {main}',err,st);
-      SnakeAlert.errorSnake("Failed to delete $directoryName",context);
+      SnakeAlert.errorSnake("Failed to delete $directoryName");
     }
 
   }
@@ -1416,8 +1338,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         final fileExtension = imageName.split('.').last;
 
         if(!(Globals.imageType.contains(fileExtension))) {
-          if(!mounted) return;
-          CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.",context);
+          CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
           return;
         }
 
@@ -1426,8 +1347,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         final imageBase64Encoded = base64.encode(bytes); 
 
         if(storageData.fileNamesList.contains(imageName)) {
-          if(!mounted) return;
-          CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.",context);
+          CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
           return;
         }
 
@@ -1448,7 +1368,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         } else {
 
-          await _processUploadListView(
+          await UpdateListView().processUpdateListView(
             filePathVal: imagePath, 
             selectedFileName: imageName, 
             tableName: GlobalsTable.homeImage, 
@@ -1457,16 +1377,18 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           
         }
 
-        _addItemToListView(fileName: imageName);
+        UpdateListView().addItemToListView(fileName: imageName);
 
         await File(imagePath).delete();
 
       }
       
       await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
-      
+
+      _itemSearchingImplementation('');
+
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to start the camera.",context);
+      SnakeAlert.errorSnake("Failed to start the camera.");
     }
 
   }
@@ -1482,7 +1404,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     final tableName = Globals.fileTypesToTableNames[fileType]!;
 
     if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
-      CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.", context);
+      CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.");
       return;
     } 
 
@@ -1498,7 +1420,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     }
     
     if(!mounted) return;
-    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData, context: context);
+    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
 
     singleLoading.stopLoading();
     _clearSelectAll();
@@ -1545,10 +1467,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       loadingDialog.stopLoading();
 
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}",context);
+      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
     }
 
   }
@@ -1600,12 +1522,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
 
         if(!mounted) return;
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.",context: context);
+        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
       }
 
     } catch (err, st) {
-      logger.e('Exception from _renameFile {main}',err,st);
-      SnakeAlert.errorSnake("Failed to rename this file.",context);
+      logger.e('Exception from _renameFile {main}', err, st);
+      SnakeAlert.errorSnake("Failed to rename this file.");
     }
   }
 
@@ -1631,7 +1553,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final newRenameValue = "$newItemValue.${fileName.split('.').last}";
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
-        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.", context);
+        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
       } else {
         await _renameFile(fileName, newRenameValue);
       }
@@ -1649,7 +1571,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     await RenameDirectory.renameDirectory(oldDirName,newDirName);
 
     if(!mounted) return;
-    SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.",context: context);
+    SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
   }
 
   Future<void> _deletionFile(String username, String fileName, String tableName) async {
@@ -1662,14 +1584,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         await Delete().deletionParams(username: username, fileName: encryptVals, tableName: tableName);
 
         if(!mounted) return;
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted",context: context);
+        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       } else {
 
         await OfflineMode().deleteFile(fileName);
 
         if(!mounted) return;
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted",context: context);
+        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       }
 
@@ -1677,7 +1599,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } catch (err, st) {
       logger.e('Exception from _deletionFile {main}',err,st);
-      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}",context);
+      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
     }
 
   }
@@ -1737,13 +1659,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         if(!mounted) return;
 
         if (!Globals.supportedFileTypes.contains(fileExtension)) {
-          CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.",context);
+          CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
           await NotificationApi.stopNotification(0);
           continue;
         }
 
         if (storageData.fileNamesList.contains(filesName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.",context);
+          CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.");
           await NotificationApi.stopNotification(0);
           continue;
         } 
@@ -1773,7 +1695,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             return;
           }
 
-          await _processUploadListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+          await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
 
         } else if (Globals.videoType.contains(fileExtension)) {
 
@@ -1807,7 +1729,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             return;
           } 
 
-          await _processUploadListView(
+          await UpdateListView().processUpdateListView(
             filePathVal: pathToString, 
             selectedFileName: filesName, 
             tableName: GlobalsTable.homeVideo, 
@@ -1820,7 +1742,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         }
 
-        _addItemToListView(fileName: filesName);
+        UpdateListView().addItemToListView(fileName: filesName);
 
         scaffoldMessenger.hideCurrentSnackBar();
 
@@ -1842,9 +1764,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       }
 
+      _itemSearchingImplementation('');
+
     } catch (err, st) {
       logger.e('Exception from _openGalleryImage {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.",context);
+      SnakeAlert.errorSnake("Upload failed.");
     }
   }
 
@@ -1908,13 +1832,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           if(!mounted) return;
 
           if (!Globals.supportedFileTypes.contains(fileExtension)) {
-            CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.",context);
+            CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
             await NotificationApi.stopNotification(0);
             continue;
           }
 
           if (storageData.fileNamesList.contains(selectedFileName)) {
-            CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.",context);
+            CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
             await NotificationApi.stopNotification(0);
             continue;
           }
@@ -1945,7 +1869,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               return;
             }
 
-            await _processUploadListView(filePathVal: filePathVal, selectedFileName: selectedFileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+            await UpdateListView().processUpdateListView(
+              filePathVal: filePathVal, 
+              selectedFileName: selectedFileName, 
+              tableName: GlobalsTable.homeImage, 
+              fileBase64Encoded: compressedImageBase64Encoded
+            );
 
           } else if (Globals.videoType.contains(fileExtension)) {
 
@@ -1983,7 +1912,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
             }
 
-            await _processUploadListView(
+            await UpdateListView().processUpdateListView(
               filePathVal: filePathVal, selectedFileName: selectedFileName, 
               tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
               newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
@@ -2001,10 +1930,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               return;
             }
 
-            await _processUploadListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+            await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
           }
 
-          _addItemToListView(fileName: selectedFileName);
+          UpdateListView().addItemToListView(fileName: selectedFileName);
 
           scaffoldMessenger.hideCurrentSnackBar();
 
@@ -2025,10 +1954,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles) : null;
 
+      _itemSearchingImplementation('');
+
     } catch (err, st) {
       logger.e('Exception from _openDialogFile {main}',err,st);
-      if(!mounted) return;
-      SnakeAlert.errorSnake("Upload failed.",context);
+      SnakeAlert.errorSnake("Upload failed.");
     }
   }
 
@@ -2067,8 +1997,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final folderName = path.basename(result);
 
       if (storageData.foldersNameList.contains(folderName)) {
-        if(!mounted) return;
-        CustomFormDialog.startDialog("Upload Failed", "$folderName already exists.",context);
+        CustomFormDialog.startDialog("Upload Failed", "$folderName already exists.");
         return;
       }
 
@@ -2101,7 +2030,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } catch (err, st) {
       logger.e('Exception from _openDialogFolder {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.",context);
+      SnakeAlert.errorSnake("Upload failed.");
     }
   }
 
@@ -2118,7 +2047,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     final files = Directory(folderPath).listSync().whereType<File>().toList();
 
     if(files.length == AccountPlan.mapFilesUpload[userData.accountType]) {
-      CustomFormDialog.startDialog("Couldn't upload $folderName", "It looks like the number of files in this folder exceeded the number of file you can upload. Please upgrade your account plan.", context);
+      CustomFormDialog.startDialog("Couldn't upload $folderName", "It looks like the number of files in this folder exceeded the number of file you can upload. Please upgrade your account plan.");
       return;
     }
 
@@ -2592,9 +2521,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   Future _buildFoldersDialog() async {
-
-    final folderDialog = FolderDialog();
-    folderDialog.buildFolderDialog(
+    return FolderDialog().buildFolderDialog(
       folderOnPressed: (int index) async {
         
         final loadingDialog = MultipleTextLoading();
@@ -2619,229 +2546,76 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   Widget _buildNavigationButtons() {
-    return Visibility(
-      visible: !togglePhotosPressed,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+    return NavigationButtons(
+      isVisible: togglePhotosPressed, 
+      isCreateDirectoryVisible: navDirectoryButtonVisible, 
+      isStaggeredListViewSelected: staggeredListViewSelected, 
+      ascendingDescendingCaret: ascendingDescendingIconNotifier, 
+      sortingText: sortingText, 
+      sharedOnPressed: () { 
+        _callBottomTrailingShared(); 
+      }, 
+      
+      scannerOnPressed: () async {
+        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
+          await _initializeCameraScanner();
+        } else {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
+            context: context
+          );
+        }
+      }, 
 
-          tempData.fileOrigin == "psFiles" 
-          ? const SizedBox(height: 0)
-          : const SizedBox(height: 10),
-    
-          if(tempData.fileOrigin != "psFiles") ... [
-            Row(
-            
-              children: [
-                
-                const SizedBox(width: 16),
-          
-                ElevatedButton(
-                  onPressed: () {
-                    _callBottomTrailingShared();
-                  },
-                  style: GlobalsStyle.btnNavigationBarStyle,
-                  child: const Row(
-                    children: [
-                      Icon(Icons.share, color: Colors.white),
-                      Text(
-                        '  Shared',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-          
-                const SizedBox(width: 8),
-          
-                ElevatedButton(
-                  onPressed: () async {
-                    if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-                      await _initializeCameraScanner();
-                    } else {
-                      UpgradeDialog.buildUpgradeDialog(
-                        message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-                        context: context
-                      );
-                    }
-                  },
-                  style: GlobalsStyle.btnNavigationBarStyle,
-                  child: const Row(
-                    children: [
-                      Icon(Icons.center_focus_strong_rounded, color: Colors.white),
-                      Text(
-                        '  Scan',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-          
-                const SizedBox(width: 8),
-          
-                ValueListenableBuilder<bool>(
-                  valueListenable: navDirectoryButtonVisible,
-                  builder: (context, value, child) {
-                    return Visibility(
-                      visible: value,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
-                          if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-                            if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
-                              _openCreateDirectoryDialog();
-                            } else {
-                              UpgradeDialog.buildUpgradeDialog(
-                                message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
-                                context: context
-                              );
-                            }
-                          } else {
-                            UpgradeDialog.buildUpgradeDialog(
-                              message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-                              context: context
-                            );
-                          }
-                        },
-                        style: GlobalsStyle.btnNavigationBarStyle,
-                        child: const Row(
-                          children: [
-                            Icon(Icons.add_box, color: Colors.white),
-                            Text(
-                              '  Directory',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-          
-              ],
-            ),
-          ],
-    
-          tempData.fileOrigin == "psFiles" 
-          ? const SizedBox(height: 0)
-          : const SizedBox(height: 8),
-    
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _callBottomTrailingSorting();
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: ThemeColor.darkBlack,
-                ),
-                child: ValueListenableBuilder<String>(
-                  valueListenable: sortingText,
-                  builder: (context, value, child) {
-                    return Row(
-                      children: [
-                        Text(
-                          '  $value',
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        ValueListenableBuilder(
-                          valueListenable: ascendingDescendingIconNotifier, 
-                          builder: (context, value, child) {
-                            return Icon(value, color: Colors.white);
-                          }
-                        ),
-                      ],
-                    );
-                  }
-                ),
-              ),
-    
-              const Spacer(),
-    
-              if(tempData.fileOrigin == "psFiles")
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    final bottomTrailingFilter = BottomTrailingFilter();
-                    bottomTrailingFilter.buildFilterTypeAll(
-                      filterTypePublicStorage: _filterTypePublicStorage, 
-                      filterTypeNormal: _itemSearchingImplementation, 
-                      context: context
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    minimumSize: Size.zero,
-                    padding: const EdgeInsets.only(left: 6, right: 25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
-                    ),
-                  ).copyWith(
-                    fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
-                  ),
-                  child: const Icon(Icons.filter_list_outlined, size: 27),
-                ),
-              ),
-    
-              if(tempData.fileOrigin != "psFiles")
-              ElevatedButton(
-                onPressed: () {
-                  staggeredListViewSelected.value = !staggeredListViewSelected.value;
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: ThemeColor.darkBlack,
-                ),
-                child: Row(
-                  children: [
-                    ValueListenableBuilder<bool>(
-                      valueListenable: staggeredListViewSelected,
-                      builder: (context, value, child) {
-                        return value == false ? const Icon(Icons.grid_view,size: 23) : const Icon(Icons.format_list_bulleted_outlined,size: 25);
-                      }
-                    ),
-                  ],
-                ),
-              ),
-            ]
-          ),
-    
-          const Divider(color: ThemeColor.thirdWhite, height: 0),
-          
-        ],
-      ),
+      createDirectoryOnPressed: () async {
+        final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
+        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
+          if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
+            _openCreateDirectoryDialog();
+          } else {
+            UpgradeDialog.buildUpgradeDialog(
+              message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
+              context: context
+            );
+          }
+        } else {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
+            context: context
+          );
+        }
+      }, 
+
+      sortingOnPressed: () { _callBottomTrailingSorting(); },
+
+      filterTypePsOnPressed: () {
+        final bottomTrailingFilter = BottomTrailingFilter();
+        bottomTrailingFilter.buildFilterTypeAll(
+          filterTypePublicStorage: _filterTypePublicStorage, 
+          filterTypeNormal: _itemSearchingImplementation, 
+          context: context
+        );
+      }
+
     );
   }
 
   Widget _buildSearchBar() {
-    return ResponsiveSearchBar().buildSearchBar(
+    return ResponsiveSearchBar(
       controller: searchBarController,
-      visibleNotifier: searchBarVisibileNotifier, 
+      visibility: searchBarVisibileNotifier, 
       focusNode: searchBarFocusNode, 
       hintText: tempData.fileOrigin != "psFiles" 
         ? searchHintText.value 
         : "Search in Public Storage", 
+
       onChanged: (String value) {
         if (value.isEmpty) {
           searchBarFocusNode.unfocus();
         }
         _itemSearchingImplementation(value);
       }, 
+
       filterTypeOnPressed: () {
         final bottomTrailingFilter = BottomTrailingFilter();
         bottomTrailingFilter.buildFilterTypeAll(
@@ -2958,38 +2732,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  Widget _buildEmptyBody(BuildContext context) {
-    return RefreshIndicator(
-      color: ThemeColor.darkPurple,
-      onRefresh: () async {
+  Widget _buildEmptyBody() {
+    return EmptyBody(
+      refreshList: () async {
         await _refreshListView();
-      },
-      child: SizedBox(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            
-            Visibility(
-              visible: storageData.fileNamesList.isEmpty,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height-375,
-                child: const Center(
-                  child: Text(
-                    "It's empty here...",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(248, 94, 93, 93),
-                      fontSize: 26,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    });
   }
 
   Future<void> _navigateToPreviewFile(int index) async {
@@ -3049,26 +2796,19 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       );
 
       if(result.type != ResultType.done) {
-        
-        if(!mounted) return;
         CustomFormDialog.startDialog(
           "Couldn't open ${tempData.selectedFileName}",
-          "No default app to open this file found.",
-          context,
+          "No default app to open this file found."
         );
-
       }
 
       return;
 
     } else {
-
       CustomFormDialog.startDialog(
         "Couldn't open ${tempData.selectedFileName}",
-        "It looks like you're trying to open a file which is not supported by Flowstorage",
-        context,
+        "It looks like you're trying to open a file which is not supported by Flowstorage"
       );
-
     }
   }
   
@@ -3297,6 +3037,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         ),
       ),
     );
+     
   }
 
   Widget _buildPsStaggeredListView(Uint8List imageBytes, int index, String uploaderName) {
@@ -3336,7 +3077,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                   ),
                 ),
               ),
-
+  
               IconButton(
                 onPressed: () {
                   _callBottomTrailling(index);
@@ -3576,19 +3317,23 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     ? const EdgeInsets.only(top: 2.0,left: 0.0, right: 0.0, bottom: 8.0) 
     : const EdgeInsets.only(top: 12.0,left: 8.0, right: 8.0, bottom: 8.0);
 
-    return Padding(
-      padding: paddingValue,
-      child: StaggeredGridView.countBuilder(
-        controller: scrollListViewController,
-        shrinkWrap: true,
-        itemCount: storageData.fileNamesFilteredList.length,
-        itemBuilder: (BuildContext context, int index) => _buildStaggeredItems(index),
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(fitSize),
-        crossAxisCount: togglePhotosPressed ? 2 : 4,
-        mainAxisSpacing: togglePhotosPressed ? 8 : 6.5,
-        crossAxisSpacing: togglePhotosPressed ? 8 : 6.5,
-      
-      ),
+    return Consumer<StorageDataProvider>(
+      builder: (context, storageData, child) {
+        return Padding(
+          padding: paddingValue,
+          child: StaggeredGridView.countBuilder(
+            controller: scrollListViewController,
+            shrinkWrap: true,
+            itemCount: storageData.fileNamesFilteredList.length,
+            itemBuilder: (BuildContext context, int index) => _buildStaggeredItems(index),
+            staggeredTileBuilder: (int index) => StaggeredTile.fit(fitSize),
+            crossAxisCount: togglePhotosPressed ? 2 : 4,
+            mainAxisSpacing: togglePhotosPressed ? 8 : 6.5,
+            crossAxisSpacing: togglePhotosPressed ? 8 : 6.5,
+          
+          ),
+        );
+      }
     );
   }
 
@@ -3632,7 +3377,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   Widget _buildResponsiveListView() {
-    return ResponsiveListView().buildListView(
+    return ResponsiveListView(
       itemOnLongPress: (int index) {
         _callBottomTrailling(index);
       },
@@ -3779,15 +3524,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         key: sidebarMenuScaffoldKey,
         backgroundColor: ThemeColor.darkBlack,
         drawer: CustomSideBarMenu(
-          context: context,
           usageProgress: _getUsageProgressBar(),
           offlinePageOnPressed: () async { _callOfflineData(); }
-        ).buildSidebarMenu(),
+        ),
         appBar: _buildCustomAppBar(),
         body: storageData.fileNamesList.isEmpty 
 
         ? Column(
-          children: [_buildSearchBar(),_buildNavigationButtons(),_buildEmptyBody(context)]) 
+          children: [_buildSearchBar(),_buildNavigationButtons(),_buildEmptyBody()]) 
         : Column(
           children: [_buildSearchBar(),_buildNavigationButtons(),_buildHomeBody(context)]),
 

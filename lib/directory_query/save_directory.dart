@@ -100,12 +100,12 @@ class SaveDirectory {
       }
 
       loadingDialog.stopLoading();
-      SnakeAlert.okSnake(message: "${nameList.length} item(s) has been saved.",icon: Icons.check,context: context);
+      SnakeAlert.okSnake(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
 
       await CallNotify().customNotification(title: "Directory Saved", subMesssage: "${nameList.length} File(s) has been downloaded");
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to save the directory.", context);
+      SnakeAlert.errorSnake("Failed to save the directory.");
     }
 
   }

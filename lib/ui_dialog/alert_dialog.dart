@@ -1,11 +1,12 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
 class CustomAlertDialog {
 
-  static Future alertDialog(String messages, BuildContext context) {
+  static Future alertDialog(String messages) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -32,9 +33,9 @@ class CustomAlertDialog {
     );
   }
 
-  static Future alertDialogTitle(String title, String messages, BuildContext context) {
+  static Future alertDialogTitle(String title, String messages) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(

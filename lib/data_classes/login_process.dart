@@ -187,21 +187,21 @@ class SignInUser {
         } else {
           
           if(context.mounted) {
-            CustomAlertDialog.alertDialog("Password or PIN Key is incorrect.", context);
+            CustomAlertDialog.alertDialog("Password or PIN Key is incorrect.");
           }
 
         }
       } else {
 
         if(context.mounted) {
-          CustomAlertDialog.alertDialog("Account not found.", context);
+          CustomAlertDialog.alertDialog("Account not found.");
         }
 
       }
     } catch (err, st) {
 
       if(context.mounted) {
-        CustomAlertDialog.alertDialogTitle("Something is wrong...", "No internet connection.", context);
+        CustomAlertDialog.alertDialogTitle("Something is wrong...", "No internet connection.");
       }
 
       logger.e("Exception from logParams {MYSQL_login}", err, st);

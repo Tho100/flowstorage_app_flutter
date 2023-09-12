@@ -88,11 +88,11 @@ class SplashScreenState extends State<SplashScreen> {
       storageData.fileNamesList.add(directoryName);
 
       if (!mounted) return;
-      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check, context: context);
+      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from _buildDirectory {main}',err,st);
-      CustomAlertDialog.alertDialog('Failed to create directory.', context);
+      CustomAlertDialog.alertDialog('Failed to create directory.');
     }
   }
 

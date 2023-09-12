@@ -188,8 +188,7 @@ class CreateTextPageState extends State<CreateText> {
       final getFileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
 
       if (await _isFileExists(getFileName)) {
-        if (!mounted) return;
-        CustomAlertDialog.alertDialog("File with this name already exists.", context);
+        CustomAlertDialog.alertDialog("File with this name already exists.");
         return;
       }
 
@@ -211,14 +210,13 @@ class CreateTextPageState extends State<CreateText> {
         subMesssage: ShortenText().cutText("$getFileName Has been saved"),
       );
 
-      if (!mounted) return;
-
       SnakeAlert.okSnake(
         message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved.",
         icon: Icons.check,
-        context: context,
       );
 
+      if (!mounted) return;
+      
       Navigator.pop(context);
 
       fileNameController.clear();
@@ -254,7 +252,6 @@ class CreateTextPageState extends State<CreateText> {
       SnakeAlert.okSnake(
         message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved as an offline file.",
         icon: Icons.check,
-        context: context,
       );
 
       fileNameController.clear();
