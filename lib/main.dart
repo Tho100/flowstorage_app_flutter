@@ -43,6 +43,8 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_selected_items.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_shared.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_sorting.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
+import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
+import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
 import 'package:flowstorage_fsc/interact_dialog/folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
@@ -103,6 +105,7 @@ void initializeLocators() {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   initializeLocators();
   runApp(
     MultiProvider(
@@ -2826,89 +2829,25 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   Widget _buildSearchBar() {
-    return ValueListenableBuilder(
-      valueListenable: searchBarVisibileNotifier,
-      builder: (context, value, child) {
-        return Visibility(
-          visible: value,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              searchBarFocusNode.unfocus();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: ThemeColor.mediumGrey,
-              ),
-              height: 50,
-              child: FractionallySizedBox(
-                widthFactor: 0.94, 
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            searchBarFocusNode.unfocus();
-                          }
-                          _itemSearchingImplementation(value);
-                        },
-                        controller: searchBarController,
-                        focusNode: searchBarFocusNode,
-                        style: const TextStyle(
-                          color: Color.fromARGB(230, 255, 255, 255)
-                        ),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(
-                              color: ThemeColor.mediumGrey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: ThemeColor.mediumGrey),
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          hintText: tempData.fileOrigin != "psFiles" 
-                            ? searchHintText.value 
-                            : "Search in Public Storage",
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200,200,200), fontSize: 16),
-                          prefixIcon: const Icon(Icons.search,color: Color.fromARGB(255, 200, 200,200),size: 18),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          final bottomTrailingFilter = BottomTrailingFilter();
-                          bottomTrailingFilter.buildFilterTypeAll(
-                            filterTypePublicStorage: _filterTypePublicStorage, 
-                            filterTypeNormal: _itemSearchingImplementation, 
-                            context: context
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.transparent,
-                          minimumSize: Size.zero,
-                          padding: const EdgeInsets.only(left: 6, right: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)
-                          ),
-                        ).copyWith(
-                          fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
-                        ),
-                        child: const Icon(Icons.filter_list_outlined, size: 25),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+    return ResponsiveSearchBar().buildSearchBar(
+      controller: searchBarController,
+      visibleNotifier: searchBarVisibileNotifier, 
+      focusNode: searchBarFocusNode, 
+      hintText: tempData.fileOrigin != "psFiles" 
+        ? searchHintText.value 
+        : "Search in Public Storage", 
+      onChanged: (String value) {
+        if (value.isEmpty) {
+          searchBarFocusNode.unfocus();
+        }
+        _itemSearchingImplementation(value);
+      }, 
+      filterTypeOnPressed: () {
+        final bottomTrailingFilter = BottomTrailingFilter();
+        bottomTrailingFilter.buildFilterTypeAll(
+          filterTypePublicStorage: _filterTypePublicStorage, 
+          filterTypeNormal: _itemSearchingImplementation, 
+          context: context
         );
       }
     );
@@ -3131,111 +3070,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       );
 
     }
-  }
-
-  Widget _buildListView() {
-
-    const double itemExtentValue = 58.0;
-    const double bottomExtraSpacesHeight = 89.0;
-
-    return RawScrollbar(
-      radius: const Radius.circular(38),
-      thumbColor: ThemeColor.darkWhite,
-      minThumbLength: 2,
-      thickness: 2,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
-        itemExtent: itemExtentValue,
-        itemCount: storageData.fileNamesFilteredList.length,
-        itemBuilder: (BuildContext context, int index) {
-          
-          final originalDateValues = storageData.fileDateFilteredList[index];
-          final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
-
-          final fileTitleSearchedValue = storageData.fileNamesFilteredList[index];
-          final setLeadingImage = 
-          storageData.imageBytesFilteredList.isNotEmpty 
-          ? Image.memory(storageData.imageBytesFilteredList[index]!) 
-          : null;
-    
-          return InkWell(
-            onLongPress: () {
-              _callBottomTrailling(index);
-            },
-            onTap: () async {
-              await _navigateToPreviewFile(index);
-            },
-            child: Ink(
-              color: ThemeColor.darkBlack,
-              child: ListTile(
-                leading: setLeadingImage != null
-                  ? Image(
-                      image: setLeadingImage.image,
-                      fit: BoxFit.cover,
-                      height: 31,
-                      width: 31,
-                    )
-                  : const SizedBox(),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if(tempData.fileOrigin == "offlineFiles")
-                    const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
-
-                    if(tempData.fileOrigin == "offlineFiles")
-                    const SizedBox(width: 8),
-
-                    GestureDetector(
-                      onTap: () {
-                        _callBottomTrailling(index);
-                      },
-                      child: editAllIsPressed
-                        ? _buildCheckboxItem(index)
-                        : const Icon(Icons.more_vert, color: Colors.white),
-                    ),
-                  ],
-                ),
-                title: Text(
-                  fileTitleSearchedValue,
-                  style: const TextStyle(
-                    color: ThemeColor.justWhite,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 16,
-                  ),
-                ),
-                subtitle: RichText(
-                  text: TextSpan(
-                    style: DefaultTextStyle.of(context).style,
-                    children: [
-
-                      TextSpan(
-                        text: tempData.fileOrigin == "psFiles" ? psFilesCategoryTags : storageData.fileDateFilteredList[index],
-                        style: const TextStyle(
-                          color: ThemeColor.secondaryWhite,
-                          fontSize: 12.8,
-                        ),
-                      ),
-
-                      if(tempData.fileOrigin == "psFiles") 
-                      
-                      TextSpan(
-                        text: " ${psStorageData.psTagsList[index]}",
-                        style: TextStyle(
-                          color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.8,
-                        ),
-                    
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
   }
   
   Widget _buildRecentPsFiles(Uint8List imageBytes, int index, String uploader) {
@@ -3790,10 +3624,66 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         child: ValueListenableBuilder<bool>(
           valueListenable: staggeredListViewSelected,
           builder: (context, value, child) {
-            return value == false ? _buildListView() : _buildStaggeredListView();
+            return value == false ? _buildResponsiveListView() : _buildStaggeredListView();
           }
         ),
       ),
+    );
+  }
+
+  Widget _buildResponsiveListView() {
+    return ResponsiveListView().buildListView(
+      itemOnLongPress: (int index) {
+        _callBottomTrailling(index);
+      },
+      itemOnTap: (int index) async {
+        await _navigateToPreviewFile(index);
+      }, 
+      childrens: (int index) {
+        return <Widget>[
+          if(tempData.fileOrigin == "offlineFiles")
+          const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
+
+          if(tempData.fileOrigin == "offlineFiles")
+          const SizedBox(width: 8),
+
+          GestureDetector(
+            onTap: () {
+              _callBottomTrailling(index);
+            },
+            child: editAllIsPressed
+              ? _buildCheckboxItem(index)
+              : const Icon(Icons.more_vert, color: Colors.white),
+          ),
+        ];
+      },
+      inlineSpanWidgets: (int index) {
+
+        final originalDateValues = storageData.fileDateFilteredList[index];
+        final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
+
+        return <InlineSpan>[
+          TextSpan(
+            text: tempData.fileOrigin == "psFiles" ? psFilesCategoryTags : storageData.fileDateFilteredList[index],
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontSize: 12.8,
+            ),
+          ),
+
+          if(tempData.fileOrigin == "psFiles") 
+          
+          TextSpan(
+            text: " ${psStorageData.psTagsList[index]}",
+            style: TextStyle(
+              color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
+              fontWeight: FontWeight.w500,
+              fontSize: 12.8,
+            ),
+        
+          ),
+        ];
+      }
     );
   }
 
