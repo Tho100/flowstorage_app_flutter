@@ -171,7 +171,7 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
               ),
 
-              if(tempData.fileOrigin != "psFiles" && tempData.fileOrigin != "offlineFiles") ... [
+              if(tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) ... [ 
                 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -72,7 +73,7 @@ class BottomTrailing {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("psFiles"),
+              visible: VisibilityChecker.setNotVisible(OriginFile.public),
               child: ElevatedButton(
                 onPressed: onRenamePressed,
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -90,7 +91,7 @@ class BottomTrailing {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("offlineFiles") && fileName.split('.').last != fileName,
+              visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,
               child: ElevatedButton(
                 onPressed: onSharingPressed,
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -107,12 +108,12 @@ class BottomTrailing {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("offlineFiles"),
+              visible: VisibilityChecker.setNotVisible(OriginFile.offline),
               child: const Divider(color: ThemeColor.thirdWhite)
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("offlineFiles") && fileName.split('.').last != fileName,
+              visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,
               child: ElevatedButton(
                 onPressed: onAOPressed,
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -148,7 +149,7 @@ class BottomTrailing {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("psFiles"),
+              visible: VisibilityChecker.setNotVisible(OriginFile.public),
               child: ElevatedButton(
                 onPressed: onDeletePressed,
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,

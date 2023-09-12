@@ -208,8 +208,8 @@ class SplashScreenState extends State<SplashScreen> {
         userData.setEmail(getLocalEmail);
 
         selectedActionNotifier.value == "offline" 
-            ? tempData.setOrigin("offlineFiles") 
-            : tempData.setOrigin("homeFiles");
+            ? tempData.setOrigin(OriginFile.offline) 
+            : tempData.setOrigin(OriginFile.home);
 
         if(isPassCodeExists) {
 

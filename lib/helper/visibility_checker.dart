@@ -5,12 +5,12 @@ class VisibilityChecker {
 
   static final _tempData = GetIt.instance<TempDataProvider>();
 
-  static bool setNotVisibleList(List<String> origin) {
-    return !(origin.contains(_tempData.fileOrigin));
+  static bool setNotVisibleList(List<OriginFile> origin) {
+    return !(origin.contains(_tempData.origin));
   }
 
-  static bool setNotVisible(String origin) {
-    return _tempData.fileOrigin != origin;
+  static bool setNotVisible(OriginFile origin) {
+    return _tempData.origin != origin;
   }
 
 }

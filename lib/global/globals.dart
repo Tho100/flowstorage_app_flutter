@@ -100,15 +100,15 @@ class Globals {
     "exe","xlsx","xls","csv","apk"
   };
 
-  static Map<String,String> get originToName {
+  static Map<OriginFile,String> get originToName {
     return {
-      'homeFiles': 'Home',
-      'folderFiles': _tempData.folderName,
-      'dirFiles': _tempData.directoryName,
-      'sharedToMe': 'Shared to me',
-      'sharedFiles': 'Shared files',
-      'offlineFiles': 'Offline',
-      'psFiles': 'Public Storage'
+      OriginFile.home: 'Home',
+      OriginFile.sharedMe: 'Shared to me',
+      OriginFile.sharedOther: 'Shared files',
+      OriginFile.offline: 'Offline',
+      OriginFile.public: 'Public Storage',
+      OriginFile.folder: _tempData.folderName,
+      OriginFile.directory: _tempData.directoryName
     };
   }
 

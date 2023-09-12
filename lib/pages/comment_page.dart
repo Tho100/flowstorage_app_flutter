@@ -138,14 +138,18 @@ class CommentPageState extends State<CommentPage> {
 
     late final String mainFileComment;
 
-    if(tempData.fileOrigin == "homeFiles") {
+    if(tempData.origin == OriginFile.home) {
       mainFileComment = "(No Comment)";
-    } else if (tempData.fileOrigin == "sharedFiles") {
+
+    } else if (tempData.origin == OriginFile.sharedOther) {
       mainFileComment = await _sharedFileComment();
-    } else if (tempData.fileOrigin == "sharedToMe") {
+
+    } else if (tempData.origin == OriginFile.sharedMe) {
       mainFileComment = await _sharedToMeComment();
-    } else if (tempData.fileOrigin == "psFiles") {
+
+    } else if (tempData.origin == OriginFile.public) {
       mainFileComment = await _psFileComment();
+      
     }
 
     final commentText = TextEditingController(text: mainFileComment);

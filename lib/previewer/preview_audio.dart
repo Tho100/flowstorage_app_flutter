@@ -54,7 +54,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
     try {
       
-      if (tempData.fileOrigin != "offlineFiles") {
+      if (tempData.origin != OriginFile.offline) {
 
         final fileData = await CallPreviewData().callDataAsync(
           tableNamePs: GlobalsTable.psAudio, 

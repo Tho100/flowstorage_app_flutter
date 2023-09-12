@@ -45,11 +45,11 @@ class NavigationButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
 
-          tempData.fileOrigin == "psFiles" 
+          tempData.origin == OriginFile.public 
           ? const SizedBox(height: 0)
           : const SizedBox(height: 10),
     
-          if(tempData.fileOrigin != "psFiles") ... [
+          if(tempData.origin != OriginFile.public) ... [
             Row(
             
               children: [
@@ -123,7 +123,7 @@ class NavigationButtons extends StatelessWidget {
             ),
           ],
     
-          tempData.fileOrigin == "psFiles" 
+          tempData.origin == OriginFile.public
           ? const SizedBox(height: 0)
           : const SizedBox(height: 8),
     
@@ -161,7 +161,7 @@ class NavigationButtons extends StatelessWidget {
     
               const Spacer(),
     
-              if(tempData.fileOrigin == "psFiles")
+              if(tempData.origin == OriginFile.public)
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: ElevatedButton(
@@ -181,7 +181,7 @@ class NavigationButtons extends StatelessWidget {
                 ),
               ),
     
-              if(tempData.fileOrigin != "psFiles")
+              if(tempData.origin != OriginFile.public)
               ElevatedButton(
                 onPressed: () {
                   isStaggeredListViewSelected.value = !isStaggeredListViewSelected.value;

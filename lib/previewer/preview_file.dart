@@ -63,7 +63,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   static final bottomBarVisibleNotifier = ValueNotifier<bool>(true);
 
-  late String originFrom;
+  late OriginFile originFrom;
   late String fileType;
   late String currentTable;
 
@@ -96,7 +96,7 @@ class PreviewFileState extends State<PreviewFile> {
   void initState() {
     super.initState();
     fileType = widget.fileType;
-    originFrom = tempData.fileOrigin;
+    originFrom = tempData.origin;
     appBarTitleNotifier.value = tempData.selectedFileName;
     _initializeTableName();
     _initializeUploaderName();
@@ -113,7 +113,7 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   void _initializeTableName() {
-    currentTable = tempData.fileOrigin != "homeFiles" 
+    currentTable = tempData.origin != OriginFile.home 
     ? Globals.fileTypesToTableNamesPs[fileType]! 
     : Globals.fileTypesToTableNames[fileType]!;
   }
@@ -130,7 +130,7 @@ class PreviewFileState extends State<PreviewFile> {
       _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
     } 
 
-    if (tempData.fileOrigin == "homeFiles") {
+    if (tempData.origin == OriginFile.home) {
       currentTable = Globals.fileTypesToTableNames[fileType]!;
     } else {
       currentTable = Globals.fileTypesToTableNamesPs[fileType]!;
@@ -139,7 +139,7 @@ class PreviewFileState extends State<PreviewFile> {
     fileSizeNotifier.value = "";
     fileResolutionNotifier.value = "";
 
-    if (tempData.fileOrigin == "psFiles") {
+    if (tempData.origin == OriginFile.public) {
       _initializeUploaderName();
     }
   }
@@ -172,7 +172,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     try {   
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
 
         final encryptVals = EncryptionClass().encrypt(fileName);
         await Delete().deletionParams(username: username, fileName: encryptVals, tableName: tableName);
@@ -259,7 +259,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     try {
       
-      tempData.fileOrigin != "offlineFiles" ? await Rename().renameParams(oldFileName, newFileName, tableName) : await OfflineMode().renameFile(oldFileName,newFileName);
+      tempData.origin != OriginFile.offline ? await Rename().renameParams(oldFileName, newFileName, tableName) : await OfflineMode().renameFile(oldFileName,newFileName);
       int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
       int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
@@ -391,7 +391,7 @@ class PreviewFileState extends State<PreviewFile> {
     try {
 
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
 
         await UpdateValues().insertValueParams(
           tableName: currentTable, 
@@ -457,14 +457,14 @@ class PreviewFileState extends State<PreviewFile> {
     try {
 
       final fileType = fileName.split('.').last;
-      final tableName = tempData.fileOrigin != "homeFiles" ? Globals.fileTypesToTableNamesPs[fileType]! : Globals.fileTypesToTableNames[fileType];
+      final tableName = tempData.origin != OriginFile.home ? Globals.fileTypesToTableNamesPs[fileType]! : Globals.fileTypesToTableNames[fileType];
       final loadingDialog = MultipleTextLoading();
       
       loadingDialog.startLoading(title: "Downloading...", subText: fileName, context: context);
 
       late Uint8List fileData;
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
 
         if(Globals.imageType.contains(fileType)) {
           fileData = storageData.imageBytesFilteredList[storageData.fileNamesList.indexOf(fileName)]!;
@@ -519,7 +519,7 @@ class PreviewFileState extends State<PreviewFile> {
               
               final textValue = textController.text;
 
-              if(textValue.isNotEmpty && currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText && tempData.fileOrigin == "offlineFiles") {
+              if(textValue.isNotEmpty && currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText && tempData.origin == OriginFile.offline) {
 
                 await _updateTextChanges(textValue,context);
                 return;
@@ -542,8 +542,8 @@ class PreviewFileState extends State<PreviewFile> {
   
   void _initializeUploaderName() async {
     
-    const localOriginFrom = {"homeFiles","folderFiles","dirFiles"};
-    const sharingOriginFrom = {"sharedFiles","sharedToMe"};
+    const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
+    const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
 
     if(localOriginFrom.contains(originFrom)) {
       
@@ -641,9 +641,8 @@ class PreviewFileState extends State<PreviewFile> {
   
               const Spacer(),
   
-              currentTable == 
-              GlobalsTable.homeText 
-              || currentTable == GlobalsTable.psText && tempData.fileOrigin == "offlineFiles" ? _buildBottomButtons(const Icon(Icons.save, size: 22), ThemeColor.darkPurple, 60, 45,"save",context) : const Text(''),
+              currentTable == GlobalsTable.homeText 
+              || currentTable == GlobalsTable.psText && tempData.origin == OriginFile.offline ? _buildBottomButtons(const Icon(Icons.save, size: 22), ThemeColor.darkPurple, 60, 45,"save",context) : const Text(''),
   
               _buildBottomButtons(const Icon(Icons.download, size: 22), ThemeColor.darkPurple, 60, 45,"download",context),
   

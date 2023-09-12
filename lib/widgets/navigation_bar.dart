@@ -69,10 +69,10 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
             iconSize: 25.2,
             items: [
               BottomNavigationBarItem(
-                icon: tempData.fileOrigin == "homeFiles" 
+                icon: tempData.origin == OriginFile.home 
                 ? const Icon(Icons.home) 
                 : const Icon(Icons.home_outlined),
-                activeIcon: tempData.fileOrigin == "homeFiles" 
+                activeIcon: tempData.origin == OriginFile.home 
                 ? const Icon(Icons.home) 
                 : const Icon(Icons.home_outlined),
                 label: "Home",
@@ -94,7 +94,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                   height: 26,
                   child: Image.asset('assets/images/public_icon.png'),
                 ),
-                activeIcon: tempData.fileOrigin == "psFiles" 
+                activeIcon: tempData.origin == OriginFile.public
                 ? SizedBox(
                   width: 26,
                   height: 26,
@@ -108,7 +108,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                 label: "Public",
               ),
               BottomNavigationBarItem(
-                icon: tempData.fileOrigin == "folderFiles" 
+                icon: tempData.origin == OriginFile.folder
                 ? const Icon(Icons.folder) 
                 : const Icon(Icons.folder_outlined),
                 label: "Folders",

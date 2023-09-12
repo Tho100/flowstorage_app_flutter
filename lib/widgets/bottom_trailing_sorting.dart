@@ -41,7 +41,7 @@ class BottomTrailingSorting {
               ],
             ),
             
-            if(tempData.fileOrigin != "offlineFiles")
+            if(tempData.origin != OriginFile.offline)
             ElevatedButton(
               onPressed: sortUploadDateOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,

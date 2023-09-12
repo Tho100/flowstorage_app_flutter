@@ -61,7 +61,7 @@ class BottomTrailingSelectedItems {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible("offlineFiles"),
+              visible: VisibilityChecker.setNotVisible(OriginFile.offline),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);

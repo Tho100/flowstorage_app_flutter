@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,7 @@ class BottomTrailingAddItem {
             ),
     
             Visibility(
-              visible: VisibilityChecker.setNotVisibleList(["offlineFiles","psFiles"]),
+              visible: VisibilityChecker.setNotVisibleList([OriginFile.offline, OriginFile.public]),
               child: ElevatedButton(
                 onPressed: galleryOnPressed,
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -75,7 +76,7 @@ class BottomTrailingAddItem {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisibleList(["offlineFiles","psFiles","dirFiles","folderFiles"]),
+              visible: VisibilityChecker.setNotVisibleList([OriginFile.offline , OriginFile.public, OriginFile.directory, OriginFile.folder]),
               child: ElevatedButton(
               onPressed: folderOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -109,7 +110,7 @@ class BottomTrailingAddItem {
           ),
 
           Visibility(
-            visible: VisibilityChecker.setNotVisibleList(["psFiles","offlineFiles"]),
+            visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.offline]),
             child: ElevatedButton(
               onPressed: scannerOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -129,7 +130,7 @@ class BottomTrailingAddItem {
           const Divider(color: ThemeColor.thirdWhite),
 
           Visibility(
-            visible: VisibilityChecker.setNotVisible("psFiles"),
+            visible: VisibilityChecker.setNotVisible(OriginFile.public),
             child: ElevatedButton(
               onPressed: textOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -147,7 +148,7 @@ class BottomTrailingAddItem {
             ),
         
             Visibility(
-              visible: VisibilityChecker.setNotVisibleList(["psFiles","dirFiles","folderFiles","offlineFiles"]),
+              visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.directory, OriginFile.folder, OriginFile.offline]),
               child: ElevatedButton(
               onPressed: directoryOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,

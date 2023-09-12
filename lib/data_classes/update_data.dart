@@ -26,7 +26,7 @@ class UpdateValues  {
     encryptedFilePath = EncryptionClass().encrypt(filePath);
     encryptedFileVal = EncryptionClass().encrypt(newValue);
 
-    if (tempData.fileOrigin == "homeFiles") {
+    if (tempData.origin == OriginFile.home) {
 
       if (tableName == "information") {
 
@@ -53,7 +53,7 @@ class UpdateValues  {
         await conn.execute(query, params);
       }
       
-    } else if (tempData.fileOrigin == "dirFiles") {
+    } else if (tempData.origin == OriginFile.directory) {
 
       final encryptedDirectoryName = EncryptionClass().encrypt(tempData.directoryName);
 
@@ -62,7 +62,7 @@ class UpdateValues  {
 
       await conn.execute(query, params);
 
-    } else if (tempData.fileOrigin == "folderFiles") {
+    } else if (tempData.origin == OriginFile.folder) {
 
       final encryptedFolderName = EncryptionClass().encrypt(tempData.folderName);
 

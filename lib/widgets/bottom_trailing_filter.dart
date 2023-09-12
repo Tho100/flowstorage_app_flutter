@@ -18,7 +18,7 @@ class BottomTrailingFilter {
   ) {
     return ElevatedButton.icon(
       onPressed: () {
-        tempData.fileOrigin == "psFiles" 
+        tempData.origin == OriginFile.public 
         ? filterTypePublicStorage(filterType) 
         : filterTypeNormal(filterType);
         Navigator.pop(context);

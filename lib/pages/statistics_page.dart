@@ -134,7 +134,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Future<int> _countUpload(String tableName) async {
 
-    final dataOrigin = tempData.fileOrigin != "homeFiles"
+    final dataOrigin = tempData.origin != OriginFile.home
     ? storageData.statisticsFilesName
     : storageData.fileNamesFilteredList;
 

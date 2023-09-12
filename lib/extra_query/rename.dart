@@ -19,7 +19,7 @@ class Rename {
     late final String query;
     late final Map<String,String> params;
     
-    if(tempData.fileOrigin == "homeFiles") {
+    if(tempData.origin == OriginFile.home) {
 
       String updateFileNameQuery = "UPDATE $tableName SET CUST_FILE_PATH = :newName WHERE CUST_FILE_PATH = :oldName AND CUST_USERNAME = :username";
       query = updateFileNameQuery;
@@ -29,7 +29,7 @@ class Rename {
         'username': userData.username,
       };
 
-    } else if (tempData.fileOrigin == "sharedFiles") {
+    } else if (tempData.origin == OriginFile.sharedOther) {
 
       const updateFileNameQuery = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_FROM = :username";
       query = updateFileNameQuery;
@@ -39,7 +39,7 @@ class Rename {
         'oldname': encryption.encrypt(oldFileName),
       };
 
-    } else if (tempData.fileOrigin == "sharedToMe") {
+    } else if (tempData.origin == OriginFile.sharedMe) {
 
       const updateFileNameQuery = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_TO = :username";
       query = updateFileNameQuery;
@@ -49,7 +49,7 @@ class Rename {
         'oldname': encryption.encrypt(oldFileName),
       };
 
-    } else if (tempData.fileOrigin == "folderFiles") {
+    } else if (tempData.origin == OriginFile.folder) {
 
       const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
       query = updateFileNameQuery;
@@ -60,7 +60,7 @@ class Rename {
         'foldtitle': encryption.encrypt(tempData.folderName),
       };
 
-    } else if (tempData.fileOrigin == "dirFiles") {
+    } else if (tempData.origin == OriginFile.directory) {
 
       const updateFileNameQuery = "UPDATE upload_info_directory SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND DIR_NAME = :dirname";
       query = updateFileNameQuery;

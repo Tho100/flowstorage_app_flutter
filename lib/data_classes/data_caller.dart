@@ -44,7 +44,7 @@ class DataCaller {
 
   Future<void> offlineData() async {
 
-    tempData.setOrigin("offlineFiles");
+    tempData.setOrigin(OriginFile.offline);
     tempData.setAppBarTitle("Offline");
 
     final getAssets = GetAssets();
@@ -219,7 +219,7 @@ class DataCaller {
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
-    tempData.setOrigin("psFiles");
+    tempData.setOrigin(OriginFile.public);
 
     justLoading.stopLoading();
     
@@ -256,7 +256,7 @@ class DataCaller {
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
 
-    tempData.setOrigin("psFiles");
+    tempData.setOrigin(OriginFile.public);
 
     justLoading.stopLoading();
     
@@ -274,7 +274,7 @@ class DataCaller {
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
 
-    tempData.setOrigin("dirFiles");
+    tempData.setOrigin(OriginFile.directory);
 
   }
 
@@ -305,7 +305,7 @@ class DataCaller {
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
 
-    tempData.setOrigin("folderFiles");
+    tempData.setOrigin(OriginFile.folder);
     
   }
 

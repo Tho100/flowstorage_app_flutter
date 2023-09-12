@@ -33,33 +33,33 @@ class RetrieveData {
     late final String query;
     late final Map<String, String> queryParams;
 
-    switch(tempData.fileOrigin) {
-      case "homeFiles":
+    switch (tempData.origin) {
+      case OriginFile.home:
         query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "filename": encryptedFileName};
         break;
 
-      case "folderFiles":
+      case OriginFile.folder:
         query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
         break;
 
-      case "dirFiles":
+      case OriginFile.directory:
         query = "SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
         break;
 
-      case "sharedToMe":
+      case OriginFile.sharedMe:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "filename": encryptedFileName};
         break;
 
-      case "sharedFiles":
+      case OriginFile.sharedOther:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username!, "filename": encryptedFileName};
         break;
 
-      case "psFiles":
+      case OriginFile.public:
         final toPsFileName = GlobalsTable.tableNames.contains(tableName)
           ? GlobalsTable.publicToPsTables[tableName]!
           : tableName!;
@@ -71,6 +71,8 @@ class RetrieveData {
         queryParams = {"username": uploaderName, "filename": encryptedFileName};
         break;
 
+      case OriginFile.offline:
+        break;
     }
 
     final row = (await fscDbCon.execute(query, queryParams)).rows.first;

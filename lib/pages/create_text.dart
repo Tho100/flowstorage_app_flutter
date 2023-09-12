@@ -151,19 +151,22 @@ class CreateTextPageState extends State<CreateText> {
 
   String _tableToUploadTo() {
 
-    late String tableToUploadTo = "";
+    if(tempData.origin == OriginFile.home) {
+      return GlobalsTable.homeText;
 
-    if(tempData.fileOrigin == "homeFiles") {
-      tableToUploadTo = GlobalsTable.homeText;
-    } else if (tempData.fileOrigin == "dirFiles") {
-      tableToUploadTo = GlobalsTable.directoryUploadTable;
-    } else if (tempData.fileOrigin == "foldFiles") {
-      tableToUploadTo = GlobalsTable.folderUploadTable;
-    } else if (tempData.fileOrigin == "psFiles") {
-      tableToUploadTo = GlobalsTable.psText;
+    } else if (tempData.origin == OriginFile.directory) {
+      return GlobalsTable.directoryUploadTable;
+
+    } else if (tempData.origin == OriginFile.folder) {
+      return GlobalsTable.folderUploadTable;
+
+    } else if (tempData.origin == OriginFile.public) {
+      return GlobalsTable.psText;
+
     }
 
-    return tableToUploadTo;
+    return GlobalsTable.homeText;
+
   }
 
   void _addTextFileToListView({required String fileName}) async {
@@ -233,7 +236,7 @@ class CreateTextPageState extends State<CreateText> {
         isFromCreateTxt: true,
       );
 
-      if(tempData.fileOrigin == "offlineFiles") {
+      if(tempData.origin == OriginFile.offline) {
         _addTextFileToListView(fileName: getFileName);
       }
 

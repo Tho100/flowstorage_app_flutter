@@ -20,13 +20,13 @@ class ThumbnailGetter {
   
     if (fileName != null) {
       query = "SELECT CUST_THUMB FROM ";
-      if (tempData.fileOrigin == "homeFiles") {
+      if (tempData.origin == OriginFile.home) {
         query += "file_info_vid WHERE CUST_USERNAME = :username";
       } else {
         query += "cust_sharing WHERE CUST_FROM = :username";
-        if (tempData.fileOrigin == "sharedFiles") {
+        if (tempData.origin == OriginFile.sharedOther) {
           query += " AND CUST_TO = :username";
-        } else if (tempData.fileOrigin == "sharedToMe") {
+        } else if (tempData.origin == OriginFile.sharedMe) {
           query += " AND CUST_FILE_PATH = :filename";
           params = {'username': userData.username, 'filename': EncryptionClass().encrypt(fileName)};
         }
@@ -60,7 +60,7 @@ class ThumbnailGetter {
 
     final encryptedFileName = EncryptionClass().encrypt(fileName);
 
-    if(tempData.fileOrigin == "homeFiles") {
+    if(tempData.origin == OriginFile.home) {
 
       const query = "SELECT CUST_THUMB FROM file_info_vid WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
       final params = {
@@ -74,7 +74,7 @@ class ThumbnailGetter {
         base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
       }
 
-    } else if (tempData.fileOrigin == "dirFiles") {
+    } else if (tempData.origin == OriginFile.directory) {
 
       const query = "SELECT CUST_THUMB FROM upload_info_directory WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND DIR_NAME = :dirname";
       final params = {
@@ -88,7 +88,7 @@ class ThumbnailGetter {
         base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
       }
 
-    } else if (tempData.fileOrigin == "folderFiles") {
+    } else if (tempData.origin == OriginFile.folder) {
       
       const query = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname";
       final params = {
@@ -102,7 +102,7 @@ class ThumbnailGetter {
         base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
       }
 
-    } else if (tempData.fileOrigin == "sharedFiles") {
+    } else if (tempData.origin == "sharedFiles") {
 
       const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
       final params = {
@@ -116,7 +116,7 @@ class ThumbnailGetter {
         base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
       }
 
-    } else if (tempData.fileOrigin == "sharedToMe") {
+    } else if (tempData.origin == OriginFile.sharedMe) {
 
       const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
       final params = {

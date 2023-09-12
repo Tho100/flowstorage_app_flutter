@@ -70,7 +70,7 @@ class SharingDialog {
   }) async {
 
     final fileExtension = fileName.split('.').last;
-    final tableName = tempData.fileOrigin != "homeFiles" ? Globals.fileTypesToTableNamesPs[fileExtension]! : Globals.fileTypesToTableNames[fileExtension]!;
+    final tableName = tempData.origin != OriginFile.home ? Globals.fileTypesToTableNamesPs[fileExtension]! : Globals.fileTypesToTableNames[fileExtension]!;
 
     String? thumbnailBase64;
 

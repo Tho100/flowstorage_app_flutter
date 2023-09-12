@@ -22,14 +22,4 @@ class MyJABytesSource extends StreamAudioSource {
     );
   }
 
-  /*@override
-  Future<StreamAudioResponse> request([int? start, int? end]) async {
-    return StreamAudioResponse(
-      sourceLength: _buffer.length,
-      contentLength: (start ?? 0) - (end ?? _buffer.length),
-      offset: start ?? 0,
-      stream: Stream.fromIterable([_buffer.sublist(start ?? 0, end)]),
-      contentType: _contentType,
-    );
-  }*/
 }

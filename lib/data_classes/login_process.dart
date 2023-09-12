@@ -48,7 +48,7 @@ class SignInUser {
     final custUsernameGetter = custUsernameList[0]!;
     final custTypeGetter = custUsernameList[1]!;
 
-    tempData.setOrigin("homeFiles");
+    tempData.setOrigin(OriginFile.home);
     userData.setUsername(custUsernameGetter);
     userData.setEmail(custEmailInit);
     userData.setAccountType(custTypeGetter);

@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 
+enum OriginFile {
+  home,
+  offline,
+  directory,
+  folder,
+  sharedMe,
+  sharedOther,
+  public
+}
+
 class TempDataProvider extends ChangeNotifier {
   
-  String _fileOrigin = '';
+  OriginFile _origin = OriginFile.home;
+
   String _folderTitleValue = '';
   String _directoryTitleValue = '';
   String _selectedFileName = '';
   String _appBarTitle = '';
 
-  String get fileOrigin => _fileOrigin;
+  OriginFile get origin => _origin;
+
   String get folderName => _folderTitleValue;
   String get directoryName => _directoryTitleValue;
   String get selectedFileName => _selectedFileName;
@@ -19,9 +31,8 @@ class TempDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setOrigin(String value) {
-    _fileOrigin = value;
-    notifyListeners();
+  void setOrigin(OriginFile value) {
+    _origin = value;
   }
 
   void setCurrentFolder(String value) {

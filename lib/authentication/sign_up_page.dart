@@ -148,7 +148,7 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
     userData.setEmail(custEmailInput);
     userData.setAccountType("Basic");
     
-    tempData.setOrigin("homeFiles");
+    tempData.setOrigin(OriginFile.home);
     
     final singleTextLoading = SingleTextLoading();
 

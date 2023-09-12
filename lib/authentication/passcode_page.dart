@@ -63,7 +63,7 @@ class PasscodePageState extends State<PasscodePage> {
       final storageData = _locator<StorageDataProvider>();
       final tempData = _locator<TempDataProvider>();
 
-      tempData.setOrigin("homeFiles");
+      tempData.setOrigin(OriginFile.home);
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);
 

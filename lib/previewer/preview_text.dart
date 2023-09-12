@@ -51,7 +51,7 @@ class PreviewTextState extends State<PreviewText> {
 
     try {
       
-      if (tempData.fileOrigin != "offlineFiles") {
+      if (tempData.origin != OriginFile.offline) {
 
         final fileData = await CallPreviewData().callDataAsync(
           tableNamePs: GlobalsTable.psText, 

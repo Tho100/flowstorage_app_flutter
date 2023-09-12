@@ -228,7 +228,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Timer? debounceSearchingTimer;
 
-
   void _openPsCommentDialog({
     required String filePathVal,
     required String fileName,
@@ -439,11 +438,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } else {
 
-      tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
+      tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
       searchBarVisibileNotifier.value = true;
       staggeredListViewSelected.value = false;
 
-      if(tempData.fileOrigin == "homeFiles" || tempData.fileOrigin == "dirFiles") {
+      if(tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
         _navDirectoryButtonVisibility(true);
       }
 
@@ -451,7 +450,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     }
 
-    if(tempData.fileOrigin == "psFiles") {
+    if(tempData.origin == OriginFile.public) {
 
       _clearPublicStorageData(clearImage: true);
       _returnBackHomeFiles();
@@ -463,7 +462,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   void _togglePublicStorage() async {
     
-    if(tempData.fileOrigin == "psFiles") {
+    if(tempData.origin == OriginFile.public) {
       return;
     }
 
@@ -477,15 +476,15 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   void _toggleHome() async {
 
-    if (tempData.fileOrigin == "homeFiles" && !togglePhotosPressed) {
+    if (tempData.origin == OriginFile.home && !togglePhotosPressed) {
       return;
     }
 
-    if (tempData.fileOrigin == "psFiles") {
+    if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: false);
     }
 
-    if (tempData.fileOrigin == "homeFiles" && togglePhotosPressed) {
+    if (tempData.origin == OriginFile.home && togglePhotosPressed) {
       _returnBackHomeFiles();
     } else {
       _returnBackHomeFiles();
@@ -502,7 +501,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     tempData.setAppBarTitle("Home");
     searchHintText.value = "Search in Flowstorage";
 
-    tempData.setOrigin("homeFiles");
+    tempData.setOrigin(OriginFile.home);
     _itemSearchingImplementation('');
 
   }
@@ -514,7 +513,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     _sortUploadDate();
     _sortUploadDate();
     _floatingButtonVisiblity(true);
-    tempData.setOrigin("psFiles");
+    tempData.setOrigin(OriginFile.public);
   }
 
   void _scrollEndListView() {
@@ -526,7 +525,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   void _clearSelectAll() {
-    tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
+    tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
     setState(() {
       itemIsChecked = false;
       editAllIsPressed = false;
@@ -648,7 +647,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   void _sortUploadDate() {
     isAscendingUploadDate = !isAscendingUploadDate;
     ascendingDescendingIconNotifier.value = isAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
-    sortingText.value = tempData.fileOrigin == "psFiles" ? "Default" : "Upload Date";
+    sortingText.value = tempData.origin == OriginFile.public ? "Default" : "Upload Date";
     _processUploadDateSorting();
   }
 
@@ -673,7 +672,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     List<Map<String, dynamic>> itemList = [];
 
-    if(tempData.fileOrigin != "psFiles") {
+    if(tempData.origin != OriginFile.public) {
 
       for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
         itemList.add({
@@ -716,7 +715,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         storageData.imageBytesFilteredList.add(item['image_byte']);
         storageData.fileDateFilteredList.add(_formatDateTime(item['upload_date']));
 
-        if(tempData.fileOrigin == "psFiles") {
+        if(tempData.origin == OriginFile.public) {
           psStorageData.psTagsList.add(item['tag_value']);
           psStorageData.psUploaderList.add(item['uploader_name']);
         }
@@ -768,7 +767,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final imagePath = await CunningDocumentScanner.getPictures();
       final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
 
-      tempData.fileOrigin != "psFiles" ? await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") : null;
+      tempData.origin != OriginFile.public 
+        ? await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") 
+        : null;
 
       for(var images in imagePath!) {
 
@@ -786,7 +787,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       final toBase64Encoded = base64.encode(file.readAsBytesSync());
       final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
 
-      if(tempData.fileOrigin == "psFiles") {
+      if(tempData.origin == OriginFile.public) {
         _openPsCommentDialog(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
         return;
       } else {
@@ -831,8 +832,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final encryptedFileNames = EncryptionClass().encrypt(checkedItemsName.elementAt(i));
 
-      if(tempData.fileOrigin == "homeFiles") {
-
+      if(tempData.origin == OriginFile.home) {
         storageData.homeImageBytesList.clear();
         storageData.homeThumbnailBytesList.clear();
 
@@ -842,31 +842,30 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         query = "DELETE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
         params = {'username': userData.username, 'filename': encryptedFileNames};
 
-      } else if (tempData.fileOrigin == "dirFiles") {
-
+      } else if (tempData.origin == OriginFile.directory) {
         query = "DELETE FROM upload_info_directory WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND DIR_NAME = :dirname";
         params = {'username': userData.username, 'filename': encryptedFileNames,'dirname': EncryptionClass().encrypt(tempData.directoryName)};
 
-      } else if (tempData.fileOrigin == "folderFiles") {
-        
+      } else if (tempData.origin == OriginFile.folder) {
         query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname";
         params = {'username': userData.username, 'filename': encryptedFileNames,'foldname': EncryptionClass().encrypt(tempData.folderName)};
 
-      } else if (tempData.fileOrigin == "sharedToMe") {
-      
+      } else if (tempData.origin == OriginFile.sharedMe) {
         query = "DELETE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
         params = {'username': userData.username, 'filename': encryptedFileNames};
 
-      } else if (tempData.fileOrigin == "sharedFiles") {
+      } else if (tempData.origin == OriginFile.sharedOther) {
         query = "DELETE FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
         params = {'username': userData.username, 'filename': encryptedFileNames};
-      } else if (tempData.fileOrigin == "offlineFiles") {
+
+      } else if (tempData.origin == OriginFile.offline) {
         query = "";
         params = {};
         _deleteOfflineFilesSelectAll(checkedItemsName.elementAt(i));
+
       }
 
-      tempData.fileOrigin != "offlineFiles" ? await crud.delete(query: query, params: params) : null;
+      tempData.origin != "offlineFiles" ? await crud.delete(query: query, params: params) : null;
       await Future.delayed(const Duration(milliseconds: 855));
 
       _removeFileFromListView(fileName: checkedItemsName.elementAt(i),isFromSelectAll: true);
@@ -903,7 +902,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       checkedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
     }
     if(!editAllIsPressed) {
-      tempData.setAppBarTitle(Globals.originToName[tempData.fileOrigin]!);
+      tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
       setState(() {
         itemIsChecked = false;
       });
@@ -1038,7 +1037,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   void _returnBackHomeFiles() {
-    tempData.setOrigin("homeFiles");
+    tempData.setOrigin(OriginFile.home);
     tempData.setCurrentFolder('');
     tempData.setCurrentDirectory('');
   }
@@ -1056,7 +1055,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       await deleteClass.deletionParams(folderName: folderName);
 
       storageData.foldersNameList.remove(folderName);
-      tempData.setOrigin("homeFiles");
+      tempData.setOrigin(OriginFile.home);
 
       await _refreshListView();
       _navDirectoryButtonVisibility(true);
@@ -1106,7 +1105,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     _clearGlobalData();
 
     await dataCaller.offlineData();
-    setState(() {});
 
     searchBarVisibileNotifier.value = true;
 
@@ -1200,25 +1198,25 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Future<void> _refreshListView() async {
 
-    if(tempData.fileOrigin == "homeFiles") {
+    if(tempData.origin == OriginFile.home) {
       await _callHomeData();
       
-    } else if (tempData.fileOrigin == "sharedFiles") {
+    } else if (tempData.origin == OriginFile.sharedOther) {
       await _callSharingData("sharedFiles");
 
-    } else if (tempData.fileOrigin == "sharedToMe") {
+    } else if (tempData.origin == OriginFile.sharedMe) {
       await _callSharingData("sharedToMe");
 
-    } else if (tempData.fileOrigin == "folderFiles") {
+    } else if (tempData.origin == OriginFile.folder) {
       await _callFolderData(tempData.folderName);
       
-    } else if (tempData.fileOrigin == "dirFiles") {
+    } else if (tempData.origin == OriginFile.directory) {
       await _callDirectoryData();
 
-    } else if (tempData.fileOrigin == "offlineFiles") {
+    } else if (tempData.origin == OriginFile.offline) {
       await _callOfflineData();
 
-    } else if (tempData.fileOrigin == "psFiles") {
+    } else if (tempData.origin == OriginFile.public) {
 
       tempData.appBarTitle == "Public Storage" 
       ? await _refreshPublicStorage()
@@ -1226,7 +1224,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     }
 
-    if(tempData.fileOrigin != "psFiles") {
+    if(tempData.origin != OriginFile.public) {
 
       _itemSearchingImplementation('');
       searchBarController.text = '';
@@ -1236,7 +1234,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     }
 
-    if(tempData.fileOrigin == "homeFiles" && togglePhotosPressed) {
+    if(tempData.origin == OriginFile.home && togglePhotosPressed) {
       _togglePhotos();
     }
 
@@ -1300,8 +1298,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       await _deletionFile(userData.username, fileName, Globals.fileTypesToTableNames[extension]!);
     }
     
-    tempData.fileOrigin == "homeFiles" ? storageData.homeImageBytesList.clear() : null;
-    tempData.fileOrigin == "homeFiles" ? storageData.homeImageBytesList.clear() : null;
+    tempData.origin == OriginFile.home ? storageData.homeImageBytesList.clear() : null;
+    tempData.origin == OriginFile.home ? storageData.homeImageBytesList.clear() : null;
     
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
 
@@ -1351,12 +1349,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           return;
         }
 
-        if(tempData.fileOrigin == "psFiles") {
+        if(tempData.origin == OriginFile.public) {
           
           _openPsCommentDialog(filePathVal: imagePath, fileName: imageName, tableName: GlobalsTable.psImage, base64Encoded: imageBase64Encoded);
           return;
 
-        } else if (tempData.fileOrigin == "offlineFiles") {
+        } else if (tempData.origin == OriginFile.offline) {
 
           final decodeToBytes = base64.decode(imageBase64Encoded);
           final imageBytes = Uint8List.fromList(decodeToBytes);
@@ -1364,7 +1362,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
           storageData.imageBytesFilteredList.add(decodeToBytes);
           storageData.imageBytesList.add(decodeToBytes);
-          setState(() {});
 
         } else {
 
@@ -1432,7 +1429,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     try {
 
       final fileType = fileName.split('.').last;
-      final tableName = tempData.fileOrigin != "homeFiles" ? Globals.fileTypesToTableNamesPs[fileType] : Globals.fileTypesToTableNames[fileType];
+      final tableName = tempData.origin != OriginFile.home ? Globals.fileTypesToTableNamesPs[fileType] : Globals.fileTypesToTableNames[fileType];
 
       if(fileType == fileName) {
         await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: context);
@@ -1443,7 +1440,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       
       loadingDialog.startLoading(title: "Downloading...", subText: "File name  $fileName", context: context);
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
 
         late Uint8List getBytes;
 
@@ -1501,10 +1498,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   void _updateRenameFile(String newFileName, int indexOldFile, int indexOldFileSearched) {
-    setState(() {
-      storageData.fileNamesList[indexOldFile] = newFileName;
-      storageData.fileNamesFilteredList[indexOldFileSearched] = newFileName;
-    });
+    storageData.fileNamesList[indexOldFile] = newFileName;
+    storageData.fileNamesFilteredList[indexOldFileSearched] = newFileName;
   }
 
   Future<void> _renameFile(String oldFileName, String newFileName) async {
@@ -1514,7 +1509,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
       
-      tempData.fileOrigin != "offlineFiles" ? await Rename().renameParams(oldFileName, newFileName, tableName) : await OfflineMode().renameFile(oldFileName,newFileName);
+      tempData.origin != OriginFile.offline 
+        ? await Rename().renameParams(oldFileName, newFileName, tableName) 
+        : await OfflineMode().renameFile(oldFileName,newFileName);
+
       int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
       int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
@@ -1578,7 +1576,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
 
         final encryptVals = EncryptionClass().encrypt(fileName);
         await Delete().deletionParams(username: username, fileName: encryptVals, tableName: tableName);
@@ -1594,8 +1592,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       }
-
-      setState(() {});
 
     } catch (err, st) {
       logger.e('Exception from _deletionFile {main}',err,st);
@@ -1642,7 +1638,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         return;
       }
 
-      tempData.fileOrigin != "psFiles" ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+      tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
 
       if(countSelectedFiles > 2) {
         SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading $countSelectedFiles item(s)...");
@@ -1655,8 +1651,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         
         final filesName = pathToString.split("/").last.replaceAll("'", "");
         final fileExtension = filesName.split('.').last;
-
-        if(!mounted) return;
 
         if (!Globals.supportedFileTypes.contains(fileExtension)) {
           CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
@@ -1671,7 +1665,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         } 
 
         if(countSelectedFiles < 2) {
-          tempData.fileOrigin != "psFiles" 
+          tempData.origin != OriginFile.public 
           ? SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading ${shortenText.cutText(filesName)}") 
           : null;
         }
@@ -1787,8 +1781,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         final resultPicker = await FilePicker.platform.pickFiles(
           type: FileType.custom,
-          allowedExtensions: tempData.fileOrigin == "offlineFiles" ? offlineFileTypes : nonOfflineFileTypes,
-          allowMultiple: tempData.fileOrigin == "psFiles" ? false : true
+          allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
+          allowMultiple: tempData.origin == OriginFile.public ? false : true
         );
 
         if (resultPicker == null) {
@@ -1803,19 +1797,19 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
         final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-        if (tempData.fileOrigin == "psFiles" && uploadedPsFilesCount > allowedFileUploads) {
+        if (tempData.origin != OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
           UpgradeDialog.buildUpgradeDialog(
             message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
             context: context,
           ); return;
-        } else if (tempData.fileOrigin != "psFiles" && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
+        } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
           UpgradeDialog.buildUpgradeDialog(
             message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
             context: context,
           ); return;
         }
 
-        tempData.fileOrigin != "psFiles" ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+        tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
 
         if(countSelectedFiles > 2) {
           SnakeAlert.uploadingSnake(
@@ -1845,7 +1839,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
           if(countSelectedFiles < 2) {
 
-            tempData.fileOrigin != "psFiles" 
+            tempData.origin != OriginFile.public
             ? SnakeAlert.uploadingSnake(
               snackState: scaffoldMessenger, 
               message: "Uploading ${shortenText.cutText(selectedFileName)}"
@@ -1922,7 +1916,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
           } else {
 
-            final getFileTable = tempData.fileOrigin == "homeFiles" ? Globals.fileTypesToTableNames[fileExtension]! : Globals.fileTypesToTableNamesPs[fileExtension]!;
+            final getFileTable = tempData.origin == OriginFile.home 
+              ? Globals.fileTypesToTableNames[fileExtension]! 
+              : Globals.fileTypesToTableNamesPs[fileExtension]!;
+
             newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
             if(verifyOrigin == "psFiles") {
@@ -2093,9 +2090,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       videoThumbnail: videoThumbnails,
     );
 
-    setState(() {
-      storageData.foldersNameList.add(folderName);
-    });
+    storageData.foldersNameList.add(folderName);
+    
   }
 
   Future _callSelectedItemsBottomTrailing() {
@@ -2155,9 +2151,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     late String headerText = "";
 
-    if(tempData.fileOrigin == "psFiles") {
+    if(tempData.origin == OriginFile.public) {
       headerText = "Upload to Public Storage";
-    } else if (tempData.fileOrigin == "dirFiles") {
+    } else if (tempData.origin == OriginFile.directory) {
       headerText = "Add item to ${tempData.appBarTitle}";
     } else {
       headerText = "Add item to Flowstorage";
@@ -2180,7 +2176,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }, 
       fileOnPressed: () async {
 
-        if (tempData.fileOrigin == "psFiles") {
+        if (tempData.origin == OriginFile.public) {
 
           int count = psStorageData.psUploaderList
               .where((uploader) => uploader == userData.username)
@@ -2195,7 +2191,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         } else {
 
-          if(tempData.fileOrigin == "offlineFiles") {
+          if(tempData.origin == OriginFile.offline) {
             Navigator.pop(context);
             await _openDialogFile();
           } else if (storageData.fileNamesList.length < limitUpload) {
@@ -2225,7 +2221,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }, 
       photoOnPressed: () async {
 
-        if (tempData.fileOrigin == "psFiles") {
+        if (tempData.origin == OriginFile.public) {
 
           int count = psStorageData.psUploaderList
               .where((uploader) => uploader == userData.username)
@@ -2305,9 +2301,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     return bottomTrailingShared.buildTrailing(
       context: context, 
       sharedToMeOnPressed: () async {
-
-        tempData.setOrigin("sharedToMe");
+        tempData.setOrigin(OriginFile.sharedMe);
         tempData.setAppBarTitle("Shared to me");
+
         _floatingButtonVisiblity(false);
         _navDirectoryButtonVisibility(false);
         Navigator.pop(context);
@@ -2315,7 +2311,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         await _callSharingData("sharedToMe");
       }, 
       sharedToOthersOnPressed: () async {
-        tempData.setOrigin("sharedFiles");
+        tempData.setOrigin(OriginFile.sharedOther);
         tempData.setAppBarTitle("Shared files");
         
         _floatingButtonVisiblity(false);
@@ -2605,7 +2601,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       controller: searchBarController,
       visibility: searchBarVisibileNotifier, 
       focusNode: searchBarFocusNode, 
-      hintText: tempData.fileOrigin != "psFiles" 
+      hintText: tempData.origin != OriginFile.public 
         ? searchHintText.value 
         : "Search in Public Storage", 
 
@@ -2707,7 +2703,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           ),
           actions: [
 
-            if(tempData.fileOrigin != "psFiles" && togglePhotosPressed == false)
+            if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
             _buildSelectAll(),
 
             _buildMoreOptionsOnSelect(),
@@ -2715,7 +2711,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             if(togglePhotosPressed)
             _buildTunePhotosType(),
 
-            if(tempData.fileOrigin == "psFiles") 
+            if(tempData.origin == OriginFile.public) 
             _buildMyPsFilesButton()
 
           ],
@@ -2763,7 +2759,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } else if (fileExtension == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileExtension)) {
       
-      tempData.setOrigin("dirFiles");
+      tempData.setOrigin(OriginFile.directory);
       tempData.setCurrentDirectory(tempData.selectedFileName);
       tempData.setAppBarTitle(tempData.selectedFileName);
 
@@ -2784,7 +2780,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final fileTable = Globals.fileTypesToTableNames[fileExtension]!;
 
-      if(tempData.fileOrigin != "offlineFiles") {
+      if(tempData.origin != OriginFile.offline) {
         fileData = await _callData(tempData.selectedFileName, fileTable);
       } else {
         fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
@@ -2915,7 +2911,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     String uploaderNamePs = "";
     bool isRecentPs = false;
 
-    if (tempData.fileOrigin == "psFiles") {
+    if (tempData.origin == OriginFile.public) {
 
       uploaderNamePs = psStorageData.psUploaderList[index];
       if (uploaderNamePs == userData.username) {
@@ -2927,7 +2923,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     }
 
     return Padding(
-      padding: EdgeInsets.all(tempData.fileOrigin == "psFiles" ? 0.0 : 2.0),
+      padding: EdgeInsets.all(tempData.origin == OriginFile.public ? 0.0 : 2.0),
       child: GestureDetector(
         onLongPress: () {
           if(!isRecentPs) {
@@ -2942,7 +2938,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         child: Column(
           children: [
     
-            if (isRecentPs && tempData.fileOrigin == "psFiles" && index == 0) ... [
+            if (isRecentPs && tempData.origin == OriginFile.public && index == 0) ... [
               const Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -2993,7 +2989,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               
             ],
     
-            if(tempData.fileOrigin == "psFiles" && !isRecentPs) ... [
+            if(tempData.origin == OriginFile.public && !isRecentPs) ... [
     
               if(index == 3)
               const Align(
@@ -3023,12 +3019,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     
             ],
     
-            if(tempData.fileOrigin != "psFiles" && togglePhotosPressed == false)
+            if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
             IntrinsicHeight(
               child: _buildNormalStaggeredListView(imageBytes, index),
             ),
             
-            if(tempData.fileOrigin != "psFiles" && togglePhotosPressed == true)
+            if(tempData.origin != OriginFile.public && togglePhotosPressed == true)
             IntrinsicHeight(
               child: _buildPhotosStaggeredItems(index),
             ),
@@ -3311,9 +3307,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Widget _buildStaggeredListView() {
 
-    int fitSize = tempData.fileOrigin == "psFiles" ? 5 : 1;
+    int fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
-    EdgeInsetsGeometry paddingValue = tempData.fileOrigin == "psFiles" 
+    EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
     ? const EdgeInsets.only(top: 2.0,left: 0.0, right: 0.0, bottom: 8.0) 
     : const EdgeInsets.only(top: 12.0,left: 8.0, right: 8.0, bottom: 8.0);
 
@@ -3341,24 +3337,27 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     late double mediaHeight;
 
-    if(tempData.fileOrigin == "psFiles") {
+    if(tempData.origin == OriginFile.public) {
       mediaHeight = MediaQuery.of(context).size.height - 194;
-    } else if (tempData.fileOrigin != "psFiles" && !togglePhotosPressed) {
+
+    } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
       mediaHeight = MediaQuery.of(context).size.height - 310;
-    } else if (tempData.fileOrigin != "psFiles" && togglePhotosPressed) {
+
+    } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
       mediaHeight = MediaQuery.of(context).size.height - 148;
+
     }
 
     return RefreshIndicator(
       color: ThemeColor.darkPurple,
       onRefresh: () async {
 
-        if(tempData.fileOrigin == "homeFiles") {
+        if(tempData.origin == OriginFile.home) {
           storageData.homeImageBytesList.clear();
           storageData.homeImageBytesList.clear();
         }
 
-        if(tempData.fileOrigin == "psFiles") {
+        if(tempData.origin == OriginFile.public) {
           _clearPublicStorageData(clearImage: true);
         }
 
@@ -3386,11 +3385,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }, 
       childrens: (int index) {
         return <Widget>[
-          if(tempData.fileOrigin == "offlineFiles")
-          const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
 
-          if(tempData.fileOrigin == "offlineFiles")
-          const SizedBox(width: 8),
+          if(tempData.origin == OriginFile.offline) ... [
+            const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
+            const SizedBox(width: 8),
+          ],
 
           GestureDetector(
             onTap: () {
@@ -3409,15 +3408,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         return <InlineSpan>[
           TextSpan(
-            text: tempData.fileOrigin == "psFiles" ? psFilesCategoryTags : storageData.fileDateFilteredList[index],
+            text: tempData.origin == OriginFile.public ? psFilesCategoryTags : storageData.fileDateFilteredList[index],
             style: const TextStyle(
               color: ThemeColor.secondaryWhite,
               fontSize: 12.8,
             ),
           ),
 
-          if(tempData.fileOrigin == "psFiles") 
-          
+          if(tempData.origin == OriginFile.public) 
           TextSpan(
             text: " ${psStorageData.psTagsList[index]}",
             style: TextStyle(
