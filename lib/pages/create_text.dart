@@ -186,11 +186,11 @@ class CreateTextPageState extends State<CreateText> {
 
   Future<void> _saveText(String inputValue) async {
 
+    final fileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
+
     try {
 
-      final getFileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
-
-      if (await _isFileExists(getFileName)) {
+      if (await _isFileExists(fileName)) {
         CustomAlertDialog.alertDialog("File with this name already exists.");
         return;
       }
@@ -198,80 +198,62 @@ class CreateTextPageState extends State<CreateText> {
       final toUtf8Bytes = utf8.encode(inputValue);
       final base64Encoded = base64.encode(toUtf8Bytes);
 
-      if(tempData.origin == OriginFile.offline) {
-        OfflineMode().saveOfflineTextFile(
-          inputValue: inputValue,
-          fileName: getFileName,
-          isFromCreateTxt: true,
-        );
-      } else {
+      if (tempData.origin == OriginFile.offline) {
+        _createTextFileOnOffline(fileName, inputValue);
+        return;
 
+      } else {
         await _insertUserFile(
           table: _tableToUploadTo(),
-          filePath: getFileName,
+          filePath: fileName,
           fileValue: base64Encoded,
         );
-
+        
       }
 
-      saveVisibility = false;
-      textFormEnabled = false;
-      _addTextFileToListView(fileName: getFileName);
-
-      await CallNotify().customNotification(
-        title: "Text File Saved",
-        subMesssage: ShortenText().cutText("$getFileName Has been saved"),
-      );
-
-      SnakeAlert.okSnake(
-        message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved.",
-        icon: Icons.check,
-      );
-
-      if (!mounted) return;
-      
-      Navigator.pop(context);
-
-      fileNameController.clear();
+      _updateUIAfterSave(fileName);
 
     } catch (err, st) {
-
+      _createTextFileOnOffline(fileName, inputValue);
       logger.e("Exception from _saveText {create_text}", err, st);
-
-      final String getFileName = "${fileNameController.text.trim().replaceAll(".", "")}.txt";
-
-      OfflineMode().saveOfflineTextFile(
-        inputValue: inputValue,
-        fileName: getFileName,
-        isFromCreateTxt: true,
-      );
-
-      if(tempData.origin == OriginFile.offline) {
-        _addTextFileToListView(fileName: getFileName);
-      }
-
-      setState(() {
-        saveVisibility = false;
-        textFormEnabled = false;
-      });
-
-      await CallNotify().customNotification(
-        title: "Text File Saved",
-        subMesssage: ShortenText().cutText("${fileNameController.text} Has been saved"),
-      );
-
-      if (!mounted) return;
-
-      SnakeAlert.okSnake(
-        message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved as an offline file.",
-        icon: Icons.check,
-      );
-
-      fileNameController.clear();
-      Navigator.pop(context);
     }
   }
 
+  void _createTextFileOnOffline(String fileName, String inputValue) {
+    OfflineMode().saveOfflineTextFile(
+      inputValue: inputValue,
+      fileName: fileName,
+      isFromCreateTxt: true,
+    );
+
+    _updateUIAfterSave(fileName);
+  }
+
+  void _updateUIAfterSave(String fileName) async {
+
+    _addTextFileToListView(fileName: fileName);
+
+    setState(() {
+      saveVisibility = false;
+      textFormEnabled = false;
+    });
+
+
+    await CallNotify().customNotification(
+      title: "Text File Saved",
+      subMesssage: ShortenText().cutText("$fileName Has been saved"),
+    );
+
+    if (!mounted) return;
+
+    SnakeAlert.okSnake(
+      message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved${tempData.origin == OriginFile.offline ? " as an offline file." : "."}",
+      icon: Icons.check,
+    );
+
+    fileNameController.clear();
+    Navigator.pop(context);
+  }
 
   Widget _buildTxt(BuildContext context) {
     return Padding(
