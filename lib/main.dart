@@ -87,11 +87,11 @@ import 'package:flowstorage_fsc/folder_query/create_folder.dart';
 import 'package:flowstorage_fsc/directory_query/create_directory.dart';
 import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
-import 'package:flowstorage_fsc/extra_query/delete.dart';
+import 'package:flowstorage_fsc/extra_query/delete_data.dart';
 import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 import 'package:flowstorage_fsc/data_classes/date_getter.dart';
 import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/extra_query/rename.dart';
+import 'package:flowstorage_fsc/extra_query/rename_data.dart';
 
 import 'splash_screen.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -813,63 +813,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     }
   }
 
-  Future<void> _deleteOfflineFilesSelectAll(String fileName) async {
-
-    final offlineDirPath = await OfflineMode().returnOfflinePath();
-    final file = File('${offlineDirPath.path}/$fileName');
-    file.deleteSync();
-
-  }
-
-  Future<void> _deleteAllSelectedItems({
+  Future<void> _deleteMultiSelectedFiles({
     required int count
   }) async {
 
-    late String? query;
-    late Map<String,String> params;
-
-    for(int i=0; i<count; i++) {
-
-      final encryptedFileNames = EncryptionClass().encrypt(checkedItemsName.elementAt(i));
-
-      if(tempData.origin == OriginFile.home) {
-        storageData.homeImageBytesList.clear();
-        storageData.homeThumbnailBytesList.clear();
-
-        final fileType = checkedItemsName.elementAt(i).split('.').last;
-        final tableName = Globals.fileTypesToTableNames[fileType];
-
-        query = "DELETE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        params = {'username': userData.username, 'filename': encryptedFileNames};
-
-      } else if (tempData.origin == OriginFile.directory) {
-        query = "DELETE FROM upload_info_directory WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND DIR_NAME = :dirname";
-        params = {'username': userData.username, 'filename': encryptedFileNames,'dirname': EncryptionClass().encrypt(tempData.directoryName)};
-
-      } else if (tempData.origin == OriginFile.folder) {
-        query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname";
-        params = {'username': userData.username, 'filename': encryptedFileNames,'foldname': EncryptionClass().encrypt(tempData.folderName)};
-
-      } else if (tempData.origin == OriginFile.sharedMe) {
-        query = "DELETE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
-        params = {'username': userData.username, 'filename': encryptedFileNames};
-
-      } else if (tempData.origin == OriginFile.sharedOther) {
-        query = "DELETE FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
-        params = {'username': userData.username, 'filename': encryptedFileNames};
-
-      } else if (tempData.origin == OriginFile.offline) {
-        query = "";
-        params = {};
-        _deleteOfflineFilesSelectAll(checkedItemsName.elementAt(i));
-
-      }
-
-      tempData.origin != "offlineFiles" ? await crud.delete(query: query, params: params) : null;
-      await Future.delayed(const Duration(milliseconds: 855));
-
-      _removeFileFromListView(fileName: checkedItemsName.elementAt(i),isFromSelectAll: true);
-
+    for (int i = 0; i < count; i++) {
+      final fileName = checkedItemsName.elementAt(i);
+      await DeleteData().deleteOnMultiSelection(fileName: fileName);
+      _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
     }
 
     _clearSelectAll();
@@ -882,9 +833,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
 
-      await _deleteAllSelectedItems(count: count);
-
-      if(!mounted) return;
+      await _deleteMultiSelectedFiles(count: count);
       SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
 
     } catch (err, st) {
@@ -1510,7 +1459,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     try {
       
       tempData.origin != OriginFile.offline 
-        ? await Rename().renameParams(oldFileName, newFileName, tableName) 
+        ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
         : await OfflineMode().renameFile(oldFileName,newFileName);
 
       int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
@@ -1579,16 +1528,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       if(tempData.origin != OriginFile.offline) {
 
         final encryptVals = EncryptionClass().encrypt(fileName);
-        await Delete().deletionParams(username: username, fileName: encryptVals, tableName: tableName);
+        await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
 
-        if(!mounted) return;
         SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       } else {
 
         await OfflineMode().deleteFile(fileName);
-
-        if(!mounted) return;
         SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       }

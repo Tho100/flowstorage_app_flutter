@@ -4,11 +4,11 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 
-class Rename {
+class RenameData {
 
   final _locator = GetIt.instance;
 
-  Future<void> renameParams(String? oldFileName, String? newFileName, String? tableName,{String? username}) async {
+  Future<void> renameFiles(String? oldFileName, String? newFileName, String? tableName,{String? username}) async {
 
     final userData = _locator<UserDataProvider>();
     final tempData = _locator<TempDataProvider>();

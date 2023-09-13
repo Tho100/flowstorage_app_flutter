@@ -102,7 +102,7 @@ class ThumbnailGetter {
         base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
       }
 
-    } else if (tempData.origin == "sharedFiles") {
+    } else if (tempData.origin == OriginFile.sharedOther) {
 
       const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
       final params = {

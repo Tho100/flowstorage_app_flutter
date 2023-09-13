@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flowstorage_fsc/extra_query/rename.dart';
+import 'package:flowstorage_fsc/extra_query/rename_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -26,7 +25,7 @@ import 'package:flowstorage_fsc/data_classes/update_data.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/extra_query/delete.dart';
+import 'package:flowstorage_fsc/extra_query/delete_data.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
@@ -175,22 +174,21 @@ class PreviewFileState extends State<PreviewFile> {
       if(tempData.origin != OriginFile.offline) {
 
         final encryptVals = EncryptionClass().encrypt(fileName);
-        await Delete().deletionParams(username: username, fileName: encryptVals, tableName: tableName);
+        await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
 
         storageData.homeImageBytesList.clear();
         storageData.homeThumbnailBytesList.clear();
 
       } else {
 
-        final offlineDirPath = await OfflineMode().returnOfflinePath();
+        await OfflineMode().deleteFile(fileName);
+        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
-        final file = File('${offlineDirPath.path}/$fileName');
-        file.deleteSync();
       }
 
-      if(!mounted) return;
-
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
+
+      if(!mounted) return;
       NavigatePage.permanentPageMainboard(context);
 
     } catch (err, st) {
@@ -259,7 +257,10 @@ class PreviewFileState extends State<PreviewFile> {
 
     try {
       
-      tempData.origin != OriginFile.offline ? await Rename().renameParams(oldFileName, newFileName, tableName) : await OfflineMode().renameFile(oldFileName,newFileName);
+      tempData.origin != OriginFile.offline 
+        ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
+        : await OfflineMode().renameFile(oldFileName,newFileName);
+        
       int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
       int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
@@ -550,11 +551,11 @@ class PreviewFileState extends State<PreviewFile> {
       uploaderNameNotifer.value = userData.username;
 
     } else if (sharingOriginFrom.contains(originFrom)) {
-      uploaderNameNotifer.value = originFrom == "sharedFiles" 
+      uploaderNameNotifer.value = originFrom == OriginFile.sharedOther 
       ? await SharingName().shareToOtherName(usernameIndex: widget.tappedIndex) 
       : await SharingName().sharerName();
 
-    } else if (originFrom == "psFiles") {
+    } else if (originFrom == OriginFile.public) {
 
       final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];

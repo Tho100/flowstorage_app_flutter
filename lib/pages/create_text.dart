@@ -198,11 +198,21 @@ class CreateTextPageState extends State<CreateText> {
       final toUtf8Bytes = utf8.encode(inputValue);
       final base64Encoded = base64.encode(toUtf8Bytes);
 
-      await _insertUserFile(
-        table: _tableToUploadTo(),
-        filePath: getFileName,
-        fileValue: base64Encoded,
-      );
+      if(tempData.origin == OriginFile.offline) {
+        OfflineMode().saveOfflineTextFile(
+          inputValue: inputValue,
+          fileName: getFileName,
+          isFromCreateTxt: true,
+        );
+      } else {
+
+        await _insertUserFile(
+          table: _tableToUploadTo(),
+          filePath: getFileName,
+          fileValue: base64Encoded,
+        );
+
+      }
 
       saveVisibility = false;
       textFormEnabled = false;
