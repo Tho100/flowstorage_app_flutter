@@ -6,70 +6,71 @@ import 'package:get_it/get_it.dart';
 
 class RenameData {
 
-  final _locator = GetIt.instance;
+  final crud = Crud();
+  final encryption = EncryptionClass();
+
+  final userData = GetIt.instance<UserDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   Future<void> renameFiles(String? oldFileName, String? newFileName, String? tableName,{String? username}) async {
 
-    final userData = _locator<UserDataProvider>();
-    final tempData = _locator<TempDataProvider>();
-
-    final encryption = EncryptionClass();
-    final crud = Crud();
-    
     late final String query;
     late final Map<String,String> params;
     
-    if(tempData.origin == OriginFile.home) {
+    switch(tempData.origin) {
+      case OriginFile.home:
+        query = "UPDATE $tableName SET CUST_FILE_PATH = :newName WHERE CUST_FILE_PATH = :oldName AND CUST_USERNAME = :username";
+        params = {
+          'newName': encryption.encrypt(newFileName!),
+          'oldName': encryption.encrypt(oldFileName!),
+          'username': userData.username,
+        };
+      break;
 
-      String updateFileNameQuery = "UPDATE $tableName SET CUST_FILE_PATH = :newName WHERE CUST_FILE_PATH = :oldName AND CUST_USERNAME = :username";
-      query = updateFileNameQuery;
-      params = {
-        'newName': encryption.encrypt(newFileName!),
-        'oldName': encryption.encrypt(oldFileName!),
-        'username': userData.username,
-      };
+      case OriginFile.sharedOther:
+        query = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_FROM = :username";
+        params = {
+          'username': username!,
+          'newname': encryption.encrypt(newFileName),
+          'oldname': encryption.encrypt(oldFileName),
+        };
+      break;
 
-    } else if (tempData.origin == OriginFile.sharedOther) {
+      case OriginFile.sharedMe:
+        query = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_TO = :username";
+        params = {
+          'username': username!,
+          'newname': encryption.encrypt(newFileName),
+          'oldname': encryption.encrypt(oldFileName),
+        };
+      break;
 
-      const updateFileNameQuery = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_FROM = :username";
-      query = updateFileNameQuery;
-      params = {
-        'username': username!,
-        'newname': encryption.encrypt(newFileName),
-        'oldname': encryption.encrypt(oldFileName),
-      };
+      case OriginFile.folder:
+        const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
+        query = updateFileNameQuery;
+        params =  {
+          'username': userData.username,
+          'newname': encryption.encrypt(newFileName),
+          'oldname': encryption.encrypt(oldFileName),
+          'foldtitle': encryption.encrypt(tempData.folderName),
+        };
+      break;
 
-    } else if (tempData.origin == OriginFile.sharedMe) {
+      case OriginFile.directory:
+        query = "UPDATE upload_info_directory SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND DIR_NAME = :dirname";
+        params =  {
+          'username': userData.username,
+          'newname': encryption.encrypt(newFileName),
+          'oldname': encryption.encrypt(oldFileName),
+          'dirname': encryption.encrypt(tempData.directoryName),
+        };
+      break;
 
-      const updateFileNameQuery = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_TO = :username";
-      query = updateFileNameQuery;
-      params = {
-        'username': username!,
-        'newname': encryption.encrypt(newFileName),
-        'oldname': encryption.encrypt(oldFileName),
-      };
+      case OriginFile.offline:
+        break;
 
-    } else if (tempData.origin == OriginFile.folder) {
-
-      const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
-      query = updateFileNameQuery;
-      params =  {
-        'username': userData.username,
-        'newname': encryption.encrypt(newFileName),
-        'oldname': encryption.encrypt(oldFileName),
-        'foldtitle': encryption.encrypt(tempData.folderName),
-      };
-
-    } else if (tempData.origin == OriginFile.directory) {
-
-      const updateFileNameQuery = "UPDATE upload_info_directory SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND DIR_NAME = :dirname";
-      query = updateFileNameQuery;
-      params =  {
-        'username': userData.username,
-        'newname': encryption.encrypt(newFileName),
-        'oldname': encryption.encrypt(oldFileName),
-        'dirname': encryption.encrypt(tempData.directoryName),
-      };
+      case OriginFile.public:
+        break;
 
     }
 

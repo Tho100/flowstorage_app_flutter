@@ -1980,7 +1980,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         await _callFolderData(storageData.foldersNameList[index]);
 
         loadingDialog.stopLoading();
-
+ 
         if(!mounted) return;
         Navigator.pop(context);
 

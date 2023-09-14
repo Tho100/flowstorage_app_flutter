@@ -122,9 +122,12 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void _initializeQuickActions() {
+  void _initializeQuickActions() async {
 
     const quickActions = QuickActions();
+
+    const storage = FlutterSecureStorage();
+    bool isPassCodeExists = await storage.containsKey(key: "key0015");
 
     quickActions.initialize((String shortcutType) async {
 
@@ -132,7 +135,7 @@ class SplashScreenState extends State<SplashScreen> {
 
       final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
 
-      if(getLocalUsername.isNotEmpty) {
+      if(getLocalUsername.isNotEmpty && isPassCodeExists == false) {
 
         if(shortcutType == "new_dir") {
 

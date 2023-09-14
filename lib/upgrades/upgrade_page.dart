@@ -163,7 +163,7 @@ class UpgradePageState extends State<UpradePage> {
         ),
         onPressed: getNowOnPressed,
         child: const Text(
-          'Get Now',
+          'Subscribe',
           style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.bold,
