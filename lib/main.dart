@@ -2565,7 +2565,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       );
     }
   }
-  
+
   Widget _buildRecentPsFiles(Uint8List imageBytes, int index, String uploader) {
     
     final fileName = storageData.fileNamesFilteredList[index];
@@ -2662,6 +2662,117 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     );
   }
 
+  Widget _buildSubPsFiles(Uint8List imageBytes, int index, String uploader) {
+    
+    final fileName = storageData.fileNamesFilteredList[index];
+    final fileType = fileName.split('.').last;
+
+    const generalFileType = {
+      ...Globals.audioType, 
+      ...Globals.wordType, ...Globals.textType, 
+      ...Globals.ptxType, ...Globals.excelType, "apk","exe", "pdf"
+    };
+
+    return GestureDetector(
+      onTap: () async {
+        await _navigateToPreviewFile(index);
+      },
+      onLongPress: () {
+        _callBottomTrailling(index);
+      },
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    width: generalFileType.contains(fileType) ? 72 : 158,
+                    height: generalFileType.contains(fileType) ? 72 : 158,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: ThemeColor.lightGrey,
+                        width: 2,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(14)),
+                      child: Image.memory(imageBytes, fit: BoxFit.cover),
+                    ),
+                  ),
+
+                  if(Globals.videoType.contains(fileType))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14.0, left: 16.0),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: ThemeColor.mediumGrey.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
+                    ),
+                  ),
+
+                ],
+              ),
+
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(right: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      ShortenText().cutText(fileName, customLength: 16),
+                      style: const TextStyle(
+                        color: ThemeColor.justWhite,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
+                      style: const TextStyle(
+                        color: ThemeColor.secondaryWhite,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 100,
+                      height: 23,
+                      decoration: BoxDecoration(
+                        color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
+                        borderRadius: const BorderRadius.all(Radius.circular(16)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          psStorageData.psTagsList[index],
+                          style: const TextStyle(
+                            color: ThemeColor.justWhite,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStaggeredItems(int index) {
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
@@ -2746,10 +2857,39 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               const Divider(color: ThemeColor.whiteGrey),
               
             ],
-    
-            if(tempData.origin == OriginFile.public && !isRecentPs) ... [
-    
-              if(index == 3)
+
+            if(tempData.origin == OriginFile.public && index == 3) ... [
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3, uploaderNamePs),
+                      const SizedBox(width: 25),
+
+                      if (storageData.imageBytesFilteredList.length > 4)
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4, uploaderNamePs),
+                      const SizedBox(width: 25),
+
+                      if (storageData.imageBytesFilteredList.length > 5)
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5, uploaderNamePs),
+                      const SizedBox(width: 25),
+
+                      if (storageData.imageBytesFilteredList.length > 6)
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6, uploaderNamePs),
+                      const SizedBox(width: 18),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Divider(color: ThemeColor.whiteGrey),
+            ],
+
+            if(tempData.origin == OriginFile.public && !isRecentPs && index > 6) ... [
+
+              if(index == 7)
               const Align(
                 alignment: Alignment.topLeft,
                 child: Padding(

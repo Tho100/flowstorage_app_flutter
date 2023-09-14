@@ -571,8 +571,8 @@ class PreviewFileState extends State<PreviewFile> {
   Widget _uploadedByText() {
 
     const generalOrigin = {
-      "homeFiles", "sharedToMe", "folderFiles", 
-      "dirFiles", "psFiles", "offlineFiles"
+      OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
+      OriginFile.directory, OriginFile.public, OriginFile.offline
     };
 
     return Text(
