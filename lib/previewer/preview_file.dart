@@ -158,16 +158,16 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  void _deleteFile(String fileName) async {
+  void _onDeletePressed(String fileName) async {
 
-    String fileExtension = fileName.split('.').last;
+    final fileExtension = fileName.split('.').last;
 
-    await _deletionFile(userData.username,fileName,Globals.fileTypesToTableNames[fileExtension]!,context);
+    await _deleteFileData(userData.username, fileName, Globals.fileTypesToTableNames[fileExtension]!, context);
     _removeFileFromListView(fileName);
 
   }
 
-   Future<void> _deletionFile(String username, String fileName, String tableName, BuildContext context) async {
+   Future<void> _deleteFileData(String username, String fileName, String tableName, BuildContext context) async {
 
     try {   
 
@@ -201,7 +201,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog(
       fileName: fileName, 
-      onDeletePressed: () => _deleteFile(fileName), 
+      onDeletePressed: () => _onDeletePressed(fileName), 
       context: context
     );
   }
@@ -250,7 +250,7 @@ class PreviewFileState extends State<PreviewFile> {
     appBarTitleNotifier.value = newFileName;
   }
 
-  Future<void> _renameFile(String oldFileName, String newFileName) async {
+  Future<void> _renameFileData(String oldFileName, String newFileName) async {
     
     final fileType = oldFileName.split('.').last;
     final tableName = Globals.fileTypesToTableNames[fileType]!;
@@ -288,7 +288,7 @@ class PreviewFileState extends State<PreviewFile> {
       if (storageData.fileNamesList.contains(newRenameValue)) {
         CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
       } else {
-        await _renameFile(fileName, newRenameValue);
+        await _renameFileData(fileName, newRenameValue);
       }
       
     } catch (err, st) {

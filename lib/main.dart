@@ -40,6 +40,7 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/public_storage/ps_comment_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_filter.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_folder.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_selected_items.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_shared.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_sorting.dart';
@@ -83,7 +84,6 @@ import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 
-import 'package:flowstorage_fsc/folder_query/create_folder.dart';
 import 'package:flowstorage_fsc/directory_query/create_directory.dart';
 import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
@@ -228,6 +228,426 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Timer? debounceSearchingTimer;
 
+  Future<void> _openDialogGallery() async {
+
+    try {
+
+      late String? fileBase64Encoded;
+
+      final shortenText = ShortenText();
+
+      ImagePickerPlus picker = ImagePickerPlus(context);
+      SelectedImagesDetails? details = await picker.pickBoth(
+        source: ImageSource.both,
+        multiSelection: true,
+        galleryDisplaySettings: GalleryDisplaySettings(
+          maximumSelection: 100,
+          appTheme: AppTheme(
+            focusColor: Colors.white, 
+            primaryColor: ThemeColor.darkBlack,
+          ),
+        ),
+      );
+      
+      int countSelectedFiles = details!.selectedFiles.length;
+
+      if (countSelectedFiles == 0) {
+        return;
+      }
+
+      if (!mounted) return; 
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+      if(storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!) {
+        UpgradeDialog.buildUpgradeDialog(
+            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.", 
+            context: context);
+
+        return;
+      }
+
+      tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+
+      if(countSelectedFiles > 2) {
+        SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading $countSelectedFiles item(s)...");
+      }
+
+      for(var filesPath in details.selectedFiles) {
+
+        final pathToString = filesPath.selectedFile.toString().
+                              split(" ").last.replaceAll("'", "");
+        
+        final filesName = pathToString.split("/").last.replaceAll("'", "");
+        final fileExtension = filesName.split('.').last;
+
+        if (!Globals.supportedFileTypes.contains(fileExtension)) {
+          CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
+          await NotificationApi.stopNotification(0);
+          continue;
+        }
+
+        if (storageData.fileNamesList.contains(filesName)) {
+          CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.");
+          await NotificationApi.stopNotification(0);
+          continue;
+        } 
+
+        if(countSelectedFiles < 2) {
+          tempData.origin != OriginFile.public 
+          ? SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading ${shortenText.cutText(filesName)}") 
+          : null;
+        }
+
+        if (!(Globals.imageType.contains(fileExtension))) {
+          fileBase64Encoded = base64.encode(File(pathToString).readAsBytesSync());
+        } else {
+          final filesBytes = File(pathToString).readAsBytesSync();
+          fileBase64Encoded = base64.encode(filesBytes);
+        }
+
+        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
+
+        if (Globals.imageType.contains(fileExtension)) {
+
+          List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
+          String compressedImageBase64Encoded = base64.encode(bytes);
+
+          if(verifyOrigin == "psFiles") {
+            _openPsCommentDialog(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
+            return;
+          }
+
+          await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+
+        } else if (Globals.videoType.contains(fileExtension)) {
+
+          String setupThumbnailName = filesName.replaceRange(filesName.lastIndexOf("."), filesName.length, ".jpeg");
+
+          Directory appDocDir = await getApplicationDocumentsDirectory();
+          String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
+
+          Directory tempDir = await getTemporaryDirectory();
+          String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
+
+          File thumbnailFile = File(tempThumbnailPath);
+          final thumbnailBytes = await VideoThumbnail.thumbnailData(
+            video: pathToString,
+            imageFormat: ImageFormat.JPEG,
+            quality: 40,
+          );
+
+          await thumbnailFile.writeAsBytes(thumbnailBytes!);
+
+          await thumbnailFile.copy(thumbnailPath);
+
+          if(verifyOrigin == "psFiles") {
+
+            _openPsCommentDialog(
+              filePathVal: pathToString, fileName: filesName, 
+              tableName: GlobalsTable.psVideo, base64Encoded: fileBase64Encoded,
+              thumbnail: thumbnailBytes
+            );
+
+            return;
+          } 
+
+          await UpdateListView().processUpdateListView(
+            filePathVal: pathToString, 
+            selectedFileName: filesName, 
+            tableName: GlobalsTable.homeVideo, 
+            fileBase64Encoded: fileBase64Encoded,
+            newFileToDisplay: thumbnailFile,
+            thumbnailBytes: thumbnailBytes
+          );
+
+          await thumbnailFile.delete();
+
+        }
+
+        UpdateListView().addItemToListView(fileName: filesName);
+
+        scaffoldMessenger.hideCurrentSnackBar();
+
+        if(countSelectedFiles < 2) {
+
+          SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(filesName)} Has been added.");
+          countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
+
+        }
+
+      }
+
+      await NotificationApi.stopNotification(0);
+
+      if(countSelectedFiles >= 2) {
+
+        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${countSelectedFiles.toString()} Items has been added");
+        countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
+
+      }
+
+      _itemSearchingImplementation('');
+
+    } catch (err, st) {
+      logger.e('Exception from _openGalleryImage {main}',err,st);
+      SnakeAlert.errorSnake("Upload failed.");
+    }
+  }
+
+  Future<void> _openDialogFile() async {
+
+    try {
+
+        late String? fileBase64;
+        late File? newFileToDisplayPath;
+
+        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
+        final shortenText = ShortenText();
+
+        const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
+        const List<String> offlineFileTypes = [...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
+
+        final resultPicker = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
+          allowMultiple: tempData.origin == OriginFile.public ? false : true
+        );
+
+        if (resultPicker == null) {
+          return;
+        }
+
+        if(!mounted) return;
+        final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+        int countSelectedFiles = resultPicker.files.length;
+
+        final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
+        final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+
+        if (tempData.origin != OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
+            context: context,
+          ); return;
+        } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
+            context: context,
+          ); return;
+        }
+
+        tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+
+        if(countSelectedFiles > 2) {
+          SnakeAlert.uploadingSnake(
+            snackState: scaffoldMessenger, 
+            message: "Uploading $countSelectedFiles item(s)..."
+          );
+        }
+
+        for (final pickedFile in resultPicker.files) {
+
+          final selectedFileName = pickedFile.name;
+          final fileExtension = selectedFileName.split('.').last;
+
+          if(!mounted) return;
+
+          if (!Globals.supportedFileTypes.contains(fileExtension)) {
+            CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
+            await NotificationApi.stopNotification(0);
+            continue;
+          }
+
+          if (storageData.fileNamesList.contains(selectedFileName)) {
+            CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
+            await NotificationApi.stopNotification(0);
+            continue;
+          }
+
+          if(countSelectedFiles < 2) {
+
+            tempData.origin != OriginFile.public
+            ? SnakeAlert.uploadingSnake(
+              snackState: scaffoldMessenger, 
+              message: "Uploading ${shortenText.cutText(selectedFileName)}"
+            ) 
+            : null;
+          }
+
+          final filePathVal = pickedFile.path.toString();
+
+          if (!(Globals.imageType.contains(fileExtension))) {
+            fileBase64 = base64.encode(File(filePathVal).readAsBytesSync());
+          }
+
+          if (Globals.imageType.contains(fileExtension)) {
+
+            List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal,quality: 85);
+            String compressedImageBase64Encoded = base64.encode(bytes);
+
+            if(verifyOrigin == "psFiles") {
+              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+              return;
+            }
+
+            await UpdateListView().processUpdateListView(
+              filePathVal: filePathVal, 
+              selectedFileName: selectedFileName, 
+              tableName: GlobalsTable.homeImage, 
+              fileBase64Encoded: compressedImageBase64Encoded
+            );
+
+          } else if (Globals.videoType.contains(fileExtension)) {
+
+            String setupThumbnailName = selectedFileName.replaceRange(selectedFileName.lastIndexOf("."), selectedFileName.length, ".jpeg");
+
+            Directory appDocDir = await getApplicationDocumentsDirectory();
+            String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
+
+            Directory tempDir = await getTemporaryDirectory();
+            String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
+
+            File thumbnailFile = File(tempThumbnailPath);
+
+            final thumbnailBytes = await VideoThumbnail.thumbnailData(
+              video: filePathVal,
+              imageFormat: ImageFormat.JPEG,
+              quality: 40,
+            );
+
+            await thumbnailFile.writeAsBytes(thumbnailBytes!);
+
+            await thumbnailFile.copy(thumbnailPath);
+
+            newFileToDisplayPath = thumbnailFile;
+
+            if(verifyOrigin == "psFiles") {
+
+              _openPsCommentDialog(
+                filePathVal: filePathVal, fileName: selectedFileName, 
+                tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
+                newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
+              );
+
+              return;
+
+            }
+
+            await UpdateListView().processUpdateListView(
+              filePathVal: filePathVal, selectedFileName: selectedFileName, 
+              tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
+              newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
+            );
+
+            await thumbnailFile.delete();
+
+          } else {
+
+            final getFileTable = tempData.origin == OriginFile.home 
+              ? Globals.fileTypesToTableNames[fileExtension]! 
+              : Globals.fileTypesToTableNamesPs[fileExtension]!;
+
+            newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
+
+            if(verifyOrigin == "psFiles") {
+              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+              return;
+            }
+
+            await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+          }
+
+          UpdateListView().addItemToListView(fileName: selectedFileName);
+
+          scaffoldMessenger.hideCurrentSnackBar();
+
+          if(countSelectedFiles < 2) {
+            SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
+          }
+
+        }
+
+      if(countSelectedFiles > 2) {
+        SnakeAlert.temporarySnake(
+          snackState: scaffoldMessenger, 
+          message: "${countSelectedFiles.toString()} Items has been added"
+        );
+      }
+
+      await NotificationApi.stopNotification(0);
+
+      countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles) : null;
+
+      _itemSearchingImplementation('');
+
+    } catch (err, st) {
+      logger.e('Exception from _openDialogFile {main}',err,st);
+      SnakeAlert.errorSnake("Upload failed.");
+    }
+  }
+
+  Future<void> _openDialogFolder() async {
+
+    try {
+
+      final folderPath = await FilePicker.platform.getDirectoryPath();
+
+      if (folderPath == null) {
+        return;
+      }
+
+      final folderName = path.basename(folderPath);
+
+      if (storageData.foldersNameList.contains(folderName)) {
+        CustomFormDialog.startDialog("Upload Failed", "$folderName already exists.");
+        return;
+      }
+
+      await CallNotify().customNotification(title: "Uploading folder...", subMesssage: "${ShortenText().cutText(folderName)} In progress");
+
+      if(!mounted) return;
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text("Uploading $folderName folder..."),
+          backgroundColor: ThemeColor.mediumGrey,
+        ),
+      );
+
+      final files = Directory(folderPath).listSync().whereType<File>().toList();
+
+      if(files.length == AccountPlan.mapFilesUpload[userData.accountType]) {
+        CustomFormDialog.startDialog("Couldn't upload $folderName", "It looks like the number of files in this folder exceeded the number of file you can upload. Please upgrade your account plan.");
+        return;
+      }
+
+      await UpdateListView().insertFileDataFolder(
+        folderPath: folderPath, 
+        folderName: folderName, 
+        files: files
+      );
+
+      await NotificationApi.stopNotification(0);
+
+      scaffoldMessenger.hideCurrentSnackBar();
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text("Folder $folderName has been added"),
+          duration: const Duration(seconds: 2),
+          backgroundColor: ThemeColor.mediumGrey,
+        ),
+      );
+
+      await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
+
+    } catch (err, st) {
+      logger.e('Exception from _openDialogFolder {main}',err,st);
+      SnakeAlert.errorSnake("Upload failed.");
+    }
+  }
+
   void _openPsCommentDialog({
     required String filePathVal,
     required String fileName,
@@ -288,7 +708,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog( 
       fileName: fileName, 
-      onDeletePressed:() async => await _deleteFile(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
+      onDeletePressed:() async => await _onDeletePressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
       context: context
     );
   }
@@ -308,7 +728,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  void _openRenameDirectoryDialog(String folderName) {
+  void _openRenameFolderDialog(String folderName) {
     RenameFolderDialog().buildRenameFolderDialog(
       context: context, 
       folderName: folderName, 
@@ -820,6 +1240,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     for (int i = 0; i < count; i++) {
       final fileName = checkedItemsName.elementAt(i);
       await DeleteData().deleteOnMultiSelection(fileName: fileName);
+      await Future.delayed(const Duration(milliseconds: 855));
+
       _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
     }
 
@@ -995,7 +1417,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
   }
 
-  Future<void> _deleteFolder(String folderName) async {
+  Future<void> _deleteFolderOnPressed(String folderName) async {
     
     try {
 
@@ -1219,7 +1641,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     }
   }
   
-  Future<void> _deletionDirectory(String directoryName) async {
+  Future<void> _deleteDirectoryData(String directoryName) async {
 
     try {
 
@@ -1237,14 +1659,14 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   }
 
-  Future<void> _deleteFile(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+  Future<void> _onDeletePressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
 
     final extension = fileName.split('.').last;
 
     if(extension == fileName) {
-      await _deletionDirectory(fileName);
+      await _deleteDirectoryData(fileName);
     } else {
-      await _deletionFile(userData.username, fileName, Globals.fileTypesToTableNames[extension]!);
+      await _deleteFileData(userData.username, fileName, Globals.fileTypesToTableNames[extension]!);
     }
     
     tempData.origin == OriginFile.home ? storageData.homeImageBytesList.clear() : null;
@@ -1451,7 +1873,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     storageData.fileNamesFilteredList[indexOldFileSearched] = newFileName;
   }
 
-  Future<void> _renameFile(String oldFileName, String newFileName) async {
+  Future<void> _renameFileData(String oldFileName, String newFileName) async {
     
     final fileType = oldFileName.split('.').last;
     final tableName = Globals.fileTypesToTableNames[fileType]!;
@@ -1502,7 +1924,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       if (storageData.fileNamesList.contains(newRenameValue)) {
         CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
       } else {
-        await _renameFile(fileName, newRenameValue);
+        await _renameFileData(fileName, newRenameValue);
       }
       
     } catch (err, st) {
@@ -1521,7 +1943,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
   }
 
-  Future<void> _deletionFile(String username, String fileName, String tableName) async {
+  Future<void> _deleteFileData(String username, String fileName, String tableName) async {
 
     try {
 
@@ -1546,498 +1968,29 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   }
 
-  Future<void> _openDialogGallery() async {
-
-    try {
-
-      late String? fileBase64Encoded;
-
-      final shortenText = ShortenText();
-
-      ImagePickerPlus picker = ImagePickerPlus(context);
-      SelectedImagesDetails? details = await picker.pickBoth(
-        source: ImageSource.both,
-        multiSelection: true,
-        galleryDisplaySettings: GalleryDisplaySettings(
-          maximumSelection: 100,
-          appTheme: AppTheme(
-            focusColor: Colors.white, 
-            primaryColor: ThemeColor.darkBlack,
-          ),
-        ),
-      );
-      
-      int countSelectedFiles = details!.selectedFiles.length;
-
-      if (countSelectedFiles == 0) {
-        return;
-      }
-
-      if (!mounted) return; 
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-      if(storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!) {
-        UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.", 
-            context: context);
-
-        return;
-      }
-
-      tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
-
-      if(countSelectedFiles > 2) {
-        SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading $countSelectedFiles item(s)...");
-      }
-
-      for(var filesPath in details.selectedFiles) {
-
-        final pathToString = filesPath.selectedFile.toString().
-                              split(" ").last.replaceAll("'", "");
+  Future _buildFoldersDialog() async {
+    return FolderDialog().buildFolderDialog(
+      folderOnPressed: (int index) async {
         
-        final filesName = pathToString.split("/").last.replaceAll("'", "");
-        final fileExtension = filesName.split('.').last;
+        final loadingDialog = MultipleTextLoading();
 
-        if (!Globals.supportedFileTypes.contains(fileExtension)) {
-          CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
-          await NotificationApi.stopNotification(0);
-          continue;
-        }
+        tempData.setCurrentFolder(storageData.foldersNameList[index]);
 
-        if (storageData.fileNamesList.contains(filesName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.");
-          await NotificationApi.stopNotification(0);
-          continue;
-        } 
+        loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.folderName} files.",context: context);
+        await _callFolderData(storageData.foldersNameList[index]);
 
-        if(countSelectedFiles < 2) {
-          tempData.origin != OriginFile.public 
-          ? SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading ${shortenText.cutText(filesName)}") 
-          : null;
-        }
-
-        if (!(Globals.imageType.contains(fileExtension))) {
-          fileBase64Encoded = base64.encode(File(pathToString).readAsBytesSync());
-        } else {
-          final filesBytes = File(pathToString).readAsBytesSync();
-          fileBase64Encoded = base64.encode(filesBytes);
-        }
-
-        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
-
-        if (Globals.imageType.contains(fileExtension)) {
-
-          List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
-          String compressedImageBase64Encoded = base64.encode(bytes);
-
-          if(verifyOrigin == "psFiles") {
-            _openPsCommentDialog(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
-            return;
-          }
-
-          await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
-
-        } else if (Globals.videoType.contains(fileExtension)) {
-
-          String setupThumbnailName = filesName.replaceRange(filesName.lastIndexOf("."), filesName.length, ".jpeg");
-
-          Directory appDocDir = await getApplicationDocumentsDirectory();
-          String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
-
-          Directory tempDir = await getTemporaryDirectory();
-          String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
-
-          File thumbnailFile = File(tempThumbnailPath);
-          final thumbnailBytes = await VideoThumbnail.thumbnailData(
-            video: pathToString,
-            imageFormat: ImageFormat.JPEG,
-            quality: 40,
-          );
-
-          await thumbnailFile.writeAsBytes(thumbnailBytes!);
-
-          await thumbnailFile.copy(thumbnailPath);
-
-          if(verifyOrigin == "psFiles") {
-
-            _openPsCommentDialog(
-              filePathVal: pathToString, fileName: filesName, 
-              tableName: GlobalsTable.psVideo, base64Encoded: fileBase64Encoded,
-              thumbnail: thumbnailBytes
-            );
-
-            return;
-          } 
-
-          await UpdateListView().processUpdateListView(
-            filePathVal: pathToString, 
-            selectedFileName: filesName, 
-            tableName: GlobalsTable.homeVideo, 
-            fileBase64Encoded: fileBase64Encoded,
-            newFileToDisplay: thumbnailFile,
-            thumbnailBytes: thumbnailBytes
-          );
-
-          await thumbnailFile.delete();
-
-        }
-
-        UpdateListView().addItemToListView(fileName: filesName);
-
-        scaffoldMessenger.hideCurrentSnackBar();
-
-        if(countSelectedFiles < 2) {
-
-          SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(filesName)} Has been added.");
-          countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
-
-        }
-
-      }
-
-      await NotificationApi.stopNotification(0);
-
-      if(countSelectedFiles >= 2) {
-
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${countSelectedFiles.toString()} Items has been added");
-        countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
-
-      }
-
-      _itemSearchingImplementation('');
-
-    } catch (err, st) {
-      logger.e('Exception from _openGalleryImage {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-    }
-  }
-
-  Future<void> _openDialogFile() async {
-
-    try {
-
-        late String? fileBase64;
-        late File? newFileToDisplayPath;
-
-        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
-        final shortenText = ShortenText();
-
-        const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-        const List<String> offlineFileTypes = [...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-
-        final resultPicker = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
-          allowMultiple: tempData.origin == OriginFile.public ? false : true
-        );
-
-        if (resultPicker == null) {
-          return;
-        }
+        loadingDialog.stopLoading();
 
         if(!mounted) return;
-        final scaffoldMessenger = ScaffoldMessenger.of(context);
+        Navigator.pop(context);
 
-        int countSelectedFiles = resultPicker.files.length;
-
-        final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
-        final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-
-        if (tempData.origin != OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
-          UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
-            context: context,
-          ); return;
-        } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
-          UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
-            context: context,
-          ); return;
-        }
-
-        tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
-
-        if(countSelectedFiles > 2) {
-          SnakeAlert.uploadingSnake(
-            snackState: scaffoldMessenger, 
-            message: "Uploading $countSelectedFiles item(s)..."
-          );
-        }
-
-        for (final pickedFile in resultPicker.files) {
-
-          final selectedFileName = pickedFile.name;
-          final fileExtension = selectedFileName.split('.').last;
-
-          if(!mounted) return;
-
-          if (!Globals.supportedFileTypes.contains(fileExtension)) {
-            CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
-            await NotificationApi.stopNotification(0);
-            continue;
-          }
-
-          if (storageData.fileNamesList.contains(selectedFileName)) {
-            CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
-            await NotificationApi.stopNotification(0);
-            continue;
-          }
-
-          if(countSelectedFiles < 2) {
-
-            tempData.origin != OriginFile.public
-            ? SnakeAlert.uploadingSnake(
-              snackState: scaffoldMessenger, 
-              message: "Uploading ${shortenText.cutText(selectedFileName)}"
-            ) 
-            : null;
-          }
-
-          final filePathVal = pickedFile.path.toString();
-
-          if (!(Globals.imageType.contains(fileExtension))) {
-            fileBase64 = base64.encode(File(filePathVal).readAsBytesSync());
-          }
-
-          if (Globals.imageType.contains(fileExtension)) {
-
-            List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal,quality: 85);
-            String compressedImageBase64Encoded = base64.encode(bytes);
-
-            if(verifyOrigin == "psFiles") {
-              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
-              return;
-            }
-
-            await UpdateListView().processUpdateListView(
-              filePathVal: filePathVal, 
-              selectedFileName: selectedFileName, 
-              tableName: GlobalsTable.homeImage, 
-              fileBase64Encoded: compressedImageBase64Encoded
-            );
-
-          } else if (Globals.videoType.contains(fileExtension)) {
-
-            String setupThumbnailName = selectedFileName.replaceRange(selectedFileName.lastIndexOf("."), selectedFileName.length, ".jpeg");
-
-            Directory appDocDir = await getApplicationDocumentsDirectory();
-            String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
-
-            Directory tempDir = await getTemporaryDirectory();
-            String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
-
-            File thumbnailFile = File(tempThumbnailPath);
-
-            final thumbnailBytes = await VideoThumbnail.thumbnailData(
-              video: filePathVal,
-              imageFormat: ImageFormat.JPEG,
-              quality: 40,
-            );
-
-            await thumbnailFile.writeAsBytes(thumbnailBytes!);
-
-            await thumbnailFile.copy(thumbnailPath);
-
-            newFileToDisplayPath = thumbnailFile;
-
-            if(verifyOrigin == "psFiles") {
-
-              _openPsCommentDialog(
-                filePathVal: filePathVal, fileName: selectedFileName, 
-                tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
-                newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
-              );
-
-              return;
-
-            }
-
-            await UpdateListView().processUpdateListView(
-              filePathVal: filePathVal, selectedFileName: selectedFileName, 
-              tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
-              newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
-            );
-
-            await thumbnailFile.delete();
-
-          } else {
-
-            final getFileTable = tempData.origin == OriginFile.home 
-              ? Globals.fileTypesToTableNames[fileExtension]! 
-              : Globals.fileTypesToTableNamesPs[fileExtension]!;
-
-            newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
-
-            if(verifyOrigin == "psFiles") {
-              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
-              return;
-            }
-
-            await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
-          }
-
-          UpdateListView().addItemToListView(fileName: selectedFileName);
-
-          scaffoldMessenger.hideCurrentSnackBar();
-
-          if(countSelectedFiles < 2) {
-            SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
-          }
-
-        }
-
-      if(countSelectedFiles > 2) {
-        SnakeAlert.temporarySnake(
-          snackState: scaffoldMessenger, 
-          message: "${countSelectedFiles.toString()} Items has been added"
-        );
-      }
-
-      await NotificationApi.stopNotification(0);
-
-      countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles) : null;
-
-      _itemSearchingImplementation('');
-
-    } catch (err, st) {
-      logger.e('Exception from _openDialogFile {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-    }
-  }
-
-  Future<String> _getVideoThumbnail(String videoPath) async {
-
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String thumbnailPath = '${appDocDir.path}/${path.basename(videoPath)}.jpg';
-
-    Directory tempDir = await getTemporaryDirectory();
-    String tempThumbnailPath = '${tempDir.path}/${path.basename(videoPath)}.jpg';
-
-    final thumbnailBytes = await VideoThumbnail.thumbnailData(
-      video: videoPath,
-      imageFormat: ImageFormat.JPEG,
-      quality: 40,
+      },
+      trailingOnPressed: (int index) {
+        _callBottomTrailingFolder(storageData.foldersNameList[index]);
+      }, 
+      context: context
     );
 
-    File thumbnailFile = File(tempThumbnailPath);
-    await thumbnailFile.writeAsBytes(thumbnailBytes!);
-
-    await thumbnailFile.copy(thumbnailPath);
-
-    return thumbnailPath;
-  }
-
-  Future<void> _openDialogFolder() async {
-
-    try {
-
-      final result = await FilePicker.platform.getDirectoryPath();
-
-      if (result == null) {
-        return;
-      }
-
-      final folderName = path.basename(result);
-
-      if (storageData.foldersNameList.contains(folderName)) {
-        CustomFormDialog.startDialog("Upload Failed", "$folderName already exists.");
-        return;
-      }
-
-      await CallNotify().customNotification(title: "Uploading folder...", subMesssage: "${ShortenText().cutText(folderName)} In progress");
-
-      if(!mounted) return;
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text("Uploading $folderName folder..."),
-          backgroundColor: ThemeColor.mediumGrey,
-        ),
-      );
-
-      await _uploadFolder(folderPath: result, folderName: folderName);
-
-      await NotificationApi.stopNotification(0);
-
-      scaffoldMessenger.hideCurrentSnackBar();
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text("Folder $folderName has been added"),
-          duration: const Duration(seconds: 2),
-          backgroundColor: ThemeColor.mediumGrey,
-        ),
-      );
-
-      await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
-
-    } catch (err, st) {
-      logger.e('Exception from _openDialogFolder {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-    }
-  }
-
-  Future<void> _uploadFolder({
-    required String folderPath, 
-    required String folderName
-    }) async {
-
-    final fileTypes = <String>[];
-    final videoThumbnails = <String>[];
-    final fileNames = <String>[];
-    final fileValues = <String>[];
-
-    final files = Directory(folderPath).listSync().whereType<File>().toList();
-
-    if(files.length == AccountPlan.mapFilesUpload[userData.accountType]) {
-      CustomFormDialog.startDialog("Couldn't upload $folderName", "It looks like the number of files in this folder exceeded the number of file you can upload. Please upgrade your account plan.");
-      return;
-    }
-
-    for (final folderFile in files) {
-
-      final getFileName = path.basename(folderFile.path);
-      final getExtension = getFileName.split('.').last;
-
-      if (Globals.videoType.contains(getExtension)) {
-
-        final thumbnailPath = await _getVideoThumbnail(folderFile.path);
-        videoThumbnails.add(thumbnailPath);
-
-      } else if (Globals.imageType.contains(getExtension)) {
-
-        final compressedImage = await CompressorApi.compressedByteImage(
-          path: folderFile.path,
-          quality: 85,
-        );
-
-        final base64Encoded = base64.encode(compressedImage);
-        fileValues.add(base64Encoded);
-
-      } else {
-
-        final base64encoded = base64.encode(folderFile.readAsBytesSync());
-        fileValues.add(base64encoded);
-
-      }
-
-      fileTypes.add(getExtension);
-      fileNames.add(getFileName);
-    }
-    
-    final formattedDate = 
-      DateFormat('dd/MM/yyyy').format(DateTime.now()); 
-
-    await CreateFolder(EncryptionClass(), formattedDate).insertParams(
-      titleFolder: folderName,
-      fileValues: fileValues,
-      fileNames: fileNames,
-      fileTypes: fileTypes,
-      videoThumbnail: videoThumbnails,
-    );
-
-    storageData.foldersNameList.add(folderName);
-    
   }
 
   Future _callSelectedItemsBottomTrailing() {
@@ -2242,6 +2195,35 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     
   }
 
+  Future _callBottomTrailingFolder(String folderName) {
+    return BottomTrailingFolder().buildFolderBottomTrailing(
+      folderName: folderName, 
+      context: context, 
+      onRenamePressed: () {
+        _openRenameFolderDialog(folderName);
+      }, 
+      onDownloadPressed: () async {
+        if(userData.accountType == "Basic") {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "Upgrade your account to any paid plan to download folder.",
+            context: context
+          );
+        } else {
+          await SaveFolder().selectDirectoryUserFolder(folderName: folderName, context: context);
+        }
+      }, 
+      onDeletePressed: () async {
+        DeleteDialog().buildDeleteDialog(
+          fileName: "$folderName folder", 
+          onDeletePressed: () async {
+            await _deleteFolderOnPressed(folderName);
+          }, 
+          context: context
+        );
+      }
+    );
+  }
+
   Future _callBottomTrailingShared() {
     final bottomTrailingShared = BottomTrailingShared();
     return bottomTrailingShared.buildTrailing(
@@ -2315,176 +2297,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         },
       )
     );
-  }
-
-  Future _deleteFolderDialog(BuildContext context, String folderName) async {
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: ThemeColor.darkGrey,
-          title: Text(folderName,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          content: const Text(
-            'Delete this folder? Action is permanent.',
-            style: TextStyle(color: Color.fromARGB(255, 212, 212, 212)),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
-                elevation: 0,
-              ),
-              onPressed: () async {
-                await _deleteFolder(folderName);
-                if(!mounted) return;
-                Navigator.pop(context);
-              },
-
-              child: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future _buildFolderBottomTrailing(String folderName) {
-    return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
-      context: context,
-      shape: GlobalsStyle.bottomDialogBorderStyle,
-      builder: (context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      folderName.length > 50 ? "${folderName.substring(0,50)}..." : "$folderName Folder",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _openRenameDirectoryDialog(folderName);
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.edit),
-                  SizedBox(width: 10.0),
-                  Text(
-                    'Rename Folder',
-                    style: GlobalsStyle.btnBottomDialogTextStyle,
-                  ),
-                ],
-              ),
-            ),
-
-            ElevatedButton(
-              onPressed: () async {
-                if(userData.accountType == "Basic") {
-                  UpgradeDialog.buildUpgradeDialog(
-                    message: "Upgrade your account to any paid plan to download folder.",
-                    context: context
-                  );
-                } else {
-                  await SaveFolder().selectDirectoryUserFolder(folderName: folderName, context: context);
-                }
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.download_rounded),
-                  SizedBox(width: 8.0),
-                  Text('Download',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 200, 200, 200),
-                    fontSize: 16,
-                  )),
-                ],
-              ),
-            ),
-
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                await _deleteFolderDialog(context,folderName);
-              },
-
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.delete,color: ThemeColor.darkRed),
-                  SizedBox(width: 10.0),
-                  Text('Delete',
-                    style: TextStyle(
-                      color: ThemeColor.darkRed,
-                      fontSize: 17,
-                    )
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      }
-    );
-  }
-
-  Future _buildFoldersDialog() async {
-    return FolderDialog().buildFolderDialog(
-      folderOnPressed: (int index) async {
-        
-        final loadingDialog = MultipleTextLoading();
-
-        tempData.setCurrentFolder(storageData.foldersNameList[index]);
-
-        loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.folderName} files.",context: context);
-        await _callFolderData(storageData.foldersNameList[index]);
-
-        loadingDialog.stopLoading();
-
-        if(!mounted) return;
-        Navigator.pop(context);
-
-      },
-      trailingOnPressed: (int index) {
-        _buildFolderBottomTrailing(storageData.foldersNameList[index]);
-      }, 
-      context: context
-    );
-
   }
 
   Widget _buildNavigationButtons() {

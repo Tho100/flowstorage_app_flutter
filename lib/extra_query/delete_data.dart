@@ -70,7 +70,6 @@ class DeleteData {
 
     if (query!.isNotEmpty) {
       await crud.delete(query: query, params: params);
-      await Future.delayed(const Duration(milliseconds: 855));
     }
 
   }
