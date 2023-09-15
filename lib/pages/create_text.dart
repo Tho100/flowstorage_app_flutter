@@ -151,21 +151,22 @@ class CreateTextPageState extends State<CreateText> {
 
   String _tableToUploadTo() {
 
-    if(tempData.origin == OriginFile.home) {
-      return GlobalsTable.homeText;
+    switch (tempData.origin) {
+      case OriginFile.home:
+        return GlobalsTable.homeText;
 
-    } else if (tempData.origin == OriginFile.directory) {
-      return GlobalsTable.directoryUploadTable;
+      case OriginFile.directory:
+        return GlobalsTable.directoryUploadTable;
 
-    } else if (tempData.origin == OriginFile.folder) {
-      return GlobalsTable.folderUploadTable;
+      case OriginFile.folder:
+        return GlobalsTable.folderUploadTable;
 
-    } else if (tempData.origin == OriginFile.public) {
-      return GlobalsTable.psText;
+      case OriginFile.public:
+        return GlobalsTable.psText;
 
+      default:
+        return GlobalsTable.homeText;
     }
-
-    return GlobalsTable.homeText;
 
   }
 

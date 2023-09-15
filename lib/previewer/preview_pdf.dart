@@ -42,7 +42,7 @@ class PreviewPdfState extends State<PreviewPdf> {
       }
 
     } catch (err, st) {
-      Logger().e("Exception from _callData {PreviewText}", err, st);
+      Logger().e("Exception from _callData {PreviewPdf}", err, st);
       return Future.value(Uint8List(0));
     }
   }

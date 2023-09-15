@@ -48,6 +48,7 @@ class PreviewAudioState extends State<PreviewAudio> {
   bool isPressedPlayedOnFirstTry = false;
   bool audioIsPlaying = false;
 
+  late String? audioContentType;
   late Uint8List byteAudio;
 
   Future<Uint8List> callAudioDataAsync() async {
@@ -70,7 +71,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
       
     } catch (err, st) {
-      Logger().e("Exception from _callData {PreviewText}", err, st);
+      Logger().e("Exception from _callData {PreviewAudio}", err, st);
       return Future.value(Uint8List(0));
     }
 
@@ -78,56 +79,51 @@ class PreviewAudioState extends State<PreviewAudio> {
   
   Future<void> playOrPauseAudioAsync() async {
 
-    if(byteAudio.isEmpty) {
+    if (byteAudio.isEmpty) {
       byteAudio = await callAudioDataAsync();
     }
 
     if (audioPlayerController.playing) {
-      audioPlayerController.pause(); 
-      iconPausePlayNotifier.value = Icons.play_arrow_rounded; 
-    } else {
-
-      final fileType = tempData.selectedFileName.split('.').last;
-      String? audioContentType;
-
-      if (fileType == "wav") {
-        audioContentType = 'audio/wav';
-      } else if (fileType == "mp3") {
-        audioContentType = 'audio/mpeg';
-      }
-
-      if (audioPlayerController.duration == null) {
-        await audioPlayerController.setAudioSource(MyJABytesSource(byteAudio, audioContentType!));
-        Duration duration = audioPlayerController.duration!;
-        String formattedDuration = getDurationString(duration);
-        audioDuration = formattedDuration;
-      }
-
-      audioPlayerController.play();
-
-      iconPausePlayNotifier.value = Icons.pause;
-
-      Timer.periodic(const Duration(milliseconds: 50), (timer) {
-        if (audioPlayerController.playing) {
-          Duration currentPosition = audioPlayerController.position;
-          String formattedPosition = getDurationString(currentPosition);
-          currentAudioDuration.value = formattedPosition;
-          audioPositionNotifier.value = audioPlayerController.position.inSeconds.toDouble();
-        }
-      });
-
-      audioPlayerController.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          iconPausePlayNotifier.value = Icons.replay_rounded;
-          if(isKeepPlayingEnabledNotifier.value == true) {
-            audioPlayerController.seek(Duration.zero);
-            audioPlayerController.play();
-            iconPausePlayNotifier.value = Icons.pause;
-          }
-        }
-      });
-
+      audioPlayerController.pause();
+      iconPausePlayNotifier.value = Icons.play_arrow_rounded;
+      return;
     }
+
+    if (audioPlayerController.duration == null) {
+      await audioPlayerController.setAudioSource(MyJABytesSource(byteAudio, audioContentType!));
+      Duration duration = audioPlayerController.duration!;
+      String formattedDuration = getDurationString(duration);
+      audioDuration = formattedDuration;
+    }
+
+    audioPlayerController.play();
+
+    iconPausePlayNotifier.value = Icons.pause;
+
+    Timer? progressTimer;
+
+    progressTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (!audioPlayerController.playing) {
+        progressTimer?.cancel();
+        return;
+      }
+
+      Duration currentPosition = audioPlayerController.position;
+      String formattedPosition = getDurationString(currentPosition);
+      currentAudioDuration.value = formattedPosition;
+      audioPositionNotifier.value = audioPlayerController.position.inSeconds.toDouble();
+    });
+
+    audioPlayerController.playerStateStream.firstWhere((state) {
+      return state.processingState == ProcessingState.completed;
+    }).then((_) {
+      iconPausePlayNotifier.value = Icons.replay_rounded;
+      if (isKeepPlayingEnabledNotifier.value == true) {
+        audioPlayerController.seek(Duration.zero);
+        audioPlayerController.play();
+        iconPausePlayNotifier.value = Icons.pause;
+      }
+    });
   }
 
   String getDurationString(Duration duration) {
@@ -419,11 +415,23 @@ class PreviewAudioState extends State<PreviewAudio> {
     audioPlayerController.seek(Duration(seconds: newPosition.toInt()));
   }
 
+  void initializeAudioContentType() {
+
+    final fileType = tempData.selectedFileName.split('.').last;
+
+    if (fileType == "wav") {
+      audioContentType = 'audio/wav';
+    } else if (fileType == "mp3") {
+      audioContentType = 'audio/mpeg';
+    }
+
+  }
 
   @override
   void initState() {
     super.initState();
     byteAudio = Uint8List(0);
+    initializeAudioContentType();
     playOrPauseAudioAsync();
   }
 

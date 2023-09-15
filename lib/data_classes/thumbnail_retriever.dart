@@ -19,22 +19,29 @@ class ThumbnailGetter {
     Map<String, dynamic> params;
   
     if (fileName != null) {
+
       query = "SELECT CUST_THUMB FROM ";
       if (tempData.origin == OriginFile.home) {
         query += "file_info_vid WHERE CUST_USERNAME = :username";
+
       } else {
         query += "cust_sharing WHERE CUST_FROM = :username";
+
         if (tempData.origin == OriginFile.sharedOther) {
           query += " AND CUST_TO = :username";
+
         } else if (tempData.origin == OriginFile.sharedMe) {
           query += " AND CUST_FILE_PATH = :filename";
           params = {'username': userData.username, 'filename': EncryptionClass().encrypt(fileName)};
+
         }
       }
       params = {'username': userData.username, 'filename': EncryptionClass().encrypt(fileName)};
+
     } else {
       query = "SELECT CUST_THUMB FROM file_info_vid WHERE CUST_USERNAME = :username";
       params = {'username': userData.username};
+
     }
 
     final getThumbBytesQue = await conn.execute(query, params);

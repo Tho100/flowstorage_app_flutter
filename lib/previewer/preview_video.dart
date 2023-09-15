@@ -72,8 +72,9 @@ class PreviewVideoState extends State<PreviewVideo> {
 
     videoIsTappedNotifier.value = true;
     videoPlayerController.addListener(videoPlayerListener);
-
+    
   }
+
 
   Future<void> playVideoDataAsync() async {
     
@@ -369,7 +370,6 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   void videoPlayerListener() {
-
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
@@ -377,8 +377,13 @@ class PreviewVideoState extends State<PreviewVideo> {
     currentVideoDurationNotifier.value = currentDuration;
     videoPositionNotifier.value = position.inSeconds.toDouble();
 
-    if (videoPlayerController.value.isInitialized &&
-        !videoPlayerController.value.isPlaying && duration - position <= endThreshold) {
+    final isVideoInitialized = videoPlayerController.value.isInitialized;
+    final isVideoPlaying = videoPlayerController.value.isPlaying;
+    final isVideoEnded = isVideoInitialized &&
+        !isVideoPlaying &&
+        duration - position <= endThreshold;
+
+    if (isVideoInitialized && !isVideoPlaying && isVideoEnded) {
       iconPausePlayNotifier.value = Icons.replay;
       videoIsEnded = true;
       videoIsTappedNotifier.value = true;
@@ -386,10 +391,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
+  void initializeVideoConfiguration() {
     indexThumbnail = storageData
       .fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
@@ -397,6 +399,12 @@ class PreviewVideoState extends State<PreviewVideo> {
       .imageBytesFilteredList[indexThumbnail]!;
       
     videoPlayerController = VideoPlayerController.networkUrl(Uri());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeVideoConfiguration();
     playVideoDataAsync();
   }
 

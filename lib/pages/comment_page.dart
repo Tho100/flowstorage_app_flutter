@@ -27,6 +27,39 @@ class CommentPageState extends State<CommentPage> {
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
+  late final String mainFileComment;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFileComment();
+  }
+
+  void initializeFileComment() async {
+    
+    switch (tempData.origin) {
+      case OriginFile.home:
+        mainFileComment = "(No Comment)";
+        break;
+
+      case OriginFile.sharedOther:
+        mainFileComment = await _sharedFileComment();
+        break;
+
+      case OriginFile.sharedMe:
+        mainFileComment = await _sharedToMeComment();
+        break;
+
+      case OriginFile.public:
+        mainFileComment = await _psFileComment();
+        break;
+
+      default:
+        break;
+    }
+
+  }
+
   Widget _buildHeader() {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -135,22 +168,6 @@ class CommentPageState extends State<CommentPage> {
   }
 
   Future<Widget> _buildComment() async {
-
-    late final String mainFileComment;
-
-    if(tempData.origin == OriginFile.home) {
-      mainFileComment = "(No Comment)";
-
-    } else if (tempData.origin == OriginFile.sharedOther) {
-      mainFileComment = await _sharedFileComment();
-
-    } else if (tempData.origin == OriginFile.sharedMe) {
-      mainFileComment = await _sharedToMeComment();
-
-    } else if (tempData.origin == OriginFile.public) {
-      mainFileComment = await _psFileComment();
-      
-    }
 
     final commentText = TextEditingController(text: mainFileComment);
     final mediaQuery = MediaQuery.of(context).size;
