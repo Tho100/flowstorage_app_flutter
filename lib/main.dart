@@ -24,7 +24,6 @@ import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
-import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -35,15 +34,15 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/interact_dialog/share_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_add_item.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/public_storage/ps_comment_dialog.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_filter.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_folder.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_selected_items.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_shared.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_sorting.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_filter.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_folder.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_selected_items.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_shared.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_sorting.dart';
 import 'package:flowstorage_fsc/widgets/empty_body.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
 import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
@@ -52,6 +51,9 @@ import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
 import 'package:flowstorage_fsc/interact_dialog/folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
+import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
+import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
+import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
 
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -1750,7 +1752,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         await File(imagePath).delete();
 
       }
-      
+
       await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
 
       _itemSearchingImplementation('');
@@ -2667,12 +2669,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
 
-    const generalFileType = {
-      ...Globals.audioType, 
-      ...Globals.wordType, ...Globals.textType, 
-      ...Globals.ptxType, ...Globals.excelType, "apk","exe", "pdf"
-    };
-
     return GestureDetector(
       onTap: () async {
         await _navigateToPreviewFile(index);
@@ -2687,8 +2683,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               Stack(
                 children: [
                   Container(
-                    width: generalFileType.contains(fileType) ? 72 : 158,
-                    height: generalFileType.contains(fileType) ? 72 : 158,
+                    width: Globals.generalFileTypes.contains(fileType) ? 72 : 158,
+                    height: Globals.generalFileTypes.contains(fileType) ? 72 : 158,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
@@ -2777,37 +2773,34 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
 
-    String uploaderNamePs = "";
-    bool isRecentPs = false;
+    String uploaderName = "";
+    bool isRecent = false;
 
     if (tempData.origin == OriginFile.public) {
-
-      uploaderNamePs = psStorageData.psUploaderList[index];
-      if (uploaderNamePs == userData.username) {
-        uploaderNamePs = "${userData.username} (You)";
+      uploaderName = psStorageData.psUploaderList[index];
+      if (uploaderName == userData.username) {
+        uploaderName = "${userData.username} (You)";
       }
 
-      isRecentPs = index == 0 || index == 1 || index == 2; 
-
+      isRecent = index <= 2;
     }
 
     return Padding(
       padding: EdgeInsets.all(tempData.origin == OriginFile.public ? 0.0 : 2.0),
       child: GestureDetector(
         onLongPress: () {
-          if(!isRecentPs) {
+          if (!isRecent) {
             _callBottomTrailling(index);
           }
         },
         onTap: () async {
-          if(!isRecentPs) {
+          if (!isRecent) {
             await _navigateToPreviewFile(index);
           }
         },
         child: Column(
           children: [
-    
-            if (isRecentPs && tempData.origin == OriginFile.public && index == 0) ... [
+            if (isRecent && tempData.origin == OriginFile.public && index == 0) ... [
               const Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -2828,56 +2821,50 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                   ),
                 ),
               ),
-    
               const SizedBox(height: 16),
-    
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-    
                     const SizedBox(width: 10),
-                    _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0, uploaderNamePs),
-                                      
+                    _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0, uploaderName),
+
                     if (storageData.imageBytesFilteredList.length > 1) ... [
                       const SizedBox(width: 12),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1, uploaderNamePs),
+                      _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1, uploaderName),
+
                     ],
-                    
                     if (storageData.imageBytesFilteredList.length > 2) ... [
                       const SizedBox(width: 12),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2, uploaderNamePs),
+                      _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2, uploaderName),
                     ],
-                              
+
                   ],
                 ),
               ),
-    
               const SizedBox(height: 8),
               const Divider(color: ThemeColor.whiteGrey),
-              
             ],
-
-            if(tempData.origin == OriginFile.public && index == 3) ... [
+            if (tempData.origin == OriginFile.public && index == 3) ... [
               Padding(
                 padding: const EdgeInsets.only(left: 12),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3, uploaderNamePs),
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3, uploaderName),
                       const SizedBox(width: 25),
-
                       if (storageData.imageBytesFilteredList.length > 4)
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4, uploaderNamePs),
-                      const SizedBox(width: 25),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4, uploaderName),
 
+                      const SizedBox(width: 25),
                       if (storageData.imageBytesFilteredList.length > 5)
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5, uploaderNamePs),
-                      const SizedBox(width: 25),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5, uploaderName),
 
+                      const SizedBox(width: 25),
                       if (storageData.imageBytesFilteredList.length > 6)
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6, uploaderNamePs),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6, uploaderName),
+
                       const SizedBox(width: 18),
                     ],
                   ),
@@ -2886,321 +2873,84 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               const SizedBox(height: 12),
               const Divider(color: ThemeColor.whiteGrey),
             ],
+            if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
 
-            if(tempData.origin == OriginFile.public && !isRecentPs && index > 6) ... [
-
-              if(index == 7)
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 18.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
-                      SizedBox(width: 8),
-                      Text(
-                        "Discover",
-                        style: TextStyle(
-                          fontSize: 23,
-                          color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w600,
+              if (index == 7)
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 18.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          "Discover",
+                          style: TextStyle(
+                            fontSize: 23,
+                            color: ThemeColor.justWhite,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              
-              IntrinsicHeight(
-                child: _buildPsStaggeredListView(imageBytes, index, uploaderNamePs)
-              ),
-    
+
+              IntrinsicHeight(child: _buildPsStaggeredListView(imageBytes, index, uploaderName)),
+
             ],
-    
-            if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
-            IntrinsicHeight(
-              child: _buildNormalStaggeredListView(imageBytes, index),
-            ),
             
-            if(tempData.origin != OriginFile.public && togglePhotosPressed == true)
-            IntrinsicHeight(
-              child: _buildPhotosStaggeredItems(index),
-            ),
-          
+            if (tempData.origin != OriginFile.public && !togglePhotosPressed)
+              IntrinsicHeight(child: _buildDefaultStaggeredListView(imageBytes, index)),
+
+            if (tempData.origin != OriginFile.public && togglePhotosPressed)
+              IntrinsicHeight(child: _buildPhotosStaggeredListView(index)),
+
           ],
         ),
       ),
     );
-     
   }
 
   Widget _buildPsStaggeredListView(Uint8List imageBytes, int index, String uploaderName) {
 
-    final mediaQuery = MediaQuery.of(context).size;
-    const generalFileType = {
-      ...Globals.audioType, 
-      ...Globals.wordType, ...Globals.textType, 
-      ...Globals.ptxType, ...Globals.excelType, "apk","exe", "pdf"
-    };
-
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final originalDateValues = storageData.fileDateFilteredList[index];
 
-    return Container(
-      width: mediaQuery.width,
-      color: ThemeColor.darkBlack,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "$uploaderName ${GlobalsStyle.dotSeperator} $originalDateValues",
-                      style: const TextStyle(
-                        color: ThemeColor.secondaryWhite,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                      ),
-                      textAlign: TextAlign.center
-                    ),
-                  ),
-                ),
-              ),
-  
-              IconButton(
-                onPressed: () {
-                  _callBottomTrailling(index);
-                },
-                icon: const Icon(Icons.more_vert, color: Colors.white, size: 25),
-              ),
-            
-            ],
-          ),
-        
-          Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                ShortenText().cutText(storageData.fileNamesFilteredList[index], customLength: 37),
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                maxLines: 1,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-    
-          const SizedBox(height: 10),
-    
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: 108,
-                    height: 25,
-                    decoration: BoxDecoration(
-                      color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-                      borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    ),
-                    child: Center(
-                      child: Text(
-                        psStorageData.psTagsList[index],
-                        style: const TextStyle(
-                          color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w500
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-              
-          const SizedBox(height: 15),
-    
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  width: generalFileType.contains(fileType) ? 72 : mediaQuery.width - 35,
-                  height: generalFileType.contains(fileType) ? 72 : mediaQuery.height - 495,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: ThemeColor.lightGrey,
-                      width: 2,
-                    )
-                  ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    child: Image.memory(imageBytes, fit: BoxFit.cover),
-                  ),
-                ),
-    
-                if(Globals.videoType.contains(fileType))
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 8),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: ThemeColor.mediumGrey.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)
-                  )
-                ),
-    
-              ],
-            ),
-          ),
-    
-          const SizedBox(height: 12),
-    
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: SizedBox(
-                width: 132,
-                height: 38,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack), 
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16), 
-                        side: const BorderSide(color: ThemeColor.lightGrey, width: 1),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    final fileName = storageData.fileNamesFilteredList[index];
-                    tempData.setCurrentFileName(fileName);
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
-                    );
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(Icons.comment_outlined, 
-                      color: ThemeColor.justWhite, size: 21),
-                      SizedBox(width: 8),
-                      Text("Comments")
-                    ]
-                  )
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 6),
-          const Divider(color: ThemeColor.whiteGrey),
-        ],
-      ),
+    return PsStaggeredListView(
+      imageBytes: imageBytes, 
+      index: index, 
+      uploaderName: uploaderName, 
+      fileType: fileType, 
+      originalDateValues: originalDateValues, 
+      callBottomTrailing: () { _callBottomTrailling(index); }
     );
     
   }
 
-  Widget _buildNormalStaggeredListView(Uint8List imageBytes, int index) {
+  Widget _buildDefaultStaggeredListView(Uint8List imageBytes, int index) {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
 
-    return Column(
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              Container(
-              width: 89,
-              height: 89,
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Image.memory(imageBytes, fit: BoxFit.cover),
-                ),
-              ),
-              
-              if(Globals.videoType.contains(fileType))
-              const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 26),
-            
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 10),
-        
-        Text(
-          ShortenText().cutText(storageData.fileNamesFilteredList[index], customLength: 11),
-          style: const TextStyle(
-            color: ThemeColor.justWhite,
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            overflow: TextOverflow.ellipsis,
-          ),
-          maxLines: 1,
-          textAlign: TextAlign.center,
-        ),
-        
-        const SizedBox(height: 10) 
-
-      ],
+    return DefaultStaggeredListView(
+      imageBytes: imageBytes, 
+      index: index,
+      fileType: fileType
     );
+
   }
 
-  Widget _buildPhotosStaggeredItems(int index) {
+  Widget _buildPhotosStaggeredListView(int index) {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final imageBytes = storageData.imageBytesFilteredList[index]!;
 
-    return Column(
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              Container(
-                width: 335,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: ThemeColor.lightGrey,
-                    width: 1,
-                  )
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.memory(imageBytes, fit: BoxFit.cover)
-                ),
-              ),
-          
-              if(Globals.videoType.contains(fileType))
-              const Padding(
-                padding: EdgeInsets.only(left: 6.0, top: 4.0),
-                child: Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 26),
-              ),
-            ],
-          ),
-        ),
-
-      ],
+    return PhotosStaggeredListView(
+      imageBytes: imageBytes, 
+      fileType: fileType
     );
+    
   }
 
   Widget _buildStaggeredListView() {

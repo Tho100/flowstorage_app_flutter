@@ -135,9 +135,9 @@ class SplashScreenState extends State<SplashScreen> {
 
       final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
 
-      if(getLocalUsername.isNotEmpty && isPassCodeExists == false) {
+      if(getLocalUsername.isNotEmpty) {
 
-        if(shortcutType == "new_dir") {
+        if(shortcutType == "new_dir" && isPassCodeExists == false) {
 
           await _navigateToNextScreen();
 

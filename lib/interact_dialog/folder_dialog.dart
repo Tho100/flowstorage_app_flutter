@@ -2,7 +2,6 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 
 class FolderDialog {
 
@@ -37,31 +36,27 @@ class FolderDialog {
                     height: 1,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return Consumer<StorageDataProvider>(
-                      builder: (context, storageData, child) {
-                        return InkWell(
-                          onTap: () => folderOnPressed(index),
-                          child: Ink(
-                            child: ListTile(
-                              leading: Image.asset(
-                                'assets/images/dir1.png',
-                                width: 35,
-                                height: 35,
-                              ),
-                              title: Text(  
-                                storageData.foldersNameList[index],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              trailing: GestureDetector(
-                                onTap: () => trailingOnPressed(index),
-                              child: const Icon(Icons.more_vert,color: Colors.white)),
+                    return InkWell(
+                      onTap: () => folderOnPressed(index),
+                      child: Ink(
+                        child: ListTile(
+                          leading: Image.asset(
+                            'assets/images/dir1.png',
+                            width: 35,
+                            height: 35,
+                          ),
+                          title: Text(  
+                            storageData.foldersNameList[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        );
-                      }
+                          trailing: GestureDetector(
+                            onTap: () => trailingOnPressed(index),
+                          child: const Icon(Icons.more_vert,color: Colors.white)),
+                        ),
+                      ),
                     );
                   },
                 ),

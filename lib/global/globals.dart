@@ -93,6 +93,17 @@ class Globals {
     'wav': 'ps_info_audio'
   };
 
+  static const generalFileTypes = {
+    ...Globals.audioType,
+    ...Globals.wordType,
+    ...Globals.textType,
+    ...Globals.ptxType,
+    ...Globals.excelType,
+    "apk",
+    "exe",
+    "pdf"
+  };
+
   static const Set<String> supportedFileTypes = {
     "png","jpeg","jpg",
     "html","sql","md","txt","pptx","ptx",
