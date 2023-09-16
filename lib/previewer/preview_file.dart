@@ -391,7 +391,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     try {
 
-
       if(tempData.origin != OriginFile.offline) {
 
         await UpdateValues().insertValueParams(

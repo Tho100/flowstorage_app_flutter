@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
+import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
@@ -23,6 +24,7 @@ import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/upgrade_dialog.dart';
+import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
@@ -64,7 +66,6 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:image_picker_plus/image_picker_plus.dart';
 
@@ -238,20 +239,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final shortenText = ShortenText();
 
-      ImagePickerPlus picker = ImagePickerPlus(context);
-      SelectedImagesDetails? details = await picker.pickBoth(
-        source: ImageSource.both,
-        multiSelection: true,
-        galleryDisplaySettings: GalleryDisplaySettings(
-          maximumSelection: 100,
-          appTheme: AppTheme(
-            focusColor: Colors.white, 
-            primaryColor: ThemeColor.darkBlack,
-          ),
-        ),
-      );
+      final details = await PickerModel().galleryPicker();
       
-      int countSelectedFiles = details!.selectedFiles.length;
+      int countSelectedFiles = details.selectedFiles.length;
 
       if (countSelectedFiles == 0) {
         return;
@@ -307,14 +297,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           fileBase64Encoded = base64.encode(filesBytes);
         }
 
-        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
-
         if (Globals.imageType.contains(fileExtension)) {
 
           List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
           String compressedImageBase64Encoded = base64.encode(bytes);
 
-          if(verifyOrigin == "psFiles") {
+          if(tempData.origin == OriginFile.public) {
             _openPsCommentDialog(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
             return;
           }
@@ -323,26 +311,15 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
         } else if (Globals.videoType.contains(fileExtension)) {
 
-          String setupThumbnailName = filesName.replaceRange(filesName.lastIndexOf("."), filesName.length, ".jpeg");
+          final generatedThumbnail = await GenerateThumbnail(
+            fileName: filesName, 
+            filePath: pathToString
+          ).generate();
 
-          Directory appDocDir = await getApplicationDocumentsDirectory();
-          String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
+          final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+          final thumbnailFile = generatedThumbnail[1] as File;
 
-          Directory tempDir = await getTemporaryDirectory();
-          String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
-
-          File thumbnailFile = File(tempThumbnailPath);
-          final thumbnailBytes = await VideoThumbnail.thumbnailData(
-            video: pathToString,
-            imageFormat: ImageFormat.JPEG,
-            quality: 40,
-          );
-
-          await thumbnailFile.writeAsBytes(thumbnailBytes!);
-
-          await thumbnailFile.copy(thumbnailPath);
-
-          if(verifyOrigin == "psFiles") {
+          if(tempData.origin == OriginFile.public) {
 
             _openPsCommentDialog(
               filePathVal: pathToString, fileName: filesName, 
@@ -403,17 +380,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         late String? fileBase64;
         late File? newFileToDisplayPath;
 
-        final verifyOrigin = Globals.nameToOrigin[_getCurrentPageName()];
         final shortenText = ShortenText();
 
-        const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-        const List<String> offlineFileTypes = [...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-
-        final resultPicker = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
-          allowMultiple: tempData.origin == OriginFile.public ? false : true
-        );
+        final resultPicker = await PickerModel().filePicker();
 
         if (resultPicker == null) {
           return;
@@ -488,7 +457,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal,quality: 85);
             String compressedImageBase64Encoded = base64.encode(bytes);
 
-            if(verifyOrigin == "psFiles") {
+            if(tempData.origin == OriginFile.public) {
               _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
               return;
             }
@@ -502,29 +471,17 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
           } else if (Globals.videoType.contains(fileExtension)) {
 
-            String setupThumbnailName = selectedFileName.replaceRange(selectedFileName.lastIndexOf("."), selectedFileName.length, ".jpeg");
+            final generatedThumbnail = await GenerateThumbnail(
+              fileName: selectedFileName, 
+              filePath: filePathVal
+            ).generate();
 
-            Directory appDocDir = await getApplicationDocumentsDirectory();
-            String thumbnailPath = '${appDocDir.path}/$setupThumbnailName';
-
-            Directory tempDir = await getTemporaryDirectory();
-            String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
-
-            File thumbnailFile = File(tempThumbnailPath);
-
-            final thumbnailBytes = await VideoThumbnail.thumbnailData(
-              video: filePathVal,
-              imageFormat: ImageFormat.JPEG,
-              quality: 40,
-            );
-
-            await thumbnailFile.writeAsBytes(thumbnailBytes!);
-
-            await thumbnailFile.copy(thumbnailPath);
+            final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+            final thumbnailFile = generatedThumbnail[1] as File;
 
             newFileToDisplayPath = thumbnailFile;
 
-            if(verifyOrigin == "psFiles") {
+            if(tempData.origin == OriginFile.public) {
 
               _openPsCommentDialog(
                 filePathVal: filePathVal, fileName: selectedFileName, 
@@ -552,7 +509,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
             newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
-            if(verifyOrigin == "psFiles") {
+            if(tempData.origin == OriginFile.public) {
               _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
               return;
             }
@@ -1672,7 +1629,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     }
     
     tempData.origin == OriginFile.home ? storageData.homeImageBytesList.clear() : null;
-    tempData.origin == OriginFile.home ? storageData.homeImageBytesList.clear() : null;
+    tempData.origin == OriginFile.home ? storageData.homeThumbnailBytesList.clear() : null;
     
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
 
