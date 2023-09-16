@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatelessWidget {
+class MainPage extends StatelessWidget {
 
   Widget buildButtons(BuildContext context) {
     return Column(
@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  const HomePage({super.key});
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {

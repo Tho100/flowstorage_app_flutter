@@ -237,7 +237,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                 await _deleteAutoLoginAndOfflineFiles();
 
                 if(!mounted) return;
-                NavigatePage.replacePageHome(context);
+                NavigatePage.replacePageMain(context);
               },
               child: const Text(
                 'Logout',

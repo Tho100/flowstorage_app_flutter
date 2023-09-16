@@ -9,14 +9,15 @@ import 'package:image_picker_plus/image_picker_plus.dart';
 
 class PickerModel {
 
-  Future<SelectedImagesDetails> galleryPicker() async {
+  Future<SelectedImagesDetails> galleryPicker({
+    required ImageSource source}) async {
 
     ImagePickerPlus picker = ImagePickerPlus(navigatorKey.currentContext!);
     SelectedImagesDetails? details = await picker.pickBoth(
-      source: ImageSource.both,
+      source: source,
       multiSelection: true,
       galleryDisplaySettings: GalleryDisplaySettings(
-        maximumSelection: 100,
+        maximumSelection: 25,
         appTheme: AppTheme(
           focusColor: Colors.white, 
           primaryColor: ThemeColor.darkBlack,

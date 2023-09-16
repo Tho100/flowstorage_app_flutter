@@ -34,6 +34,9 @@ class MultipleTextLoading {
     const color = ThemeColor.darkPurple;
 
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12)
+      ),
       backgroundColor: backgroundColor,
       content: SizedBox(
         width: 325,

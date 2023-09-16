@@ -154,7 +154,7 @@ class SplashScreenState extends State<SplashScreen> {
         
       } else {
         if(!mounted) return;
-        NavigatePage.replacePageHome(context);
+        NavigatePage.replacePageMain(context);
       }
     
     });
@@ -199,7 +199,7 @@ class SplashScreenState extends State<SplashScreen> {
       if(getLocalUsername == '') {
 
         if(!mounted) return;
-        NavigatePage.replacePageHome(context);
+        NavigatePage.replacePageMain(context);
 
       } else {
 
@@ -233,7 +233,7 @@ class SplashScreenState extends State<SplashScreen> {
       }
     } catch (err, st) {
       logger.e("Exception from _navigateToNextScreen {SplashScreen}",err, st);
-      NavigatePage.replacePageHome(context);
+      NavigatePage.replacePageMain(context);
     }
   }
 
@@ -337,7 +337,7 @@ class SplashScreenState extends State<SplashScreen> {
       storageData.setFilesDate(dates);
 
     } catch (err) {
-      NavigatePage.replacePageHome(context);
+      NavigatePage.replacePageMain(context);
       return;
     }
 

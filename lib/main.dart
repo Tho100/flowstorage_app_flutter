@@ -221,14 +221,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Set<String> checkedItemsName = {};
 
-  dynamic leadingImageSearchedValue;
-  dynamic fileTitleSearchedValue;
-
   bool isAscendingItemName = false;
   bool isAscendingUploadDate = false;
-
-  bool isImageBottomTrailingVisible = false;
-
+  
   Timer? debounceSearchingTimer;
 
   Future<void> _openDialogGallery() async {
@@ -239,7 +234,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       final shortenText = ShortenText();
 
-      final details = await PickerModel().galleryPicker();
+      final details = await PickerModel()
+                        .galleryPicker(source: ImageSource.both);
       
       int countSelectedFiles = details.selectedFiles.length;
 
@@ -1278,16 +1274,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         storageData.setFilteredFilesName(filteredFiles);
         storageData.setFilteredImageBytes(filteredByteValues);
         storageData.setFilteredFilesDate(filteredFilesDate);
-
-        if (filteredFiles.isNotEmpty) {
-          final index = storageData.fileNamesList.indexOf(filteredFiles.first);
-          leadingImageSearchedValue =
-              filteredByteValues.isNotEmpty && filteredByteValues.length > index
-                  ? Image.memory(filteredByteValues[index]!)
-                  : null;
-        } else {
-          leadingImageSearchedValue = null;
-        }
       });
     });
 
@@ -1322,21 +1308,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }
 
       setState(() {
-        
         storageData.setFilteredFilesName(filteredFiles);
         storageData.setFilteredImageBytes(filteredByteValues);
         storageData.setFilteredFilesDate(filteredFilesDate);
-        
-        if (filteredFiles.isNotEmpty) {
-          final index = storageData.fileNamesList.indexOf(filteredFiles.first);
-          leadingImageSearchedValue = 
-            filteredByteValues.isNotEmpty && filteredByteValues.length > index
-            ? Image.memory(filteredByteValues[index]!)
-            : null;
-
-        } else {
-          leadingImageSearchedValue = null;
-        }
       });
     });
   }
@@ -1639,21 +1613,11 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
 
-      ImagePickerPlus picker = ImagePickerPlus(context);
-      SelectedImagesDetails? details = await picker.pickImage(
-        source: ImageSource.camera,
-        multiImages: false,
-        galleryDisplaySettings: GalleryDisplaySettings(
-          cropImage: false,
-          maximumSelection: 1,
-          appTheme: AppTheme(
-            focusColor: Colors.white, 
-            primaryColor: ThemeColor.darkBlack,
-          ),
-        ),
-      );
+      
+      final details = await PickerModel()
+                        .galleryPicker(source: ImageSource.camera);
 
-      if (details!.selectedFiles.isEmpty) {
+      if (details.selectedFiles.isEmpty) {
         return;
       }
 
@@ -1816,8 +1780,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       storageData.imageBytesFilteredList.removeAt(indexOfFile);
       storageData.fileDateList.removeAt(indexOfFile);
       storageData.fileDateFilteredList.removeAt(indexOfFile);
-      leadingImageSearchedValue = null;
-      fileTitleSearchedValue = null;  
     }
     if (!isFromSelectAll) {
       Navigator.pop(context);

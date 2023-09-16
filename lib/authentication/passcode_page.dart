@@ -169,7 +169,7 @@ class PasscodePageState extends State<PasscodePage> {
       }
 
     } catch (err, st) {
-      NavigatePage.replacePageHome(context);
+      NavigatePage.replacePageMain(context);
       logger.e("Exception from validatePassCode {PasscodePage}",err, st);
     } 
 

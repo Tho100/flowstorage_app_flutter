@@ -113,12 +113,12 @@ class GlobalsStyle {
       fillColor: ThemeColor.darkGrey,
       filled: true,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
       ),
       counterText: '',
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(
           width: 2.0,
           color: Color.fromARGB(255, 6, 102, 226),

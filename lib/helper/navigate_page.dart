@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
-import '../pages/home_page.dart';
+import '../pages/main_page.dart';
 import '../authentication/passcode_page.dart';
 import '../authentication/sign_in_page.dart';
 import '../authentication/sign_up_page.dart';
@@ -22,17 +22,17 @@ import '../pages/settings_page.dart';
 
 class NavigatePage {
 
-  static void replacePageHome(BuildContext context) {
+  static void replacePageMain(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => const MainPage()),
     );
   }
   
   static void permanentPageHome(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context, 
-      MaterialPageRoute(builder: (context) => const HomePage()), 
+      MaterialPageRoute(builder: (context) => const MainPage()), 
       (route) => false);
   }
 
