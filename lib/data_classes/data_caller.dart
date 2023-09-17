@@ -219,6 +219,7 @@ class DataCaller {
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
+
     tempData.setOrigin(OriginFile.public);
 
     justLoading.stopLoading();

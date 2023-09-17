@@ -58,6 +58,8 @@ class CommentPageState extends State<CommentPage> {
         break;
     }
 
+    setState(() {});
+
   }
 
   Widget _buildHeader() {

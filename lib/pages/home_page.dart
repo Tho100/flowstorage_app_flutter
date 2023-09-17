@@ -2532,11 +2532,12 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       child: Row(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
                   Container(
-                    width: Globals.generalFileTypes.contains(fileType) ? 72 : 158,
+                    width: Globals.generalFileTypes.contains(fileType) ? 72 : 185,
                     height: Globals.generalFileTypes.contains(fileType) ? 72 : 158,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
@@ -2550,30 +2551,26 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                       child: Image.memory(imageBytes, fit: BoxFit.cover),
                     ),
                   ),
-
                   if(Globals.videoType.contains(fileType))
-                  Padding(
-                    padding: const EdgeInsets.only(top: 14.0, left: 16.0),
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: ThemeColor.mediumGrey.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(16),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0, left: 14.0),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: ThemeColor.mediumGrey.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22),
                       ),
-                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
                     ),
-                  ),
-
                 ],
               ),
-
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(right: 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       ShortenText().cutText(fileName, customLength: 16),
@@ -2607,18 +2604,17 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
-                          textAlign: TextAlign.start,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
             ],
           ),
         ],
       ),
+
     );
   }
 
@@ -2777,7 +2773,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       uploaderName: uploaderName, 
       fileType: fileType, 
       originalDateValues: originalDateValues, 
-      callBottomTrailing: () { _callBottomTrailling(index); }
+      callBottomTrailing: _callBottomTrailling 
     );
     
   }
@@ -2969,20 +2965,26 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  @override
-  void initState() {
-
-    super.initState();
-    
+  void _initializeProvider() {
     userData = _locator<UserDataProvider>();
     storageData = _locator<StorageDataProvider>();
     psUploadData = _locator<PsUploadDataProvider>();
     tempData = _locator<TempDataProvider>();
     psStorageData = _locator<PsStorageDataProvider>();
+  }
 
+  void _initializeCheckedItemList() {
     checkedList = List.generate(
         storageData.fileNamesFilteredList.length, (index) => false);
+  }
 
+  @override
+  void initState() {
+
+    super.initState();
+    
+    _initializeProvider();
+    _initializeCheckedItemList();
     _itemSearchingImplementation('');
 
   }

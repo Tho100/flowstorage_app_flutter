@@ -45,7 +45,7 @@ class UpdateListView {
 
     isolatedFileFutures.add(insertData.insertValueParams(
       tableName: table,
-      filePath: filePath,
+      fileName: filePath,
       userName: userData.username,
       fileVal: fileValue,
       vidThumb: vidThumbnail,

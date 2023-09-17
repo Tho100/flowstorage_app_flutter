@@ -152,7 +152,7 @@ class PsStaggeredListView extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomRight,
               child: SizedBox(
-                width: 132,
+                width: 132, 
                 height: 38,
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -181,6 +181,7 @@ class PsStaggeredListView extends StatelessWidget {
               ),
             ),
           ),
+         
           const SizedBox(height: 6),
           const Divider(color: ThemeColor.whiteGrey),
         ],

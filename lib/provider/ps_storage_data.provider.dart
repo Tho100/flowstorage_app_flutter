@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class PsStorageDataProvider extends ChangeNotifier {
 
-  List<String> _psUploaderList = <String>[];
-  List<String> _psTagsList = <String>[];
-  List<Color> _psTagsColorList = <Color>[];
-  
+  final List<String> _psUploaderList = <String>[];
+  final List<String> _psTagsList = <String>[];
+  final List<Color> _psTagsColorList = <Color>[];
+
   List<Uint8List> _psImageBytesList = <Uint8List>[];
   List<Uint8List> _psThumbnailBytesList = <Uint8List>[];
 
@@ -41,21 +41,6 @@ class PsStorageDataProvider extends ChangeNotifier {
 
   void setMyPsThumbnailBytes(List<Uint8List> bytes) {
     _myPsThumbnailBytesList = bytes;
-    notifyListeners();
-  }
-
-  void setUploaderName(List<String> values) {
-    _psUploaderList = values;
-    notifyListeners();
-  }
-
-  void setTagsList(List<String> tags) {
-    _psTagsList = tags;
-    notifyListeners();
-  }
-
-  void setTagsColorList(List<Color> colorValue) {
-    _psTagsColorList = colorValue;
     notifyListeners();
   }
 

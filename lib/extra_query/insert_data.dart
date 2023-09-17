@@ -21,7 +21,7 @@ class InsertData {
   
   Future<void> insertValueParams({
     required String tableName,
-    required String filePath,
+    required String fileName,
     required String userName,
     required dynamic fileVal,
     dynamic vidThumb,
@@ -29,7 +29,7 @@ class InsertData {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final encryptedFilePath = encryption.encrypt(filePath);
+    final encryptedFilePath = encryption.encrypt(fileName);
     final encryptedFileVal = encryption.encrypt(fileVal);
 
     final thumb = vidThumb != null ? base64.encode(vidThumb) : null;
@@ -53,7 +53,7 @@ class InsertData {
         break;
 
       case GlobalsTable.directoryUploadTable:
-        await insertDirectoryInfo(conn,tableName,userName,encryptedFileVal, tempData.directoryName,encryptedFilePath,thumb,filePath);
+        await insertDirectoryInfo(conn,tableName,userName,encryptedFileVal, tempData.directoryName,encryptedFilePath,thumb, fileName);
         break;
 
       case GlobalsTable.psText:
@@ -64,7 +64,7 @@ class InsertData {
       case GlobalsTable.psWord:
       case GlobalsTable.psAudio:
       case GlobalsTable.psApk:
-
+        
         await insertFileInfoPs(conn, tableName, encryptedFilePath, userName, encryptedFileVal);
         break;
 
@@ -129,7 +129,7 @@ class InsertData {
     String encryptedFileVal,
   ) async {
 
-    final encryptedComment = EncryptionClass().encrypt(psUploadData.psCommentValue);
+    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
     final tag = psUploadData.psTagValue;
 
     await conn.prepare('INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_COMMENT, CUST_TAG) VALUES (?, ?, ?, ?, ?, ?)')
@@ -144,9 +144,9 @@ class InsertData {
     String? thumb,
   ) async {
 
-    final encryptedComment = EncryptionClass().encrypt(psUploadData.psCommentValue);
+    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
     final tag = psUploadData.psTagValue;
-
+                             
     await conn.prepare('INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_COMMENT, CUST_TAG) VALUES (?, ?, ?, ?, ?, ?, ?)')
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, thumb, encryptedComment, tag]);
   }

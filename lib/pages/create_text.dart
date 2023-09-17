@@ -53,7 +53,7 @@ class CreateTextPageState extends State<CreateText> {
 
     isolatedFileFutures.add(InsertData().insertValueParams(
       tableName: table,
-      filePath: filePath,
+      fileName: filePath,
       userName: userData.username,
       fileVal: fileValue,
     ));

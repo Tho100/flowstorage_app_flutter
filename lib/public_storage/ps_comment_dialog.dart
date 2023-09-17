@@ -38,6 +38,9 @@ class PsCommentDialog {
       context: context,
       builder: (context) {
         return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12)
+          ),
           backgroundColor: ThemeColor.darkBlack,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
