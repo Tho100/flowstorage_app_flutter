@@ -123,8 +123,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   final crud = Crud();
   final logger = Logger();
 
-  final listViewScrollController = ScrollController();
-
   final sidebarMenuScaffoldKey = GlobalKey<ScaffoldState>();
 
   final scrollListViewController = ScrollController();
@@ -140,8 +138,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   final psButtonTextNotifier = ValueNotifier<String>('My Files');
   
-  final listViewScrollingDownNotifier = ValueNotifier<bool>(false);
-
   final navDirectoryButtonVisible = ValueNotifier<bool>(true);
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
 
@@ -770,7 +766,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
-    listViewScrollingDownNotifier.value = false;
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
       _navDirectoryButtonVisibility(true);
@@ -1343,9 +1338,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   Future<void> _callHomeData() async {
     
     _clearGlobalData();
-
     await dataCaller.homeData();
-    listViewScrollingDownNotifier.value = false;
+
   }
 
   Future<void> _callOfflineData() async {
@@ -1355,7 +1349,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     await dataCaller.offlineData();
 
     searchBarVisibileNotifier.value = true;
-    listViewScrollingDownNotifier.value = false;
 
     _clearSelectAll(); 
 
@@ -1372,7 +1365,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     _itemSearchingImplementation('');
     searchBarController.text = '';
-    listViewScrollingDownNotifier.value = false;
     searchHintText.value = "Search in ${tempData.appBarTitle}";
 
   }
@@ -1382,8 +1374,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     _clearGlobalData();
 
     await dataCaller.sharingData(originFrom);
-
-    listViewScrollingDownNotifier.value = false;
     _itemSearchingImplementation('');
 
   }
@@ -1399,7 +1389,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     searchBarVisibileNotifier.value = false;
     staggeredListViewSelected.value = true;
-    listViewScrollingDownNotifier.value = false;
 
     _itemSearchingImplementation('');
     searchBarController.text = '';
@@ -1421,7 +1410,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     
     _itemSearchingImplementation('');
     searchBarController.text = '';
-    listViewScrollingDownNotifier.value = false;
 
     _floatingButtonVisibility(false);
 
@@ -1445,7 +1433,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     tempData.setAppBarTitle(tempData.folderName);
 
     searchBarController.text = '';
-    listViewScrollingDownNotifier.value = false;
     searchBarVisibileNotifier.value = true;
 
   }
@@ -1573,7 +1560,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   Future<void> _initializeCamera() async {
 
     try {
-
       
       final details = await PickerModel()
                         .galleryPicker(source: ImageSource.camera);
@@ -2165,64 +2151,56 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   }
 
   Widget _buildNavigationButtons() {
-    return ValueListenableBuilder(
-      valueListenable: listViewScrollingDownNotifier,
-      builder: (context, value, widget) {
-        return Visibility(
-          visible: !value,
-          child: NavigationButtons(
-            isVisible: togglePhotosPressed, 
-            isCreateDirectoryVisible: navDirectoryButtonVisible, 
-            isStaggeredListViewSelected: staggeredListViewSelected, 
-            ascendingDescendingCaret: ascendingDescendingIconNotifier, 
-            sortingText: sortingText, 
-            sharedOnPressed: () { 
-              _callBottomTrailingShared(); 
-            }, 
-            
-            scannerOnPressed: () async {
-              if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-                await _initializeCameraScanner();
-              } else {
-                UpgradeDialog.buildUpgradeDialog(
-                  message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-                  context: context
-                );
-              }
-            }, 
-              
-            createDirectoryOnPressed: () async {
-              final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
-              if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-                if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
-                  _openCreateDirectoryDialog();
-                } else {
-                  UpgradeDialog.buildUpgradeDialog(
-                    message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
-                    context: context
-                  );
-                }
-              } else {
-                UpgradeDialog.buildUpgradeDialog(
-                  message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-                  context: context
-                );
-              }
-            }, 
-              
-            sortingOnPressed: () { _callBottomTrailingSorting(); },
-              
-            filterTypePsOnPressed: () {
-              final bottomTrailingFilter = BottomTrailingFilter();
-              bottomTrailingFilter.buildFilterTypeAll(
-                filterTypePublicStorage: _filterTypePublicStorage, 
-                filterTypeNormal: _itemSearchingImplementation, 
-                context: context
-              );
-            }
-          ),
-        );
+    return NavigationButtons(
+      isVisible: togglePhotosPressed, 
+      isCreateDirectoryVisible: navDirectoryButtonVisible, 
+      isStaggeredListViewSelected: staggeredListViewSelected, 
+      ascendingDescendingCaret: ascendingDescendingIconNotifier, 
+      sortingText: sortingText, 
+      sharedOnPressed: () { 
+        _callBottomTrailingShared(); 
       }, 
+      
+      scannerOnPressed: () async {
+        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
+          await _initializeCameraScanner();
+        } else {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
+            context: context
+          );
+        }
+      }, 
+        
+      createDirectoryOnPressed: () async {
+        final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
+        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
+          if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
+            _openCreateDirectoryDialog();
+          } else {
+            UpgradeDialog.buildUpgradeDialog(
+              message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
+              context: context
+            );
+          }
+        } else {
+          UpgradeDialog.buildUpgradeDialog(
+            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
+            context: context
+          );
+        }
+      }, 
+        
+      sortingOnPressed: () { _callBottomTrailingSorting(); },
+        
+      filterTypePsOnPressed: () {
+        final bottomTrailingFilter = BottomTrailingFilter();
+        bottomTrailingFilter.buildFilterTypeAll(
+          filterTypePublicStorage: _filterTypePublicStorage, 
+          filterTypeNormal: _itemSearchingImplementation, 
+          context: context
+        );
+      }
     );
   }
 
@@ -2554,8 +2532,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
               Stack(
                 children: [
                   Container(
-                    width: Globals.generalFileTypes.contains(fileType) ? 72 : 185,
-                    height: Globals.generalFileTypes.contains(fileType) ? 72 : 158,
+                    width: 185,
+                    height: 158,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
@@ -2565,22 +2543,23 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(14)),
-                      child: Image.memory(imageBytes, fit: BoxFit.cover),
+                      child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover),
                     ),
                   ),
+
                   if(Globals.videoType.contains(fileType))
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12.0, left: 14.0),
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: ThemeColor.mediumGrey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, left: 10.0),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: ThemeColor.mediumGrey.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22),
                     ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -2857,7 +2836,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       mediaHeight = mediaQuery.height - 194;
 
     } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 150; // 310
+      mediaHeight = mediaQuery.height - 310;
 
     } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
       mediaHeight = mediaQuery.height - 148;
@@ -2893,7 +2872,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
   Widget _buildResponsiveListView() {
     return ResponsiveListView(
-      scrollController: listViewScrollController,
       itemOnLongPress: (int index) {
         _callBottomTrailling(index);
       },
@@ -2998,24 +2976,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         storageData.fileNamesFilteredList.length, (index) => false);
   }
 
-  void _initializeListViewListener() {
-
-    listViewScrollController.addListener(() async {
-
-      if (listViewScrollController.offset <= listViewScrollController.position.minScrollExtent) {
-        listViewScrollingDownNotifier.value = false;
-        searchBarVisibileNotifier.value = true;
-      }
-
-      if (listViewScrollController.position.userScrollDirection == ScrollDirection.forward) {      
-        return;
-      } else {
-        searchBarVisibileNotifier.value = false;
-        listViewScrollingDownNotifier.value = true;
-      }
-    });
-  }
-
   @override
   void initState() {
 
@@ -3023,7 +2983,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     
     _initializeProvider();
     _initializeCheckedItemList();
-    _initializeListViewListener();
     _itemSearchingImplementation('');
 
   }
@@ -3047,8 +3006,6 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibileNotifier.dispose();
     searchHintText.dispose();
-    listViewScrollController.dispose();
-    listViewScrollingDownNotifier.dispose();
 
     super.dispose();
   }

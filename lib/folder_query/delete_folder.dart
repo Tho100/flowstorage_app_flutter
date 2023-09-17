@@ -5,15 +5,16 @@ import 'package:get_it/get_it.dart';
 
 class DeleteFolder {
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
+  final crud = Crud();
 
   Future<void> deletionParams({required folderName}) async {
 
-    final userData = _locator<UserDataProvider>();
-
-    final crud = Crud();
     const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
-    final params = {'username': userData.username, 'foldtitle': EncryptionClass().encrypt(folderName)};
+    final params = {
+      'username': userData.username, 
+      'foldtitle': EncryptionClass().encrypt(folderName)
+      };
 
     await crud.delete(
       query: deleteFolderQuery, 

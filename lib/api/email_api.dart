@@ -167,7 +167,7 @@ class EmailApi {
               <td class="price">$price/monthly</td>
             </tr>
           </table>
-          <h3>Cancel anytime without getting extra charges.</h3>
+          <h3>Cancel anytime without extra charges.</h3>
         </body>
       </html>
     ''';

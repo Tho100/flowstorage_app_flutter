@@ -12,17 +12,17 @@ import 'package:mysql_client/mysql_client.dart';
 
 class ByteGetterPs {
 
-  static const _fileInfoTable = 'ps_info_image';
-  static const _fileInfoExpandTable = 'ps_info_text';
-  static const _fileInfoVidTable = 'ps_info_video';
-  static const _fileInfoPdfTable = 'ps_info_pdf';
-  static const _fileInfoPtx = 'ps_info_ptx';
-  static const _fileInfoExl = 'ps_info_excel';
-  static const _fileInfoDoc = 'ps_info_word';
-  static const _fileInfoApk = 'ps_info_apk';
-  static const _fileInfoAudio = 'ps_info_audio';
-  static const _fileInfoExe = 'ps_info_exe';
-  static const _fileInfoMsi = 'ps_info_msi';
+  static const _imageTable = 'ps_info_image';
+  static const _textTable = 'ps_info_text';
+  static const _vidTable = 'ps_info_video';
+  static const _pdfTable = 'ps_info_pdf';
+  static const _ptxTable = 'ps_info_ptx';
+  static const _exlTable = 'ps_info_excel';
+  static const _docTable = 'ps_info_word';
+  static const _apkTable = 'ps_info_apk';
+  static const _audioTable = 'ps_info_audio';
+  static const _exeTable = 'ps_info_exe';
+  static const _msiTable = 'ps_info_msi';
 
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -32,19 +32,19 @@ class ByteGetterPs {
   final thumbnailGetter = ThumbnailGetterPs();
 
   final tableNameToAssetsImage = {
-    _fileInfoExpandTable: "txt0.png",
-    _fileInfoPdfTable: "pdf0.png",
-    _fileInfoAudio: "music0.png",
-    _fileInfoExl: "exl0.png",
-    _fileInfoPtx: "ptx0.png",
-    _fileInfoMsi: "exe0.png",
-    _fileInfoDoc: "doc0.png",
-    _fileInfoExe: "exe0.png",
-    _fileInfoApk: "apk0.png"
+    _textTable: "txt0.png",
+    _pdfTable: "pdf0.png",
+    _audioTable: "music0.png",
+    _exlTable: "exl0.png",
+    _ptxTable: "ptx0.png",
+    _msiTable: "exe0.png",
+    _docTable: "doc0.png",
+    _exeTable: "exe0.png",
+    _apkTable: "apk0.png"
   };
 
   Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String tableName) async {
-    if (tableName == _fileInfoTable) {
+    if (tableName == _imageTable) {
       if(psStorageData.psImageBytesList.isEmpty) {
         return getFileInfoParams(conn, false);
       } else {
@@ -56,7 +56,7 @@ class ByteGetterPs {
   }
 
   Future<List<Uint8List>> myGetLeadingParams(MySQLConnectionPool conn, String tableName) async {
-    if (tableName == _fileInfoTable) {
+    if (tableName == _imageTable) {
       if(psStorageData.myPsImageBytesList.isEmpty) {
         return getFileInfoParams(conn, true);
       } else {
@@ -74,13 +74,13 @@ class ByteGetterPs {
 
     if(isFromMyPs) {
 
-      query = 'SELECT CUST_FILE FROM $_fileInfoTable WHERE CUST_USERNAME = :username';
+      query = 'SELECT CUST_FILE FROM $_imageTable WHERE CUST_USERNAME = :username';
       final params = {'username': userData.username};
 
       executeRetrieval = await conn.execute(query,params);
 
     } else {
-      query = 'SELECT CUST_FILE FROM $_fileInfoTable ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
+      query = 'SELECT CUST_FILE FROM $_imageTable ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       executeRetrieval = await conn.execute(query);
     }
     
@@ -139,7 +139,7 @@ class ByteGetterPs {
       getByteValue.addAll(loadImg);
     }
 
-    if (tableName == _fileInfoVidTable) {
+    if (tableName == _vidTable) {
 
       if(psStorageData.psThumbnailBytesList.isEmpty || psStorageData.myPsThumbnailBytesList.isEmpty) {
 

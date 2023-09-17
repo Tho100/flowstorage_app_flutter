@@ -321,7 +321,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without getting extra charges", customFont: 13)
+                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -430,7 +430,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without getting extra charges", customFont: 13)
+                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -538,7 +538,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without getting extra charges", customFont: 13)
+                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),

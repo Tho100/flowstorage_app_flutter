@@ -26,8 +26,6 @@ class FolderRetriever {
 
     } catch (failedLoadNames) {
       return <String>[];
-    } finally {
-      custUsername = null;
-    }
+    } 
   }
 }

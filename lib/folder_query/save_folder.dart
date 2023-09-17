@@ -17,8 +17,7 @@ class SaveFolder {
 
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
-  
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
 
@@ -80,8 +79,6 @@ class SaveFolder {
   }) async {
 
     try {
-
-      final userData = _locator<UserDataProvider>();
 
       final loadingDialog = SingleTextLoading();      
       loadingDialog.startLoading(title: "Saving...", context: context);

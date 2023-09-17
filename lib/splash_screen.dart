@@ -222,7 +222,7 @@ class SplashScreenState extends State<SplashScreen> {
         } else {
 
           final conn = await SqlConnection.initializeConnection();
-
+          
           if(!mounted) return;
           await _callData(conn, getLocalUsername, getLocalEmail, getLocalAccountType, context);
           

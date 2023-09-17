@@ -44,7 +44,7 @@ class FolderDataReceiver {
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
 
     final conn = await SqlConnection.initializeConnection();
-
+        
     const querySelectThumbnail = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
     const querySelectImage = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
 
