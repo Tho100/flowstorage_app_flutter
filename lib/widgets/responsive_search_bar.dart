@@ -24,6 +24,10 @@ class ResponsiveSearchBar extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
+  final borderRadius = 25.0;
+  final width = 0.94;
+  final height = 50.0;
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -38,12 +42,12 @@ class ResponsiveSearchBar extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(borderRadius),
                 color: ThemeColor.mediumGrey,
               ),
-              height: 50,
+              height: height,
               child: FractionallySizedBox(
-                widthFactor: 0.94, 
+                widthFactor: width, 
                 child: Row(
                   children: [
                     Expanded(
@@ -57,17 +61,19 @@ class ResponsiveSearchBar extends StatelessWidget {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 10),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(borderRadius),
                             borderSide: const BorderSide(
                               color: ThemeColor.mediumGrey,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(color: ThemeColor.mediumGrey),
-                            borderRadius: BorderRadius.circular(25.0),
+                            borderRadius: BorderRadius.circular(borderRadius),
                           ),
                           hintText: hintText,
-                          hintStyle: const TextStyle(color: Color.fromARGB(255, 200,200,200), fontSize: 16),
+                          hintStyle: const TextStyle(
+                            color: ThemeColor.secondaryWhite,
+                            fontSize: 16),
                           prefixIcon: const Icon(Icons.search,color: Color.fromARGB(255, 200, 200,200),size: 18),
                         ),
                       ),

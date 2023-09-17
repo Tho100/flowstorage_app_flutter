@@ -31,6 +31,9 @@ class SingleTextLoading {
     const color = ThemeColor.darkPurple;
 
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12)
+      ),
       backgroundColor: backgroundColor,
       title: Row(
         children: [

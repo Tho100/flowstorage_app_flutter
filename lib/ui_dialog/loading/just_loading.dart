@@ -25,9 +25,12 @@ class JustLoading {
     const backgroundColor = ThemeColor.darkGrey;
     const color = ThemeColor.darkPurple;
 
-    return const AlertDialog(
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12)
+      ),
       backgroundColor: backgroundColor,
-      content: SizedBox(
+      content: const SizedBox(
         height: 100,
         child: Center(
           child: CircularProgressIndicator(color: color),

@@ -7,12 +7,14 @@ import 'package:provider/provider.dart';
 
 class ResponsiveListView extends StatelessWidget {
 
+  final ScrollController scrollController;
   final Function itemOnLongPress;
   final Function itemOnTap;
   final List<Widget> Function(int index) childrens;
   final List<InlineSpan> Function(int index) inlineSpanWidgets;
 
   ResponsiveListView({
+    required this.scrollController,
     required this.itemOnLongPress,
     required this.itemOnTap,
     required this.childrens,
@@ -30,15 +32,19 @@ class ResponsiveListView extends StatelessWidget {
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
         return RawScrollbar(
+          controller: scrollController,
           radius: const Radius.circular(38),
           thumbColor: ThemeColor.darkWhite,
           minThumbLength: 2,
           thickness: 2,
           child: ListView.builder(
+            shrinkWrap: true,
+            controller: scrollController,
             padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (BuildContext context, int index) {
+              
               final fileTitleSearchedValue = storageData.fileNamesFilteredList[index];
               final setLeadingImage = storageData.imageBytesFilteredList.isNotEmpty
                   ? Image.memory(storageData.imageBytesFilteredList[index]!)

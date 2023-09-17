@@ -188,6 +188,7 @@ class DataCaller {
     storageData.setFilesName(uniqueFileNames);
     storageData.setImageBytes(uniqueBytes);
     storageData.setFilesDate(dates);
+    tempData.setAppBarTitle("Home");
 
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();
