@@ -493,7 +493,14 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  Widget _buildBottomButtons(Widget textStyle, Color color,double? width, double? height,String originFrom,BuildContext context) {
+  Widget _buildBottomButtons({
+    required Widget textStyle, 
+    required Color color, 
+    required double? width, 
+    required double? height,
+    required String buttonType, 
+    required BuildContext context
+  }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -502,20 +509,20 @@ class PreviewFileState extends State<PreviewFile> {
         child: ElevatedButton(
           onPressed: () async {
             
-            if(originFrom == "download") {
+            if(buttonType == "download") {
 
               await _callFileDownload(fileName: tempData.selectedFileName);
 
-            } else if (originFrom == "comment") {
+            } else if (buttonType == "comment") {
               Navigator.push(
                 context, 
                 MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
               );
-            } else if (originFrom == "share") {
+            } else if (buttonType == "share") {
 
               SharingDialog().buildSharingDialog(fileName: tempData.selectedFileName, context: context);
 
-            } else if (originFrom == "save") {
+            } else if (buttonType == "save") {
               
               final textValue = textController.text;
 
@@ -637,21 +644,36 @@ class PreviewFileState extends State<PreviewFile> {
   
               const SizedBox(width: 5),
   
-              _buildBottomButtons(const Icon(Icons.comment, size: 22), ThemeColor.darkGrey, 60, 45,"comment",context),
+              _buildBottomButtons(
+                textStyle: const Icon(Icons.comment, size: 22), 
+                color: ThemeColor.darkGrey, 
+                width: 60, 
+                height: 45,
+                buttonType: "comment", 
+                context: context
+              ),
   
               const Spacer(),
   
-              currentTable == GlobalsTable.homeText 
-              || currentTable == GlobalsTable.psText && tempData.origin == OriginFile.offline ? _buildBottomButtons(const Icon(Icons.save, size: 22), ThemeColor.darkPurple, 60, 45,"save",context) : const Text(''),
+              _buildBottomButtons(
+                textStyle: const Icon(Icons.download, size: 22), 
+                color: ThemeColor.darkPurple, 
+                width: 60, 
+                height: 45,
+                buttonType: "download",
+                context: context
+              ),
   
-              _buildBottomButtons(const Icon(Icons.download, size: 22), ThemeColor.darkPurple, 60, 45,"download",context),
-  
-              _buildBottomButtons(const Text('SHARE',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
-                ThemeColor.darkPurple,
-                105,
-                45,
-                "share",
-                context
+              Visibility(
+                visible: tempData.origin != OriginFile.offline,
+                child: _buildBottomButtons(
+                  textStyle: const Text('SHARE',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                  color: ThemeColor.darkPurple,
+                  width: 105,
+                  height: 45,
+                  buttonType: "share",
+                  context: context
+                ),
               ),
   
               const SizedBox(width: 5),

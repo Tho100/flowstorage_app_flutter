@@ -103,7 +103,6 @@ class SharingPassword {
                               comment: comment, 
                               fileData: fileVal, 
                               fileType: fileExt, 
-                              context: context,
                               thumbnail: thumbnail
                             );
 

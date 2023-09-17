@@ -3,8 +3,6 @@ import 'package:flowstorage_fsc/extra_query/crud.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -59,18 +57,10 @@ class ShareFileData {
     required String? comment,
     required dynamic fileData,
     required String? fileType,
-    required BuildContext context,
     dynamic thumbnail,
   }) async {
 
     try {
-
-      final userData = _locator<UserDataProvider>();
-
-      if (sendTo == userData.username) {
-        CustomFormDialog.startDialog('Sharing Failed',"You can't share to yourself.");
-        return;
-      }
 
       await startSharing(
         receiverUsername: sendTo,
@@ -82,7 +72,7 @@ class ShareFileData {
       );
 
       await CallNotify().customNotification(
-        title: "File Shared",
+        title: "File Shared Successfully",
         subMesssage:
         "${ShortenText().cutText(EncryptionClass().decrypt(fileName))} Has been shared to $sendTo",
       );
