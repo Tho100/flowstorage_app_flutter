@@ -6,6 +6,7 @@ class CustomFormDialog {
 
   static Future startDialog(String headMessage, String subMessage) {
     return showDialog(
+      barrierDismissible: false,
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(

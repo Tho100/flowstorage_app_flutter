@@ -14,7 +14,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 class DirectoryDataReceiver {
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
@@ -27,8 +27,6 @@ class DirectoryDataReceiver {
     required String fileName,
     required String returnColumn,
   }) async {
-
-    final userData = _locator<UserDataProvider>();
 
     final params = {"username": userData.username, "dirname": directoryTitle,"filename": fileName};
     final results = await conn.execute(query,params);
@@ -43,8 +41,6 @@ class DirectoryDataReceiver {
   Future<List<Map<String, dynamic>>> retrieveParams({
     required String dirName
   }) async {
-
-    final userData = _locator<UserDataProvider>();
 
     final conn = await SqlConnection.initializeConnection();
 

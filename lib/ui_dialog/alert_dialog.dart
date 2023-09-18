@@ -6,6 +6,7 @@ class CustomAlertDialog {
 
   static Future alertDialog(String messages) {
     return showDialog(
+      barrierDismissible: false,
       context: navigatorKey.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(

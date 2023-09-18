@@ -147,7 +147,7 @@ class ProcessFileSharing {
 
     singleTextLoading.stopLoading();
 
-    CustomFormDialog.startDialog("File Shared Successfully", "${ShortenText().cutText(fileName)} Has been shared to $username.");
+    CustomFormDialog.startDialog("File Shared Successfully", "${ShortenText().cutText(fileName, customLength: 32)} Has been shared to $username.");
 
     await NotificationApi.stopNotification(0);
 
