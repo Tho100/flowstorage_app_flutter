@@ -190,7 +190,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         return;
       }
 
-      tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+      if(tempData.origin != OriginFile.public) {
+        await CallNotify()
+          .uploadingNotification(numberOfFiles: countSelectedFiles);
+      }
 
       if(countSelectedFiles > 2) {
         SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading $countSelectedFiles item(s)...");
@@ -333,14 +336,19 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
             context: context,
           ); return;
+
         } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
           UpgradeDialog.buildUpgradeDialog(
             message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
             context: context,
           ); return;
+          
         }
 
-        tempData.origin != OriginFile.public ? await CallNotify().customNotification(title: "Uploading...", subMesssage: "$countSelectedFiles File(s) in progress") : null;
+        if(tempData.origin != OriginFile.public) {
+          await CallNotify()
+            .uploadingNotification(numberOfFiles: countSelectedFiles);
+        }
 
         if(countSelectedFiles > 2) {
           SnakeAlert.uploadingSnake(

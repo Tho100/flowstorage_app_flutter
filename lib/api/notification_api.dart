@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationApi {
@@ -15,10 +16,37 @@ class NotificationApi {
         icon: "@mipmap/ic_launcher",
         playSound: false,
         enableVibration: false,
+        color: ThemeColor.darkPurple
       ),
     );
   }
 
+  static Future _uploadingNotificationDetails() async {
+
+    return const NotificationDetails(
+      android: AndroidNotificationDetails(
+        '002',
+        'notify_main_1',
+        channelDescription: 'Alert user for ongoing task',
+        importance: Importance.max,
+        icon: "@mipmap/ic_launcher",
+        playSound: false,
+        enableVibration: false,
+        ongoing: true,
+        autoCancel: false,
+        color: ThemeColor.darkPurple
+      ),
+    );
+  }
+
+  static Future showUploadingNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload
+  }) async => _notifications.show(
+    id, title, body, await _uploadingNotificationDetails(),payload: payload);
+    
   static Future showNotification({
     int id = 0,
     String? title,

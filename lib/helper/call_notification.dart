@@ -29,6 +29,16 @@ class CallNotify {
     );
   }
 
+  Future<void> uploadingNotification({
+    required int numberOfFiles
+  }) async {
+    await NotificationApi.showUploadingNotification(
+      title: "Uploading...",
+      body: "$numberOfFiles File(s) in progress",
+      payload: 'h_collin2'
+    );
+  }
+
   Future<void> customNotification({
     required String title,
     required String subMesssage
