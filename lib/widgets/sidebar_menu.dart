@@ -230,7 +230,7 @@ class CustomSideBarMenu extends StatelessWidget {
                       final double progressValue = snapshot.data! / 100.0;
                       return LinearProgressIndicator(
                         backgroundColor: Colors.grey[200],
-                        valueColor: const AlwaysStoppedAnimation<Color>(ThemeColor.darkPurple),
+                        valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
                         value: progressValue,
                       );
                     },

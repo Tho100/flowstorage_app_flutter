@@ -196,7 +196,9 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
       }
 
       if(countSelectedFiles > 2) {
-        SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading $countSelectedFiles item(s)...");
+        SnakeAlert.uploadingSnake(
+          snackState: scaffoldMessenger, 
+          message: "Uploading $countSelectedFiles item(s)...");
       }
 
       for(var filesPath in details.selectedFiles) {
@@ -302,8 +304,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       _itemSearchingImplementation('');
 
+      final storageUsagePercentage = await _getStorageUsagePercentage();
+      if(storageUsagePercentage > 70) {
+        _callStorageUsageWarning();
+      }
+
     } catch (err, st) {
-      logger.e('Exception from _openGalleryImage {main}',err,st);
+      logger.e('Exception from _openDialogGallery {main}',err,st);
       SnakeAlert.errorSnake("Upload failed.");
     }
   }
@@ -355,7 +362,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
             snackState: scaffoldMessenger, 
             message: "Uploading $countSelectedFiles item(s)..."
           );
-        }
+        } 
 
         for (final pickedFile in resultPicker.files) {
 
@@ -476,9 +483,16 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       await NotificationApi.stopNotification(0);
 
-      countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles) : null;
+      if(countSelectedFiles > 0) {
+        await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles);
+      }
 
       _itemSearchingImplementation('');
+
+      final storageUsagePercentage = await _getStorageUsagePercentage();
+      if(storageUsagePercentage > 70) {
+        _callStorageUsageWarning();
+      }
 
     } catch (err, st) {
       logger.e('Exception from _openDialogFile {main}',err,st);
@@ -1262,7 +1276,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     });
   }
 
-  Future<int> _getUsageProgressBar() async {
+  Future<int> _getStorageUsagePercentage() async {
 
     try {
 
@@ -1273,10 +1287,17 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     } catch (err, st) {
       userData.setAccountType("Basic");
-      logger.e('Exception on _getUsageProgressBar (main)',err, st);
+      logger.e('Exception on _getStorageUsagePercentage (main)',err, st);
       return 0;
     }
 
+  }
+
+  void _callStorageUsageWarning() async {
+    SnakeAlert.upgradeSnake();
+    await CallNotify().customNotification(
+      title: "Warning", 
+      subMesssage: "Storage usage has exceeded 70%. Upgrade to get more storage.");
   }
 
   void _floatingButtonVisibility(bool visible) {
@@ -2979,7 +3000,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     psStorageData = _locator<PsStorageDataProvider>();
   }
 
-  void _initializeCheckedItemList() {
+  void _initializeCheckedItemList() async {
     checkedList = List.generate(
         storageData.fileNamesFilteredList.length, (index) => false);
   }
@@ -2988,7 +3009,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
   void initState() {
 
     super.initState();
-    
+
     _initializeProvider();
     _initializeCheckedItemList();
     _itemSearchingImplementation('');
@@ -3015,6 +3036,8 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     searchBarVisibileNotifier.dispose();
     searchHintText.dispose();
 
+    NotificationApi.stopNotification(0);
+
     super.dispose();
   }
 
@@ -3031,7 +3054,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         key: sidebarMenuScaffoldKey,
         backgroundColor: ThemeColor.darkBlack,
         drawer: CustomSideBarMenu(
-          usageProgress: _getUsageProgressBar(),
+          usageProgress: _getStorageUsagePercentage(),
           offlinePageOnPressed: () async { _callOfflineData(); }
         ),
         appBar: _buildCustomAppBar(),

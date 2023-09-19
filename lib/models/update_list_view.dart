@@ -122,7 +122,15 @@ class UpdateListView {
 
     final List<Uint8List> newImageByteValues = [];
     final List<Uint8List> newFilteredSearchedBytes = [];
-        
+
+    final verifyTableName = tempData.origin == OriginFile.directory ? GlobalsTable.directoryUploadTable : tableName;
+    if (tempData.origin != OriginFile.offline) {
+      await _insertFileData(table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
+    } else {
+      final fileByteData = base64.decode(fileBase64Encoded);
+      await OfflineMode().processSaveOfflineFile(fileName: selectedFileName, fileData: fileByteData);
+    }
+
     final isHomeImageOrPsImage = tableName == GlobalsTable.homeImage || tableName == GlobalsTable.psImage;
     final fileToDisplay = newFileToDisplay;
 
@@ -132,14 +140,6 @@ class UpdateListView {
     } else {
       newImageByteValues.add(fileToDisplay!.readAsBytesSync());
       newFilteredSearchedBytes.add(fileToDisplay.readAsBytesSync());
-    }
-
-    final verifyTableName = tempData.origin == OriginFile.directory ? GlobalsTable.directoryUploadTable : tableName;
-    if (tempData.origin != OriginFile.offline) {
-      await _insertFileData(table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
-    } else {
-      final fileByteData = base64.decode(fileBase64Encoded);
-      await OfflineMode().processSaveOfflineFile(fileName: selectedFileName, fileData: fileByteData);
     }
 
     final homeImageData = storageData.homeImageBytesList;

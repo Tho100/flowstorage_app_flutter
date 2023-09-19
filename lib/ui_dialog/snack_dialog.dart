@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,28 @@ class SnakeAlert {
       ),
     );
   }
+
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> upgradeSnake() {
+    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+    return scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Text("(Warning) Your storage usage has exceeded 70%."), 
+            const Spacer(),
+            TextButton(
+              onPressed: () {
+                NavigatePage.goToPageUpgrade(navigatorKey.currentContext!);
+              },
+              child: const Text('Upgrade Storage'),
+            ),
+          ],
+        ),
+        duration: const Duration(seconds: 6),
+        backgroundColor: const Color.fromARGB(255, 216, 142, 46),
+      ),
+    );
+  } 
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> uploadingSnake({
     required ScaffoldMessengerState snackState, 
