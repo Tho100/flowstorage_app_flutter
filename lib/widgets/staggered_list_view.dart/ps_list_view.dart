@@ -132,17 +132,17 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                 ),
                 if (Globals.videoType.contains(fileType))
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 8),
-                    child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: ThemeColor.mediumGrey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 8),
+                  child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: ThemeColor.mediumGrey.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(16),
                   ),
+                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)),
+                ),
               ],
             ),
           ),
