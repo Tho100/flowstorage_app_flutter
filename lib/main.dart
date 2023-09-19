@@ -26,7 +26,7 @@ void initializeLocators() {
   locator.registerLazySingleton<TempPaymentProvider>(() => TempPaymentProvider());
 }
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   initializeLocators();
   runApp(

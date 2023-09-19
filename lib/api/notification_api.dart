@@ -13,7 +13,7 @@ class NotificationApi {
         'notify_main',
         channelDescription: 'Alert user if a task is finished',
         importance: Importance.max,
-        icon: "@mipmap/ic_launcher",
+        icon: "@drawable/app_icon",
         playSound: false,
         enableVibration: false,
         color: ThemeColor.darkPurple
@@ -29,7 +29,7 @@ class NotificationApi {
         'notify_main_1',
         channelDescription: 'Alert user for ongoing task',
         importance: Importance.max,
-        icon: "@mipmap/ic_launcher",
+        icon: "@drawable/app_icon",
         playSound: false,
         enableVibration: false,
         ongoing: true,
@@ -44,10 +44,10 @@ class NotificationApi {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
         '003',
-        'notify_main_1',
+        'notify_main_2',
         channelDescription: 'Alert user for playing audio',
         importance: Importance.max,
-        icon: "@mipmap/ic_launcher",
+        icon: "@drawable/app_icon",
         playSound: false,
         enableVibration: false,
         ongoing: true,

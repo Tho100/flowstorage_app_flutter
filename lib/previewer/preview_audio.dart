@@ -85,15 +85,16 @@ class PreviewAudioState extends State<PreviewAudio> {
       byteAudio = await callAudioDataAsync();
     }
 
-    await CallNotify()
-      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
-
     if (audioPlayerController.playing) {
       audioPlayerController.pause();
       iconPausePlayNotifier.value = Icons.play_arrow_rounded;
+      NotificationApi.stopNotification(0);
       return;
     }
 
+    await CallNotify()
+      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
+    
     if (audioPlayerController.duration == null) {
       await audioPlayerController.setAudioSource(MyJABytesSource(byteAudio, audioContentType!));
       Duration duration = audioPlayerController.duration!;
@@ -119,13 +120,18 @@ class PreviewAudioState extends State<PreviewAudio> {
       audioPositionNotifier.value = audioPlayerController.position.inSeconds.toDouble();
     });
 
-    audioPlayerController.playerStateStream.listen((state) {
+    audioPlayerController.playerStateStream.listen((state) async {
       if (state.processingState == ProcessingState.completed) {
         iconPausePlayNotifier.value = Icons.replay_rounded;
+
         if(isKeepPlayingEnabledNotifier.value == true) {
           audioPlayerController.seek(Duration.zero);
           audioPlayerController.play();
           iconPausePlayNotifier.value = Icons.pause;
+
+        } else {
+          NotificationApi.stopNotification(0);
+
         }
       }
     });
