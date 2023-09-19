@@ -10,10 +10,10 @@ class NotificationApi {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
         '001',
-        'notify_main',
+        'Onfinish Upload',
         channelDescription: 'Alert user if a task is finished',
         importance: Importance.max,
-        icon: "@drawable/app_icon",
+        icon: "@mipmap/ic_launcher",
         playSound: false,
         enableVibration: false,
         color: ThemeColor.darkPurple
@@ -26,10 +26,10 @@ class NotificationApi {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
         '002',
-        'notify_main_1',
+        'Ongoing Upload',
         channelDescription: 'Alert user for ongoing task',
         importance: Importance.max,
-        icon: "@drawable/app_icon",
+        icon: "@mipmap/ic_launcher",
         playSound: false,
         enableVibration: false,
         ongoing: true,
@@ -44,10 +44,10 @@ class NotificationApi {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
         '003',
-        'notify_main_2',
+        'Audio Player',
         channelDescription: 'Alert user for playing audio',
-        importance: Importance.max,
-        icon: "@drawable/app_icon",
+        importance: Importance.low,
+        icon: "@mipmap/ic_launcher",
         playSound: false,
         enableVibration: false,
         ongoing: true,
