@@ -39,6 +39,16 @@ class CallNotify {
     );
   }
 
+  Future<void> audioNotification({
+    required String audioName
+  }) async {
+    await NotificationApi.showAudioNotification(
+      title: "Audio Player",
+      body: "Playing $audioName",
+      payload: 'h_collin3'
+    );
+  }
+
   Future<void> customNotification({
     required String title,
     required String subMesssage

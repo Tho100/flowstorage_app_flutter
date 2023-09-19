@@ -39,6 +39,24 @@ class NotificationApi {
     );
   }
 
+  static Future _audioNotificationDetails() async {
+
+    return const NotificationDetails(
+      android: AndroidNotificationDetails(
+        '003',
+        'notify_main_1',
+        channelDescription: 'Alert user for playing audio',
+        importance: Importance.max,
+        icon: "@mipmap/ic_launcher",
+        playSound: false,
+        enableVibration: false,
+        ongoing: true,
+        autoCancel: false,
+        color: ThemeColor.darkPurple
+      ),
+    );
+  }
+
   static Future showUploadingNotification({
     int id = 0,
     String? title,
@@ -46,6 +64,14 @@ class NotificationApi {
     String? payload
   }) async => _notifications.show(
     id, title, body, await _uploadingNotificationDetails(),payload: payload);
+    
+  static Future showAudioNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload
+  }) async => _notifications.show(
+    id, title, body, await _audioNotificationDetails(), payload: payload);
     
   static Future showNotification({
     int id = 0,
