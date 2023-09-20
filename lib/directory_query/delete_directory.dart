@@ -5,11 +5,9 @@ import 'package:get_it/get_it.dart';
 
 class DeleteDirectory {
 
-  static final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
-  static Future<void> deleteDirectory({required String? directoryName}) async {
-
-    final userData = _locator<UserDataProvider>();
+  Future<void> deleteDirectory({required String? directoryName}) async {
 
     final encryption = EncryptionClass();
     final crud = Crud();

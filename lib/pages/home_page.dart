@@ -100,7 +100,7 @@ import 'package:flowstorage_fsc/extra_query/rename_data.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
 
-class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin { 
+class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin { 
 
   final _locator = GetIt.instance;
 
@@ -1553,7 +1553,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     try {
 
-      await DeleteDirectory.deleteDirectory(directoryName: directoryName);
+      await DeleteDirectory().deleteDirectory(directoryName: directoryName);
     
       storageData.directoryImageBytesList.clear();
 
@@ -1737,10 +1737,13 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
       loadingDialog.stopLoading();
 
+      await CallNotify().downloadedNotification(fileName: fileName);
+
       if(!mounted) return;
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
 
     } catch (err) {
+      await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
       SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
     }
 
@@ -1953,7 +1956,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     if(tempData.origin == OriginFile.public) {
       headerText = "Upload to Public Storage";
-    } else if (tempData.origin == OriginFile.directory) {
+    } else if (tempData.origin == OriginFile.directory || tempData.origin == OriginFile.folder) {
       headerText = "Add item to ${tempData.appBarTitle}";
     } else {
       headerText = "Add item to Flowstorage";
@@ -2379,7 +2382,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
 
     tempData.setCurrentFileName(storageData.fileNamesFilteredList[index]);
 
-    final fileExtension = tempData.selectedFileName.split('.').last;
+    final fileExtension = tempData.selectedFileName.split('.').last;    
 
     if (Globals.supportedFileTypes.contains(fileExtension) && 
       !(externalFileTypes.contains(fileExtension))) {
