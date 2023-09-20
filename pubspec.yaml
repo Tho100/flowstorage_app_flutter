@@ -46,7 +46,7 @@ dependencies:
   get_it: ^7.6.0
   mailer: ^6.0.1
   quick_actions: ^1.0.6
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

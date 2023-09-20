@@ -1,16 +1,22 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ExternalApp {
 
-  static Future<OpenResult> openFileInExternalApp({
-    required Uint8List bytes, 
-    required String fileName
-  }) async {
+  final String fileName;
+  final Uint8List bytes;
+
+  ExternalApp({
+    required this.fileName,
+    required this.bytes
+  });
+
+  Future<OpenResult> openFileInExternalApp() async {
 
     try {
 

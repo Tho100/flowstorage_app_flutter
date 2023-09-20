@@ -39,7 +39,7 @@ import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
-import 'package:flowstorage_fsc/public_storage/ps_comment_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/ps_comment_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_filter.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_folder.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_selected_items.dart';
@@ -2378,6 +2378,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
     ...Globals.wordType, ...Globals.excelType, ...Globals.ptxType};
 
     tempData.setCurrentFileName(storageData.fileNamesFilteredList[index]);
+
     final fileExtension = tempData.selectedFileName.split('.').last;
 
     if (Globals.supportedFileTypes.contains(fileExtension) && 
@@ -2423,10 +2424,10 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
         fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
       }
 
-      final result = await ExternalApp.openFileInExternalApp(
+      final result = await ExternalApp(
         bytes: fileData, 
         fileName: tempData.selectedFileName
-      );
+      ).openFileInExternalApp();
 
       if(result.type != ResultType.done) {
         CustomFormDialog.startDialog(
@@ -2434,7 +2435,7 @@ class CakeHomeState extends State<Mainboard> with AutomaticKeepAliveClientMixin 
           "No default app to open this file found."
         );
       }
-
+      
       return;
 
     } else {
