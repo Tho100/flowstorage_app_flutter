@@ -34,7 +34,7 @@ class BottomTrailingAddItem {
                   child: Text(
                     headerText,
                     style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: ThemeColor.secondaryWhite,
                       fontSize: 15,
                     ),
                   ),
@@ -49,10 +49,10 @@ class BottomTrailingAddItem {
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
                 child: const Row(
                   children: [
-                    Icon(Icons.photo),
-                    SizedBox(width: 10.0),
+                    Icon(Icons.photo_outlined),
+                    SizedBox(width: 15.0),
                     Text(
-                      'Upload from Gallery',
+                      'Upload from gallery',
                       style: GlobalsStyle.btnBottomDialogTextStyle
                     ),
                   ],
@@ -65,10 +65,10 @@ class BottomTrailingAddItem {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  Icon(Icons.upload_file),
-                  SizedBox(width: 10.0),
+                  Icon(Icons.upload_file_outlined),
+                  SizedBox(width: 15.0),
                   Text(
-                    'Upload Files',
+                    'Upload files',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
                   ),
                 ],
@@ -82,9 +82,9 @@ class BottomTrailingAddItem {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  Icon(Icons.folder),
-                  SizedBox(width: 10.0),
-                  Text('Upload Folder',
+                  Icon(Icons.folder_outlined),
+                  SizedBox(width: 15.0),
+                  Text('Upload folder',
                     style: GlobalsStyle.btnBottomDialogTextStyle
                   ),
                 ],
@@ -99,8 +99,8 @@ class BottomTrailingAddItem {
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.camera_alt_rounded),
-                SizedBox(width: 10.0),
+                Icon(Icons.camera_alt_outlined),
+                SizedBox(width: 15.0),
                 Text(
                   'Take a photo',
                   style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -116,10 +116,10 @@ class BottomTrailingAddItem {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  Icon(Icons.center_focus_strong_rounded),
-                  SizedBox(width: 10.0),
+                  Icon(Icons.center_focus_strong_outlined),
+                  SizedBox(width: 15.0),
                   Text(
-                    'Scan Document',
+                    'Scan document',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
                   ),
                 ],
@@ -136,8 +136,8 @@ class BottomTrailingAddItem {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
                 child: const Row(
                   children: [
-                    Icon(Icons.add_box),
-                    SizedBox(width: 10.0),
+                    Icon(Icons.add_box_outlined),
+                    SizedBox(width: 15.0),
                     Text(
                       'Create Text file',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -154,8 +154,8 @@ class BottomTrailingAddItem {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
                 child: const Row(
                   children: [
-                    Icon(Icons.add_box),
-                    SizedBox(width: 10.0),
+                    Icon(Icons.add_box_outlined),
+                    SizedBox(width: 15.0),
                     Text(
                       'Create Directory',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
