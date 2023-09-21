@@ -30,7 +30,6 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -360,32 +359,14 @@ class SplashScreenState extends State<SplashScreen> {
     return Container(
      color: ThemeColor.darkPurple,
       child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: SizedBox(
-                height: 95,
-                child: Image.asset(
-                  'assets/images/SplashMain.png',
-                ),
-              ),
+        alignment: Alignment.center,
+        child: Center(
+          child: SizedBox(
+            height: 95,
+            child: Image.asset(
+              'assets/images/splash_logo.png',
             ),
-            const SizedBox(height: 265),
-            Text(
-              'Flowstorage',
-              style: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 65),
-          ],
+          ),  
         ),
       ),
     );
