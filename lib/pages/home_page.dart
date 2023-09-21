@@ -175,6 +175,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final details = await PickerModel()
                         .galleryPicker(source: ImageSource.both);
       
+      if(details == null) {
+        return;
+      }
+
       int countSelectedFiles = details.selectedFiles.length;
 
       if (countSelectedFiles == 0) {
@@ -327,7 +331,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final shortenText = ShortenText();
 
         final resultPicker = await PickerModel().filePicker();
-
         if (resultPicker == null) {
           return;
         }
@@ -497,7 +500,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
     } catch (err, st) {
-      logger.e('Exception from _openDialogFile {main}',err,st);
+      logger.e('Exception from _openDialogFile {main}', err,st);
       SnakeAlert.errorSnake("Upload failed.");
     }
   }
@@ -1596,7 +1599,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final details = await PickerModel()
                         .galleryPicker(source: ImageSource.camera);
 
-      if (details.selectedFiles.isEmpty) {
+      if (details!.selectedFiles.isEmpty) {
         return;
       }
 

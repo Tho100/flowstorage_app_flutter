@@ -9,41 +9,51 @@ import 'package:image_picker_plus/image_picker_plus.dart';
 
 class PickerModel {
 
-  Future<SelectedImagesDetails> galleryPicker({
-    required ImageSource source}) async {
+  Future<SelectedImagesDetails?> galleryPicker({required ImageSource source}) async {
 
-    ImagePickerPlus picker = ImagePickerPlus(navigatorKey.currentContext!);
-    SelectedImagesDetails? details = await picker.pickBoth(
-      source: source,
-      multiSelection: true,
-      galleryDisplaySettings: GalleryDisplaySettings(
-        maximumSelection: 25,
-        appTheme: AppTheme(
-          focusColor: Colors.white, 
-          primaryColor: ThemeColor.darkBlack,
+    try {
+
+      ImagePickerPlus picker = ImagePickerPlus(navigatorKey.currentContext!);
+      SelectedImagesDetails? details = await picker.pickBoth(
+        source: source,
+        multiSelection: true,
+        galleryDisplaySettings: GalleryDisplaySettings(
+          maximumSelection: 25,
+          appTheme: AppTheme(
+            focusColor: Colors.white, 
+            primaryColor: ThemeColor.darkBlack,
+          ),
         ),
-      ),
-    );
+      );
 
-    return details!;
+      return details!;
 
+    } catch (err) {
+      return null;
+    }
   }
 
   Future<FilePickerResult?> filePicker() async {
+
+    try {
+
+      const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
+      const List<String> offlineFileTypes = [...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
+
+      final tempData = GetIt.instance<TempDataProvider>();
+
+      final picker = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
+        allowMultiple: tempData.origin == OriginFile.public ? false : true
+      );
+
+      return picker;
+
+    } catch (err) {
+      return null;
+    }
     
-    const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-    const List<String> offlineFileTypes = [...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
-
-    final tempData = GetIt.instance<TempDataProvider>();
-
-    final picker = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
-      allowMultiple: tempData.origin == OriginFile.public ? false : true
-    );
-
-    return picker!;
-
   }
 
 }
