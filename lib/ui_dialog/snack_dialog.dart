@@ -50,13 +50,13 @@ class SnakeAlert {
       SnackBar(
         content: Row(
           children: [
-            const Text("(Warning) Your storage usage has exceeded 70%."), 
+            const Text("(Warning) Storage usage exceeded 70%."), 
             const Spacer(),
             TextButton(
               onPressed: () {
                 NavigatePage.goToPageUpgrade(navigatorKey.currentContext!);
               },
-              child: const Text('Upgrade Storage'),
+              child: const Text('Upgrade'),
             ),
           ],
         ),

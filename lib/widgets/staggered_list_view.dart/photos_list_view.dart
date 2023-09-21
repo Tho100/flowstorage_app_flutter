@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 
 class PhotosStaggeredListView extends StatelessWidget {
   
+  final bool isPhotosSelected;
   final Uint8List imageBytes;
   final String fileType;
 
   const PhotosStaggeredListView({
     required this.imageBytes,
     required this.fileType,
+    required this.isPhotosSelected,
     Key? key
   }) : super(key: key);
 
@@ -27,8 +29,8 @@ class PhotosStaggeredListView extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: ThemeColor.lightGrey,
-                    width: 1.6,
+                    color: isPhotosSelected ? ThemeColor.justWhite : ThemeColor.lightGrey,
+                    width: isPhotosSelected ? 4 : 1.6,
                   )
                 ),
                 child: ClipRRect(
@@ -36,7 +38,7 @@ class PhotosStaggeredListView extends StatelessWidget {
                   child: Image.memory(imageBytes, fit: BoxFit.cover)
                 ),
               ),
-          
+                
               if(Globals.videoType.contains(fileType))
               Padding(
                 padding: const EdgeInsets.only(left: 8, top: 10),

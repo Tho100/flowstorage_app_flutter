@@ -78,6 +78,9 @@ class CustomAlertDialog {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14)
+          ),
           backgroundColor: ThemeColor.darkGrey,
           content: Text(messages,
             style: const TextStyle(

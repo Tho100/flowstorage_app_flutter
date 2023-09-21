@@ -151,10 +151,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final searchBarVisibileNotifier = ValueNotifier<bool>(true);
 
+
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
   bool itemIsChecked = false;
 
+  Set<int> selectedPhotosIndex = {};
   Set<String> checkedItemsName = {};
 
   bool isAscendingItemName = false;
@@ -788,6 +790,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
+    selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
       _navDirectoryButtonVisibility(true);
@@ -1297,7 +1300,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     SnakeAlert.upgradeSnake();
     await CallNotify().customNotification(
       title: "Warning", 
-      subMesssage: "Storage usage has exceeded 70%. Upgrade to get more storage.");
+      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage.");
   }
 
   void _floatingButtonVisibility(bool visible) {
@@ -2647,6 +2650,22 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  void _onPhotosItemSelected(int index) {
+    if (selectedPhotosIndex.contains(index)) {
+      setState(() {
+        selectedPhotosIndex.remove(index);
+      });
+    } else {
+      setState(() {
+        selectedPhotosIndex.add(index);
+      });
+    }
+
+    if(selectedPhotosIndex.isEmpty) {
+      _floatingButtonVisibility(true);
+    }
+  }
+
   Widget _buildStaggeredItems(int index) {
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
@@ -2667,13 +2686,29 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       padding: EdgeInsets.all(tempData.origin == OriginFile.public ? 0.0 : 2.0),
       child: GestureDetector(
         onLongPress: () {
-          if (!isRecent) {
-            _callBottomTrailling(index);
+          if (togglePhotosPressed) {
+            setState(() {
+              selectedPhotosIndex.add(index);
+            });
+            _floatingButtonVisibility(false);
+
+          } else {
+            if (!isRecent) {
+              _callBottomTrailling(index);
+            }
+
           }
         },
+
         onTap: () async {
-          if (!isRecent) {
-            await _navigateToPreviewFile(index);
+          if (togglePhotosPressed && selectedPhotosIndex.isNotEmpty) {
+            _onPhotosItemSelected(index);
+
+          } else {
+            if (!isRecent) {
+              await _navigateToPreviewFile(index);
+            }
+            
           }
         },
         child: Column(
@@ -2823,10 +2858,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final imageBytes = storageData.imageBytesFilteredList[index]!;
+    final isSelected = selectedPhotosIndex.contains(index);
 
     return PhotosStaggeredListView(
       imageBytes: imageBytes, 
-      fileType: fileType
+      fileType: fileType,
+      isPhotosSelected: isSelected,
     );
     
   }

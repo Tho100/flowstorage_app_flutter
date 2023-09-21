@@ -139,7 +139,7 @@ class BottomTrailingAddItem {
                     Icon(Icons.add_box_outlined),
                     SizedBox(width: 15.0),
                     Text(
-                      'Create Text file',
+                      'Create text file',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
                     ),
                   ],
@@ -157,7 +157,7 @@ class BottomTrailingAddItem {
                     Icon(Icons.add_box_outlined),
                     SizedBox(width: 15.0),
                     Text(
-                      'Create Directory',
+                      'Create directory',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
                     ),
                   ],
