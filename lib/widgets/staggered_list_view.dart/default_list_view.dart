@@ -32,12 +32,16 @@ class DefaultStaggeredListView extends StatelessWidget {
               Container(
               width: 89,
               height: 89,
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: ThemeColor.lightGrey,
+                  width: 1.2,
+                )
               ),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Image.memory(imageBytes, fit: BoxFit.cover),
+                child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover),
                 ),
               ),
               
