@@ -18,6 +18,7 @@ class DataRetriever {
   final crud = Crud();
   final getAssets = GetAssets();
   final thumbnailGetter = ThumbnailGetter();
+  final encryption = EncryptionClass();
 
   final tableNameToAssetsImage = {
     GlobalsTable.homeText: "txt0.png",
@@ -51,11 +52,12 @@ class DataRetriever {
     const query = 'SELECT CUST_FILE FROM ${GlobalsTable.homeImage} WHERE CUST_USERNAME = :username';
     final params = {'username': username};
     final executeRetrieval = await conn.execute(query, params);
+
     final getByteValue = <Uint8List>[];
 
     for (final row in executeRetrieval.rows) {
       final encryptedFile = row.assoc()['CUST_FILE']!;
-      final decodedFile = base64.decode(EncryptionClass().decrypt(encryptedFile));
+      final decodedFile = base64.decode(encryption.decrypt(encryptedFile));
 
       final buffer = ByteData.view(decodedFile.buffer);
       final bufferedFileBytes =

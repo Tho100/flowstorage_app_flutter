@@ -45,6 +45,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   final logger = Logger();
 
+  final encryption = EncryptionClass();
   final nameGetterStartup = NameGetter();
   final dataGetterStartup = DataRetriever();
   final dateGetterStartup = DateGetter();
@@ -261,8 +262,8 @@ class SplashScreenState extends State<SplashScreen> {
     }
 
     List<String> accountInfo = [];
-    accountInfo.add(EncryptionClass().decrypt(username));
-    accountInfo.add(EncryptionClass().decrypt(email));
+    accountInfo.add(encryption.decrypt(username));
+    accountInfo.add(encryption.decrypt(email));
     accountInfo.add(accountType);
 
     return accountInfo;

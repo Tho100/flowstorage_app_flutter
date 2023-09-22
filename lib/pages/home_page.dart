@@ -151,7 +151,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final searchBarVisibileNotifier = ValueNotifier<bool>(true);
 
-
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
   bool itemIsChecked = false;
@@ -1115,9 +1114,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
 
-      tempData.origin != OriginFile.public 
-        ? await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") 
-        : null;
+      if(tempData.origin != OriginFile.public) {
+        await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
+      }
 
       for(var images in imagePath) {
 
@@ -1138,8 +1137,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       if(tempData.origin == OriginFile.public) {
         _openPsCommentDialog(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
         return;
+
       } else {
         await UpdateListView().processUpdateListView(filePathVal: file.path,selectedFileName: "$generateFileName.pdf",tableName: "file_info_pdf", fileBase64Encoded: toBase64Encoded,newFileToDisplay: newFileToDisplay);
+        
       }
 
       UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");

@@ -13,7 +13,6 @@ class RenameFolder {
     required String? newFolderTitle
     }) async {
 
-
     const updateFolderName = "UPDATE folder_upload_info SET FOLDER_TITLE = :newname WHERE FOLDER_TITLE = :oldname AND CUST_USERNAME = :username";
 
     final Map<String,String> params = 

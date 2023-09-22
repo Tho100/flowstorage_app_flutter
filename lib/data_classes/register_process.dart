@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -129,8 +130,8 @@ class RegisterUser {
 
       await setupAutoLogin(userName,email!);
 
-    } catch (duplicatedUsernameException) {
-      // TODO: Ignore
+    } catch (dupeUsernameEx, st) {
+      Logger().e(dupeUsernameEx, st);
     } 
   }
 
@@ -159,11 +160,9 @@ class RegisterUser {
 
         setupFiles.writeAsStringSync('${EncryptionClass().encrypt(custUsername)}\n${EncryptionClass().encrypt(email)}\n$accountType');
 
-      } catch (e) {
-        // 
+      } catch (e, st) {
+        Logger().e(e, st);
       }
-    } else {
-      // 
-    }
+    } 
   }
 }

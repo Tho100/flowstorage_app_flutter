@@ -10,6 +10,7 @@ class ThumbnailGetter {
   
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+  final encryption = EncryptionClass();
 
   Future<List<Uint8List>> retrieveParams({required String? fileName}) async {
     
@@ -32,11 +33,11 @@ class ThumbnailGetter {
 
         } else if (tempData.origin == OriginFile.sharedMe) {
           query += " AND CUST_FILE_PATH = :filename";
-          params = {'username': userData.username, 'filename': EncryptionClass().encrypt(fileName)};
+          params = {'username': userData.username, 'filename': encryption.encrypt(fileName)};
 
         }
       }
-      params = {'username': userData.username, 'filename': EncryptionClass().encrypt(fileName)};
+      params = {'username': userData.username, 'filename': encryption.encrypt(fileName)};
 
     } else {
       query = "SELECT CUST_THUMB FROM file_info_vid WHERE CUST_USERNAME = :username";
@@ -65,7 +66,7 @@ class ThumbnailGetter {
 
     String? base64EncodeThumbnail;
 
-    final encryptedFileName = EncryptionClass().encrypt(fileName);
+    final encryptedFileName = encryption.encrypt(fileName);
 
     if(tempData.origin == OriginFile.home) {
 

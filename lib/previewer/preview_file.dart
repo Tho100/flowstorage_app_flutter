@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flowstorage_fsc/extra_query/rename_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -70,6 +71,7 @@ class PreviewFileState extends State<PreviewFile> {
                                     ValueNotifier<String>('');
 
   final retrieveData = RetrieveData();
+  final retrieveSharingName = SharingName();
 
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -457,7 +459,11 @@ class PreviewFileState extends State<PreviewFile> {
     try {
 
       final fileType = fileName.split('.').last;
-      final tableName = tempData.origin != OriginFile.home ? Globals.fileTypesToTableNamesPs[fileType]! : Globals.fileTypesToTableNames[fileType];
+      
+      final tableName = tempData.origin != OriginFile.home 
+        ? Globals.fileTypesToTableNamesPs[fileType]! 
+        : Globals.fileTypesToTableNames[fileType];
+
       final loadingDialog = MultipleTextLoading();
       
       loadingDialog.startLoading(title: "Downloading...", subText: fileName, context: context);
@@ -548,7 +554,7 @@ class PreviewFileState extends State<PreviewFile> {
   }
   
   void _initializeUploaderName() async {
-    
+
     const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
     const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
 
@@ -558,8 +564,8 @@ class PreviewFileState extends State<PreviewFile> {
 
     } else if (sharingOriginFrom.contains(originFrom)) {
       uploaderNameNotifer.value = originFrom == OriginFile.sharedOther 
-      ? await SharingName().shareToOtherName(usernameIndex: widget.tappedIndex) 
-      : await SharingName().sharerName();
+      ? await retrieveSharingName.shareToOtherName(usernameIndex: widget.tappedIndex) 
+      : await retrieveSharingName.sharerName();
 
     } else if (originFrom == OriginFile.public) {
 
@@ -691,7 +697,20 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Future<Uint8List> _callFileSize() async {
-    return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
+
+    if(tempData.origin != OriginFile.offline) {
+      return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
+
+    } else {
+      final offlineDirPath = await OfflineMode().returnOfflinePath();
+      final filePath = '${offlineDirPath.path}/${tempData.selectedFileName}';
+
+      final fileBytes = await File(filePath).readAsBytes();
+
+      return fileBytes;
+
+    }
+
   }
 
   Future<String> _getFileSize() async {
@@ -880,6 +899,20 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  Widget _buildMoreIconButton() {
+    return IconButton(
+      onPressed: _callBottomTrailling,
+      icon: const Icon(Icons.more_vert_rounded),
+    );
+  }
+
+  Widget _buildInfoIconButton() {
+    return IconButton(
+      onPressed: _buildBottomInfo,
+      icon: const Icon(Icons.info_outlined),
+    );
+  }
+
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));
     CallToast.call(message: "Copied to clipboard");
@@ -908,16 +941,9 @@ class PreviewFileState extends State<PreviewFile> {
                     if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
                     _buildCommentIconButtonAudio(),
    
-                    IconButton(
-                      onPressed: _buildBottomInfo,
-                      icon: const Icon(Icons.info_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        _callBottomTrailling();
-                      },
-                      icon: const Icon(Icons.more_vert_rounded),
-                    ),
+                    _buildInfoIconButton(),
+                    _buildMoreIconButton()
+
                   ],
                   titleSpacing: 0,
                   elevation: 0,

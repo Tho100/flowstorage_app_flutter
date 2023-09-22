@@ -28,6 +28,7 @@ class SignInUser {
 
   final _locator = GetIt.instance;
 
+  final encryption = EncryptionClass();
   final nameGetterLogin = NameGetter();
   final loginGetterLogin = DataRetriever();
   final dateGetterLogin = DateGetter();
@@ -138,14 +139,12 @@ class SignInUser {
           setupFiles.deleteSync();
         }
 
-        setupFiles.writeAsStringSync("${EncryptionClass().encrypt(custUsername)}\n${EncryptionClass().encrypt(custEmail)}\n$accountType");
+        setupFiles.writeAsStringSync("${encryption.encrypt(custUsername)}\n${encryption.encrypt(custEmail)}\n$accountType");
 
-      } catch (e) {
-        // TODO: Ignore
+      } catch (e, st) {
+        Logger().e(e, st);
       }
-    } else {
-      // TODO: Ignore
-    }
+    } 
 
   }
 

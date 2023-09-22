@@ -4,7 +4,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 class NameGetter {
 
-  static final encryption = EncryptionClass();
+  final encryption = EncryptionClass();
 
   Future<List<String>> retrieveParams(MySQLConnectionPool conn, String custUsername, String tableName) async {
 
