@@ -959,10 +959,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       singleLoading.stopLoading();
 
-      final countSelectedItems = checkedList.where((item) => item == true).length;
-
       if(!mounted) return;
-      SnakeAlert.okSnake(message: "$countSelectedItems Item(s) now available offline.",icon: Icons.check);
+      SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
 
       _clearSelectAll();
 
@@ -1904,15 +1902,20 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Future _callSelectedItemsBottomTrailing() {
+
+    final length = togglePhotosPressed 
+      ? selectedPhotosIndex.length
+      : checkedItemsName.length;
+
     return BottomTrailingSelectedItems().buildTrailing(
       context: context, 
       makeAoOnPressed: () async {
         await _processSaveOfflineFileSelectAll(
-          count: checkedItemsName.length);
+          count: length);
       }, 
       saveOnPressed: () async {
         await _selectDirectoryMultipleSave(
-          checkedItemsName.length);
+          length);
       }, 
       deleteOnPressed: () {
         _openDeleteSelectionDialog();
@@ -2655,18 +2658,38 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _onPhotosItemSelected(int index) {
     if (selectedPhotosIndex.contains(index)) {
+      checkedItemsName.remove(storageData.fileNamesFilteredList[index]);
       setState(() {
         selectedPhotosIndex.remove(index);
       });
     } else {
+      checkedItemsName.add(storageData.fileNamesFilteredList[index]);
       setState(() {
         selectedPhotosIndex.add(index);
       });
     }
 
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Items selected");
+
     if(selectedPhotosIndex.isEmpty) {
       _floatingButtonVisibility(true);
+      tempData.setAppBarTitle("Photos");
+      itemIsChecked = false;
     }
+    
+  }
+
+  void _onHoldPhotosItem(int index) {
+    itemIsChecked = true;
+    setState(() {
+      selectedPhotosIndex.add(index);
+    });
+
+    checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Items selected");
+    
+    _floatingButtonVisibility(false);
+
   }
 
   Widget _buildStaggeredItems(int index) {
@@ -2690,10 +2713,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       child: GestureDetector(
         onLongPress: () {
           if (togglePhotosPressed) {
-            setState(() {
-              selectedPhotosIndex.add(index);
-            });
-            _floatingButtonVisibility(false);
+            _onHoldPhotosItem(index);
 
           } else {
             if (!isRecent) {
@@ -2899,7 +2919,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildHomeBody(BuildContext context) {
+  Widget _buildHomeBody() {
 
     late double mediaHeight;
 
@@ -3107,7 +3127,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         ? Column(
           children: [_buildSearchBar(),_buildNavigationButtons(),_buildEmptyBody()]) 
         : Column(
-          children: [_buildSearchBar(),_buildNavigationButtons(),_buildHomeBody(context)]),
+          children: [_buildSearchBar(),_buildNavigationButtons(),_buildHomeBody()]),
 
         bottomNavigationBar: CustomNavigationBar(
           openFolderDialog: _buildFoldersDialog, 
