@@ -946,12 +946,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           final tableName = Globals.fileTypesToTableNames[fileType]!;
 
           if(Globals.imageType.contains(fileType)) {
-            fileData = storageData.imageBytesFilteredList[storageData.fileNamesList.indexOf(checkedItemsName.elementAt(i))]!;
+            fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
           } else {
-            fileData = await _callData(checkedItemsName.elementAt(i),tableName);
+            fileData = await _callData(checkedItemsName.elementAt(i), tableName);
           }
 
-          await offlineMode.saveOfflineFile(fileName: checkedItemsName.elementAt(i),fileData: fileData);
+          await offlineMode.saveOfflineFile(
+            fileName: checkedItemsName.elementAt(i), 
+            fileData: fileData
+          );
 
         } 
 
@@ -1105,13 +1108,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final scannerPdf = ScannerPdf();
 
       final imagePath = await CunningDocumentScanner.getPictures();
+
+      if(imagePath!.isEmpty) {
+        return;
+      }
+
       final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
 
       tempData.origin != OriginFile.public 
         ? await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") 
         : null;
 
-      for(var images in imagePath!) {
+      for(var images in imagePath) {
 
         File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
         await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
@@ -1593,7 +1601,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Future<void> _initializeCamera() async {
 
     try {
-      
+
       final details = await PickerModel()
                         .galleryPicker(source: ImageSource.camera);
 

@@ -30,7 +30,7 @@ class PhotosStaggeredListView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: isPhotosSelected ? ThemeColor.justWhite : ThemeColor.lightGrey,
-                    width: isPhotosSelected ? 4 : 1.6,
+                    width: isPhotosSelected ? 2.2 : 1.6,
                   )
                 ),
                 child: ClipRRect(

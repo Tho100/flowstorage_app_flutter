@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
@@ -22,28 +21,6 @@ class ScannerPdf {
       return pw.Center(child: pw.Image(image));
     }));
 
-  }
-/*    final fileContent = base64.decode(docBase64);
-
-    final pdfContent = pw.Text(fileContent.toString());
-    pdf.addPage(pw.Page(build: (pw.Context context) => pdfContent));
- */
-  Future<void> convertDocToPdf({required String docBase64}) async {
-
-    final fileContent = base64.decode(docBase64);
-    final imageProvider = pw.MemoryImage(fileContent);
-    
-    pdf.addPage(pw.Page(
-      build: (pw.Context context) {
-        return pw.Center(
-          child: pw.Container(
-            width: 500,
-            height: 700,
-            child: pw.Image(imageProvider),
-          ),
-        );
-      },
-    ));
   }
 
   Future<void> savePdf({
