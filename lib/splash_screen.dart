@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/directory_query/create_directory.dart';
@@ -137,13 +138,13 @@ class SplashScreenState extends State<SplashScreen> {
 
       if(getLocalUsername.isNotEmpty) {
 
-        if(shortcutType == "new_dir" && isPassCodeExists == false) {
+        if(shortcutType == newDirectoryAction && isPassCodeExists == false) {
 
           await _navigateToNextScreen();
 
           _openCreateDirectoryDialog();
 
-        } else if (shortcutType == "offline") {
+        } else if (shortcutType == goOfflinePageAction) {
 
           final dataCaller = DataCaller();
           await dataCaller.offlineData();
@@ -161,12 +162,12 @@ class SplashScreenState extends State<SplashScreen> {
 
     quickActions.setShortcutItems(<ShortcutItem>[
       const ShortcutItem(
-        type: 'new_dir',
+        type: newDirectoryAction,
         localizedTitle: 'Create Directory',
         icon: 'dir_icon'
       ),
       const ShortcutItem(
-        type: 'offline',
+        type: goOfflinePageAction,
         localizedTitle: 'Offline',
         icon: 'off_icon'
       ),

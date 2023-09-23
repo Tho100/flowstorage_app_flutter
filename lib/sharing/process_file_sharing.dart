@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/notification_api.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/thumbnail_retriever.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
@@ -61,7 +62,10 @@ class ProcessFileSharing {
   }) async {
 
     final fileExtension = fileName.split('.').last;
-    final tableName = tempData.origin != OriginFile.home ? Globals.fileTypesToTableNamesPs[fileExtension]! : Globals.fileTypesToTableNames[fileExtension]!;
+    
+    final tableName = tempData.origin != OriginFile.home 
+      ? Globals.fileTypesToTableNamesPs[fileExtension]! 
+      : Globals.fileTypesToTableNames[fileExtension]!;
 
     String? thumbnailBase64;
 

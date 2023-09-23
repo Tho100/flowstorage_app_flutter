@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -19,8 +20,9 @@ class BottomTrailingFilter {
     return ElevatedButton.icon(
       onPressed: () {
         tempData.origin == OriginFile.public 
-        ? filterTypePublicStorage(filterType) 
-        : filterTypeNormal(filterType);
+          ? filterTypePublicStorage(filterType) 
+          : filterTypeNormal(filterType);
+          
         Navigator.pop(context);
       },
       icon: Icon(icon),

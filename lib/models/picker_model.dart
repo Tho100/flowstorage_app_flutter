@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -44,8 +45,10 @@ class PickerModel {
 
       final picker = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: tempData.origin == OriginFile.offline ? offlineFileTypes : nonOfflineFileTypes,
-        allowMultiple: tempData.origin == OriginFile.public ? false : true
+        allowedExtensions: tempData.origin == OriginFile.offline 
+          ? offlineFileTypes : nonOfflineFileTypes,
+        allowMultiple: tempData.origin == OriginFile.public 
+          ? false : true
       );
 
       return picker;

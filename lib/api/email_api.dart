@@ -1,19 +1,19 @@
 import 'package:flowstorage_fsc/connection/auth_config.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:logger/logger.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
 class EmailApi {
 
-  static const _fromAddress = "flowstoragebusiness@gmail.com";
-  final smtpServer = gmail(_fromAddress, AuthConfig.emailApiAuth);
+  final smtpServer = gmail(businessGmailAddr, AuthConfig.emailApiAuth);
 
   Future<bool> sendFinishedRegistration({required String email}) async {
 
     bool isEmailSent = false;
 
     final message = Message()
-    ..from = const Address(_fromAddress, 'Flowstorage')
+    ..from = const Address(businessGmailAddr, 'Flowstorage')
     ..recipients.add(email)
     ..subject = 'Flowstorage - Welcome!'
     ..text = ''
@@ -99,7 +99,7 @@ class EmailApi {
     };
 
     final message = Message()
-    ..from = const Address(_fromAddress, 'Flowstorage')
+    ..from = const Address(businessGmailAddr, 'Flowstorage')
     ..recipients.add(email)
     ..subject = 'Flowstorage - Account Plan Upgraded!'
     ..text = ''

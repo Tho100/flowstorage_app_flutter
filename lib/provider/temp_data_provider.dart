@@ -1,14 +1,5 @@
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flutter/material.dart';
-
-enum OriginFile {
-  home,
-  offline,
-  directory,
-  folder,
-  sharedMe,
-  sharedOther,
-  public
-}
 
 class TempDataProvider extends ChangeNotifier {
   

@@ -70,7 +70,6 @@ class OfflineMode {
     required bool isFromCreateTxt
   }) async {
 
-    final String getFileName = fileName;
     final toUtf8Bytes = utf8.encode(inputValue);
 
     final getDirApplication = await getApplicationDocumentsDirectory();
@@ -80,7 +79,7 @@ class OfflineMode {
       offlineDirPath.createSync();
     }
 
-    final setupFiles = File('${offlineDirPath.path}/$getFileName');
+    final setupFiles = File('${offlineDirPath.path}/$fileName');
     await setupFiles.writeAsBytes(toUtf8Bytes);
   }
 
@@ -137,7 +136,8 @@ class OfflineMode {
 
     try {
       
-      await saveOfflineFile(fileName: fileName,fileData: fileData);
+      await saveOfflineFile(
+        fileName: fileName, fileData: fileData);
       
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check);
       

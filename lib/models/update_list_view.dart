@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
 import 'package:flowstorage_fsc/folder_query/create_folder.dart';
