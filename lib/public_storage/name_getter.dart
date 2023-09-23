@@ -6,14 +6,12 @@ import 'package:mysql_client/mysql_client.dart';
 class NameGetterPs {
 
   static final encryption = EncryptionClass();
-  
-  final _locator = GetIt.instance;
+
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<List<String>> myRetrieveParams(MySQLConnectionPool conn, String tableName) async {
 
     try {   
-
-      final userData = _locator<UserDataProvider>();
 
       final query = 'SELECT CUST_FILE_PATH FROM $tableName WHERE CUST_USERNAME = :username';
 

@@ -273,11 +273,6 @@ class SplashScreenState extends State<SplashScreen> {
 
     try {
 
-      final locater = GetIt.instance;
-
-      final userData = locater<UserDataProvider>();
-      final storageData = locater<StorageDataProvider>();
-
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);
       userData.setAccountType(savedAccountType);

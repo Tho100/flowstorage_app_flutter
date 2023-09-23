@@ -696,7 +696,7 @@ class PreviewFileState extends State<PreviewFile> {
     return Size(image.width.toDouble(), image.height.toDouble());
   }
 
-  Future<Uint8List> _callFileSize() async {
+  Future<Uint8List> _getFileByteData() async {
 
     if(tempData.origin != OriginFile.offline) {
       return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
@@ -720,7 +720,7 @@ class PreviewFileState extends State<PreviewFile> {
     final fileIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
     final getFileByte = Globals.imageType.contains(fileType) 
       ? storageData.imageBytesFilteredList[fileIndex] 
-      : await _callFileSize();
+      : await _getFileByteData();
 
     double getSizeMB = getFileByte!.lengthInBytes/(1024*1024);
     return getSizeMB.toDouble().toStringAsFixed(2);

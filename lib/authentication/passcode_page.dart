@@ -10,7 +10,8 @@ import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
-import 'package:flowstorage_fsc/provider/user_data_provider.dart';import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
 
@@ -46,6 +47,10 @@ class PasscodePageState extends State<PasscodePage> {
   final dateGetterStartup = DateGetter();
   final accountInformationRetriever = UserDataRetriever();
 
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+
   final crud = Crud();
 
   int currentActiveField = 0;
@@ -59,10 +64,6 @@ class PasscodePageState extends State<PasscodePage> {
 
     try {
       
-      final userData = _locator<UserDataProvider>();
-      final storageData = _locator<StorageDataProvider>();
-      final tempData = _locator<TempDataProvider>();
-
       tempData.setOrigin(OriginFile.home);
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);

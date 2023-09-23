@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 
 class ThumbnailGetterPs {
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<List<Uint8List>> retrieveParams() async {
 
@@ -27,8 +27,6 @@ class ThumbnailGetterPs {
   }
 
   Future<List<Uint8List>> myRetrieveParams() async {
-
-    final userData = _locator<UserDataProvider>();
 
     final conn = await SqlConnection.initializeConnection();
     const query = "SELECT CUST_THUMB FROM ps_info_video WHERE CUST_USERNAME = :username";
