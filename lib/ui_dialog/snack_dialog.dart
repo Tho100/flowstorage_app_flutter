@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -78,8 +79,12 @@ class SnakeAlert {
             Text(message), 
             const Spacer(),
             TextButton(
-              onPressed: () {
-                // TODO: Cancel upload operation
+              onPressed: () async {
+                print("HELLO SEX");
+                final connection = await SqlConnection.initializeConnection();
+                print("FUCK YES");
+                await connection.close();
+                print("AH AH");
               },
               child: const Text('Cancel'),
             ),

@@ -11,7 +11,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'splash_screen.dart';
+import 'pages/splash_screen_page.dart';
 import 'package:get_it/get_it.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

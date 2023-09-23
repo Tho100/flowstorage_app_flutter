@@ -21,6 +21,9 @@ class BottomTrailing {
     required VoidCallback onAOPressed,
     required BuildContext context
   }) {
+
+    final fileType = fileName.split('.').last;
+
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -36,16 +39,15 @@ class BottomTrailing {
 
                 Padding(
                   padding: const EdgeInsets.only(left: 12,top: 12, bottom: 12),
-                  child: Visibility(
-                    visible: Globals.imageType.contains(fileName.split('.').last) || Globals.videoType.contains(fileName.split('.').last),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Image(
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
-                      ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image(
+                      width: Globals.generalFileTypes.contains(fileType) 
+                        ? 46 : 60,
+                      height: Globals.generalFileTypes.contains(fileType) 
+                        ? 46 : 60,
+                      fit: BoxFit.cover,
+                      image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),
                   ),
                 ),
@@ -67,10 +69,7 @@ class BottomTrailing {
               ],
             ),
 
-            Visibility(
-              visible: Globals.imageType.contains(fileName.split('.').last) || Globals.videoType.contains(fileName.split('.').last),
-              child: const Divider(color: ThemeColor.thirdWhite),
-            ),
+           const Divider(color: ThemeColor.thirdWhite),
 
             Visibility(
               visible: VisibilityChecker.setNotVisible(OriginFile.public),

@@ -1,4 +1,4 @@
-package com.example.flowstorage_fsc
+package com.crivlet.flowstorage
 
 import io.flutter.embedding.android.FlutterActivity
 

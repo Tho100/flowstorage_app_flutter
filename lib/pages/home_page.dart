@@ -58,7 +58,6 @@ import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -990,7 +989,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _sortUploadDate() {
     isAscendingUploadDate = !isAscendingUploadDate;
     ascendingDescendingIconNotifier.value = isAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
-    sortingText.value = tempData.origin == OriginFile.public ? "Default" : "Upload Date";
+    sortingText.value = tempData.origin == OriginFile.public 
+      ? "Default" : "Upload Date";
+
     _processUploadDateSorting();
   }
 
@@ -1261,15 +1262,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final searchTerms =
           value.split(",").map((term) => term.trim().toLowerCase()).toList();
 
-      final filteredFiles = storageData.fileNamesFilteredList.where((file) {
+      final filteredFiles = storageData.fileNamesList.where((file) {
         return searchTerms.any((term) => file.toLowerCase().contains(term));
       }).toList();
 
-      final filteredByteValues = storageData.imageBytesList.where((bytes) {
-        final index = storageData.imageBytesList.indexOf(bytes);
-        final file = storageData.fileNamesList[index];
-        return searchTerms.any((term) => file.toLowerCase().contains(term));
-      }).toList();
+      final filteredByteValues = storageData.imageBytesList
+          .where((bytes) => filteredFiles.contains(storageData.fileNamesList[storageData.imageBytesList.indexOf(bytes)]))
+          .toList();
 
       final filteredFilesDate = <String>[];
 
@@ -2319,14 +2318,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildMoreOptionsOnSelect() {
-    return Visibility(
-      visible: itemIsChecked,
-      child: IconButton(
-        icon: const Icon(Icons.more_vert),
-        onPressed: () {
-          _callSelectedItemsBottomTrailing();
-        }
-      ),
+    return IconButton(
+      icon: const Icon(Icons.more_vert),
+      onPressed: () {
+        _callSelectedItemsBottomTrailing();
+      }
     );
   }
 
@@ -2363,8 +2359,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           actions: [
 
             if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
-            _buildSelectAll(),
+            _buildSelectAll(),  
 
+            if(itemIsChecked)
             _buildMoreOptionsOnSelect(),
 
             if(togglePhotosPressed)
@@ -2488,15 +2485,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                 width: 65,
                 height: 65,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: ThemeColor.lightGrey,
                     width: 2,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(14)),
-                  child: Image.memory(imageBytes, fit: BoxFit.cover),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) 
+                                ? BoxFit.scaleDown 
+                                : BoxFit.cover),
                 ),
               ),
 
@@ -2679,7 +2678,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       });
     }
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Items selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
 
     if(selectedPhotosIndex.isEmpty) {
       _floatingButtonVisibility(true);
