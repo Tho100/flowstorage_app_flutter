@@ -33,8 +33,6 @@ class PasscodePage extends StatefulWidget {
 
 class PasscodePageState extends State<PasscodePage> {
 
-  final _locator = GetIt.instance;
-
   final logger = Logger();
 
   final isButtonsEnabledNotifier = ValueNotifier<bool>(true);
@@ -65,7 +63,6 @@ class PasscodePageState extends State<PasscodePage> {
 
     try {
       
-      tempData.setOrigin(OriginFile.home);
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);
 
@@ -123,6 +120,8 @@ class PasscodePageState extends State<PasscodePage> {
       storageData.setImageBytes(uniqueBytes);
       storageData.setFilesDate(dates);
 
+      tempData.setOrigin(OriginFile.home);
+
     } catch (err) {
       NavigatePage.permanentPageMainboard(context);
       return;
@@ -133,8 +132,6 @@ class PasscodePageState extends State<PasscodePage> {
   void validatePassCode(List<String> inputs) async {
 
     try {
-
-      final userData = _locator<UserDataProvider>();
 
       const storage = FlutterSecureStorage();
       String? storedValue = await storage.read(key: 'key0015');

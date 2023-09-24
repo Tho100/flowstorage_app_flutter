@@ -106,7 +106,7 @@ class PsCommentDialog {
               enabled: true,
               controller: titleController,
               maxLines: 1,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title"),
+              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title (Optional)"),
             ),
           ),
         ),

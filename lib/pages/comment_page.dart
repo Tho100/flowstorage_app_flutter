@@ -2,7 +2,6 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/globals_style.dart';
-import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -153,12 +152,9 @@ class CommentPageState extends State<CommentPage> {
 
   Future<String> _psFileComment() async {
 
-    final fileType = tempData.selectedFileName.split('.').last;
-    final tableName = Globals.fileTypesToTableNamesPs[fileType];
-
     final conn = await SqlConnection.initializeConnection();
     
-    final query = "SELECT CUST_COMMENT FROM $tableName WHERE CUST_FILE_PATH = :filename";
+    const query = "SELECT CUST_COMMENT FROM ps_info_comment WHERE CUST_FILE_NAME = :filename";
     final params = {'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
     final results = await conn.execute(query,params);
 
