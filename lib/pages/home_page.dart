@@ -600,8 +600,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
 
-        await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: fileName,tableName: tableName, fileBase64Encoded: base64Encoded, newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail);
+        await UpdateListView().processUpdateListView(
+          filePathVal: filePathVal, selectedFileName: fileName,
+          tableName: tableName, fileBase64Encoded: base64Encoded, 
+          newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail
+        );
 
+        psStorageData.psTitleList.add(psUploadData.psTitleValue);
         psStorageData.psTagsList.add(psUploadData.psTagValue);
         psStorageData.psUploaderList.add(userData.username);
 
@@ -732,11 +737,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       }
     );
-  }
-
-  String _getCurrentPageName() {
-    final getPageName = tempData.appBarTitle == "" ? "homeFiles" : tempData.appBarTitle;
-    return getPageName;
   }
 
   void _clearPublicStorageData({required bool clearImage}) {
@@ -1452,6 +1452,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
     _itemSearchingImplementation('');
     searchBarController.text = '';
+
+    await Future.delayed(const Duration(milliseconds: 299));
+    _sortUploadDate();
+    _sortUploadDate();
 
     _floatingButtonVisibility(false);
 
@@ -2620,13 +2624,23 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      ShortenText().cutText(fileName, customLength: 16),
+                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 16),
                       style: const TextStyle(
                         color: ThemeColor.justWhite,
-                        fontSize: 16,
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    const SizedBox(height: 2),
+                    Text(
+                      ShortenText().cutText(fileName, customLength: 16),
+                      style: const TextStyle(
+                        color: ThemeColor.secondaryWhite,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
                     Text(
                       ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
                       style: const TextStyle(

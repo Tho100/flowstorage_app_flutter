@@ -129,11 +129,15 @@ class InsertData {
     String encryptedFileVal,
   ) async {
 
+    final encryptedTitle = encryption.encrypt(psUploadData.psTitleValue);
     final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
     final tag = psUploadData.psTagValue;
 
-    await conn.prepare('INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_COMMENT, CUST_TAG) VALUES (?, ?, ?, ?, ?, ?)')
-        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, encryptedComment, tag]);
+//    await conn.prepare('INSERT INTO ps_title_info (CUST_TITLE, UPLOAD_DATE) VALUES (?, ?)')
+//        ..execute([encryptedTitle, dateNow]);
+
+    await conn.prepare('INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_COMMENT, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, encryptedComment, tag, encryptedTitle]);
   }
 
   Future<void> insertVideoInfoPs(
@@ -144,11 +148,12 @@ class InsertData {
     String? thumb,
   ) async {
 
+    final encryptedTitle = encryption.encrypt(psUploadData.psTitleValue);
     final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
     final tag = psUploadData.psTagValue;
                              
-    await conn.prepare('INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_COMMENT, CUST_TAG) VALUES (?, ?, ?, ?, ?, ?, ?)')
-        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, thumb, encryptedComment, tag]);
+    await conn.prepare('INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_COMMENT, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, thumb, encryptedComment, tag, encryptedTitle]);
   }
 
 }

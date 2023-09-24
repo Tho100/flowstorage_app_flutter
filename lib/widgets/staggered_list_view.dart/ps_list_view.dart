@@ -74,10 +74,28 @@ class PsStaggeredListView extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                ShortenText().cutText(storageData.fileNamesFilteredList[index], customLength: 37),
+                psStorageData.psTitleList[index],
                 style: const TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                ShortenText().cutText(storageData.fileNamesFilteredList[index], customLength: 37),
+                style: const TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis,
                 ),

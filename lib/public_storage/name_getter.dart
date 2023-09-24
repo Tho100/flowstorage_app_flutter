@@ -13,7 +13,7 @@ class NameGetterPs {
 
     try {   
 
-      final query = 'SELECT CUST_FILE_PATH FROM $tableName WHERE CUST_USERNAME = :username';
+      final query = 'SELECT CUST_FILE_PATH FROM $tableName WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
       final params = {'username': userData.username};
       final retrieveNames = await conn.execute(query, params);

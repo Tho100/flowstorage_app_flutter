@@ -74,7 +74,7 @@ class ByteGetterPs {
 
     if(isFromMyPs) {
 
-      query = 'SELECT CUST_FILE FROM $_imageTable WHERE CUST_USERNAME = :username';
+      query = 'SELECT CUST_FILE FROM $_imageTable WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       final params = {'username': userData.username};
 
       executeRetrieval = await conn.execute(query,params);

@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/public_storage/byte_getter.dart';
 import 'package:flowstorage_fsc/public_storage/date_getter.dart';
 import 'package:flowstorage_fsc/public_storage/name_getter.dart';
+import 'package:flowstorage_fsc/public_storage/title_getter.dart';
 import 'package:flowstorage_fsc/public_storage/uploader_getter.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,6 +14,7 @@ class PublicStorageDataRetriever {
   final nameGetter = NameGetterPs();
   final dateGetter = DateGetterPs();
   final byteGetter = ByteGetterPs();
+  final titleGetter = TitleGetterPs();
 
   final dataSet = <Map<String, dynamic>>[];
 
@@ -32,6 +34,7 @@ class PublicStorageDataRetriever {
         final fileNames = await nameGetter.myRetrieveParams(conn, table);
         final bytes = await byteGetter.myGetLeadingParams(conn, table);
         final dates = await dateGetter.myGetDateParams(conn, table);
+        final titles = await titleGetter.myGetTitleParams(conn, table);
 
         final uploaderNameList = List<String>.generate(fileNames.length, (_) => userData.username);
 
@@ -40,6 +43,7 @@ class PublicStorageDataRetriever {
           'name': fileNames,
           'date': dates,
           'file_data': bytes,
+          'titles': titles,
         };
       }).toList();
 
@@ -52,17 +56,19 @@ class PublicStorageDataRetriever {
     } else {
 
       final futures = tablesToCheck.map((table) async {
-        
+
         final uploaderName = await uploaderNameGetter.retrieveParams(conn, table);
         final fileNames = await nameGetter.retrieveParams(conn, table);
         final bytes = await byteGetter.getLeadingParams(conn, table);
         final dates = await dateGetter.getDateParams(conn, table);
-
+        final titles = await titleGetter.getTitleParams(conn, table);
+    
         return {
           'uploader_name': uploaderName,
           'name': fileNames,
           'date': dates,
           'file_data': bytes,
+          'titles': titles,
         };
       }).toList();
 

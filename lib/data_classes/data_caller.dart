@@ -203,7 +203,8 @@ class DataCaller {
     justLoading.startLoading(context: context);
 
     psStorageData.psTagsList.clear();
-
+    psStorageData.psTitleList.clear();
+    
     final psDataRetriever = PublicStorageDataRetriever();
     final dataList = await psDataRetriever.retrieveParams(isFromMyPs: false);
 
@@ -211,12 +212,16 @@ class DataCaller {
     final nameList = dataList.expand((data) => data['name'] as List<String>).toList();
     final fileDateList = dataList.expand((data) => data['date'] as List<String>).toList();
     final byteList = dataList.expand((data) => data['file_data'] as List<Uint8List>).toList();
+    final titleList = dataList.expand((data) => data['titles'] as List<String>).toList();
+
+    final reversedTitleList = titleList.reversed.toList();
 
     final getTagsValue = fileDateList.
       map((tags) => tags.split(' ').last).toList();
 
     psStorageData.psTagsList.addAll(getTagsValue);
     psStorageData.psUploaderList.addAll(uploaderList);
+    psStorageData.psTitleList.addAll(reversedTitleList);
 
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);
@@ -248,12 +253,16 @@ class DataCaller {
     final nameList = dataList.expand((data) => data['name'] as List<String>).toList();
     final fileDateList = dataList.expand((data) => data['date'] as List<String>).toList();
     final byteList = dataList.expand((data) => data['file_data'] as List<Uint8List>).toList();
+    final titleList = dataList.expand((data) => data['titles'] as List<String>).toList();
+
+    final reversedTitleList = titleList.reversed.toList();
 
     final getTagsValue = fileDateList.
       map((tags) => tags.split(' ').last).toList();
 
     psStorageData.psTagsList.addAll(getTagsValue);
     psStorageData.psUploaderList.addAll(uploaderList);
+    psStorageData.psTitleList.addAll(reversedTitleList);
 
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);

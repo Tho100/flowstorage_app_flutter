@@ -14,7 +14,8 @@ import 'package:get_it/get_it.dart';
 class PsCommentDialog {
 
   static final commentController = TextEditingController();
-
+  static final titleController = TextEditingController();
+  
   static const tagsItems = {
     "Entertainment",
     "Random",
@@ -93,6 +94,23 @@ class PsCommentDialog {
 
         const SizedBox(height: 5),
           
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 2.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
+            ),
+            child: TextFormField(
+              style: const TextStyle(color: ThemeColor.secondaryWhite),
+              enabled: true,
+              controller: titleController,
+              maxLines: 1,
+              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title"),
+            ),
+          ),
+        ),
+
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
@@ -202,10 +220,16 @@ class PsCommentDialog {
             MainDialogButton(
               text: "Upload", 
               onPressed: () {
+
+                titleController.text.isEmpty 
+                  ? psUploadData.setTitleValue("Untitled")
+                  : psUploadData.setTitleValue(titleController.text);
+
                 psUploadData.setCommentValue(commentController.text);
-                
                 onUploadPressed();
+
                 clearComment();
+                clearTitle();
 
                 Navigator.pop(context);
               }, 
@@ -227,12 +251,19 @@ class PsCommentDialog {
     await NotificationApi.stopNotification(0);
     psUploadData.setCommentValue('');
     psUploadData.setTagValue('');
+    psUploadData.setTitleValue('');
     commentController.clear();
+    titleController.clear();
   }
 
   void clearComment() {
     psUploadData.setCommentValue(commentController.text);
     commentController.clear();
+  }
+
+  void clearTitle() {
+    psUploadData.setTitleValue(titleController.text);
+    titleController.clear();
   }
 
 }
