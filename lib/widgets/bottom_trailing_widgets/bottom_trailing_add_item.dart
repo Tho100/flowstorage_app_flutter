@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';

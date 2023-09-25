@@ -6,7 +6,7 @@ import 'package:flowstorage_fsc/extra_query/crud.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/public_storage/thumbnail_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/thumbnail_getter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mysql_client/mysql_client.dart';
 

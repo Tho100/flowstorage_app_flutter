@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flowstorage_fsc/api/email_api.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/crud.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';

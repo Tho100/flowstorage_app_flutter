@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';

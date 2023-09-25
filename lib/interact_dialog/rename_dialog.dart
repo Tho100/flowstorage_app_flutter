@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';

@@ -1,11 +1,11 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/public_storage/byte_getter.dart';
-import 'package:flowstorage_fsc/public_storage/date_getter.dart';
-import 'package:flowstorage_fsc/public_storage/name_getter.dart';
-import 'package:flowstorage_fsc/public_storage/title_getter.dart';
-import 'package:flowstorage_fsc/public_storage/uploader_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/byte_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/date_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/name_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/title_getter.dart';
+import 'package:flowstorage_fsc/public_storage_query/uploader_getter.dart';
 import 'package:get_it/get_it.dart';
 
 class PublicStorageDataRetriever {

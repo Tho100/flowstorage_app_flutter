@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {

@@ -11,7 +11,7 @@ import 'package:flowstorage_fsc/directory_query/save_directory.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';

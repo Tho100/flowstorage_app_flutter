@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';

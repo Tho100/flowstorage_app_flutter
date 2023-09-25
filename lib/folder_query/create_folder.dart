@@ -9,7 +9,7 @@ class CreateFolder {
   final EncryptionClass encryption; 
   final String formattedDate;
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   CreateFolder(this.encryption, this.formattedDate);
 
@@ -21,8 +21,6 @@ class CreateFolder {
     List<dynamic>? videoThumbnail
   }) async {
     
-    final userData = _locator<UserDataProvider>();
-
     final conn = await SqlConnection.initializeConnection();
 
     const query = 

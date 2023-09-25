@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/global/globals_style.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';

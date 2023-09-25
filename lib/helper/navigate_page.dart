@@ -10,13 +10,13 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 import '../pages/main_page.dart';
-import '../authentication/passcode_page.dart';
+import '../pages/passcode_page.dart';
 import '../authentication/sign_in_page.dart';
 import '../authentication/sign_up_page.dart';
 import '../main.dart';
 import '../pages/create_text.dart';
 import '../pages/statistics_page.dart';
-import '../sharing/sharing_options.dart';
+import '../sharing_query/sharing_options.dart';
 import '../upgrades/upgrade_page.dart';
 import '../pages/settings_page.dart';
 
