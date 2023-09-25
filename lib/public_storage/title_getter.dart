@@ -12,10 +12,10 @@ class TitleGetterPs {
 
     try {
 
-      final selectTitles = 'SELECT CUST_TITLE FROM $tableName WHERE CUST_USERNAME = @username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
+      final selectTitles = 'SELECT CUST_TITLE FROM $tableName WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
       final params = {'username': userData.username};
-      final retrievedTitles = await conn.execute(selectTitles,params);
+      final retrievedTitles = await conn.execute(selectTitles, params);
 
       final titleValuesList = <String>[];
 
@@ -32,7 +32,7 @@ class TitleGetterPs {
 
   }
 
-  Future<List<String>> getTitleParams(MySQLConnectionPool conn, tableName) async {
+  Future<List<String>> getTitleParams(MySQLConnectionPool conn, String tableName) async {
 
     try {
 

@@ -1457,7 +1457,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _itemSearchingImplementation('');
     searchBarController.text = '';
 
-    await Future.delayed(const Duration(milliseconds: 299));
+    await Future.delayed(const Duration(milliseconds: 500));
     _sortUploadDate();
     _sortUploadDate();
 
