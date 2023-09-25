@@ -746,6 +746,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
     psStorageData.psUploaderList.clear();
     psStorageData.psTagsList.clear();
+    psStorageData.psTitleList.clear();
     psStorageData.psTagsColorList.clear();
   }
 
@@ -851,7 +852,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   Future<void> _refreshPublicStorage() async {
     await _callPublicStorageData(); 
-    await Future.delayed(const Duration(milliseconds: 299));
+    await Future.delayed(const Duration(milliseconds: 500));
     _sortUploadDate();
     _sortUploadDate();
     _floatingButtonVisibility(true);
@@ -1033,11 +1034,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           'file_name': storageData.fileNamesFilteredList[i],
           'image_byte': storageData.imageBytesFilteredList[i],
           'upload_date': dateParser.parseDate(storageData.fileDateFilteredList[i]),
+          'title': psStorageData.psTitleList[i],
           'tag_value': psStorageData.psTagsList[i],
           'uploader_name': psStorageData.psUploaderList[i]
         });
       }
 
+      psStorageData.psTitleList.clear();
       psStorageData.psTagsList.clear();
       psStorageData.psUploaderList.clear();
 
@@ -1062,6 +1065,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if(tempData.origin == OriginFile.public) {
           psStorageData.psTagsList.add(item['tag_value']);
           psStorageData.psUploaderList.add(item['uploader_name']);
+          psStorageData.psTitleList.add(item['title']);
         }
 
       }
@@ -2469,7 +2473,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  Widget _buildRecentPsFiles(Uint8List imageBytes, int index, String uploader) {
+  Widget _buildRecentPsFiles(Uint8List imageBytes, int index) {
     
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
@@ -2525,7 +2529,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                ShortenText().cutText(fileName, customLength: 12),
+                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 12),
                 style: const TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 16,
@@ -2567,7 +2571,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildSubPsFiles(Uint8List imageBytes, int index, String uploader) {
+  Widget _buildSubPsFiles(Uint8List imageBytes, int index) {
     
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
@@ -2786,16 +2790,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                 child: Row(
                   children: [
                     const SizedBox(width: 10),
-                    _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0, uploaderName),
+                    _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0),
 
                     if (storageData.imageBytesFilteredList.length > 1) ... [
                       const SizedBox(width: 12),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1, uploaderName),
+                      _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1),
 
                     ],
                     if (storageData.imageBytesFilteredList.length > 2) ... [
                       const SizedBox(width: 12),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2, uploaderName),
+                      _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2),
                     ],
 
                   ],
@@ -2811,18 +2815,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3, uploaderName),
+                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
                       const SizedBox(width: 25),
                       if (storageData.imageBytesFilteredList.length > 4)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4, uploaderName),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
 
                       const SizedBox(width: 25),
                       if (storageData.imageBytesFilteredList.length > 5)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5, uploaderName),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
 
                       const SizedBox(width: 25),
                       if (storageData.imageBytesFilteredList.length > 6)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6, uploaderName),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
 
                       const SizedBox(width: 18),
                     ],

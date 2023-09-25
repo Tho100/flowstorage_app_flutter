@@ -58,10 +58,10 @@ class PublicStorageDataRetriever {
       final futures = tablesToCheck.map((table) async {
 
         final uploaderName = await uploaderNameGetter.retrieveParams(conn, table);
+        final titles = await titleGetter.getTitleParams(conn, table);
         final fileNames = await nameGetter.retrieveParams(conn, table);
         final bytes = await byteGetter.getLeadingParams(conn, table);
         final dates = await dateGetter.getDateParams(conn, table);
-        final titles = await titleGetter.getTitleParams(conn, table);
     
         return {
           'uploader_name': uploaderName,

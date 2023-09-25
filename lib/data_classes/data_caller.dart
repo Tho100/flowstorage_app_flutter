@@ -214,14 +214,12 @@ class DataCaller {
     final byteList = dataList.expand((data) => data['file_data'] as List<Uint8List>).toList();
     final titleList = dataList.expand((data) => data['titles'] as List<String>).toList();
 
-    final reversedTitleList = titleList.reversed.toList();
-
     final getTagsValue = fileDateList.
       map((tags) => tags.split(' ').last).toList();
 
     psStorageData.psTagsList.addAll(getTagsValue);
     psStorageData.psUploaderList.addAll(uploaderList);
-    psStorageData.psTitleList.addAll(reversedTitleList);
+    psStorageData.psTitleList.addAll(titleList);
 
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);

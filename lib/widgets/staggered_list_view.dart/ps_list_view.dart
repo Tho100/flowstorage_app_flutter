@@ -135,8 +135,8 @@ class PsStaggeredListView extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
-                  width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 35,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.height - 495,
+                  width: Globals.generalFileTypes.contains(fileType) ? 72 : 440,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 340,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(

@@ -106,6 +106,7 @@ class PsCommentDialog {
               enabled: true,
               controller: titleController,
               maxLines: 1,
+              maxLength: 25,
               decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title (Optional)"),
             ),
           ),
@@ -123,6 +124,7 @@ class PsCommentDialog {
               enabled: true,
               controller: commentController,
               maxLines: 5,
+              maxLength: 250,
               decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
             ),
           ),
@@ -228,8 +230,7 @@ class PsCommentDialog {
                 psUploadData.setCommentValue(commentController.text);
                 onUploadPressed();
 
-                clearComment();
-                clearTitle();
+                clearController();
 
                 Navigator.pop(context);
               }, 
@@ -256,14 +257,9 @@ class PsCommentDialog {
     titleController.clear();
   }
 
-  void clearComment() {
-    psUploadData.setCommentValue(commentController.text);
-    commentController.clear();
-  }
-
-  void clearTitle() {
-    psUploadData.setTitleValue(titleController.text);
+  void clearController() {
     titleController.clear();
+    commentController.clear();
   }
 
 }
