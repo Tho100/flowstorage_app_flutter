@@ -128,7 +128,7 @@ class PreviewFileState extends State<PreviewFile> {
     final fileType = selectedFileName.split('.').last;
     final fileIndex = storageData.fileNamesFilteredList.indexOf(selectedFileName);
 
-    if (Globals.generalFileTypes.contains(fileType)) {
+    if (Globals.generalFileTypes.contains(fileType) || Globals.videoType.contains(fileType)) {
       _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
     } 
 
