@@ -188,11 +188,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
 
       if(storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!) {
-        UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.", 
-            context: context);
-
+        _showUpgradeExceededDialog();
         return;
+        
       }
 
       if(tempData.origin != OriginFile.public) {
@@ -320,6 +318,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
+
+
   Future<void> _openDialogFile() async {
 
     try {
@@ -342,17 +342,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
         final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-        if (tempData.origin != OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
-          UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
-            context: context,
-          ); return;
+        if (tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
+          _showUpgradeExceededDialog();
+          return;
 
         } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
-          UpgradeDialog.buildUpgradeDialog(
-            message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
-            context: context,
-          ); return;
+          _showUpgradeExceededDialog();
+          return;
           
         }
 
@@ -1969,9 +1965,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Future _showUpgradeDialog(int value, BuildContext context)  {
+  Future _showUpgradeLimitedDialog(int value)  {
     return UpgradeDialog.buildUpgradeDialog(
       message: "You're currently limited to $value uploads. Upgrade your account to upload more.",
+      context: context
+    );
+  }
+
+    Future _showUpgradeExceededDialog()  {
+    return UpgradeDialog.buildUpgradeDialog(
+      message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
       context: context
     );
   }
@@ -1999,7 +2002,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           Navigator.pop(context);
           await _openDialogGallery();
         } else {
-          _showUpgradeDialog(limitUpload, context);
+          _showUpgradeLimitedDialog(limitUpload);
         }
 
       }, 
@@ -2015,7 +2018,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             Navigator.pop(context);
             await _openDialogFile();
           } else {
-            _showUpgradeDialog(limitUpload, context);
+            _showUpgradeLimitedDialog(limitUpload);
           } 
 
         } else {
@@ -2027,7 +2030,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             Navigator.pop(context);
             await _openDialogFile();
           } else {
-            _showUpgradeDialog(limitUpload, context);
+            _showUpgradeLimitedDialog(limitUpload);
           }
         }
 
@@ -2060,7 +2063,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             Navigator.pop(context);
             await _openDialogFile();
           } else {
-            _showUpgradeDialog(limitUpload, context);
+            _showUpgradeLimitedDialog(limitUpload);
           }
 
         } else {
@@ -2069,7 +2072,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             Navigator.pop(context);
             await _initializeCamera();
           } else {
-            _showUpgradeDialog(limitUpload, context);
+            _showUpgradeLimitedDialog(limitUpload);
           }
 
         }
@@ -2081,7 +2084,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           Navigator.pop(context);
           await _initializeCameraScanner();
         } else {
-          _showUpgradeDialog(limitUpload, context);
+          _showUpgradeLimitedDialog(limitUpload);
         }
 
       }, 
@@ -2091,7 +2094,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           Navigator.pop(context);
           NavigatePage.goToPageCreateText(context);
         } else {
-          _showUpgradeDialog(limitUpload, context);
+          _showUpgradeLimitedDialog(limitUpload);
         }
 
       }, 
