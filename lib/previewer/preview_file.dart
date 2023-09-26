@@ -142,6 +142,7 @@ class PreviewFileState extends State<PreviewFile> {
     fileResolutionNotifier.value = "";
 
     if (tempData.origin == OriginFile.public) {
+      psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[fileIndex];
       _initializeUploaderName();
     }
   }
@@ -572,7 +573,7 @@ class PreviewFileState extends State<PreviewFile> {
 
       final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
-
+      
     } else {
 
       uploaderNameNotifer.value = userData.username;
@@ -914,6 +915,31 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  Widget _buildAppBarTitle() {
+    return filesWithCustomHeader.contains(currentTable)
+    ? const SizedBox()
+    : ValueListenableBuilder<String>(
+      valueListenable: appBarTitleNotifier,
+      builder: (context, value, child) {
+        return tempData.origin == OriginFile.public 
+        ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 4), 
+              Text(value, style: GlobalsStyle.appBarTextStyle),
+
+              const SizedBox(height: 2),
+              Text(psStorageData.psTitleList[widget.tappedIndex], style: const TextStyle(fontSize: 16), textAlign: TextAlign.left),
+
+              const SizedBox(height: 6),
+            ],
+          )
+        : Text(value, style: GlobalsStyle.appBarTextStyle);
+      },
+    );
+  }
+
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));
     CallToast.call(message: "Copied to clipboard");
@@ -939,6 +965,7 @@ class PreviewFileState extends State<PreviewFile> {
 
                     if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
                     _buildCopyTextIconButton(),
+
                     if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
                     _buildCommentIconButtonAudio(),
    
@@ -949,14 +976,7 @@ class PreviewFileState extends State<PreviewFile> {
                   titleSpacing: 0,
                   elevation: 0,
                   centerTitle: false,
-                  title: filesWithCustomHeader.contains(currentTable)
-                  ? const SizedBox()
-                  : ValueListenableBuilder<String>(
-                    valueListenable: appBarTitleNotifier,
-                    builder: (context, value, child) {
-                      return Text(value, style: GlobalsStyle.appBarTextStyle);
-                    },
-                  ),
+                  title: _buildAppBarTitle(),
                 ),
               );
             },
