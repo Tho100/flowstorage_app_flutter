@@ -77,8 +77,8 @@ class GlobalsStyle {
 
   static const bottomDialogBorderStyle = RoundedRectangleBorder( 
     borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(0),
-      topRight: Radius.circular(0)
+      topLeft: Radius.circular(14),
+      topRight: Radius.circular(14)
     )
   );
 

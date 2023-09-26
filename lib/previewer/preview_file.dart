@@ -331,21 +331,47 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildHeaderTitle() {
-    return currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText ? Row(
+  Widget _buildTextHeaderTitle() {
+
+    const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
+
+    return textTables.contains(currentTable) ? Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            tempData.selectedFileName.length > 28 ? "${tempData.selectedFileName.substring(0,28)}..." : tempData.selectedFileName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              overflow: TextOverflow.ellipsis,
-            )),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                tempData.selectedFileName.length > 28 ? "${tempData.selectedFileName.substring(0,28)}..." : tempData.selectedFileName,
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+              )),
+            ),
+
+            if(tempData.origin == OriginFile.public)
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+              child: Text(
+               psStorageData.psTitleList[widget.tappedIndex],
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                softWrap: true,
+                textAlign: TextAlign.start,
+              ),
+            ),
+
+          ],
         ),
       ],
     ) : const SizedBox();
@@ -745,7 +771,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildFileInfoHeader(String headerText, String subHeader) {
     return Padding(
-      padding: const EdgeInsets.only(left: 120.0),
+      padding: const EdgeInsets.only(left: 42.0),
       child: Row(
     
         mainAxisAlignment: MainAxisAlignment.start,
@@ -774,8 +800,6 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Future _buildBottomInfo() async {
-
-    final mediaQuery = MediaQuery.of(context);
     
     if(fileResolutionNotifier.value.isEmpty) {
 
@@ -798,52 +822,36 @@ class PreviewFileState extends State<PreviewFile> {
     return showModalBottomSheet(
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
       context: context,
+      shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: mediaQuery.viewInsets.bottom,
-          ),
-          child: SizedBox(
-            height: 150,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.transparent,
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 10),
-                  Container(
-                    width: 45,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: Colors.white10,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildFileInfoHeader("File Name", tempData.selectedFileName),
-                  const SizedBox(height: 8),
-                  ValueListenableBuilder(
-                    valueListenable: fileResolutionNotifier, 
-                    builder: (context, value, child) {
-                      return _buildFileInfoHeader("File Resolution", value);
-                    }
-                  ),
-                  const SizedBox(height: 8),
-                  ValueListenableBuilder(
-                    valueListenable: fileSizeNotifier,
-                    builder: (context, value, child) {
-                      return _buildFileInfoHeader("File Size", "$value Mb");
-                    }
-                  ),
-                ],
+        return SizedBox(
+          height: 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 30),
+              _buildFileInfoHeader("File Name", tempData.selectedFileName),
+              const SizedBox(height: 8),
+              ValueListenableBuilder<String>(
+                valueListenable: fileResolutionNotifier,
+                builder: (context, value, child) {
+                  return _buildFileInfoHeader("File Resolution", value);
+                },
               ),
-            ),
+              const SizedBox(height: 8),
+              ValueListenableBuilder<String>(
+                valueListenable: fileSizeNotifier,
+                builder: (context, value, child) {
+                  return _buildFileInfoHeader("File Size", "$value Mb");
+                },
+              ),
+            ],
           ),
         );
       },
     );
+
   }
 
   Widget _buildFileOnCondition() {
@@ -916,26 +924,36 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildAppBarTitle() {
-    return filesWithCustomHeader.contains(currentTable)
-    ? const SizedBox()
-    : ValueListenableBuilder<String>(
+
+    if (filesWithCustomHeader.contains(currentTable)) {
+      return const SizedBox();
+    }
+
+    return ValueListenableBuilder<String>(
       valueListenable: appBarTitleNotifier,
       builder: (context, value, child) {
-        return tempData.origin == OriginFile.public 
-        ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4), 
-              Text(value, style: GlobalsStyle.appBarTextStyle),
+        final isPublicOrigin = tempData.origin == OriginFile.public;
 
-              const SizedBox(height: 2),
-              Text(psStorageData.psTitleList[widget.tappedIndex], style: const TextStyle(fontSize: 16), textAlign: TextAlign.left),
+        return isPublicOrigin
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 4),
+                Text(value, style: GlobalsStyle.appBarTextStyle),
 
-              const SizedBox(height: 6),
-            ],
-          )
-        : Text(value, style: GlobalsStyle.appBarTextStyle);
+                const SizedBox(height: 2),
+
+                Text(
+                  psStorageData.psTitleList[widget.tappedIndex],
+                  style: const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 6),
+
+              ],
+            )
+          : Text(value, style: GlobalsStyle.appBarTextStyle);
       },
     );
   }
@@ -988,7 +1006,7 @@ class PreviewFileState extends State<PreviewFile> {
         decoration: _buildBackgroundDecoration(),
         child: Column(
           children: [
-            _buildHeaderTitle(),
+            _buildTextHeaderTitle(),
             Expanded(
               child: _buildFileOnCondition(),
             ),
