@@ -119,6 +119,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   final insertData = InsertData();
   final dataCaller = DataCaller();
   final updateListView = UpdateListView();
+  final deleteData = DeleteData();
 
   final crud = Crud();
   final logger = Logger();
@@ -717,12 +718,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _openDeleteSelectionDialog() {
+
     DeleteSelectionDialog().buildDeleteSelectionDialog(
       context: context, 
       appBarTitle: tempData.appBarTitle, 
       deleteOnPressed: () async {
-
-        final countSelectedItems = checkedList.where((item) => item == true).length;
+         
+        final countSelectedItems = togglePhotosPressed
+          ? checkedItemsName.length
+          : checkedList.where((item) => item == true).length;
         
         final loadingDialog = SingleTextLoading();
         loadingDialog.startLoading(title: "Deleting...",context: context);
@@ -792,10 +796,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
+      _floatingButtonVisibility(true);
       _navDirectoryButtonVisibility(true);
     }
 
     _itemSearchingImplementation('');
+
   }
 
   void _togglePublicStorage() async {
@@ -845,12 +851,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-
-  Future<void> _refreshPublicStorage() async {
-    await _callPublicStorageData(); 
+  Future<void> _sortDataDescendingPs() async {
     await Future.delayed(const Duration(milliseconds: 500));
     _sortUploadDate();
     _sortUploadDate();
+  }
+
+  Future<void> _refreshPublicStorage() async {
+    await _callPublicStorageData(); 
+    await _sortDataDescendingPs();
     _floatingButtonVisibility(true);
   }
 
@@ -863,12 +872,20 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _clearSelectAll() {
-    tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
+
+    if(togglePhotosPressed == false) {
+      tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
+    } else {
+      tempData.setAppBarTitle("Photos");
+    }
+
     setState(() {
       itemIsChecked = false;
       editAllIsPressed = false;
     });
+
     selectAllItemsIsPressedNotifier.value = false;
+    selectedPhotosIndex.clear();
     checkedItemsName.clear();
   }
 
@@ -1170,10 +1187,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     for (int i = 0; i < count; i++) {
       final fileName = checkedItemsName.elementAt(i);
-      await DeleteData().deleteOnMultiSelection(fileName: fileName);
-      await Future.delayed(const Duration(milliseconds: 855));
+      await deleteData.deleteOnMultiSelection(fileName: fileName);
 
+      await Future.delayed(const Duration(milliseconds: 855));
       _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
+
     }
 
     _clearSelectAll();
@@ -1451,11 +1469,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     psButtonTextNotifier.value = "Back";
     
     _itemSearchingImplementation('');
-    searchBarController.text = '';
+    await _sortDataDescendingPs();
 
-    await Future.delayed(const Duration(milliseconds: 500));
-    _sortUploadDate();
-    _sortUploadDate();
+    searchBarController.text = '';
 
     _floatingButtonVisibility(false);
 
@@ -1771,8 +1787,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     required bool isFromSelectAll, 
   }) {
 
-    int indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
-
+    final indexOfFile = togglePhotosPressed 
+      ? storageData.fileNamesFilteredList.indexOf(fileName)+1
+      : storageData.fileNamesFilteredList.indexOf(fileName);
+    
     if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
       storageData.fileNamesList.removeAt(indexOfFile);
       storageData.fileNamesFilteredList.removeAt(indexOfFile);
@@ -1785,8 +1803,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       Navigator.pop(context);
     }
 
-    _itemSearchingImplementation('');
-
+    if(togglePhotosPressed) {
+      _togglePhotos();
+      return;
+    } else {
+      _itemSearchingImplementation('');
+    }
+    
   }
 
   void _updateRenameFile(String newFileName, int indexOldFile, int indexOldFileSearched) {
@@ -2714,9 +2737,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     setState(() {
       selectedPhotosIndex.add(index);
     });
-
+    
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Items selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
     
     _floatingButtonVisibility(false);
 
