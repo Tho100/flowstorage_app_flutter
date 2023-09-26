@@ -2,57 +2,26 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationApi {
-
   static final _notifications = FlutterLocalNotificationsPlugin();
 
-  static Future _notificationDetails() async {
-
-    return const NotificationDetails(
+  static Future<NotificationDetails> _notificationDetails({
+    required String channelId,
+    required String channelName,
+    required String channelDescription,
+    bool ongoing = false,
+  }) async {
+    return NotificationDetails(
       android: AndroidNotificationDetails(
-        '001',
-        'Onfinish Upload',
-        channelDescription: 'Alert user if a task is finished',
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
         importance: Importance.max,
-        icon: "@mipmap/ic_launcher",
+        icon: '@mipmap/ic_launcher',
         playSound: false,
         enableVibration: false,
-        color: ThemeColor.darkPurple
-      ),
-    );
-  }
-
-  static Future _uploadingNotificationDetails() async {
-
-    return const NotificationDetails(
-      android: AndroidNotificationDetails(
-        '002',
-        'Ongoing Upload',
-        channelDescription: 'Alert user for ongoing task',
-        importance: Importance.max,
-        icon: "@mipmap/ic_launcher",
-        playSound: false,
-        enableVibration: false,
-        ongoing: true,
-        autoCancel: false,
-        color: ThemeColor.darkPurple
-      ),
-    );
-  }
-
-  static Future _audioNotificationDetails() async {
-
-    return const NotificationDetails(
-      android: AndroidNotificationDetails(
-        '003',
-        'Audio Player',
-        channelDescription: 'Alert user for playing audio',
-        importance: Importance.low,
-        icon: "@mipmap/ic_launcher",
-        playSound: false,
-        enableVibration: false,
-        ongoing: true,
-        autoCancel: false,
-        color: ThemeColor.darkPurple
+        ongoing: ongoing,
+        autoCancel: !ongoing,
+        color: ThemeColor.darkPurple,
       ),
     );
   }
@@ -61,26 +30,58 @@ class NotificationApi {
     int id = 0,
     String? title,
     String? body,
-    String? payload
-  }) async => _notifications.show(
-    id, title, body, await _uploadingNotificationDetails(),payload: payload);
-    
+    String? payload,
+  }) async =>
+      _notifications.show(
+        id,
+        title,
+        body,
+        await _notificationDetails(
+          channelId: '002',
+          channelName: 'Ongoing Upload',
+          channelDescription: 'Alert user for ongoing task',
+          ongoing: true,
+        ),
+        payload: payload,
+      );
+
   static Future showAudioNotification({
     int id = 0,
     String? title,
     String? body,
-    String? payload
-  }) async => _notifications.show(
-    id, title, body, await _audioNotificationDetails(), payload: payload);
-    
-  static Future showNotification({
+    String? payload,
+  }) async =>
+      _notifications.show(
+        id,
+        title,
+        body,
+        await _notificationDetails(
+          channelId: '003',
+          channelName: 'Audio Player',
+          channelDescription: 'Alert user for playing audio',
+          ongoing: true,
+        ),
+        payload: payload,
+      );
+
+  static Future showOnfinishTaskNotification({
     int id = 0,
     String? title,
     String? body,
-    String? payload
-  }) async => _notifications.show(
-    id, title, body, await _notificationDetails(),payload: payload);
-    
+    String? payload,
+  }) async =>
+      _notifications.show(
+        id,
+        title,
+        body,
+        await _notificationDetails(
+          channelId: '001',
+          channelName: 'Onfinish Upload',
+          channelDescription: 'Alert user if a task is finished',
+        ),
+        payload: payload,
+      );
+
   static Future stopNotification(int id) async {
     await _notifications.cancel(id);
   }

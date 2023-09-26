@@ -35,6 +35,26 @@ class CommentPageState extends State<CommentPage> {
     initializeFileComment();
   }
 
+  Widget _buildHeader() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'Comment',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
+              overflow: TextOverflow.ellipsis,
+            )),
+        ),
+      ],
+    );
+  }
+
   void initializeFileComment() async {
     
     switch (tempData.origin) {
@@ -60,26 +80,6 @@ class CommentPageState extends State<CommentPage> {
 
     setState(() {});
 
-  }
-
-  Widget _buildHeader() {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Text(
-            'Comment',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              overflow: TextOverflow.ellipsis,
-            )),
-        ),
-      ],
-    );
   }
 
   Future<String> _shareToOtherName() async {
@@ -267,12 +267,11 @@ class CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
       appBar: AppBar(
-      elevation: 0,
-      backgroundColor: ThemeColor.darkBlack,
-      title: Text(
-        tempData.selectedFileName,
+        elevation: 0,
+        backgroundColor: ThemeColor.darkBlack,
+        title: Text(
+          tempData.selectedFileName,
         style: GlobalsStyle.appBarTextStyle
       )
     ),

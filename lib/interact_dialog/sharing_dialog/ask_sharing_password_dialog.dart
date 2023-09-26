@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
-import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/share_file.dart';
+import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';

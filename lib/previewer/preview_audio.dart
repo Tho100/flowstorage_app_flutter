@@ -9,7 +9,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
-import 'package:flowstorage_fsc/models/ajbyte_source.dart';
+import 'package:flowstorage_fsc/models/process_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -97,7 +97,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
     
     if (audioPlayerController.duration == null) {
-      await audioPlayerController.setAudioSource(MyJABytesSource(byteAudio, audioContentType!));
+      await audioPlayerController.setAudioSource(ProcessAudio(byteAudio, audioContentType!));
       Duration duration = audioPlayerController.duration!;
       String formattedDuration = getDurationString(duration);
       audioDuration = formattedDuration;

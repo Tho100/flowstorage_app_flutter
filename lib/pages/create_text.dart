@@ -292,7 +292,6 @@ class CreateTextPageState extends State<CreateText> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
       appBar: AppBar(
         actions: [
 

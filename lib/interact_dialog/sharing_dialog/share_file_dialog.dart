@@ -26,10 +26,8 @@ class SharingDialog {
       childrenWidgets: <Widget>[
         Row(
           children: [
-
             Stack(
               children: [
-                
                 Padding(
                   padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
                   child: ClipRRect(

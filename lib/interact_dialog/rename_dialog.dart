@@ -12,8 +12,9 @@ import 'package:get_it/get_it.dart';
 
 class RenameDialog {
 
-  static final renameController = TextEditingController();
   final storageData = GetIt.instance<StorageDataProvider>();
+  
+  static final renameController = TextEditingController();
 
   Future buildRenameFileDialog({
     required String fileName,

@@ -107,9 +107,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
           borderRadius: BorderRadius.circular(20),
           )
       ),
-      backgroundColor: ThemeColor.darkBlack,
       body: Padding (
-
         padding: EdgeInsets.symmetric(
           horizontal: mediaQuery.size.width * 0.05,
           vertical: mediaQuery.size.height * 0.05,

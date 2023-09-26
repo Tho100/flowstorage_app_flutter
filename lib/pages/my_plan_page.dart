@@ -263,7 +263,6 @@ class MyPlanPageState extends State<MyPlanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,

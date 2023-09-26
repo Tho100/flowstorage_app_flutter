@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 import 'package:just_audio/just_audio.dart';
 
-class MyJABytesSource extends StreamAudioSource {
+class ProcessAudio extends StreamAudioSource {
 
   final Uint8List _buffer;
   final String _contentType;
 
-  MyJABytesSource(this._buffer, this._contentType) : super(tag: 'MyAudioSource');
+  ProcessAudio(this._buffer, this._contentType) : super(tag: 'MyAudioSource');
 
   @override
   Future<StreamAudioResponse> request([int? start, int? end]) async {

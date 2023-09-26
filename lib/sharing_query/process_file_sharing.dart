@@ -10,7 +10,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/ask_sharing_password_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/share_file.dart';
+import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';

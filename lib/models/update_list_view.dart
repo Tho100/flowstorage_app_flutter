@@ -32,7 +32,7 @@ class UpdateListView {
     storageData.fileDateFilteredList.add("Just now");
     storageData.fileDateList.add("Just now");
     storageData.fileNamesList.add(fileName);
-    storageData.updateFilteredFilesName(fileName);
+    storageData.fileNamesFilteredList.add(fileName);
   }
 
   Future<void> _insertFileData({

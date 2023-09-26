@@ -20,7 +20,7 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/interact_dialog/share_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/share_file_dialog.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/data_classes/update_data.dart';

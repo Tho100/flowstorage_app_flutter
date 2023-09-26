@@ -34,13 +34,13 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/interact_dialog/share_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/share_file_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/ps_comment_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/upload_ps_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_filter.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_folder.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_selected_items.dart';
@@ -656,38 +656,21 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final newFolderName = RenameFolderDialog.folderRenameController.text;
 
         if (storageData.foldersNameList.contains(newFolderName)) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: ThemeColor.darkGrey,
-              title: Text(
-                newFolderName,
-                style: const TextStyle(color: Colors.white),
-              ),
-              content: const Text(
-                'Folder with this name already exists.',
-                style: TextStyle(color: Color.fromARGB(255, 212, 212, 212)),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          if (newFolderName.isNotEmpty) {
-            await _renameFolder(folderName, newFolderName);
-          } else {
-            CustomAlertDialog.alertDialog('Folder name cannot be empty.');
-          }
-        }
+          CallToast.call(message: "Folder with this name already exists.");
+          RenameFolderDialog.folderRenameController.clear();
+          return;
 
-        RenameFolderDialog.folderRenameController.clear();
+        } 
+
+        if (newFolderName.isNotEmpty) {
+          await _renameFolder(folderName, newFolderName);
+          RenameFolderDialog.folderRenameController.clear();
+
+        } else {
+          CallToast.call(message: "Folder name cannot be empty.");
+          return;
+
+        }
 
       }
     );
@@ -1387,6 +1370,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
       if(!mounted) return;
+      await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "$oldFolderName renamed to $newFolderName");
       SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
 
     } catch (err) {
@@ -3169,7 +3153,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       onTap: searchBarFocusNode.unfocus,
       child: Scaffold(
         key: sidebarMenuScaffoldKey,
-        backgroundColor: ThemeColor.darkBlack,
         drawer: CustomSideBarMenu(
           usageProgress: _getStorageUsagePercentage(),
           offlinePageOnPressed: () async { _callOfflineData(); }

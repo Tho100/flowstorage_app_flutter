@@ -179,8 +179,6 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
           borderRadius: BorderRadius.circular(20),
           )
       ),
-
-      backgroundColor: ThemeColor.darkBlack,
       resizeToAvoidBottomInset: false,
       body: Padding(  
         padding: EdgeInsets.symmetric(

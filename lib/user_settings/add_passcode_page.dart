@@ -85,7 +85,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     }
   }
 
-  Widget buildPassCode() {
+  Widget buildAddPasscodePage() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -300,12 +300,11 @@ class AddPasscodePageState extends State<AddPasscodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack
       ),
-      body: buildPassCode()
+      body: buildAddPasscodePage()
     );
   }
 }

@@ -88,11 +88,6 @@ class StorageDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateFilteredFilesName(String fileName) {
-    _fileNamesFilteredList.add(fileName);
-    notifyListeners();
-  }
-
   void setDirectoryImageBytes(List<Uint8List> bytes) {
     _directoryImageBytesList = bytes;
     notifyListeners();

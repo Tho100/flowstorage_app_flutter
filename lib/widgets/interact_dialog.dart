@@ -9,6 +9,7 @@ class InteractDialog {
   }) {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return Dialog(
           insetPadding: const EdgeInsets.symmetric(horizontal: 22), 
