@@ -475,7 +475,6 @@ class PreviewFileState extends State<PreviewFile> {
       fileData = await _callDataDownload();
     }
     
-    if(!mounted) return;
     await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
 
     singleLoading.stopLoading();

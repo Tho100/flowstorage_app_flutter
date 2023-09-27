@@ -164,7 +164,6 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
 
       await _updateAuth(newAuth, getUsername);
 
-      if(!mounted) return;
       CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
 
     } catch (err) {

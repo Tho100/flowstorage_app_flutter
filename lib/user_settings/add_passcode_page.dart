@@ -65,7 +65,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
     try {
 
-      if(!mounted) return;
       CustomAlertDialog.alertDialogCustomOnPressed(
         messages: "Confrim passcode?", 
         oPressedEvent: () async { 

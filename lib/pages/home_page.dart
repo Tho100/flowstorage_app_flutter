@@ -370,12 +370,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           final selectedFileName = pickedFile.name;
           final fileExtension = selectedFileName.split('.').last;
 
-          if(!mounted) return;
-
           if (!Globals.supportedFileTypes.contains(fileExtension)) {
             CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
             await NotificationApi.stopNotification(0);
-            continue;
+
+            if(tempData.origin == OriginFile.public) 
+            { return; } else { continue; }
+
           }
 
           if (storageData.fileNamesList.contains(selectedFileName)) {
@@ -916,7 +917,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       loadingDialog.stopLoading();
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check);
 
     } catch (err) {
@@ -961,7 +961,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       singleLoading.stopLoading();
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
 
       _clearSelectAll();
@@ -1154,7 +1153,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await NotificationApi.stopNotification(0);
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
 
       await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
@@ -1352,6 +1350,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       if(!mounted) return;
       Navigator.pop(context);
+
       SnakeAlert.okSnake(message: "$folderName Folder has been deleted.",icon: Icons.check);
 
     } catch (err) {
@@ -1372,8 +1371,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         storageData.foldersNameList[indexOldFolder] = newFolderName;
       }
 
-      if(!mounted) return;
       await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "$oldFolderName renamed to $newFolderName");
+
       SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
 
     } catch (err) {
@@ -1538,7 +1537,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
     if(storageData.fileNamesList.isEmpty) {
-      if(!mounted) return;
       _buildEmptyBody();
     }
 
@@ -1577,7 +1575,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
       storageData.directoryImageBytesList.clear();
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {
@@ -1706,8 +1703,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       fileData = await _callData(fileName, tableName);
     }
     
-    if(!mounted) return;
-    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
+    await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
     singleLoading.stopLoading();
     _clearSelectAll();
@@ -1759,7 +1755,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await CallNotify().downloadedNotification(fileName: fileName);
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
 
     } catch (err) {
@@ -1821,7 +1816,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       if (indexOldFileSearched != -1) {
         _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
 
-        if(!mounted) return;
         SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
       }
 
@@ -1870,7 +1864,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await RenameDirectory.renameDirectory(oldDirName,newDirName);
 
-    if(!mounted) return;
     SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
   }
 
