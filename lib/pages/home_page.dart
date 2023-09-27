@@ -381,7 +381,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if (storageData.fileNamesList.contains(selectedFileName)) {
             CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
             await NotificationApi.stopNotification(0);
-            continue;
+
+            if(tempData.origin == OriginFile.public) 
+            { return; } else { continue; }
+
           }
 
           if(countSelectedFiles < 2) {

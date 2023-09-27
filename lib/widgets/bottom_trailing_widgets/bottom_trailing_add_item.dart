@@ -1,11 +1,15 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class BottomTrailingAddItem {
   
+  final tempData = GetIt.instance<TempDataProvider>();
+
   Future buildTrailing({
     required String headerText,
     required VoidCallback galleryOnPressed,
@@ -91,23 +95,25 @@ class BottomTrailingAddItem {
               ),
             ),
           ),
-          
-          const Divider(color: ThemeColor.thirdWhite),
 
-          ElevatedButton(
-            onPressed: photoOnPressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.camera_alt_outlined),
-                SizedBox(width: 15.0),
-                Text(
-                  'Take a photo',
-                  style: GlobalsStyle.btnBottomDialogTextStyle,
-                ),
-              ],
+          if(tempData.origin != OriginFile.public) ... [
+            const Divider(color: ThemeColor.thirdWhite),
+
+            ElevatedButton(
+              onPressed: photoOnPressed,
+              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+              child: const Row(
+                children: [
+                  Icon(Icons.camera_alt_outlined),
+                  SizedBox(width: 15.0),
+                  Text(
+                    'Take a photo',
+                    style: GlobalsStyle.btnBottomDialogTextStyle,
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
 
           Visibility(
             visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.offline]),
@@ -127,11 +133,10 @@ class BottomTrailingAddItem {
             ),
           ),
 
-          const Divider(color: ThemeColor.thirdWhite),
+          if(tempData.origin != OriginFile.public) ... [
+            const Divider(color: ThemeColor.thirdWhite),
 
-          Visibility(
-            visible: VisibilityChecker.setNotVisible(OriginFile.public),
-            child: ElevatedButton(
+            ElevatedButton(
               onPressed: textOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
                 child: const Row(
@@ -145,7 +150,8 @@ class BottomTrailingAddItem {
                   ],
                 ),
               ),
-            ),
+            ],
+            
         
             Visibility(
               visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.directory, OriginFile.folder, OriginFile.offline]),
@@ -164,6 +170,9 @@ class BottomTrailingAddItem {
                 ),
               ),
             ),
+
+            if(tempData.origin == OriginFile.public)
+            const SizedBox(height: 20),
           ],
         );
       }
