@@ -8,9 +8,7 @@ class GetThumbnail {
 
   final String videoPath;
 
-  GetThumbnail({
-    required this.videoPath
-  });
+  GetThumbnail({required this.videoPath});
 
   Future<String> getVideoThumbnail() async {
 

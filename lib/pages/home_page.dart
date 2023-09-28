@@ -59,6 +59,8 @@ import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
+import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/recent_ps_list_view.dart';
+import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_view.dart';
 
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -403,7 +405,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if (Globals.imageType.contains(fileExtension)) {
 
-            List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal,quality: 85);
+            final compressQuality = tempData.origin 
+              == OriginFile.public  ? 76 : 85;
+
+            List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
             String compressedImageBase64Encoded = base64.encode(bytes);
 
             if(tempData.origin == OriginFile.public) {
@@ -1008,8 +1013,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _processUploadDateSorting() {
 
-    final dateParser = DateParser();
-
     List<Map<String, dynamic>> itemList = [];
 
     if(tempData.origin != OriginFile.public) {
@@ -1018,7 +1021,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         itemList.add({
           'file_name': storageData.fileNamesFilteredList[i],
           'image_byte': storageData.imageBytesFilteredList[i],
-          'upload_date': dateParser.parseDate(storageData.fileDateFilteredList[i]),
+          'upload_date': DateParser(date: storageData.fileDateFilteredList[i]).parse(),
         });
       }
 
@@ -1028,7 +1031,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         itemList.add({
           'file_name': storageData.fileNamesFilteredList[i],
           'image_byte': storageData.imageBytesFilteredList[i],
-          'upload_date': dateParser.parseDate(storageData.fileDateFilteredList[i]),
+          'upload_date': DateParser(date: storageData.fileDateFilteredList[i]).parse(),
           'title': psStorageData.psTitleList[i],
           'tag_value': psStorageData.psTagsList[i],
           'uploader_name': psStorageData.psUploaderList[i]
@@ -2308,6 +2311,42 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  void _onPhotosItemSelected(int index) {
+    if (selectedPhotosIndex.contains(index)) {
+      checkedItemsName.remove(storageData.fileNamesFilteredList[index]);
+      setState(() {
+        selectedPhotosIndex.remove(index);
+      });
+    } else {
+      checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+      setState(() {
+        selectedPhotosIndex.add(index);
+      });
+    }
+
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
+
+    if(selectedPhotosIndex.isEmpty) {
+      _floatingButtonVisibility(true);
+      tempData.setAppBarTitle("Photos");
+      itemIsChecked = false;
+    }
+    
+  }
+
+  void _onHoldPhotosItem(int index) {
+    itemIsChecked = true;
+    setState(() {
+      selectedPhotosIndex.add(index);
+    });
+    
+    checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
+    
+    _floatingButtonVisibility(false);
+
+  }
+
   void _onSelectAllItemsPressed() {
     checkedItemsName.clear();
     for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
@@ -2470,248 +2509,32 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildRecentPsFiles(Uint8List imageBytes, int index) {
-    
-    final fileName = storageData.fileNamesFilteredList[index];
-    final fileType = fileName.split('.').last;
 
-    return GestureDetector(
-      onTap: () async {
+    return RecentPsListView(
+      imageBytes: imageBytes, 
+      index: index, 
+      fileOnPressed: () async {
         await _navigateToPreviewFile(index);
-      },
-      onLongPress: () {
-        _callBottomTrailling(index);
-      },
-      child: Row(
-        children: [
-          Stack(
-            children: [
-              Container(
-                width: 65,
-                height: 65,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: ThemeColor.lightGrey,
-                    width: 2,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) 
-                                ? BoxFit.scaleDown 
-                                : BoxFit.cover),
-                ),
-              ),
-
-              if(Globals.videoType.contains(fileType))
-              Padding(
-                padding: const EdgeInsets.only(top: 14.0, left: 16.0),
-                child: Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: ThemeColor.mediumGrey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
-                ),
-              ),
-
-            ],
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 12),
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
-                style: const TextStyle(
-                  color: ThemeColor.secondaryWhite,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: 100,
-                height: 23,
-                decoration: BoxDecoration(
-                  color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-                  borderRadius: const BorderRadius.all(Radius.circular(16)),
-                ),
-                child: Center(
-                  child: Text(
-                    psStorageData.psTagsList[index],
-                    style: const TextStyle(
-                      color: ThemeColor.justWhite,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+      }, 
+      fileOnLongPressed: () async {
+        await _callBottomTrailling(index);
+      }
     );
+
   }
 
   Widget _buildSubPsFiles(Uint8List imageBytes, int index) {
-    
-    final fileName = storageData.fileNamesFilteredList[index];
-    final fileType = fileName.split('.').last;
 
-    return GestureDetector(
-      onTap: () async {
+    return SubPsListView(
+      imageBytes: imageBytes, 
+      index: index, 
+      fileOnPressed: () async {
         await _navigateToPreviewFile(index);
-      },
-      onLongPress: () {
-        _callBottomTrailling(index);
-      },
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    width: 185,
-                    height: 158,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: ThemeColor.lightGrey,
-                        width: 2,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(14)),
-                      child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover),
-                    ),
-                  ),
-
-                  if(Globals.videoType.contains(fileType))
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 10.0),
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: ThemeColor.mediumGrey.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(right: 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 16),
-                      style: const TextStyle(
-                        color: ThemeColor.justWhite,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      ShortenText().cutText(fileName, customLength: 16),
-                      style: const TextStyle(
-                        color: ThemeColor.secondaryWhite,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
-                      style: const TextStyle(
-                        color: ThemeColor.secondaryWhite,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      width: 100,
-                      height: 23,
-                      decoration: BoxDecoration(
-                        color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-                        borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          psStorageData.psTagsList[index],
-                          style: const TextStyle(
-                            color: ThemeColor.justWhite,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-
-    );
-  }
-
-  void _onPhotosItemSelected(int index) {
-    if (selectedPhotosIndex.contains(index)) {
-      checkedItemsName.remove(storageData.fileNamesFilteredList[index]);
-      setState(() {
-        selectedPhotosIndex.remove(index);
-      });
-    } else {
-      checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-      setState(() {
-        selectedPhotosIndex.add(index);
-      });
-    }
-
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
-
-    if(selectedPhotosIndex.isEmpty) {
-      _floatingButtonVisibility(true);
-      tempData.setAppBarTitle("Photos");
-      itemIsChecked = false;
-    }
-    
-  }
-
-  void _onHoldPhotosItem(int index) {
-    itemIsChecked = true;
-    setState(() {
-      selectedPhotosIndex.add(index);
-    });
-    
-    checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
-    
-    _floatingButtonVisibility(false);
+      }, 
+      fileOnLongPressed: () async {
+        await _callBottomTrailling(index);
+      }
+    ); 
 
   }
 
@@ -2879,7 +2702,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     final daysDate = originalDateValues.split(' ')[0];
     final inputDate = "$daysDate days";
-    final shortFormDate = DateShortForm(input: inputDate).convert();
+    final shortFormDate = inputDate == "Just days" 
+      ? "Just now" 
+      : DateShortForm(input: inputDate).convert();
 
     return PsStaggeredListView(
       imageBytes: imageBytes,

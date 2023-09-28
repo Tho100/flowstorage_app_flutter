@@ -2,22 +2,26 @@ import 'package:intl/intl.dart';
 
 class DateParser {
 
-    DateTime parseDate(String dateString) {
+  final String date;
+
+  DateParser({required this.date});
+
+  DateTime parse() {
 
     DateTime now = DateTime.now();
 
-    if(dateString == "Directory") {
+    if(date == "Directory") {
       return now;
     }
     
-    if (dateString.contains('days ago')) {
+    if (date.contains('days ago')) {
 
-      int daysAgo = int.parse(dateString.split(' ')[0]);
+      int daysAgo = int.parse(date.split(' ')[0]);
       
       return now.subtract(Duration(days: daysAgo));
 
     } else {
-      return DateFormat('MMM dd yyyy').parse(dateString);
+      return DateFormat('MMM dd yyyy').parse(date);
     }
     
   }
