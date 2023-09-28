@@ -225,10 +225,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           continue;
         } 
 
-        if(countSelectedFiles < 2) {
-          tempData.origin != OriginFile.public 
-          ? SnakeAlert.uploadingSnake(snackState: scaffoldMessenger, message: "Uploading ${shortenText.cutText(filesName)}") 
-          : null;
+        if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
+          SnakeAlert.uploadingSnake(
+            snackState: scaffoldMessenger, 
+            message: "Uploading ${shortenText.cutText(filesName)}"); 
         }
 
         if (!(Globals.imageType.contains(fileExtension))) {
@@ -319,8 +319,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
-
-
   Future<void> _openDialogFile() async {
 
     try {
@@ -388,14 +386,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           }
 
-          if(countSelectedFiles < 2) {
-
-            tempData.origin != OriginFile.public
-            ? SnakeAlert.uploadingSnake(
+          if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
+            SnakeAlert.uploadingSnake(
               snackState: scaffoldMessenger, 
               message: "Uploading ${shortenText.cutText(selectedFileName)}"
-            ) 
-            : null;
+            ) ;
+
           }
 
           final filePathVal = pickedFile.path.toString();

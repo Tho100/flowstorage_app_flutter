@@ -139,13 +139,12 @@ class PsCommentDialog {
               child: Text(
                 "Tags", 
                 style: TextStyle(
-                  color: ThemeColor.justWhite,
+                  color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(left: 5.0),
               child: ValueListenableBuilder<String>(
@@ -159,41 +158,48 @@ class PsCommentDialog {
                         color: GlobalsStyle.psTagsToColor[value],
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                      ), 
+                      ),
                     ),
                   );
                 }
-              )
+              ),
             ),
-            
           ],
         ),
-
+        
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 2, right: 2),
-          child: SizedBox(
-            height: 55,
-            child: ListView.builder(
-              itemCount: tagsItems.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => Container(
-                height: 45,
-                width: 122,
-                margin: const EdgeInsets.all(8),
-                color: Colors.transparent,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18)
-                    ),
-                    backgroundColor: GlobalsStyle.psTagsToColor[tagsItems.elementAt(index)]
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: ThemeColor.darkGrey,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 2, right: 2),
+              child: SizedBox(
+                height: 55,
+                child: ListView.builder(
+                  itemCount: tagsItems.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => Container(
+                    height: 45,
+                    width: 122,
+                    margin: const EdgeInsets.all(8),
+                    color: Colors.transparent,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18)
+                        ),
+                        backgroundColor: GlobalsStyle.psTagsToColor[tagsItems.elementAt(index)]
+                      ),
+                      onPressed: () {
+                        psUploadData.setTagValue(tagsItems.elementAt(index));
+                        selectedTagValue.value = psUploadData.psTagValue;
+                      },
+                      child: Text(tagsItems.elementAt(index)),
+                    )
                   ),
-                  onPressed: () {
-                    psUploadData.setTagValue(tagsItems.elementAt(index));
-                    selectedTagValue.value = psUploadData.psTagValue;
-                  },
-                  child: Text(tagsItems.elementAt(index)),
-                )
+                ),
               ),
             ),
           ),
