@@ -49,7 +49,8 @@ class CommentPageState extends State<CommentPage> {
               fontSize: 24,
               fontWeight: FontWeight.w500,
               overflow: TextOverflow.ellipsis,
-            )),
+            )
+          ),
         ),
       ],
     );
@@ -109,10 +110,10 @@ class CommentPageState extends State<CommentPage> {
 
     String? decryptedComment;
     for(final row in results.rows) {
-      decryptedComment = row.assoc()['CUST_COMMENT'] == ' ' ? '(No Comment)' : EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
+      decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
     }
 
-    return decryptedComment!;
+    return decryptedComment ?? '(No Comment)';
 
   }
 
@@ -146,7 +147,7 @@ class CommentPageState extends State<CommentPage> {
       decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
     }
 
-    return decryptedComment!;
+    return decryptedComment ?? '(No Comment)';
     
   }
 
@@ -163,7 +164,7 @@ class CommentPageState extends State<CommentPage> {
       decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
     }
 
-    return decryptedComment! == '' ? '(No Comment)' : decryptedComment;
+    return decryptedComment ?? '(No Comment)';
   }
 
   Future<Widget> _buildComment() async {
@@ -192,6 +193,7 @@ class CommentPageState extends State<CommentPage> {
                     padding: const EdgeInsets.all(4.0),
                     child: TextFormField(
                       controller: commentText,
+                      readOnly: true,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       style: GoogleFonts.roboto(

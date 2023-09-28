@@ -4,44 +4,39 @@ import 'package:encrypt/encrypt.dart';
 
 class EncryptionClass {
 
-  late List<int> keyBytes;
-  
+  late Encrypter _encrypter;
+  late Key _key;
+  late IV _iv;
+
   EncryptionClass() {
-    keyBytes = utf8.encode("0123456789085746");
+    _key = Key(Uint8List.fromList(utf8.encode("0123456789085746")));
+    _iv = IV.fromLength(16);
+    _encrypter = Encrypter(AES(_key, mode: AESMode.cbc, padding: 'PKCS7'));
   }
 
   String encrypt(String? plainText) {
-    
+
     try {
-        
-      final key = Key(Uint8List.fromList(keyBytes));
-      final iv = IV.fromLength(16);
 
-      final encrypter = Encrypter(AES(key, mode: AESMode.cbc, padding: 'PKCS7'));
-      final encrypted = encrypter.encrypt(plainText!, iv: iv);
-
+      final encrypted = _encrypter.encrypt(plainText!, iv: _iv);
       return base64.encode(encrypted.bytes);
 
     } catch (err) {
       return "";
     }
+
   }
 
-  String decrypt(String? plainText) {
+  String decrypt(String? encryptedText) {
 
     try {
 
-      final key = Key(Uint8List.fromList(keyBytes));
-      final iv = IV.fromLength(16);
-
-      final encrypter = Encrypter(AES(key, mode: AESMode.cbc, padding: 'PKCS7'));
-      final decrypted = encrypter.decrypt(Encrypted(base64.decode(plainText!)), iv: iv);
-
+      final decrypted = _encrypter.decrypt(Encrypted(base64.decode(encryptedText!)), iv: _iv);
       return decrypted;
 
     } catch (err) {
       return "";
     }
+
   }
-  
 }

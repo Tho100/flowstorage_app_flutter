@@ -14,7 +14,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 
 class FolderDataReceiver {
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
@@ -28,9 +28,11 @@ class FolderDataReceiver {
     required String returnColumn
   }) async {
     
-    final userData = _locator<UserDataProvider>();
-
-    final params = {"username": userData.username,"foldname": encryption.encrypt(folderTitle),"filename": fileName};
+    final params = {
+      "username": userData.username,
+      "foldname": encryption.encrypt(folderTitle),
+      "filename": fileName
+    };
 
     final results = await conn.execute(query,params);
 

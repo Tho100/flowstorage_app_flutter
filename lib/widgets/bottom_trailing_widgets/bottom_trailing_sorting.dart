@@ -57,6 +57,7 @@ class BottomTrailingSorting {
               ),
             ),
 
+            if(tempData.origin != OriginFile.public)
             ElevatedButton(
               onPressed: sortItemNameOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,

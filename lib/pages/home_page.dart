@@ -1090,11 +1090,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       storageData.fileNamesFilteredList.clear();
       storageData.imageBytesFilteredList.clear();
       storageData.fileDateFilteredList.clear();
+
       for (var item in itemList) {
         storageData.fileNamesFilteredList.add(item['file_name']);
         storageData.imageBytesFilteredList.add(item['image_byte']);
         storageData.fileDateFilteredList.add(item['upload_date']);
       }
+      
     });
 
     itemList.clear();
@@ -1257,7 +1259,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _filterTypePublicStorage(String value) async {
 
     debounceSearchingTimer?.cancel();
-    debounceSearchingTimer = Timer(const Duration(milliseconds: 299), () {
+    debounceSearchingTimer = Timer(const Duration(milliseconds: 499), () {
       final searchTerms =
           value.split(",").map((term) => term.trim().toLowerCase()).toList();
 
@@ -1270,15 +1272,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           .toList();
 
       final filteredFilesDate = <String>[];
-
-      for (final file in filteredFiles) {
-        final index = storageData.fileNamesList.indexOf(file);
-        if (index >= 0 && index < storageData.fileDateList.length) {
-          filteredFilesDate.add(storageData.fileDateList[index]);
-        } else {
-          filteredFilesDate.add(''); 
-        }
-      }
 
       setState(() {
         storageData.setFilteredFilesName(filteredFiles);
