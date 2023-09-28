@@ -171,7 +171,7 @@ class PsCommentDialog {
           padding: const EdgeInsets.only(top: 8.0),
           child: Container(
             decoration: const BoxDecoration(
-              color: ThemeColor.darkGrey,
+              color: ThemeColor.mediumGrey,
             ),
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 2, right: 2),

@@ -11,6 +11,7 @@ import 'package:flowstorage_fsc/directory_query/save_directory.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/date_short_form.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -2883,15 +2884,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final originalDateValues = storageData.fileDateFilteredList[index];
 
+    final daysDate = originalDateValues.split(' ')[0];
+    final inputDate = "$daysDate days";
+    final shortFormDate = DateShortForm(input: inputDate).convert();
+
     return PsStaggeredListView(
-      imageBytes: imageBytes, 
-      index: index, 
-      uploaderName: uploaderName, 
-      fileType: fileType, 
-      originalDateValues: originalDateValues, 
-      callBottomTrailing: _callBottomTrailling 
+      imageBytes: imageBytes,
+      index: index,
+      uploaderName: uploaderName,
+      fileType: fileType,
+      originalDateValues: shortFormDate,
+      callBottomTrailing: _callBottomTrailling,
     );
-    
   }
 
   Widget _buildDefaultStaggeredListView(Uint8List imageBytes, int index) {
