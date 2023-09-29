@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -41,7 +42,6 @@ import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/upload_ps_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_filter.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_folder.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_selected_items.dart';
@@ -592,38 +592,42 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     
-    await PsCommentDialog().buildPsCommentDialog(
-      fileName: fileName,
-      onUploadPressed: () async { 
-        
-        SnakeAlert.uploadingSnake(
-          snackState: scaffoldMessenger, 
-          message: "Uploading ${ShortenText().cutText(fileName)}"
-        );
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => UploadPsPage(
+            fileName: fileName,
+            imageBase64Encoded: imagePreview,
+            fileBase64Encoded: base64Encoded,
+            onUploadPressed: () async {
 
-        await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
+              SnakeAlert.uploadingSnake(
+              snackState: scaffoldMessenger, 
+              message: "Uploading ${ShortenText().cutText(fileName)}"
+            );
 
-        await UpdateListView().processUpdateListView(
-          filePathVal: filePathVal, selectedFileName: fileName,
-          tableName: tableName, fileBase64Encoded: base64Encoded, 
-          newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail
-        );
+            await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
 
-        psStorageData.psTitleList.add(psUploadData.psTitleValue);
-        psStorageData.psTagsList.add(psUploadData.psTagValue);
-        psStorageData.psUploaderList.add(userData.username);
+            await UpdateListView().processUpdateListView(
+              filePathVal: filePathVal, selectedFileName: fileName,
+              tableName: tableName, fileBase64Encoded: base64Encoded, 
+              newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail
+            );
 
-        scaffoldMessenger.hideCurrentSnackBar();
+            psStorageData.psTitleList.add(psUploadData.psTitleValue);
+            psStorageData.psTagsList.add(psUploadData.psTagValue);
+            psStorageData.psUploaderList.add(userData.username);
 
-        UpdateListView().addItemToListView(fileName: fileName);
-        _scrollEndListView();
+            scaffoldMessenger.hideCurrentSnackBar();
 
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added");
-        await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+            UpdateListView().addItemToListView(fileName: fileName);
+            _scrollEndListView();
 
-      },
-      context: context,
-      imageBase64Encoded: imagePreview
+            SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added");
+            await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+          }, 
+        )
+      )
     );
 
     await NotificationApi.stopNotification(0);

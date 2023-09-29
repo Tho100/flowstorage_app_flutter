@@ -116,6 +116,13 @@ class GlobalsStyle {
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
       ),
+      /*enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: ThemeColor.mediumGrey,
+            width: 1
+          ),
+        ),*/
       counterText: '',
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),

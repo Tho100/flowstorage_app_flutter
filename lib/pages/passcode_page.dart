@@ -440,7 +440,6 @@ class PasscodePageState extends State<PasscodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
