@@ -401,6 +401,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                           color: Colors.white,
                           fontSize: 20,
                           overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w500
                         ),
                       ),
                     ),
@@ -417,9 +418,10 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                 ),
       
                 const Spacer(),
+
                 SizedBox(
-                  width: 110,
-                  height: 40,
+                  width: 112,
+                  height: 46,
                   child: ElevatedButton(
                     onPressed: () {
                       NavigatePage.goToPageUpgrade(context);
@@ -428,7 +430,9 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     child: const Text('Upgrade'),
                   ),
                 ),
+
                 const SizedBox(width: 10),
+
               ],
             ),
       

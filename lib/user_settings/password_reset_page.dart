@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
@@ -49,35 +50,19 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
                 controller: mainController,
                 obscureText: isSecured == true ? !isVisible : true,
                 maxLines: 1,
-                decoration: InputDecoration(
-                  suffixIcon: isSecured == true
+                decoration: GlobalsStyle.setupTextFieldDecoration(
+                  hintText,
+                  customSuffix: isSecured == true
                     ? IconButton(
-                        icon: Icon(
-                          isVisible ? Icons.visibility : Icons.visibility_off,
-                          color: const Color.fromARGB(255, 141, 141, 141),
-                        ),
-                        onPressed: () {
-                          sufixIconVisibilityNotifier.value = !isVisible;
-                        },
-                      )
-                    : null,
-                  hintText: hintText,
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 18.0, 10.0, 25.0),
-                  hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-                  fillColor: ThemeColor.darkGrey,
-                  filled: true,
-                  counterText: '',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      width: 2.0,
-                      color: Color.fromARGB(255, 6, 102, 226),
-                    ),
-                  ),
+                      icon: Icon(
+                        isVisible ? Icons.visibility : Icons.visibility_off,
+                        color: const Color.fromARGB(255, 141, 141, 141),
+                      ),
+                      onPressed: () {
+                        sufixIconVisibilityNotifier.value = !isVisible;
+                      },
+                    )
+                  : null,
                 ),
               ),
             ),

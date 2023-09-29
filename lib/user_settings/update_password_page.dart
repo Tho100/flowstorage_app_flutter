@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/extra_query/crud.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/main_button.dart';
@@ -74,35 +75,19 @@ class ChangePasswordState extends State<ChangePassword> {
                 keyboardType: isPin == true ? TextInputType.number : TextInputType.text,
                 maxLength: isPin == true ? 3 : 3000,
                 maxLines: 1,
-                decoration: InputDecoration(
-                  suffixIcon: isSecured == true
-                      ? IconButton(
-                          icon: Icon(
-                            isVisible ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () {
-                            valueNotifier!.value = !isVisible;
-                          },
-                        )
-                      : null,
-                  hintText: hintText,
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 18.0, 10.0, 25.0),
-                  hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-                  fillColor: ThemeColor.darkGrey,
-                  filled: true,
-                  counterText: '',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      width: 2.0,
-                      color: Colors.blue,
-                    ),
-                  ),
+                decoration: GlobalsStyle.setupTextFieldDecoration(
+                  hintText,
+                  customSuffix: isSecured == true
+                    ? IconButton(
+                      icon: Icon(
+                        isVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        valueNotifier!.value = !isVisible;
+                      },
+                    )
+                  : null,
                 ),
               ),
             ),
@@ -119,7 +104,7 @@ class ChangePasswordState extends State<ChangePassword> {
 
         const Padding(
           padding: EdgeInsets.only(left: 28.0),
-          child: HeaderText(title: "Change Password", subTitle: "Change your Flowstorage password"),
+          child: HeaderText(title: "Change Password", subTitle: "Update your Flowstorage password"),
         ),
         
         const SizedBox(height: 35),

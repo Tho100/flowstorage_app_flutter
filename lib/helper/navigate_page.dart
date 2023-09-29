@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/pages/share_file_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
@@ -21,6 +22,13 @@ import '../upgrades/upgrade_page.dart';
 import '../pages/settings_page.dart';
 
 class NavigatePage {
+
+  static void goToPageSharing(BuildContext context, String fileName) {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => ShareFilePage(fileName: fileName)),
+    );
+  }
 
   static void replacePageMain(BuildContext context) {
     Navigator.pushReplacement(

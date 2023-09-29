@@ -58,8 +58,6 @@ class UploadPsPage extends StatelessWidget {
     return Column(
       children: [
 
-        const Divider(color: ThemeColor.lightGrey),
-
         const SizedBox(height: 5),
 
         Align(

@@ -23,7 +23,7 @@ class FolderDialog {
           backgroundColor: ThemeColor.darkGrey,
           contentPadding: EdgeInsets.zero,
           content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.4, 
+            height: MediaQuery.of(context).size.height * 0.5, 
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: SizedBox(

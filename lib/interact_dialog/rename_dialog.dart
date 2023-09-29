@@ -89,7 +89,7 @@ class RenameDialog {
         const Divider(color: ThemeColor.lightGrey),
 
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 8.0),
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
             style: const TextStyle(color: ThemeColor.secondaryWhite),
             enabled: true,

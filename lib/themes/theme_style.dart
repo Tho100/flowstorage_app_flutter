@@ -34,13 +34,6 @@ class GlobalsStyle {
     fontSize: 19,          
   );
 
-  static const greetingAppBarTextStyle = TextStyle(
-    overflow: TextOverflow.ellipsis,
-    color: Color.fromARGB(255,232,232,232),
-    fontWeight: FontWeight.w500,
-    fontSize: 20,          
-  );
-
   static const sidebarMenuButtonsStyle = TextStyle(
     color: Color.fromARGB(255, 215, 215, 215),
     fontSize: 17,
@@ -105,9 +98,10 @@ class GlobalsStyle {
     )
   );
 
-  static InputDecoration setupTextFieldDecoration(String hintText) {
+  static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix}) {
     return InputDecoration(
       hintText: hintText,
+      suffixIcon: customSuffix,
       contentPadding: const EdgeInsets.fromLTRB(20.0, 22.0, 10.0, 25.0),
       hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
       //fillColor: ThemeColor.darkGrey,
@@ -117,7 +111,7 @@ class GlobalsStyle {
         borderSide: BorderSide.none,
       ),*/
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
           color: ThemeColor.lightGrey,
           width: 1
@@ -125,7 +119,7 @@ class GlobalsStyle {
       ),
       counterText: '',
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
           width: 2.0,
           color: Color.fromARGB(255, 6, 102, 226),

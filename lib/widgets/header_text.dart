@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HeaderText extends StatelessWidget {
 
@@ -25,10 +26,12 @@ class HeaderText extends StatelessWidget {
     
           Text(
             title,
-            style: const TextStyle(
-              color: ThemeColor.darkPurple,
-              fontWeight: FontWeight.w900,
-              fontSize: 32,
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                color: ThemeColor.darkPurple,
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
     
@@ -36,9 +39,9 @@ class HeaderText extends StatelessWidget {
           
           Text(
            subTitle,
-            style: const TextStyle(
+            style: GoogleFonts.poppins(
               color: ThemeColor.secondaryWhite, 
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               fontSize: 16,
             ),
           ),

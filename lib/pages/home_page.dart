@@ -2402,7 +2402,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           elevation: 0,
           centerTitle: false,
           title: Text(appBarTitleValue,
-            style: GlobalsStyle.greetingAppBarTextStyle,
+            style: GlobalsStyle.appBarTextStyle,
           ),
           actions: [
 
