@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/pages/share_file_page.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -36,7 +37,6 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/share_file_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
@@ -247,7 +247,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           String compressedImageBase64Encoded = base64.encode(bytes);
 
           if(tempData.origin == OriginFile.public) {
-            _openPsCommentDialog(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
+            _openPsUploadPage(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
             return;
           }
 
@@ -265,7 +265,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if(tempData.origin == OriginFile.public) {
 
-            _openPsCommentDialog(
+            _openPsUploadPage(
               filePathVal: pathToString, fileName: filesName, 
               tableName: GlobalsTable.psVideo, base64Encoded: fileBase64Encoded,
               thumbnail: thumbnailBytes
@@ -412,7 +412,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             String compressedImageBase64Encoded = base64.encode(bytes);
 
             if(tempData.origin == OriginFile.public) {
-              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+              _openPsUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
               return;
             }
 
@@ -437,7 +437,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
             if(tempData.origin == OriginFile.public) {
 
-              _openPsCommentDialog(
+              _openPsUploadPage(
                 filePathVal: filePathVal, fileName: selectedFileName, 
                 tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
                 newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
@@ -464,7 +464,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
             if(tempData.origin == OriginFile.public) {
-              _openPsCommentDialog(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+              _openPsUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
               return;
             }
 
@@ -568,7 +568,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  void _openPsCommentDialog({
+  void _openSharingPage(String fileName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ShareFilePage(fileName: fileName))
+    );
+  }
+
+  void _openPsUploadPage({
     required String filePathVal,
     required String fileName,
     required String tableName,
@@ -646,13 +654,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
      RenameDialog().buildRenameFileDialog(
       fileName: fileName, 
       onRenamePressed: () => _onRenamePressed(fileName), 
-      context: context
-    );
-  }
-
-  void _openSharingDialog(String fileName) {
-    SharingDialog().buildSharingDialog(
-      fileName: fileName, 
       context: context
     );
   }
@@ -1145,7 +1146,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
 
       if(tempData.origin == OriginFile.public) {
-        _openPsCommentDialog(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
+        _openPsUploadPage(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
         return;
 
       } else {
@@ -1635,7 +1636,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         if(tempData.origin == OriginFile.public) {
           
-          _openPsCommentDialog(filePathVal: imagePath, fileName: imageName, tableName: GlobalsTable.psImage, base64Encoded: imageBase64Encoded);
+          _openPsUploadPage(filePathVal: imagePath, fileName: imageName, tableName: GlobalsTable.psImage, base64Encoded: imageBase64Encoded);
           return;
 
         } else if (tempData.origin == OriginFile.offline) {
@@ -1955,7 +1956,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       onSharingPressed: () {
         Navigator.pop(context);
-        _openSharingDialog(fileName);
+        _openSharingPage(fileName);
       }, 
       onAOPressed: () async {
         Navigator.pop(context);

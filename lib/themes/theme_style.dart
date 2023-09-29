@@ -110,19 +110,19 @@ class GlobalsStyle {
       hintText: hintText,
       contentPadding: const EdgeInsets.fromLTRB(20.0, 22.0, 10.0, 25.0),
       hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-      fillColor: ThemeColor.darkGrey,
-      filled: true,
-      border: OutlineInputBorder(
+      //fillColor: ThemeColor.darkGrey,
+      //filled: true,
+      /*border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
+      ),*/
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(
+          color: ThemeColor.lightGrey,
+          width: 1
+        ),
       ),
-      /*enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: ThemeColor.mediumGrey,
-            width: 1
-          ),
-        ),*/
       counterText: '',
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
