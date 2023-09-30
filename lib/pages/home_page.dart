@@ -107,9 +107,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final _locator = GetIt.instance;
 
-  late ValueNotifier<Set<String>> offlineFilesNameNotifier = 
-                                ValueNotifier<Set<String>>({});
-
+  late Set<String> offlineFilesName = {};
   late List<bool> checkedList = [];
 
   late final UserDataProvider userData;
@@ -968,6 +966,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             fileData: fileData
           );
 
+          setState(() {
+            offlineFilesName.add(checkedItemsName.elementAt(i));
+          });
+
         } 
 
       }
@@ -1188,6 +1190,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await Future.delayed(const Duration(milliseconds: 855));
       _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
+
+      if(offlineFilesName.contains(fileName)) {
+        setState(() {
+          offlineFilesName.remove(fileName);
+        });
+      }
 
     }
 
@@ -1603,8 +1611,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       storageData.homeThumbnailBytesList.clear();
     }
 
-    if(offlineFilesNameNotifier.value.contains(fileName)) {
-      offlineFilesNameNotifier.value.remove(fileName);
+    if(offlineFilesName.contains(fileName)) {
+      setState(() {
+        offlineFilesName.remove(fileName);
+      });
     }
 
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
@@ -1711,7 +1721,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       fileData = await _callData(fileName, tableName);
     }
     
-    offlineFilesNameNotifier.value.add(fileName);
+    setState(() {
+      offlineFilesName.add(fileName);
+    });
     
     await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
@@ -2846,8 +2858,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       itemOnLongPress: _callBottomTrailling,
       itemOnTap: _navigateToPreviewFile,
       childrens: (int index) {
-        final isOffline = offlineFilesNameNotifier.
-                    value.contains(fileNamesFilteredList[index]);
+        final isOffline = offlineFilesName
+                      .contains(fileNamesFilteredList[index]);
 
         return [
 
@@ -2945,11 +2957,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final listOfflineFiles = offlineDir.listSync();
 
     if(listOfflineFiles.isNotEmpty) {
-      offlineFilesNameNotifier.value = Set<String>.from(listOfflineFiles.map(
+      offlineFilesName = Set<String>.from(listOfflineFiles.map(
         (entity) => entity.path.split('/').last,
       ));
     } else {
-      offlineFilesNameNotifier.value = {};
+      offlineFilesName = {};
     }
 
   }
@@ -2984,7 +2996,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibileNotifier.dispose();
-    offlineFilesNameNotifier.dispose();
     searchHintText.dispose();
 
     NotificationApi.stopNotification(0);
