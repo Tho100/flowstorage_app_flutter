@@ -107,13 +107,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final _locator = GetIt.instance;
 
+  late Set<String> offlineFilesName;
+  late List<bool> checkedList = [];
+
   late final UserDataProvider userData;
   late final StorageDataProvider storageData;
   late final PsStorageDataProvider psStorageData;
   late final PsUploadDataProvider psUploadData;
   late final TempDataProvider tempData;
-
-  late List<bool> checkedList = [];
 
   final fileNameGetterHome = NameGetter();
   final dataGetterHome = DataRetriever();
@@ -1597,6 +1598,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       storageData.homeThumbnailBytesList.clear();
     }
 
+    if(offlineFilesName.contains(fileName)) {
+      setState(() {
+        offlineFilesName.remove(fileName);
+      });
+    }
+
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
 
   }
@@ -1700,6 +1707,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } else {
       fileData = await _callData(fileName, tableName);
     }
+    
+    setState(() {
+      offlineFilesName.add(fileName);
+    });
     
     await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
@@ -2809,70 +2820,69 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       child: SizedBox(
         height: mediaHeight,
-        child: ValueListenableBuilder<bool>(
-          valueListenable: staggeredListViewSelected,
-          builder: (context, value, child) {
-            return value == false ? _buildResponsiveListView() : _buildStaggeredListView();
-          }
-        ),
+        child: _buildDefaultOrStaggeredListView(),
       ),
     );
   }
 
-  Widget _buildResponsiveListView() {
-    return ResponsiveListView(
-      itemOnLongPress: (int index) {
-        _callBottomTrailling(index);
-      },
-      itemOnTap: (int index) async {
-        await _navigateToPreviewFile(index);
-      }, 
-      childrens: (int index) {
-        return <Widget>[
+  Widget _buildDefaultOrStaggeredListView() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: staggeredListViewSelected,
+      builder: (context, value, child) {
+        return value == false 
+          ? _buildResponsiveListView()
+          : _buildStaggeredListView();
+      }
+    );
+  }
 
-          if(tempData.origin == OriginFile.offline) ... [
+  Widget _buildResponsiveListView() {
+
+    final fileNamesFilteredList = storageData.fileNamesFilteredList;
+    final fileDateFilteredList = storageData.fileDateFilteredList;
+
+    return ResponsiveListView(
+      itemOnLongPress: _callBottomTrailling,
+      itemOnTap: _navigateToPreviewFile,
+      childrens: (int index) {
+        final isOffline = offlineFilesName.contains(fileNamesFilteredList[index]);
+
+        return [
+
+          if (isOffline) ... [
             const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
             const SizedBox(width: 8),
           ],
 
           GestureDetector(
-            onTap: () {
-              _callBottomTrailling(index);
-            },
-            child: editAllIsPressed
-              ? _buildCheckboxItem(index)
-              : const Icon(Icons.more_vert, color: Colors.white),
+            onTap: () => _callBottomTrailling(index),
+            child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: Colors.white),
           ),
         ];
       },
       inlineSpanWidgets: (int index) {
-
-        final originalDateValues = storageData.fileDateFilteredList[index];
+        final originalDateValues = fileDateFilteredList[index];
         final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
 
-        return <InlineSpan>[
+        return [
           TextSpan(
-            text: tempData.origin == OriginFile.public ? psFilesCategoryTags : storageData.fileDateFilteredList[index],
-            style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 12.8,
-            ),
+            text: tempData.origin == OriginFile.public ? psFilesCategoryTags : originalDateValues,
+            style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
           ),
-
-          if(tempData.origin == OriginFile.public) 
-          TextSpan(
-            text: " ${psStorageData.psTagsList[index]}",
-            style: TextStyle(
-              color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-              fontWeight: FontWeight.w500,
-              fontSize: 12.8,
+          if (tempData.origin == OriginFile.public)
+            TextSpan(
+              text: " ${psStorageData.psTagsList[index]}",
+              style: TextStyle(
+                color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
+                fontWeight: FontWeight.w500,
+                fontSize: 12.8,
+              ),
             ),
-        
-          ),
         ];
-      }
+      },
     );
   }
+
 
   Widget _buildMyPsFilesButton() {
     return Padding(
@@ -2925,6 +2935,23 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         storageData.fileNamesFilteredList.length, (index) => false);
   }
 
+  void _initializeOfflineFileNames() async {
+
+    final offlineMode = OfflineMode();
+
+    final offlineDir = await offlineMode.returnOfflinePath();
+    final listOfflineFiles = offlineDir.listSync();
+
+    if(listOfflineFiles.isNotEmpty) {
+      offlineFilesName = Set<String>.from(listOfflineFiles.map(
+        (entity) => entity.path.split('/').last,
+      ));
+    } else {
+      offlineFilesName = {};
+    }
+
+  }
+
   @override
   void initState() {
 
@@ -2932,6 +2959,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     _initializeProvider();
     _initializeCheckedItemList();
+    _initializeOfflineFileNames();
     _itemSearchingImplementation('');
 
   }

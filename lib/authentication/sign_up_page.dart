@@ -262,26 +262,9 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
                     obscureText: true,
                     maxLength: 3,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: '',
-                      hintText: "PIN",
-                      contentPadding: const EdgeInsets.fromLTRB(20.0, 18.0, 10.0, 25.0),
-                      hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: ThemeColor.lightGrey,
-                          width: 1
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          width: 2.0,
-                          color: Color.fromARGB(255, 6, 102, 226),
-                        ),
-                      ),
-                      counterStyle: const TextStyle(color: Color.fromARGB(255,199,199,199)),
+                    decoration: GlobalsStyle.setupTextFieldDecoration(
+                      "PIN",
+                      customCounterStyle: const TextStyle(color: Color.fromARGB(255,199,199,199)),
                     ),
                   ),
                 ),

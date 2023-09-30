@@ -98,18 +98,14 @@ class GlobalsStyle {
     )
   );
 
-  static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix}) {
+  static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix, TextStyle? customCounterStyle, }) {
     return InputDecoration(
       hintText: hintText,
       suffixIcon: customSuffix,
+      counterText: '',
+      counterStyle: customCounterStyle,
       contentPadding: const EdgeInsets.fromLTRB(20.0, 22.0, 10.0, 25.0),
       hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-      //fillColor: ThemeColor.darkGrey,
-      //filled: true,
-      /*border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide.none,
-      ),*/
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
@@ -117,7 +113,6 @@ class GlobalsStyle {
           width: 1
         ),
       ),
-      counterText: '',
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
