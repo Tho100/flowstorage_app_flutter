@@ -216,6 +216,8 @@ class SplashScreenState extends State<SplashScreen> {
             : tempData.setOrigin(OriginFile.home);
 
         if(isPassCodeExists) {
+          
+          await Future.delayed(const Duration(milliseconds: 850));
 
           if(!mounted) return;
           NavigatePage.goToPagePasscode(context);

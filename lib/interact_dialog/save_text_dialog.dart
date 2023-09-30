@@ -1,27 +1,26 @@
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
 import 'package:flutter/material.dart';
 
-class CreateDirectoryDialog {
-  
-  static final directoryNameController = TextEditingController();
+class SaveTextDialog {
 
-  Future buildCreateDirectoryDialog({
-    required BuildContext context,
-    required VoidCallback createOnPressed
+  Future buildSaveTextDialog({
+    required TextEditingController fileNameController,
+    required VoidCallback saveOnPressed,
+    required BuildContext context
   }) {
     return InteractDialog().buildDialog(
-      context: context,
-      childrenWidgets: <Widget> [
+      context: context, 
+      childrenWidgets: <Widget>[
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
-                "Create new directory",
+                "Save Text File",
                 style: TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 17,
@@ -33,18 +32,22 @@ class CreateDirectoryDialog {
           ],
         ),
 
-        const SizedBox(height: 5),
-
         const Divider(color: ThemeColor.whiteGrey),
 
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
-          child: TextFormField(
-            autofocus: true,
-            style: const TextStyle(color: ThemeColor.justWhite),
-            enabled: true,
-            controller: directoryNameController,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter directory name"),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+            ),
+            child: TextFormField(
+              autofocus: true,
+              style: const TextStyle(color: ThemeColor.justWhite),
+              enabled: true,
+              controller: fileNameController,
+              decoration: GlobalsStyle.setupTextFieldDecoration("Untitled text file")
+            ),
           ),
         ),
 
@@ -53,34 +56,32 @@ class CreateDirectoryDialog {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            
+
             const SizedBox(width: 5),
 
             MainDialogButton(
-              text: "Cancel",
+              text: "Cancel", 
               onPressed: () {
-                directoryNameController.clear();
+                fileNameController.clear();
                 Navigator.pop(context);
-              },
-              isButtonClose: true,
+              }, 
+              isButtonClose: true
             ),
             
             const SizedBox(width: 10),
-
+            
             MainDialogButton(
-              text: "Create",
-              onPressed: () async {
-                createOnPressed();
-                Navigator.pop(context);
-              },
-              isButtonClose: false,
+              text: "Save", 
+              onPressed: saveOnPressed,
+              isButtonClose: false
             ),
             
             const SizedBox(width: 18),
           ],
         ),
-        const SizedBox(height: 12)
+        const SizedBox(height: 12),
       ]
     );
   }
+
 }

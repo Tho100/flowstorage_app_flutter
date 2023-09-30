@@ -32,7 +32,7 @@ class FolderDialog {
                   shrinkWrap: true,
                   itemCount: storageData.foldersNameList.length,
                   separatorBuilder: (BuildContext context, int index) => const Divider(
-                    color: ThemeColor.thirdWhite,
+                    color: ThemeColor.whiteGrey,
                     height: 1,
                   ),
                   itemBuilder: (BuildContext context, int index) {

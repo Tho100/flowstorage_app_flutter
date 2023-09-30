@@ -107,7 +107,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final _locator = GetIt.instance;
 
-  late Set<String> offlineFilesName;
+  late ValueNotifier<Set<String>> offlineFilesNameNotifier = 
+                                ValueNotifier<Set<String>>({});
+
   late List<bool> checkedList = [];
 
   late final UserDataProvider userData;
@@ -320,6 +322,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       logger.e('Exception from _openDialogGallery {main}',err,st);
       SnakeAlert.errorSnake("Upload failed.");
+      NotificationApi.stopNotification(0);
     }
   }
 
@@ -407,7 +410,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if (Globals.imageType.contains(fileExtension)) {
 
             final compressQuality = tempData.origin 
-              == OriginFile.public  ? 76 : 85;
+              == OriginFile.public ? 76 : 85;
 
             List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
             String compressedImageBase64Encoded = base64.encode(bytes);
@@ -505,6 +508,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       logger.e('Exception from _openDialogFile {main}', err,st);
       SnakeAlert.errorSnake("Upload failed.");
+      NotificationApi.stopNotification(0);
     }
   }
 
@@ -566,6 +570,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       logger.e('Exception from _openDialogFolder {main}',err,st);
       SnakeAlert.errorSnake("Upload failed.");
+      NotificationApi.stopNotification(0);
     }
   }
 
@@ -1598,10 +1603,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       storageData.homeThumbnailBytesList.clear();
     }
 
-    if(offlineFilesName.contains(fileName)) {
-      setState(() {
-        offlineFilesName.remove(fileName);
-      });
+    if(offlineFilesNameNotifier.value.contains(fileName)) {
+      offlineFilesNameNotifier.value.remove(fileName);
     }
 
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
@@ -1708,9 +1711,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       fileData = await _callData(fileName, tableName);
     }
     
-    setState(() {
-      offlineFilesName.add(fileName);
-    });
+    offlineFilesNameNotifier.value.add(fileName);
     
     await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
@@ -2845,7 +2846,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       itemOnLongPress: _callBottomTrailling,
       itemOnTap: _navigateToPreviewFile,
       childrens: (int index) {
-        final isOffline = offlineFilesName.contains(fileNamesFilteredList[index]);
+        final isOffline = offlineFilesNameNotifier.
+                    value.contains(fileNamesFilteredList[index]);
 
         return [
 
@@ -2943,11 +2945,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final listOfflineFiles = offlineDir.listSync();
 
     if(listOfflineFiles.isNotEmpty) {
-      offlineFilesName = Set<String>.from(listOfflineFiles.map(
+      offlineFilesNameNotifier.value = Set<String>.from(listOfflineFiles.map(
         (entity) => entity.path.split('/').last,
       ));
     } else {
-      offlineFilesName = {};
+      offlineFilesNameNotifier.value = {};
     }
 
   }
@@ -2982,6 +2984,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibileNotifier.dispose();
+    offlineFilesNameNotifier.dispose();
     searchHintText.dispose();
 
     NotificationApi.stopNotification(0);

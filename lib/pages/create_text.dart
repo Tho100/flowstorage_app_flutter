@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/interact_dialog/save_text_dialog.dart';
+import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -15,8 +17,6 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
-import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
-import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -63,91 +63,8 @@ class CreateTextPageState extends State<CreateText> {
 
   }
 
-  Future<bool> _isFileExists(String fileName) async {
+  bool _isFileExists(String fileName) {
     return storageData.fileNamesFilteredList.contains(fileName);
-  }
-
-  Future _buildSaveFileDialog() {
-    return InteractDialog().buildDialog(
-      context: context, 
-      childrenWidgets: <Widget>[
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
-              child: Text(
-                "Save Text File",
-                style: TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 17,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        const Divider(color: ThemeColor.lightGrey),
-
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
-            ),
-            child: TextFormField(
-              autofocus: true,
-              style: const TextStyle(color: ThemeColor.justWhite),
-              enabled: true,
-              controller: fileNameController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Untitled text file")
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-
-            const SizedBox(width: 5),
-
-            MainDialogButton(
-              text: "Cancel", 
-              onPressed: () {
-                fileNameController.clear();
-                Navigator.pop(context);
-              }, 
-              isButtonClose: true
-            ),
-            
-            const SizedBox(width: 10),
-            
-            MainDialogButton(
-              text: "Save", 
-              onPressed: () async {
-
-                final getFileTitle = fileNameController.text.trim();
-                if (getFileTitle.isEmpty) {
-                  return;
-                }
-                
-                await _saveText(textEditingController.text);
-
-              }, 
-              isButtonClose: false
-            ),
-            
-            const SizedBox(width: 18),
-          ],
-        ),
-        const SizedBox(height: 12),
-      ]
-    );
   }
 
   String _tableToUploadTo() {
@@ -175,12 +92,8 @@ class CreateTextPageState extends State<CreateText> {
 
     final txtImageData = await getAssets.loadAssetsData('txt0.png');
 
-    storageData.fileDateList.add("Just now");
-    storageData.fileDateFilteredList.add("Just now");
+    UpdateListView().addItemToListView(fileName: fileName);
 
-    storageData.fileNamesList.add(fileName);
-    storageData.fileNamesFilteredList.add(fileName);
-    
     storageData.imageBytesList.add(txtImageData);
     storageData.imageBytesFilteredList.add(txtImageData);
     
@@ -192,7 +105,7 @@ class CreateTextPageState extends State<CreateText> {
 
     try {
 
-      if (await _isFileExists(fileName)) {
+      if (_isFileExists(fileName)) {
         CustomAlertDialog.alertDialog("File with this name already exists.");
         return;
       }
@@ -239,7 +152,6 @@ class CreateTextPageState extends State<CreateText> {
       saveVisibility = false;
       textFormEnabled = false;
     });
-
 
     await CallNotify().customNotification(
       title: "Text File Saved",
@@ -299,7 +211,18 @@ class CreateTextPageState extends State<CreateText> {
             visible: saveVisibility,
             child: TextButton(
               onPressed: () {
-                _buildSaveFileDialog();
+                SaveTextDialog().buildSaveTextDialog(
+                  fileNameController: fileNameController, 
+                  saveOnPressed: () async {
+                    final getFileTitle = fileNameController.text.trim();
+                    if (getFileTitle.isEmpty) {
+                      return;
+                    }
+                    
+                    await _saveText(textEditingController.text);
+                  }, 
+                  context: context
+                );
               },
               child: const Text("Save",
                 style: TextStyle(

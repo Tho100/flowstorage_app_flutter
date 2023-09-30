@@ -86,7 +86,7 @@ class RenameDialog {
           ],
         ),
 
-        const Divider(color: ThemeColor.lightGrey),
+        const Divider(color: ThemeColor.whiteGrey),
 
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),

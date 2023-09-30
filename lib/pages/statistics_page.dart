@@ -270,7 +270,7 @@ class StatsPageState extends State<StatisticsPage> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: ThemeColor.darkGrey, width: 2),
+              border: Border.all(color: ThemeColor.lightGrey, width: 1),
             ),
             height: 125,
             width: mediaQuery.width-35,
@@ -292,7 +292,7 @@ class StatsPageState extends State<StatisticsPage> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: ThemeColor.darkGrey, width: 2),
+              border: Border.all(color: ThemeColor.lightGrey, width: 1),
             ),
             height: 125,
             width: mediaQuery.width-35,
@@ -369,7 +369,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildInfoUsage(String headerText, String subText) {
     return Padding(
-      padding: const EdgeInsets.all(18.0),
+      padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 28.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -418,7 +418,6 @@ class StatsPageState extends State<StatisticsPage> {
       ),
     );
 
-
   }
 
   Widget _buildUpgradeButton(BuildContext context) {
@@ -463,16 +462,16 @@ class StatsPageState extends State<StatisticsPage> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ThemeColor.darkGrey, width: 2),
+            border: Border.all(color: ThemeColor.lightGrey, width: 1),
           ),
           child: Column(
             children: [
               
               _buildInfoUsage("Limited to", "$maxValue Uploads"),
               _buildInfoUsage("Usage", "$percentage%"),
-              const SizedBox(height: 5),
+              const SizedBox(height: 12),
               _buildUsageProgressBar(context),
-              const SizedBox(height: 35),
+              const SizedBox(height: 25),
               _buildUpgradeButton(context),
             ],
           ),

@@ -3,15 +3,14 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class CreateFolder {
 
-  final EncryptionClass encryption; 
-  final String formattedDate;
+  final encryption = EncryptionClass(); 
+  final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now()); 
 
   final userData = GetIt.instance<UserDataProvider>();
-
-  CreateFolder(this.encryption, this.formattedDate);
 
   Future<void> insertParams({
     required String titleFolder,

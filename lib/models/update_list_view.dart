@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
 import 'package:flowstorage_fsc/folder_query/create_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -17,7 +16,6 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 
 class UpdateListView {
 
@@ -96,11 +94,8 @@ class UpdateListView {
       fileTypes.add(getExtension);
       fileNames.add(getFileName);
     }
-    
-    final formattedDate = 
-      DateFormat('dd/MM/yyyy').format(DateTime.now()); 
 
-    await CreateFolder(EncryptionClass(), formattedDate).insertParams(
+    await CreateFolder().insertParams(
       titleFolder: folderName,
       fileValues: fileValues,
       fileNames: fileNames,
