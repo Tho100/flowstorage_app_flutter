@@ -8,7 +8,7 @@ import 'package:flowstorage_fsc/extra_query/insert_data.dart';
 import 'package:flowstorage_fsc/folder_query/create_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/helper/get_thumbnail.dart';
+import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -71,8 +71,19 @@ class UpdateListView {
 
       if (Globals.videoType.contains(getExtension)) {
 
-        final thumbnailPath = await GetThumbnail(videoPath: folderFile.path).getVideoThumbnail();
-        videoThumbnails.add(thumbnailPath);
+        final generatedThumbnail = await GenerateThumbnail(
+          fileName: getFileName, 
+          filePath: folderFile.path
+        ).generate();
+
+        final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+        final thumbnailBase64 = base64.encode(thumbnailBytes);
+
+        videoThumbnails.add(thumbnailBase64);
+
+        final compressedFileData = CompressorApi.compressFile(folderFile.path);
+        final base64encoded = base64.encode(compressedFileData);
+        fileValues.add(base64encoded);
 
       } else if (Globals.imageType.contains(getExtension)) {
 
@@ -86,7 +97,8 @@ class UpdateListView {
 
       } else {
 
-        final base64encoded = base64.encode(folderFile.readAsBytesSync());
+        final compressedFileData = CompressorApi.compressFile(folderFile.path);
+        final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
 
       }
