@@ -236,7 +236,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         }
 
         if (!(Globals.imageType.contains(fileExtension))) {
-          fileBase64Encoded = base64.encode(File(pathToString).readAsBytesSync());
+          final compressedFileByte = CompressorApi.compressFile(pathToString);
+          fileBase64Encoded = base64.encode(compressedFileByte);
         } else {
           final filesBytes = File(pathToString).readAsBytesSync();
           fileBase64Encoded = base64.encode(filesBytes);
@@ -402,7 +403,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           final filePathVal = pickedFile.path.toString();
 
           if (!(Globals.imageType.contains(fileExtension))) {
-            fileBase64 = base64.encode(File(filePathVal).readAsBytesSync());
+            final compressedFileBytes = CompressorApi.compressFile(filePathVal);
+            fileBase64 = base64.encode(compressedFileBytes);
           }
 
           if (Globals.imageType.contains(fileExtension)) {

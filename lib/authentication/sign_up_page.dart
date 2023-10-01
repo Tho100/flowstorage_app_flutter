@@ -178,7 +178,7 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
         automaticallyImplyLeading: false,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          )
+        )
       ),
       resizeToAvoidBottomInset: false,
       body: Padding(  

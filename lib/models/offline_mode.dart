@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -123,7 +124,9 @@ class OfflineMode {
     final file = File('${offlineDirsPath.path}/$fileName');
 
     if (await file.exists()) {
-      return file.readAsBytes();
+      final decompressedFileBytes = CompressorApi
+                .decompressFile(file.readAsBytesSync());
+      return decompressedFileBytes;
     } else {
       throw Exception('File not found');
     }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
@@ -77,8 +78,10 @@ class RetrieveData {
     }
 
     final row = (await fscDbCon.execute(query, queryParams)).rows.first;
-    final byteData = base64.decode(encryption.decrypt(row.assoc()['CUST_FILE']!));
-    return byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
+    final fileByteData = base64.decode(encryption.decrypt(row.assoc()['CUST_FILE']!));
+    final decompressedData = CompressorApi.decompressFile(fileByteData);
+
+    return decompressedData.buffer.asUint8List(decompressedData.offsetInBytes, decompressedData.lengthInBytes);
     
   }
 
