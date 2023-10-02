@@ -897,11 +897,11 @@ class PreviewFileState extends State<PreviewFile> {
     return BoxDecoration(
       gradient: currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio
       ? const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
           colors: [
-            ThemeColor.secondaryPurple,
             ThemeColor.darkPurple,
+            ThemeColor.secondaryPurple,
           ],
         )
       : null,
@@ -970,6 +970,70 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  Widget _buildBody() {
+    return Container(
+      decoration: _buildBackgroundDecoration(),
+      child: Column(
+        children: [
+          _buildTextHeaderTitle(),
+          Expanded(
+            child: _buildFileOnCondition(),
+          ),
+          ValueListenableBuilder<bool>(
+            valueListenable: bottomBarVisibleNotifier,
+            builder: (context, value, child) {
+              return Visibility(
+                visible: value,
+                child: FutureBuilder<Widget>(
+                  future: _buildBottomBar(context),
+                  builder: (context, snapshot) {
+                    return snapshot.hasData ? snapshot.data! : Container();
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  PreferredSize _buildCustomAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(55.0),
+      child: GestureDetector(
+        onTap: () { _copyAppBarTitle(); },
+        child: ValueListenableBuilder<bool>(
+          valueListenable: bottomBarVisibleNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: currentTable == GlobalsTable.homeImage || currentTable == GlobalsTable.psImage ? bottomBarVisibleNotifier.value : true,
+              child: AppBar(
+                backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
+                actions: <Widget>[ 
+
+                  if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
+                  _buildCopyTextIconButton(),
+
+                  if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
+                  _buildCommentIconButtonAudio(),
+  
+                  _buildInfoIconButton(),
+                  _buildMoreIconButton()
+
+                ],
+                titleSpacing: 0,
+                elevation: 0,
+                centerTitle: false,
+                title: _buildAppBarTitle(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));
     CallToast.call(message: "Copied to clipboard");
@@ -980,64 +1044,13 @@ class PreviewFileState extends State<PreviewFile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: filesInfrontAppBar.contains(currentTable) ? false : true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(55.0),
-        child: GestureDetector(
-          onTap: () { _copyAppBarTitle(); },
-          child: ValueListenableBuilder<bool>(
-            valueListenable: bottomBarVisibleNotifier,
-            builder: (context, value, child) {
-              return Visibility(
-                visible: currentTable == GlobalsTable.homeImage || currentTable == GlobalsTable.psImage ? bottomBarVisibleNotifier.value : true,
-                child: AppBar(
-                  backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
-                  actions: <Widget>[ 
-
-                    if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
-                    _buildCopyTextIconButton(),
-
-                    if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
-                    _buildCommentIconButtonAudio(),
-   
-                    _buildInfoIconButton(),
-                    _buildMoreIconButton()
-
-                  ],
-                  titleSpacing: 0,
-                  elevation: 0,
-                  centerTitle: false,
-                  title: _buildAppBarTitle(),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-
-      body: Container(
-        decoration: _buildBackgroundDecoration(),
-        child: Column(
-          children: [
-            _buildTextHeaderTitle(),
-            Expanded(
-              child: _buildFileOnCondition(),
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: bottomBarVisibleNotifier,
-              builder: (context, value, child) {
-                return Visibility(
-                  visible: value,
-                  child: FutureBuilder<Widget>(
-                    future: _buildBottomBar(context),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData ? snapshot.data! : Container();
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+      appBar: _buildCustomAppBar(),
+      body: WillPopScope(
+        onWillPop: () async {
+          bottomBarVisibleNotifier.value = true;
+          return true;
+        },
+        child: _buildBody()
       ),
     );
   }

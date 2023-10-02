@@ -410,7 +410,6 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   @override
   void dispose() {
-    PreviewFileState.bottomBarVisibleNotifier.value = true;
     videoPlayerController.removeListener(videoPlayerListener);
     videoPlayerController.dispose();
     videoDurationNotifier.dispose();

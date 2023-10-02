@@ -10,7 +10,6 @@ import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/models/process_audio.dart';
-import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -80,27 +79,37 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   }
 
+  void pauseAudio() {
+    audioPlayerController.pause();
+    iconPausePlayNotifier.value = Icons.play_arrow_rounded;
+    NotificationApi.stopNotification(0);
+  }
+
+  void setupAudioDuration() async {
+    await audioPlayerController.setAudioSource(ProcessAudio(byteAudio, audioContentType!));
+    Duration duration = audioPlayerController.duration!;
+    String formattedDuration = getDurationString(duration);
+    audioDuration = formattedDuration;
+  }
+
   Future<void> playOrPauseAudioAsync() async {
 
+    print("IN");
+
     if (byteAudio.isEmpty) {
+      print("SEX");
       byteAudio = await callAudioDataAsync();
     }
 
     if (audioPlayerController.playing) {
-      audioPlayerController.pause();
-      iconPausePlayNotifier.value = Icons.play_arrow_rounded;
-      NotificationApi.stopNotification(0);
+      pauseAudio();
       return;
     }
 
-    await CallNotify()
-      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
-    
+    callNotificationOnAudioPlaying();
+
     if (audioPlayerController.duration == null) {
-      await audioPlayerController.setAudioSource(ProcessAudio(byteAudio, audioContentType!));
-      Duration duration = audioPlayerController.duration!;
-      String formattedDuration = getDurationString(duration);
-      audioDuration = formattedDuration;
+      setupAudioDuration();
     }
 
     audioPlayerController.play();
@@ -239,7 +248,6 @@ class PreviewAudioState extends State<PreviewAudio> {
                 if(value == Icons.replay_rounded) {
                   await onReplayPressed();
                 } else {
-                  byteAudio = await callAudioDataAsync();
                   await playOrPauseAudioAsync();
                 }
               },
@@ -252,12 +260,17 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   Future<void> onReplayPressed() async {
-    await CallNotify()
-      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
+
+    callNotificationOnAudioPlaying();
 
     await audioPlayerController.seek(Duration.zero);
     audioPlayerController.play();
     iconPausePlayNotifier.value = Icons.pause;
+  }
+
+  void callNotificationOnAudioPlaying() async {
+    await CallNotify()
+      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
   }
 
   Widget buildFastBackward() {
@@ -432,6 +445,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
     audioPositionNotifier.value = newPosition;
     audioPlayerController.seek(Duration(seconds: newPosition.toInt()));
+
   }
 
   void initializeAudioContentType() {
@@ -456,14 +470,12 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   @override
   void dispose(){
-    PreviewFileState.bottomBarVisibleNotifier.value = true;
     NotificationApi.stopNotification(0);
-    audioPlayerController.dispose();
-    audioPositionNotifier.dispose();
+    sliderValueController.close();
     iconPausePlayNotifier.dispose();
     keepPlayingIconColorNotifier.dispose();
     isKeepPlayingEnabledNotifier.dispose();
-    sliderValueController.close();
+    audioPlayerController.dispose();
     super.dispose();
   }
 
