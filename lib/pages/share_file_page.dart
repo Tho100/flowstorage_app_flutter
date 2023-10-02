@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/process_file_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ShareFilePage extends StatelessWidget {
 
@@ -106,6 +111,31 @@ class ShareFilePage extends StatelessWidget {
           ),
         ),
 
+        if(Globals.imageType.contains(fileName.split('.').last))
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, top: 6.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: 58,
+              height: 54,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(52),
+                    side: const BorderSide(color: ThemeColor.lightGrey)
+                  ),
+                  backgroundColor: ThemeColor.darkGrey,
+                ),
+                onPressed: () {
+                  shareExternalOnPressed();
+                },
+                child: const Icon(Icons.share),
+              ),
+            ),
+          ),
+        ),
+
       ],
     );
   }
@@ -118,6 +148,29 @@ class ShareFilePage extends StatelessWidget {
         Navigator.pop(context);
       },
     );
+  }
+
+  void shareExternalOnPressed() async {
+
+    try {
+      
+      final imageBytes = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!;
+
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/$fileName';
+      final file = File(filePath);
+
+      await file.writeAsBytes(imageBytes);
+
+      await Share.shareXFiles(
+        [XFile(filePath)],
+        text: commentController.text 
+      ); 
+
+    } catch (err) {
+      CustomAlertDialog.alertDialog("Failed to start sharing.");
+    }
+
   }
   
   void onClosePressed() {

@@ -940,15 +940,27 @@ class PreviewFileState extends State<PreviewFile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 4),
-                Text(value, style: GlobalsStyle.appBarTextStyle),
+                Text(value, 
+                  style: const TextStyle(
+                    color: Color.fromARGB(255,232,232,232),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16
+                  ),   
+                  overflow: TextOverflow.ellipsis,
+                ),
 
                 const SizedBox(height: 2),
 
                 Text(
                   psStorageData.psTitleList[widget.tappedIndex],
-                  style: const TextStyle(fontSize: 16),
-                  textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255,232,232,232),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17
+                  ),   
+                  overflow: TextOverflow.ellipsis,
                 ),
+                  
                 const SizedBox(height: 6),
 
               ],
