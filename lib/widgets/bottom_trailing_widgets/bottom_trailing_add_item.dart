@@ -30,21 +30,36 @@ class BottomTrailingAddItem {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    headerText,
-                    style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontSize: 15,
-                    ),
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 60,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: ThemeColor.thirdWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
+                child: Text(
+                  headerText,
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 16,
                   ),
                 ),
-              ],
+              ),
             ),
+            
+            const Divider(color: ThemeColor.lightGrey),
     
             Visibility(
               visible: VisibilityChecker.setNotVisibleList([OriginFile.offline, OriginFile.public]),
@@ -97,7 +112,7 @@ class BottomTrailingAddItem {
           ),
 
           if(tempData.origin != OriginFile.public) ... [
-            const Divider(color: ThemeColor.thirdWhite),
+            const Divider(color: ThemeColor.lightGrey),
 
             ElevatedButton(
               onPressed: photoOnPressed,
@@ -134,7 +149,7 @@ class BottomTrailingAddItem {
           ),
 
           if(tempData.origin != OriginFile.public) ... [
-            const Divider(color: ThemeColor.thirdWhite),
+            const Divider(color: ThemeColor.lightGrey),
 
             ElevatedButton(
               onPressed: textOnPressed,
@@ -150,8 +165,7 @@ class BottomTrailingAddItem {
                   ],
                 ),
               ),
-            ],
-            
+            ],    
         
             Visibility(
               visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.directory, OriginFile.folder, OriginFile.offline]),
@@ -170,8 +184,6 @@ class BottomTrailingAddItem {
                 ),
               ),
             ),
-
-            if(tempData.origin == OriginFile.public)
             const SizedBox(height: 20),
           ],
         );

@@ -33,6 +33,21 @@ class BottomTrailing {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 60,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: ThemeColor.thirdWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -69,7 +84,7 @@ class BottomTrailing {
               ],
             ),
 
-           const Divider(color: ThemeColor.thirdWhite),
+            const Divider(color: ThemeColor.lightGrey),
 
             Visibility(
               visible: VisibilityChecker.setNotVisible(OriginFile.public),
@@ -79,7 +94,7 @@ class BottomTrailing {
                 child: Row(
                   children: [
                     const Icon(Icons.edit),
-                    const SizedBox(width: 10.0),
+                    const SizedBox(width: 15.0),
                     Text(
                       fileName.contains('.') ? "Rename File" : "Rename Directory",
                       style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -97,7 +112,7 @@ class BottomTrailing {
                   child: const Row(
                   children: [
                     Icon(Icons.share_rounded),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 15.0),
                     Text('Share File',
                       style: GlobalsStyle.btnBottomDialogTextStyle
                     ),
@@ -108,7 +123,7 @@ class BottomTrailing {
 
             Visibility(
               visible: VisibilityChecker.setNotVisible(OriginFile.offline),
-              child: const Divider(color: ThemeColor.thirdWhite)
+              child: const Divider(color: ThemeColor.lightGrey)
             ),
 
             Visibility(
@@ -119,7 +134,7 @@ class BottomTrailing {
                 child: const Row(
                   children: [
                     Icon(Icons.offline_bolt_rounded),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 15.0),
                     Text('Make available Offline',
                       style: GlobalsStyle.btnBottomDialogTextStyle
                     ),
@@ -130,7 +145,7 @@ class BottomTrailing {
 
             Visibility(
               visible: fileName.split('.').last != fileName,
-              child: const Divider(color: ThemeColor.thirdWhite)
+              child: const Divider(color: ThemeColor.lightGrey)
             ),
 
             ElevatedButton(
@@ -139,7 +154,7 @@ class BottomTrailing {
               child: const Row(
                 children: [
                   Icon(Icons.download_rounded),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text('Download',
                     style: GlobalsStyle.btnBottomDialogTextStyle
                   ),
@@ -155,7 +170,7 @@ class BottomTrailing {
                 child: const Row(
                   children: [
                     Icon(Icons.delete,color: ThemeColor.darkRed),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 15.0),
                     Text('Delete',
                       style: TextStyle(
                         color: ThemeColor.darkRed,
@@ -166,6 +181,9 @@ class BottomTrailing {
                 ),
               ),
             ),
+
+            const SizedBox(height: 20),
+
           ],
         );
       }

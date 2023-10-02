@@ -20,23 +20,36 @@ class BottomTrailingFolder {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      folderName.length > 50 ? "${folderName.substring(0,50)}..." : "$folderName Folder",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 60,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: ThemeColor.thirdWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
+            ),
+
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
+                child: Text(
+                  folderName.length > 50 ? "${folderName.substring(0,50)}..." : "$folderName Folder",
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            
+            const Divider(color: ThemeColor.lightGrey),
               
             ElevatedButton(
               onPressed: () {
@@ -47,7 +60,7 @@ class BottomTrailingFolder {
               child: const Row(
                 children: [
                   Icon(Icons.edit),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text(
                     'Rename Folder',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -62,12 +75,10 @@ class BottomTrailingFolder {
               child: const Row(
                 children: [
                   Icon(Icons.download_rounded),
-                  SizedBox(width: 8.0),
+                  SizedBox(width: 15.0),
                   Text('Download',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 200, 200, 200),
-                    fontSize: 16,
-                  )),
+                    style: GlobalsStyle.btnBottomDialogTextStyle
+                  ),
                 ],
               ),
             ),
@@ -82,7 +93,7 @@ class BottomTrailingFolder {
               child: const Row(
                 children: [
                   Icon(Icons.delete,color: ThemeColor.darkRed),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text('Delete',
                     style: TextStyle(
                       color: ThemeColor.darkRed,
@@ -92,6 +103,9 @@ class BottomTrailingFolder {
                 ],
               ),
             ),
+
+            const SizedBox(height: 20),
+            
           ],
         );
       }

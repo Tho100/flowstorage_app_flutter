@@ -26,22 +26,36 @@ class BottomTrailingSelectedItems {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      tempData.appBarTitle,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 60,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: ThemeColor.thirdWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
+            ),
+
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
+                child: Text(
+                  tempData.appBarTitle,
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            
+            const Divider(color: ThemeColor.lightGrey),
               
             ElevatedButton(
               onPressed: () async {
@@ -52,7 +66,7 @@ class BottomTrailingSelectedItems {
               child: const Row(
                 children: [
                   Icon(Icons.download_rounded),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text(
                     'Save to device',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -72,7 +86,7 @@ class BottomTrailingSelectedItems {
                 child: const Row(
                   children: [
                     Icon(Icons.offline_bolt_rounded),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 15.0),
                     Text(
                       'Make available offline',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -91,7 +105,7 @@ class BottomTrailingSelectedItems {
               child: const Row(
                 children: [
                   Icon(Icons.delete,color: ThemeColor.darkRed),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text('Delete',
                     style: TextStyle(
                       color: ThemeColor.darkRed,

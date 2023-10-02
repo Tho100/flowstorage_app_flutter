@@ -52,22 +52,36 @@ class BottomTrailingFilter {
           height: 315,
           child: Column(
             children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Text(
-                      "Filter Type",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ), 
-                ],
+
+              const SizedBox(height: 12),
+
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 60,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: ThemeColor.thirdWhite,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
               ),
+
+              const Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
+                  child: Text(
+                    "Filter Type",
+                    style: TextStyle(
+                      color: ThemeColor.secondaryWhite,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              
+              const Divider(color: ThemeColor.lightGrey),
               
               Padding(
                 padding: const EdgeInsets.all(8.0),

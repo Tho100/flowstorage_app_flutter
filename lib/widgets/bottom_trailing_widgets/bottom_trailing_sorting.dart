@@ -25,30 +25,44 @@ class BottomTrailingSorting {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    "Sort By",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 60,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: ThemeColor.thirdWhite,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+
+            const Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
+                child: Text(
+                  "Sort By",
+                  style: TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 16,
                   ),
                 ),
-              ],
+              ),
             ),
             
+            const Divider(color: ThemeColor.lightGrey),
+          
             if(tempData.origin != OriginFile.offline)
             ElevatedButton(
               onPressed: sortUploadDateOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text(
                     'Upload Date',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -63,7 +77,7 @@ class BottomTrailingSorting {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text(
                     'Item Name',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -77,7 +91,7 @@ class BottomTrailingSorting {
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
               child: const Row(
                 children: [
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 15.0),
                   Text(
                     'Default',
                     style: GlobalsStyle.btnBottomDialogTextStyle,
@@ -85,6 +99,8 @@ class BottomTrailingSorting {
                 ],
               ),
             ),
+
+            const SizedBox(height: 20),
 
           ],
         );
