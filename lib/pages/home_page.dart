@@ -1993,14 +1993,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Future _showUpgradeLimitedDialog(int value)  {
-    return UpgradeDialog.buildUpgradeDialog(
+    return UpgradeDialog.buildUpgradeBottomSheet(
       message: "You're currently limited to $value uploads. Upgrade your account to upload more.",
       context: context
     );
   }
 
     Future _showUpgradeExceededDialog()  {
-    return UpgradeDialog.buildUpgradeDialog(
+    return UpgradeDialog.buildUpgradeBottomSheet(
       message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
       context: context
     );
@@ -2071,7 +2071,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           Navigator.pop(context);
 
         } else {
-          UpgradeDialog.buildUpgradeDialog(
+          UpgradeDialog.buildUpgradeBottomSheet(
             message: "You're currently limited to ${AccountPlan.mapFoldersUpload[userData.accountType]} folders upload. Upgrade your account plan to upload more folder.",
             context: context
           );
@@ -2137,13 +2137,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             _openCreateDirectoryDialog();
             
           } else {
-            UpgradeDialog.buildUpgradeDialog(
+            UpgradeDialog.buildUpgradeBottomSheet(
               message: "Upgrade your account to upload more directory.",
               context: context
             );
           }
         } else {
-          UpgradeDialog.buildUpgradeDialog(
+          UpgradeDialog.buildUpgradeBottomSheet(
             message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
             context: context
           );
@@ -2164,7 +2164,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
       onDownloadPressed: () async {
         if(userData.accountType == "Basic") {
-          UpgradeDialog.buildUpgradeDialog(
+          UpgradeDialog.buildUpgradeBottomSheet(
             message: "Upgrade your account to any paid plan to download folder.",
             context: context
           );
@@ -2253,7 +2253,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
           await _initializeCameraScanner();
         } else {
-          UpgradeDialog.buildUpgradeDialog(
+          UpgradeDialog.buildUpgradeBottomSheet(
             message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
             context: context
           );
@@ -2266,13 +2266,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
             _openCreateDirectoryDialog();
           } else {
-            UpgradeDialog.buildUpgradeDialog(
+            UpgradeDialog.buildUpgradeBottomSheet(
               message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
               context: context
             );
           }
         } else {
-          UpgradeDialog.buildUpgradeDialog(
+          UpgradeDialog.buildUpgradeBottomSheet(
             message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
             context: context
           );

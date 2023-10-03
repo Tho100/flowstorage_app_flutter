@@ -94,10 +94,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Future<void> playOrPauseAudioAsync() async {
 
-    print("IN");
-
     if (byteAudio.isEmpty) {
-      print("SEX");
       byteAudio = await callAudioDataAsync();
     }
 

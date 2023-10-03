@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
 class BottomTrailingShared {
@@ -21,17 +22,7 @@ class BottomTrailingShared {
 
             const SizedBox(height: 12),
 
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 60,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: ThemeColor.thirdWhite,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-            ),
+            const SheetBar(),
 
             const Align(
               alignment: Alignment.center,

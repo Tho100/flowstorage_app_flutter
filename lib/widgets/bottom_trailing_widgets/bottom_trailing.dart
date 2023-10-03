@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -36,17 +37,7 @@ class BottomTrailing {
 
             const SizedBox(height: 12),
 
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 60,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: ThemeColor.thirdWhite,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-            ),
+            const SheetBar(),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

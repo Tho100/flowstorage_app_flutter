@@ -113,16 +113,16 @@ class CustomSideBarMenu extends StatelessWidget {
 
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
                   onPressed: () {
                     NavigatePage.goToPageUpgrade(context);
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                     backgroundColor: ThemeColor.darkPurple,
                   ),
