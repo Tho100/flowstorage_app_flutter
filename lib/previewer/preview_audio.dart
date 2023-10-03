@@ -27,6 +27,15 @@ class PreviewAudio extends StatefulWidget {
 
 class PreviewAudioState extends State<PreviewAudio> {
 
+  Duration durationGradient = const Duration(milliseconds: 859);
+
+  final List<List<Color>> gradientColors = [
+    [ThemeColor.secondaryPurple, ThemeColor.justWhite],
+    [ThemeColor.secondaryWhite, ThemeColor.darkPurple],
+  ];
+
+  int currentGradientIndex = 0;
+
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -46,9 +55,6 @@ class PreviewAudioState extends State<PreviewAudio> {
   final retrieveData = RetrieveData();
 
   String audioDuration = "0:00";
-
-  bool isPressedPlayedOnFirstTry = false;
-  bool audioIsPlaying = false;
 
   late String? audioContentType;
   late Uint8List byteAudio;
@@ -372,17 +378,15 @@ class PreviewAudioState extends State<PreviewAudio> {
             child: SizedBox(
               width: mediaQuery.width-90,
               height: mediaQuery.height-570,
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 1),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      ThemeColor.secondaryWhite,
-                      ThemeColor.darkPurple,
-                    ],
+                    colors: gradientColors[currentGradientIndex],
                   ),
-                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
@@ -457,12 +461,23 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   }
 
+  void initializeGradient() {
+    Timer.periodic(durationGradient, (timer) {
+      if(iconPausePlayNotifier.value == Icons.pause) {
+        setState(() {
+          currentGradientIndex = (currentGradientIndex + 1) % gradientColors.length;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     byteAudio = Uint8List(0);
     initializeAudioContentType();
     playOrPauseAudioAsync();
+    initializeGradient();
   }
 
   @override
