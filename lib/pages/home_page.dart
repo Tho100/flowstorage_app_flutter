@@ -2143,10 +2143,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             );
           }
         } else {
-          UpgradeDialog.buildUpgradeBottomSheet(
-            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-            context: context
-          );
+          _showUpgradeLimitedDialog(limitUpload);
         }
 
       }, 
@@ -2253,10 +2250,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
           await _initializeCameraScanner();
         } else {
-          UpgradeDialog.buildUpgradeBottomSheet(
-            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-            context: context
-          );
+          _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
         }
       }, 
         
@@ -2272,10 +2266,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             );
           }
         } else {
-          UpgradeDialog.buildUpgradeBottomSheet(
-            message: "You're currently limited to ${AccountPlan.mapFilesUpload[userData.accountType]} uploads. Upgrade your account to upload more.",
-            context: context
-          );
+          _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
         }
       }, 
         
