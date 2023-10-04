@@ -574,6 +574,148 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
+  Future<void> _initializeCameraScanner() async {
+
+    try {
+
+      final scannerPdf = ScannerPdf();
+
+      final imagePath = await CunningDocumentScanner.getPictures();
+
+      if(imagePath!.isEmpty) {
+        return;
+      }
+
+      final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
+
+      await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
+      
+      for(var images in imagePath) {
+
+        File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
+        await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
+        
+      }
+
+      if(!mounted) return;
+      await scannerPdf.savePdf(fileName: generateFileName,context: context);
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$generateFileName.pdf');
+
+      final toBase64Encoded = base64.encode(file.readAsBytesSync());
+      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
+
+      if (tempData.origin == OriginFile.offline) {
+
+        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.png");
+        final imageBytes = Uint8List.fromList(decodeToBytes);
+        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: imageBytes);
+
+        storageData.imageBytesFilteredList.add(decodeToBytes);
+        storageData.imageBytesList.add(decodeToBytes);
+
+      } else {
+
+        await UpdateListView().processUpdateListView(
+          filePathVal: file.path,
+          selectedFileName: "$generateFileName.pdf",
+          tableName: GlobalsTable.homePdf, 
+          fileBase64Encoded: toBase64Encoded,
+          newFileToDisplay: newFileToDisplay
+        );
+
+      }
+
+      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
+
+      await file.delete();
+
+      await NotificationApi.stopNotification(0);
+
+      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
+
+      await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+
+      _itemSearchingImplementation('');
+
+    } catch (err, st) {
+      logger.e('Exception from _initializeCameraScanner {main}',err, st);
+      SnakeAlert.errorSnake("Failed to start scanner.");
+    }
+  }
+
+  Future<void> _initializePhotoCamera() async {
+
+    try {
+
+      final details = await PickerModel()
+                        .galleryPicker(source: ImageSource.camera);
+
+      if (details!.selectedFiles.isEmpty) {
+        return;
+      }
+
+      for(var photoTaken in details.selectedFiles) {
+
+        final imagePath = photoTaken.selectedFile.toString()
+                          .split(" ").last.replaceAll("'", "");
+
+        final imageName = imagePath.split("/").last.replaceAll("'", "");
+        final fileExtension = imageName.split('.').last;
+
+        if(!(Globals.imageType.contains(fileExtension))) {
+          CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
+          return;
+        }
+
+        List<int> bytes = await CompressorApi.compressedByteImage(path: imagePath, quality: 78);
+      
+        final imageBase64Encoded = base64.encode(bytes); 
+
+        if(storageData.fileNamesList.contains(imageName)) {
+          CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
+          return;
+        }
+
+        if (tempData.origin == OriginFile.offline) {
+
+          final decodeToBytes = base64.decode(imageBase64Encoded);
+          final imageBytes = Uint8List.fromList(decodeToBytes);
+          await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
+
+          storageData.imageBytesFilteredList.add(decodeToBytes);
+          storageData.imageBytesList.add(decodeToBytes);
+
+        } else {
+
+          await UpdateListView().processUpdateListView(
+            filePathVal: imagePath, 
+            selectedFileName: imageName, 
+            tableName: GlobalsTable.homeImage, 
+            fileBase64Encoded: imageBase64Encoded
+          );
+          
+        }
+
+        UpdateListView().addItemToListView(fileName: imageName);
+
+        await File(imagePath).delete();
+
+      }
+
+      SnakeAlert.okSnake(message: "1 photo has been added", icon: Icons.check);
+
+      await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
+
+      _itemSearchingImplementation('');
+
+    } catch (err) {
+      SnakeAlert.errorSnake("Failed to start the camera.");
+    }
+
+  }
+
   void _openSharingPage(String fileName) {
     Navigator.push(
       context,
@@ -651,7 +793,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog( 
       fileName: fileName, 
-      onDeletePressed:() async => await _onDeletePressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
+      onDeletePressed:() async => await _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
       context: context
     );
   }
@@ -659,7 +801,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _openRenameDialog(String fileName) {
      RenameDialog().buildRenameFileDialog(
       fileName: fileName, 
-      onRenamePressed: () => _onRenamePressed(fileName), 
+      onRenamePressed: () => _onRenameItemPressed(fileName), 
       context: context
     );
   }
@@ -921,7 +1063,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           final fileIndex = storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i));
           getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
         } else {
-          getBytes = await _callData(checkedItemsName.elementAt(i),tableName!);
+          getBytes = await _callFileByteData(checkedItemsName.elementAt(i),tableName!);
         }
 
         await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: checkedItemsName.elementAt(i), fileData: getBytes);
@@ -960,7 +1102,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if(Globals.imageType.contains(fileType)) {
             fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
           } else {
-            fileData = await _callData(checkedItemsName.elementAt(i), tableName);
+            fileData = await _callFileByteData(checkedItemsName.elementAt(i), tableName);
           }
 
           await offlineMode.saveOfflineFile(
@@ -1282,7 +1424,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setCurrentDirectory('');
   }
   
-  Future<Uint8List> _callData(String selectedFilename,String tableName) async {
+  Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
   }
 
@@ -1290,14 +1432,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
     try {
 
-      final deleteClass = DeleteFolder();
-
-      await deleteClass.deletionParams(folderName: folderName);
+      await DeleteFolder(folderName: folderName).delete();
 
       storageData.foldersNameList.remove(folderName);
       tempData.setOrigin(OriginFile.home);
 
       await _refreshListView();
+      
       _navDirectoryButtonVisibility(true);
       _floatingButtonVisibility(true);
 
@@ -1316,8 +1457,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final renameClass = RenameFolder();
-      await renameClass.renameParams(oldFolderTitle: oldFolderName, newFolderTitle: newFolderName);
+      await RenameFolder(
+        oldFolderTitle: oldFolderName, 
+        newFolderTitle: newFolderName).rename();
 
       final indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
       if(indexOldFolder != -1) {
@@ -1499,7 +1641,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      await DirectoryClass().createDirectory(directoryName, userData.username);
+      await CreateDirectory(name: directoryName).create();
 
       final directoryImage = await GetAssets().loadAssetsFile('dir1.png');
 
@@ -1524,7 +1666,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      await DeleteDirectory().deleteDirectory(directoryName: directoryName);
+      await DeleteDirectory(name: directoryName).delete();
     
       storageData.directoryImageBytesList.clear();
 
@@ -1537,7 +1679,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _onDeletePressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+  Future<void> _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
 
     final extension = fileName.split('.').last;
 
@@ -1559,148 +1701,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
-
-  }
-
-Future<void> _initializeCameraScanner() async {
-
-    try {
-
-      final scannerPdf = ScannerPdf();
-
-      final imagePath = await CunningDocumentScanner.getPictures();
-
-      if(imagePath!.isEmpty) {
-        return;
-      }
-
-      final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
-
-      if(tempData.origin != OriginFile.public) {
-        await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
-      }
-
-      for(var images in imagePath) {
-
-        File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
-        await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
-        
-      }
-
-      if(!mounted) return;
-      await scannerPdf.savePdf(fileName: generateFileName,context: context);
-
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/$generateFileName.pdf');
-
-      final toBase64Encoded = base64.encode(file.readAsBytesSync());
-      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
-
-      if (tempData.origin == OriginFile.offline) {
-
-        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.png");
-        final imageBytes = Uint8List.fromList(decodeToBytes);
-        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: imageBytes);
-
-        storageData.imageBytesFilteredList.add(decodeToBytes);
-        storageData.imageBytesList.add(decodeToBytes);
-
-      } else {
-
-        await UpdateListView().processUpdateListView(
-          filePathVal: file.path,
-          selectedFileName: "$generateFileName.pdf",
-          tableName: GlobalsTable.homePdf, 
-          fileBase64Encoded: toBase64Encoded,
-          newFileToDisplay: newFileToDisplay
-        );
-
-      }
-
-      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
-
-      await file.delete();
-
-      await NotificationApi.stopNotification(0);
-
-      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
-
-      await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
-
-      _itemSearchingImplementation('');
-
-    } catch (err, st) {
-      logger.e('Exception from _initializeCameraScanner {main}',err, st);
-      SnakeAlert.errorSnake("Failed to start scanner.");
-    }
-  }
-
-  Future<void> _initializeCamera() async {
-
-    try {
-
-      final details = await PickerModel()
-                        .galleryPicker(source: ImageSource.camera);
-
-      if (details!.selectedFiles.isEmpty) {
-        return;
-      }
-
-      for(var photoTaken in details.selectedFiles) {
-
-        final imagePath = photoTaken.selectedFile.toString()
-                          .split(" ").last.replaceAll("'", "");
-
-        final imageName = imagePath.split("/").last.replaceAll("'", "");
-        final fileExtension = imageName.split('.').last;
-
-        if(!(Globals.imageType.contains(fileExtension))) {
-          CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
-          return;
-        }
-
-        List<int> bytes = await CompressorApi.compressedByteImage(path: imagePath, quality: 78);
-      
-        final imageBase64Encoded = base64.encode(bytes); 
-
-        if(storageData.fileNamesList.contains(imageName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
-          return;
-        }
-
-        if (tempData.origin == OriginFile.offline) {
-
-          final decodeToBytes = base64.decode(imageBase64Encoded);
-          final imageBytes = Uint8List.fromList(decodeToBytes);
-          await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
-
-          storageData.imageBytesFilteredList.add(decodeToBytes);
-          storageData.imageBytesList.add(decodeToBytes);
-
-        } else {
-
-          await UpdateListView().processUpdateListView(
-            filePathVal: imagePath, 
-            selectedFileName: imageName, 
-            tableName: GlobalsTable.homeImage, 
-            fileBase64Encoded: imageBase64Encoded
-          );
-          
-        }
-
-        UpdateListView().addItemToListView(fileName: imageName);
-
-        await File(imagePath).delete();
-
-      }
-
-      await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
-
-      _itemSearchingImplementation('');
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to start the camera.");
-    }
 
   }
 
@@ -1727,7 +1727,7 @@ Future<void> _initializeCameraScanner() async {
     if(Globals.imageType.contains(fileType)) {
       fileData = storageData.imageBytesFilteredList[indexFile]!;
     } else {
-      fileData = await _callData(fileName, tableName);
+      fileData = await _callFileByteData(fileName, tableName);
     }
     
     setState(() {
@@ -1769,7 +1769,7 @@ Future<void> _initializeCameraScanner() async {
           int findIndexImage = storageData.fileNamesFilteredList.indexOf(fileName);
           getBytes = storageData.imageBytesFilteredList[findIndexImage]!;
         } else {
-          getBytes = await _callData(fileName,tableName!);
+          getBytes = await _callFileByteData(fileName,tableName!);
         }
 
         await SimplifyDownload(
@@ -1803,15 +1803,11 @@ Future<void> _initializeCameraScanner() async {
     final indexOfFile = togglePhotosPressed 
       ? storageData.fileNamesFilteredList.indexOf(fileName)+1
       : storageData.fileNamesFilteredList.indexOf(fileName);
-    
+
     if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
-      storageData.fileNamesList.removeAt(indexOfFile);
-      storageData.fileNamesFilteredList.removeAt(indexOfFile);
-      storageData.imageBytesList.removeAt(indexOfFile);
-      storageData.imageBytesFilteredList.removeAt(indexOfFile);
-      storageData.fileDateList.removeAt(indexOfFile);
-      storageData.fileDateFilteredList.removeAt(indexOfFile);
+      storageData.updateRemoveFile(indexOfFile);
     }
+    
     if (!isFromSelectAll) {
       Navigator.pop(context);
     }
@@ -1823,11 +1819,6 @@ Future<void> _initializeCameraScanner() async {
       _itemSearchingImplementation('');
     }
     
-  }
-
-  void _updateRenameFile(String newFileName, int indexOldFile, int indexOldFileSearched) {
-    storageData.fileNamesList[indexOldFile] = newFileName;
-    storageData.fileNamesFilteredList[indexOldFileSearched] = newFileName;
   }
 
   Future<void> _renameFileData(String oldFileName, String newFileName) async {
@@ -1845,7 +1836,8 @@ Future<void> _initializeCameraScanner() async {
       int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
       if (indexOldFileSearched != -1) {
-        _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
+        storageData.updateRenameFile(
+            newFileName, indexOldFile, indexOldFileSearched);
 
         SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
       }
@@ -1856,7 +1848,7 @@ Future<void> _initializeCameraScanner() async {
     }
   }
 
-  void _onRenamePressed(String fileName) async {
+  void _onRenameItemPressed(String fileName) async {
 
     try {
 
@@ -1870,7 +1862,8 @@ Future<void> _initializeCameraScanner() async {
         final indexOldFile = storageData.fileNamesList.indexOf(fileName);
         final indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(fileName);
 
-        _updateRenameFile(newItemValue, indexOldFile, indexOldFileSearched);
+        storageData.updateRenameFile(
+            newItemValue, indexOldFile, indexOldFileSearched);
         
         return;
       }
@@ -1893,9 +1886,13 @@ Future<void> _initializeCameraScanner() async {
     required String newDirName
   }) async {
 
-    await RenameDirectory.renameDirectory(oldDirName,newDirName);
+    await RenameDirectory(
+      oldDirectoryName: oldDirName, 
+      newDirectoryName: newDirName
+    ).rename();
 
     SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
+    
   }
 
   Future<void> _deleteFileData(String username, String fileName, String tableName) async {
@@ -2104,7 +2101,7 @@ Future<void> _initializeCameraScanner() async {
 
           if (storageData.fileNamesList.length < limitUpload) {
             Navigator.pop(context);
-            await _initializeCamera();
+            await _initializePhotoCamera();
           } else {
             _showUpgradeLimitedDialog(limitUpload);
           }
@@ -2510,7 +2507,7 @@ Future<void> _initializeCameraScanner() async {
       final fileTable = Globals.fileTypesToTableNames[fileExtension]!;
 
       if(tempData.origin != OriginFile.offline) {
-        fileData = await _callData(tempData.selectedFileName, fileTable);
+        fileData = await _callFileByteData(tempData.selectedFileName, fileTable);
       } else {
         fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
       }

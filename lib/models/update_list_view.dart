@@ -107,13 +107,13 @@ class UpdateListView {
       fileNames.add(getFileName);
     }
 
-    await CreateFolder().insertParams(
+    await CreateFolder(
       titleFolder: folderName,
       fileValues: fileValues,
       fileNames: fileNames,
       fileTypes: fileTypes,
       videoThumbnail: videoThumbnails,
-    );
+    ).create();
 
     storageData.foldersNameList.add(folderName);
     

@@ -5,12 +5,15 @@ import 'package:get_it/get_it.dart';
 
 class DeleteDirectory {
 
+  final String? name;
+
+  DeleteDirectory({required this.name});
+
   final userData = GetIt.instance<UserDataProvider>();
+  final encryption = EncryptionClass();
+  final crud = Crud();
 
-  Future<void> deleteDirectory({required String? directoryName}) async {
-
-    final encryption = EncryptionClass();
-    final crud = Crud();
+  Future<void> delete() async {
 
     const List<String> deleteDirectoryQueries = [
       "DELETE FROM file_info_directory WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username",
@@ -18,8 +21,8 @@ class DeleteDirectory {
     ];
 
     final params = [
-      {'dirname': encryption.encrypt(directoryName),'username': userData.username},
-      {'dirname': encryption.encrypt(directoryName),'username': userData.username}
+      {'dirname': encryption.encrypt(name),'username': userData.username},
+      {'dirname': encryption.encrypt(name),'username': userData.username}
     ];
 
     for(int i=0; i<deleteDirectoryQueries.length; i++) {

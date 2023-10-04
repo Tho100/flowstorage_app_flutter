@@ -392,16 +392,10 @@ class PreviewFileState extends State<PreviewFile> {
 
       int indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
 
-      setState(() {
-        if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
-          storageData.fileNamesList.removeAt(indexOfFile);
-          storageData.fileNamesFilteredList.removeAt(indexOfFile);
-          storageData.imageBytesList.removeAt(indexOfFile);
-          storageData.fileDateList.removeAt(indexOfFile);
-          storageData.imageBytesFilteredList.removeAt(indexOfFile);
-        }
-      });
-
+      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+        storageData.updateRemoveFile(indexOfFile);
+      }
+      
     } catch (err, st) {
       Logger().e("Exception on _removeFileFromListView {PreviewFile}", err, st);
     }

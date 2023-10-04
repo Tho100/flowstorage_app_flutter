@@ -71,7 +71,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     try {
 
-      await DirectoryClass().createDirectory(directoryName, userData.username);
+      await CreateDirectory(name: directoryName).create();
 
       final directoryImage = await GetAssets().loadAssetsFile('dir1.png');
 

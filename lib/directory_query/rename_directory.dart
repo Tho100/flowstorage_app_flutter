@@ -5,14 +5,19 @@ import 'package:get_it/get_it.dart';
 
 class RenameDirectory {
 
-  static final _locator = GetIt.instance;
+  final String oldDirectoryName;
+  final String newDirectoryName;
 
-  static Future<void> renameDirectory(String oldDirectoryName,String newDirectoryName) async {
+  RenameDirectory({
+    required this.oldDirectoryName,
+    required this.newDirectoryName
+  });
 
-    final userData = _locator<UserDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
+  final encryption = EncryptionClass();
+  final crud = Crud();
 
-    final encryption = EncryptionClass();
-    final crud = Crud();
+  Future<void> rename() async {
 
     const List<String> updateDirectoryQueries = [
       "UPDATE file_info_directory SET DIR_NAME = :newname WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username",

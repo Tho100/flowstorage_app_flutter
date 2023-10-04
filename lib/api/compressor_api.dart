@@ -28,6 +28,18 @@ class CompressorApi {
     return compressedUint8List;
   }
 
+  static Uint8List compressByte(Uint8List fileBytes) {
+
+    final archive = ArchiveFile("compressed_text_file", fileBytes.length, fileBytes);
+    final zipArchive = Archive()..addFile(archive);
+
+    List<int>? compressedBytes = ZipEncoder().encode(zipArchive);
+
+    Uint8List compressedUint8List = Uint8List.fromList(compressedBytes!);
+
+    return compressedUint8List;
+  }
+
   static Future<File> processImageCompression({
     required String path, 
     required int quality

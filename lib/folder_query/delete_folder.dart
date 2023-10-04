@@ -5,10 +5,14 @@ import 'package:get_it/get_it.dart';
 
 class DeleteFolder {
 
+  final String folderName;
+
+  DeleteFolder({required this.folderName});
+
   final userData = GetIt.instance<UserDataProvider>();
   final crud = Crud();
 
-  Future<void> deletionParams({required folderName}) async {
+  Future<void> delete() async {
 
     const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
     final params = {

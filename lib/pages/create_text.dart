@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/interact_dialog/text_dialog/discard_changes_dialog.dart';
@@ -113,7 +114,11 @@ class CreateTextPageState extends State<CreateText> {
 
       final toUtf8Bytes = utf8.encode(inputValue);
       final base64Encoded = base64.encode(toUtf8Bytes);
+      final base64Bytes = base64.decode(base64Encoded);
 
+      final compressedFileBytes = CompressorApi.compressByte(base64Bytes);
+      final compressedFileBase64 = base64.encode(compressedFileBytes);
+      
       if (tempData.origin == OriginFile.offline) {
         _createTextFileOnOffline(fileName, inputValue);
         return;
@@ -122,7 +127,7 @@ class CreateTextPageState extends State<CreateText> {
         await _insertUserFile(
           table: _tableToUploadTo(),
           filePath: fileName,
-          fileValue: base64Encoded,
+          fileValue: compressedFileBase64,
         );
         
       }

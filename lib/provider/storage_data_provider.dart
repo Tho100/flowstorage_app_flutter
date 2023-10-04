@@ -38,6 +38,32 @@ class StorageDataProvider extends ChangeNotifier {
   List<Uint8List> get homeImageBytesList => _homeImageBytesList;
   List<Uint8List> get homeThumbnailBytesList => _homeThumbnailBytesList;
 
+  void updateRemoveFile(int indexOfFile) {
+    _fileNamesList.removeAt(indexOfFile);
+    _fileNamesFilteredList.removeAt(indexOfFile);
+    _imageBytesList.removeAt(indexOfFile);
+    _imageBytesFilteredList.removeAt(indexOfFile);
+    _fileDateList.removeAt(indexOfFile);
+    _fileDateFilteredList.removeAt(indexOfFile);
+    notifyListeners();
+  }
+
+  void updateRenameFile(String newFileName, int indexOldFile, int indexOldFileSearched) {
+    _fileNamesList[indexOldFile] = newFileName;
+    _fileNamesFilteredList[indexOldFileSearched] = newFileName;
+    notifyListeners();
+  }
+
+  void updateFilteredImageBytes(List<Uint8List?> bytes) {
+    _imageBytesFilteredList.addAll(bytes);
+    notifyListeners();
+  }
+
+  void updateImageBytes(List<Uint8List?> bytes) {
+    _imageBytesList.addAll(bytes);
+    notifyListeners();
+  }
+
   void setStatsFilesName(List<String> statisticsFilesName) {
     _statisticsFilesName = statisticsFilesName;
     notifyListeners();
@@ -75,16 +101,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   void setFilteredImageBytes(List<Uint8List?> bytes) {
     _imageBytesFilteredList = bytes;
-    notifyListeners();
-  }
-
-  void updateFilteredImageBytes(List<Uint8List?> bytes) {
-    _imageBytesFilteredList.addAll(bytes);
-    notifyListeners();
-  }
-
-  void updateImageBytes(List<Uint8List?> bytes) {
-    _imageBytesList.addAll(bytes);
     notifyListeners();
   }
 

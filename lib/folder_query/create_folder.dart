@@ -7,18 +7,26 @@ import 'package:intl/intl.dart';
 
 class CreateFolder {
 
+  final String titleFolder;
+  final List<String> fileValues;
+  final List<String> fileNames;
+  final List<String> fileTypes;
+  final List<dynamic>? videoThumbnail;
+
+  CreateFolder({
+    required this.titleFolder,
+    required this.fileValues,
+    required this.fileNames,
+    required this.fileTypes,
+    required this.videoThumbnail
+  });
+
   final encryption = EncryptionClass(); 
   final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now()); 
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<void> insertParams({
-    required String titleFolder,
-    required List<String> fileValues,
-    required List<String> fileNames,
-    required List<String> fileTypes,
-    List<dynamic>? videoThumbnail
-  }) async {
+  Future<void> create() async {
     
     final conn = await SqlConnection.initializeConnection();
 
@@ -36,8 +44,8 @@ class CreateFolder {
         'file_type': fileTypes[i],
         'upload_date': formattedDate,
         'file_name': encryption.encrypt(fileNames[i]),
-        'thumbnail': videoThumbnail != null && videoThumbnail.length > i
-              ? videoThumbnail[i]
+        'thumbnail': videoThumbnail != null && videoThumbnail!.length > i
+              ? videoThumbnail![i]
               : null
       };
 
