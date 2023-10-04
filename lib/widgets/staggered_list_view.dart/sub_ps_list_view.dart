@@ -14,12 +14,14 @@ class SubPsListView extends StatelessWidget {
   
   final Uint8List imageBytes;
   final int index;
+  final String uploadDate;
   final VoidCallback fileOnPressed;
   final VoidCallback fileOnLongPressed;
 
   SubPsListView({
     required this.imageBytes,
     required this.index,
+    required this.uploadDate,
     required this.fileOnPressed,
     required this.fileOnLongPressed,
     Key? key
@@ -83,7 +85,7 @@ class SubPsListView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 16),
+                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 18),
                       style: const TextStyle(
                         color: ThemeColor.justWhite,
                         fontSize: 17,
@@ -92,7 +94,7 @@ class SubPsListView extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      ShortenText().cutText(fileName, customLength: 16),
+                      ShortenText().cutText(fileName, customLength: 18),
                       style: const TextStyle(
                         color: ThemeColor.secondaryWhite,
                         fontSize: 15,
@@ -101,7 +103,7 @@ class SubPsListView extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
+                      "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 17)} ${GlobalsStyle.dotSeperator} $uploadDate",
                       style: const TextStyle(
                         color: ThemeColor.secondaryWhite,
                         fontSize: 14,

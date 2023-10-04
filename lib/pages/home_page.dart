@@ -2521,9 +2521,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   Widget _buildRecentPsFiles(Uint8List imageBytes, int index) {
 
+    final originalDateValues = storageData.fileDateFilteredList[index];
+
+    final daysDate = originalDateValues.split(' ')[0];
+    final inputDate = "$daysDate days";
+    final shortFormDate = inputDate == "Just days" 
+      ? "Just now" 
+      : DateShortForm(input: inputDate).convert();
+
     return RecentPsListView(
       imageBytes: imageBytes, 
       index: index, 
+      uploadDate: shortFormDate,
       fileOnPressed: () async {
         await _navigateToPreviewFile(index);
       }, 
@@ -2536,9 +2545,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   Widget _buildSubPsFiles(Uint8List imageBytes, int index) {
 
+    final originalDateValues = storageData.fileDateFilteredList[index];
+
+    final daysDate = originalDateValues.split(' ')[0];
+    final inputDate = "$daysDate days";
+    final shortFormDate = inputDate == "Just days" 
+      ? "Just now" 
+      : DateShortForm(input: inputDate).convert();
+
     return SubPsListView(
       imageBytes: imageBytes, 
       index: index, 
+      uploadDate: shortFormDate,
       fileOnPressed: () async {
         await _navigateToPreviewFile(index);
       }, 
@@ -2623,14 +2641,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                     _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0),
 
                     if (storageData.imageBytesFilteredList.length > 1) ... [
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1),
 
                     ],
                     if (storageData.imageBytesFilteredList.length > 2) ... [
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2),
                     ],
+
+                    const SizedBox(width: 15),
 
                   ],
                 ),
@@ -2645,20 +2665,22 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
+                      const SizedBox(width: 5),
                       _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
-                      const SizedBox(width: 25),
+                      
+                      const SizedBox(width: 26),
                       if (storageData.imageBytesFilteredList.length > 4)
                         _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
 
-                      const SizedBox(width: 25),
+                      const SizedBox(width: 16),
                       if (storageData.imageBytesFilteredList.length > 5)
                         _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
 
-                      const SizedBox(width: 25),
+                      const SizedBox(width: 26),
                       if (storageData.imageBytesFilteredList.length > 6)
                         _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
 
-                      const SizedBox(width: 18),
+                      const SizedBox(width: 5),
                     ],
                   ),
                 ),

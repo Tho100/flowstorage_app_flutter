@@ -14,12 +14,14 @@ class RecentPsListView extends StatelessWidget {
 
   final Uint8List imageBytes;
   final int index;
+  final String uploadDate;
   final VoidCallback fileOnPressed;
   final VoidCallback fileOnLongPressed;
 
   RecentPsListView({
     required this.imageBytes,
     required this.index,
+    required this.uploadDate,
     required this.fileOnPressed,
     required this.fileOnLongPressed,
     Key? key
@@ -82,7 +84,7 @@ class RecentPsListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 12),
+                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 16),
                 style: const TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 16,
@@ -90,7 +92,7 @@ class RecentPsListView extends StatelessWidget {
                 ),
               ),
               Text(
-                ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12),
+                "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12)} ${GlobalsStyle.dotSeperator} $uploadDate",
                 style: const TextStyle(
                   color: ThemeColor.secondaryWhite,
                   fontSize: 14,
