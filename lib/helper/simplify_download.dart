@@ -49,7 +49,6 @@ class SimplifyDownload {
 
   }
 
-
   Future<void> downloadFile() async {
 
     try {

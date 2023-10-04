@@ -248,11 +248,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
           String compressedImageBase64Encoded = base64.encode(bytes);
 
-          if(tempData.origin == OriginFile.public) {
-            _openPsUploadPage(filePathVal: pathToString, fileName: filesName, tableName: GlobalsTable.psImage, base64Encoded: fileBase64Encoded);
-            return;
-          }
-
           await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
 
         } else if (Globals.videoType.contains(fileExtension)) {
@@ -264,17 +259,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           final thumbnailBytes = generatedThumbnail[0] as Uint8List;
           final thumbnailFile = generatedThumbnail[1] as File;
-
-          if(tempData.origin == OriginFile.public) {
-
-            _openPsUploadPage(
-              filePathVal: pathToString, fileName: filesName, 
-              tableName: GlobalsTable.psVideo, base64Encoded: fileBase64Encoded,
-              thumbnail: thumbnailBytes
-            );
-
-            return;
-          } 
 
           await UpdateListView().processUpdateListView(
             filePathVal: pathToString, 
@@ -603,7 +587,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/$generateFileName.pdf');
 
-      final toBase64Encoded = base64.encode(file.readAsBytesSync());
+      final compressedBytes = CompressorApi.compressFile(file.path);
+      final toBase64Encoded = base64.encode(compressedBytes);
       final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
 
       if (tempData.origin == OriginFile.offline) {
@@ -616,7 +601,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         storageData.imageBytesList.add(decodeToBytes);
 
       } else {
-
+        
         await UpdateListView().processUpdateListView(
           filePathVal: file.path,
           selectedFileName: "$generateFileName.pdf",
@@ -1807,7 +1792,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
       storageData.updateRemoveFile(indexOfFile);
     }
-    
+
     if (!isFromSelectAll) {
       Navigator.pop(context);
     }
