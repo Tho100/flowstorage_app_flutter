@@ -122,7 +122,7 @@ class CustomSideBarMenu extends StatelessWidget {
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     backgroundColor: ThemeColor.darkPurple,
                   ),

@@ -8,8 +8,8 @@ class DateShortForm {
     final Map<String, String> unitConversions = {
       'days': 'd',
       'weeks': 'w',
-      'months': 'm',
-      'years': 'y',
+      'months': 'mo',
+      'years': 'yr',
     };
 
     List<String> parts = input.split(' ');

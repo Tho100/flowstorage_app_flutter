@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
-import 'package:flowstorage_fsc/interact_dialog/save_text_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/text_dialog/discard_changes_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/text_dialog/save_text_dialog.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/extra_query/insert_data.dart';
@@ -194,6 +195,12 @@ class CreateTextPageState extends State<CreateText> {
     );
   }
 
+  Future<bool> discardChangesConfirmation() async {
+    bool confirm = await DiscardChangesDialog()
+                      .buildConfirmationDialog(context);
+    return confirm;
+  }
+
   @override
   void dispose() {
     textEditingController.dispose();
@@ -203,44 +210,55 @@ class CreateTextPageState extends State<CreateText> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-
-          Visibility(
-            visible: saveVisibility,
-            child: TextButton(
-              onPressed: () {
-                SaveTextDialog().buildSaveTextDialog(
-                  fileNameController: fileNameController, 
-                  saveOnPressed: () async {
-                    final getFileTitle = fileNameController.text.trim();
-                    if (getFileTitle.isEmpty) {
-                      return;
-                    }
-                    
-                    await _saveText(textEditingController.text);
-                  }, 
-                  context: context
-                );
-              },
-              child: const Text("Save",
-                style: TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
+    return WillPopScope(
+      onWillPop: () async {
+        
+        if(saveVisibility == true) {
+          return await discardChangesConfirmation();
+        } else {
+          return true;
+        }
+        
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+    
+            Visibility(
+              visible: saveVisibility,
+              child: TextButton(
+                onPressed: () {
+                  SaveTextDialog().buildSaveTextDialog(
+                    fileNameController: fileNameController, 
+                    saveOnPressed: () async {
+                      final getFileTitle = fileNameController.text.trim();
+                      if (getFileTitle.isEmpty) {
+                        return;
+                      }
+                      
+                      await _saveText(textEditingController.text);
+                    }, 
+                    context: context
+                  );
+                },
+                child: const Text("Save",
+                  style: TextStyle(
+                    color: ThemeColor.darkPurple,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
+          ],
+          backgroundColor: ThemeColor.darkBlack,
+          elevation: 0,
+          title: const Text("New Text File",
+            style: GlobalsStyle.appBarTextStyle
           ),
-        ],
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text("New Text File",
-          style: GlobalsStyle.appBarTextStyle
         ),
+        body: _buildTxt(context),
       ),
-      body: _buildTxt(context),
     );
   }
 }
