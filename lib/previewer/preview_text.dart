@@ -31,6 +31,8 @@ class PreviewText extends StatefulWidget {
 
 class PreviewTextState extends State<PreviewText> {
 
+  static final textController = TextEditingController();
+
   final tempData = GetIt.instance<TempDataProvider>();
 
   Future<Uint8List> _loadOfflineFile(String fileName) async {

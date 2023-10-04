@@ -167,6 +167,8 @@ class ShareFilePage extends StatelessWidget {
         text: commentController.text 
       ); 
 
+      await file.delete();
+
     } catch (err) {
       CustomAlertDialog.alertDialog("Failed to start sharing.");
     }

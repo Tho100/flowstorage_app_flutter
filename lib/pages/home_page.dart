@@ -1121,67 +1121,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _initializeCameraScanner() async {
-
-    try {
-
-      final scannerPdf = ScannerPdf();
-
-      final imagePath = await CunningDocumentScanner.getPictures();
-
-      if(imagePath!.isEmpty) {
-        return;
-      }
-
-      final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
-
-      if(tempData.origin != OriginFile.public) {
-        await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
-      }
-
-      for(var images in imagePath) {
-
-        File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
-        await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
-        
-      }
-
-      if(!mounted) return;
-      await scannerPdf.savePdf(fileName: generateFileName,context: context);
-
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/$generateFileName.pdf');
-
-      final toBase64Encoded = base64.encode(file.readAsBytesSync());
-      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
-
-      if(tempData.origin == OriginFile.public) {
-        _openPsUploadPage(filePathVal: file.path, fileName: "$generateFileName.pdf",tableName: GlobalsTable.psImage, base64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
-        return;
-
-      } else {
-        await UpdateListView().processUpdateListView(filePathVal: file.path,selectedFileName: "$generateFileName.pdf",tableName: "file_info_pdf", fileBase64Encoded: toBase64Encoded,newFileToDisplay: newFileToDisplay);
-        
-      }
-
-      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
-
-      await file.delete();
-
-      await NotificationApi.stopNotification(0);
-
-      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
-
-      await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
-
-      _itemSearchingImplementation('');
-
-    } catch (err, st) {
-      logger.e('Exception from _initializeCameraScanner {main}',err, st);
-      SnakeAlert.errorSnake("Failed to start scanner.");
-    }
-  }
-
   Future<void> _deleteMultiSelectedFiles({
     required int count
   }) async {
@@ -1623,6 +1562,79 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
+Future<void> _initializeCameraScanner() async {
+
+    try {
+
+      final scannerPdf = ScannerPdf();
+
+      final imagePath = await CunningDocumentScanner.getPictures();
+
+      if(imagePath!.isEmpty) {
+        return;
+      }
+
+      final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
+
+      if(tempData.origin != OriginFile.public) {
+        await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
+      }
+
+      for(var images in imagePath) {
+
+        File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
+        await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
+        
+      }
+
+      if(!mounted) return;
+      await scannerPdf.savePdf(fileName: generateFileName,context: context);
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$generateFileName.pdf');
+
+      final toBase64Encoded = base64.encode(file.readAsBytesSync());
+      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
+
+      if (tempData.origin == OriginFile.offline) {
+
+        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.png");
+        final imageBytes = Uint8List.fromList(decodeToBytes);
+        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: imageBytes);
+
+        storageData.imageBytesFilteredList.add(decodeToBytes);
+        storageData.imageBytesList.add(decodeToBytes);
+
+      } else {
+
+        await UpdateListView().processUpdateListView(
+          filePathVal: file.path,
+          selectedFileName: "$generateFileName.pdf",
+          tableName: GlobalsTable.homePdf, 
+          fileBase64Encoded: toBase64Encoded,
+          newFileToDisplay: newFileToDisplay
+        );
+
+      }
+
+      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
+
+      await file.delete();
+
+      await NotificationApi.stopNotification(0);
+
+      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
+
+      await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+
+      _itemSearchingImplementation('');
+
+    } catch (err, st) {
+      logger.e('Exception from _initializeCameraScanner {main}',err, st);
+      SnakeAlert.errorSnake("Failed to start scanner.");
+    }
+  }
+
   Future<void> _initializeCamera() async {
 
     try {
@@ -1656,12 +1668,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           return;
         }
 
-        if(tempData.origin == OriginFile.public) {
-          
-          _openPsUploadPage(filePathVal: imagePath, fileName: imageName, tableName: GlobalsTable.psImage, base64Encoded: imageBase64Encoded);
-          return;
-
-        } else if (tempData.origin == OriginFile.offline) {
+        if (tempData.origin == OriginFile.offline) {
 
           final decodeToBytes = base64.decode(imageBase64Encoded);
           final imageBytes = Uint8List.fromList(decodeToBytes);

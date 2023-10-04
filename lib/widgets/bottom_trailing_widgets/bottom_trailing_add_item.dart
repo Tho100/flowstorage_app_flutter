@@ -122,7 +122,7 @@ class BottomTrailingAddItem {
           ],
 
           Visibility(
-            visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.offline]),
+            visible: VisibilityChecker.setNotVisibleList([OriginFile.public]),
             child: ElevatedButton(
               onPressed: scannerOnPressed,
               style: GlobalsStyle.btnBottomDialogBackgroundStyle,
