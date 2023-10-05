@@ -6,6 +6,100 @@ import 'package:google_fonts/google_fonts.dart';
 
 class UpgradeDialog {
 
+  static Future buildGetBetterPlanBottomSheet({
+    required BuildContext context
+  }) {
+    return showModalBottomSheet(
+      backgroundColor: ThemeColor.justWhite,
+      context: context,
+      isDismissible: false,
+      shape: GlobalsStyle.bottomDialogBorderStyle,
+      builder: (context) {
+        return Column(
+          children: [
+            
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 175,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text("Get a better Flowstorage",
+                      style: GoogleFonts.poppins(
+                        color: ThemeColor.darkGrey,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 28
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width-75,
+                  child: Text("Upgrade your account plan with low price for more features and uploads.",
+                    style: GoogleFonts.poppins(
+                      color: ThemeColor.darkGrey,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 170),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width-55,
+                height: 65,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ThemeColor.darkBlack,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    )
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    NavigatePage.goToPageUpgrade(context);
+                  },
+                  child: const Text(
+                    'Upgrade',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeColor.justWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: const Text("No Thanks",
+                  style: TextStyle(
+                    color: ThemeColor.thirdWhite,
+                    fontSize: 16,
+                  ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static Future buildUpgradeBottomSheet({
     required String message,
     required BuildContext context

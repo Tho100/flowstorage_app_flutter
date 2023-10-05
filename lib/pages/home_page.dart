@@ -2973,6 +2973,21 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
+  void _initializeShowUpgradeOccasionally() async {
+
+    const dayToShow = {DateTime.friday, DateTime.monday, DateTime.wednesday, DateTime.thursday};
+
+    final now = DateTime.now();
+    final dayOfWeek = now.weekday;
+
+    if(dayToShow.contains(dayOfWeek)) {
+      await Future.delayed(const Duration(milliseconds: 1850));
+      if(!mounted) return;
+      UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
+    }
+
+  }
+
   @override
   void initState() {
 
@@ -2982,6 +2997,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _initializeCheckedItemList();
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
+    _initializeShowUpgradeOccasionally();
 
   }
 
