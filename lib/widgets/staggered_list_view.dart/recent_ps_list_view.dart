@@ -84,7 +84,7 @@ class RecentPsListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 16),
+                ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
                 style: const TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 16,

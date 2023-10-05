@@ -2659,58 +2659,61 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
               const Divider(color: ThemeColor.whiteGrey),
             ],
             if (tempData.origin == OriginFile.public && index == 3) ... [
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 5),
-                      _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
-                      
-                      const SizedBox(width: 26),
-                      if (storageData.imageBytesFilteredList.length > 4)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
-
-                      const SizedBox(width: 16),
-                      if (storageData.imageBytesFilteredList.length > 5)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
-
-                      const SizedBox(width: 26),
-                      if (storageData.imageBytesFilteredList.length > 6)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
-
-                      const SizedBox(width: 5),
-                    ],
+              Transform.translate(
+                offset: const Offset(0, -8),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 5),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
+                        
+                        const SizedBox(width: 26),
+                        if (storageData.imageBytesFilteredList.length > 4)
+                          _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
+              
+                        const SizedBox(width: 16),
+                        if (storageData.imageBytesFilteredList.length > 5)
+                          _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
+              
+                        const SizedBox(width: 26),
+                        if (storageData.imageBytesFilteredList.length > 6)
+                          _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
+              
+                        const SizedBox(width: 5),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 5),
               const Divider(color: ThemeColor.whiteGrey),
             ],
             if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
 
               if (index == 7)
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 18.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
-                        SizedBox(width: 8),
-                        Text(
-                          "Discover",
-                          style: TextStyle(
-                            fontSize: 23,
-                            color: ThemeColor.justWhite,
-                            fontWeight: FontWeight.w600,
-                          ),
+              Transform.translate(
+                offset: const Offset(0, -10),  
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 18.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        "Discover",
+                        style: TextStyle(
+                          fontSize: 23,
+                          color: ThemeColor.justWhite,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
 
               IntrinsicHeight(child: _buildPsStaggeredListView(imageBytes, index, uploaderName)),
 

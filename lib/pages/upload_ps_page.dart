@@ -128,7 +128,7 @@ class UploadPsPage extends StatelessWidget {
             enabled: true,
             controller: titleController,
             maxLines: 1,
-            maxLength: 25,
+            maxLength: 45,
             decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title (Optional)"),
           ),
         ),

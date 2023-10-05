@@ -74,7 +74,7 @@ class PsStaggeredListView extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                height: 25,
+                width: MediaQuery.of(context).size.width-102,
                 child: Text(
                   psStorageData.psTitleList[index],
                   style: const TextStyle(
