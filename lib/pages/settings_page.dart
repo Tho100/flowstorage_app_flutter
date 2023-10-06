@@ -508,7 +508,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
             const SizedBox(height: 10),
       
             _buildRowWithButtons(
-              topText: "Add Passcode", 
+              topText: "Add passcode", 
               bottomText: "Require to enter passcode before allowing to open Flowstorage", 
               onPressed: () async {
                 NavigatePage.goToAddPasscodePage(context);
