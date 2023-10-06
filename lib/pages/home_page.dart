@@ -2985,7 +2985,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final currentHour = now.hour;
 
     if(dayToShow.contains(dayOfWeek) && currentHour >= 6 && currentHour < 21) {
-      await Future.delayed(const Duration(milliseconds: 550));
+      await Future.delayed(const Duration(milliseconds: 759));
       if(!mounted) return;
       UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
     }

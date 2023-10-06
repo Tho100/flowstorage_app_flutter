@@ -30,10 +30,11 @@ class BottomTrailingFilter {
       label: Text(filterName),
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        fixedSize: const Size(112,25),
-        backgroundColor: ThemeColor.mediumGrey,
+        fixedSize: const Size(112,42),
+        backgroundColor: ThemeColor.darkGrey,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
+          side: const BorderSide(color: ThemeColor.whiteGrey),
         ),
       ),
     );
@@ -45,12 +46,12 @@ class BottomTrailingFilter {
     required BuildContext context
   }) {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkBlack,
+      backgroundColor: ThemeColor.darkGrey,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
         return SizedBox(
-          height: 315,
+          height: 345,
           child: Column(
             children: [
 
@@ -100,6 +101,8 @@ class BottomTrailingFilter {
               
                         _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypePublicStorage, filterTypeNormal, context),
               
+                        const SizedBox(height: 3),
+
                         Row(
       
                           children: [
@@ -119,7 +122,7 @@ class BottomTrailingFilter {
                       ],
                     ),
                       
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
                       
                     Column(
               
@@ -128,7 +131,7 @@ class BottomTrailingFilter {
               
                       children: [
               
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 8),
               
                         Row(
                           children: [
@@ -140,6 +143,8 @@ class BottomTrailingFilter {
                           ]
                         ),
               
+                        const SizedBox(height: 3),
+
                         Row(
               
                           children: [
@@ -176,7 +181,7 @@ class BottomTrailingFilter {
     required BuildContext context
   }) {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkBlack,
+      backgroundColor: ThemeColor.darkGrey,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
