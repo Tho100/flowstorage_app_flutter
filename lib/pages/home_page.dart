@@ -558,7 +558,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  Future<void> _initializeCameraScanner() async {
+  Future<void> _initializeDocumentScanner() async {
 
     try {
 
@@ -587,7 +587,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/$generateFileName.pdf');
 
-      final compressedBytes = CompressorApi.compressFile(file.path);
+      final compressedBytes = CompressorApi.compressFile(file.path.toString());
       final toBase64Encoded = base64.encode(compressedBytes);
       final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
 
@@ -595,10 +595,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         final decodeToBytes = await GetAssets().loadAssetsData("pdf0.png");
         final imageBytes = Uint8List.fromList(decodeToBytes);
-        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: imageBytes);
+        final decodedBase64String = base64.decode(toBase64Encoded);
 
-        storageData.imageBytesFilteredList.add(decodeToBytes);
-        storageData.imageBytesList.add(decodeToBytes);
+        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
+
+        storageData.imageBytesFilteredList.add(imageBytes);
+        storageData.imageBytesList.add(imageBytes);
 
       } else {
         
@@ -2098,7 +2100,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         if(storageData.fileNamesList.length < limitUpload) {
           Navigator.pop(context);
-          await _initializeCameraScanner();
+          await _initializeDocumentScanner();
         } else {
           _showUpgradeLimitedDialog(limitUpload);
         }
@@ -2237,7 +2239,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       
       scannerOnPressed: () async {
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-          await _initializeCameraScanner();
+          await _initializeDocumentScanner();
         } else {
           _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
         }
@@ -2975,13 +2977,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _initializeShowUpgradeOccasionally() async {
 
-    const dayToShow = {DateTime.friday, DateTime.monday, DateTime.wednesday, DateTime.thursday};
+    const dayToShow = {DateTime.friday, DateTime.monday, DateTime.wednesday};
 
     final now = DateTime.now();
-    final dayOfWeek = now.weekday;
 
-    if(dayToShow.contains(dayOfWeek)) {
-      await Future.delayed(const Duration(milliseconds: 1850));
+    final dayOfWeek = now.weekday;
+    final currentHour = now.hour;
+
+    if(dayToShow.contains(dayOfWeek) && currentHour >= 6 && currentHour < 21) {
+      await Future.delayed(const Duration(milliseconds: 550));
       if(!mounted) return;
       UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
     }
