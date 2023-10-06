@@ -67,7 +67,7 @@ class PasscodePageState extends State<PasscodePage> {
       userData.setEmail(savedCustEmail);
 
       final accountType = await accountInformationRetriever.retrieveAccountType(email: savedCustEmail);
-      userData.setAccountType(accountType);
+      userData.setAccountType("Max");
 
       final dirListCount = await crud.countUserTableRow(GlobalsTable.directoryInfoTable);
       final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);

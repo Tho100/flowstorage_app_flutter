@@ -1,3 +1,5 @@
+import 'package:flowstorage_fsc/api/compressor_api.dart';
+import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +17,15 @@ import 'package:get_it/get_it.dart';
 
 class SaveFolder {
 
+  final userData = GetIt.instance<UserDataProvider>();
+  
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
-  final userData = GetIt.instance<UserDataProvider>();
 
-  Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
+  Future<List<Map<String, dynamic>>> retrieveParams(String folderTitle) async {
 
     const query = 'SELECT CUST_FILE_PATH, CUST_FILE FROM folder_upload_info WHERE FOLDER_TITLE = :foldtitle AND CUST_USERNAME = :username';
-    final params = {'username': username,'foldtitle': encryption.encrypt(folderTitle)};
+    final params = {'username': userData.username, 'foldtitle': encryption.encrypt(folderTitle)};
 
     try {
 
@@ -38,8 +41,19 @@ class SaveFolder {
         final encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
         final fileNames = encryption.decrypt(encryptedFileNames);
 
-        final encryptedbyteFile = row.assoc()['CUST_FILE']!;
-        fileBytes = base64.decode(encryption.decrypt(encryptedbyteFile));
+        final fileTypes = fileNames.split('.').last;
+
+        final encryptedFileByte = row.assoc()['CUST_FILE']!;
+
+        if(Globals.imageType.contains(fileTypes)) {
+          fileBytes = base64.decode(encryption.decrypt(encryptedFileByte));
+
+        } else {
+          final compressedFileData = base64.decode(encryption.decrypt(encryptedFileByte));
+          final decompressFileData = CompressorApi.decompressFile(compressedFileData);
+          fileBytes = decompressFileData;
+
+        }
 
         final buffer = ByteData.view(fileBytes.buffer);
         final bufferedFileBytes = Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
@@ -83,7 +97,7 @@ class SaveFolder {
       final loadingDialog = SingleTextLoading();      
       loadingDialog.startLoading(title: "Saving...", context: context);
 
-      final dataList = await retrieveParams(userData.username,folderName);
+      final dataList = await retrieveParams(folderName);
 
       final nameList = dataList.map((data) => data['name'] as String).toList();
       final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
@@ -98,7 +112,7 @@ class SaveFolder {
       await CallNotify().customNotification(title: "Folder Saved", subMesssage: "${nameList.length} File(s) has been downloaded");
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to save the directory.");
+      SnakeAlert.errorSnake("Failed to save folder.");
     }
 
   }

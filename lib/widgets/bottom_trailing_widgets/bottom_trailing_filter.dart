@@ -186,7 +186,7 @@ class BottomTrailingFilter {
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
         return SizedBox(
-          height: 145,
+          height: 170,
           child: Column(
             children: [
 
