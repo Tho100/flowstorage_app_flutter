@@ -29,8 +29,8 @@ class PhotosStaggeredListView extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: isPhotosSelected ? ThemeColor.justWhite : ThemeColor.lightGrey,
-                    width: isPhotosSelected ? 2.8 : 1.6,
+                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.lightGrey,
+                    width: isPhotosSelected ? 2.5 : 1.6,
                   )
                 ),
                 child: ClipRRect(
@@ -50,6 +50,19 @@ class PhotosStaggeredListView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
+              ),
+
+              if(isPhotosSelected)
+              Padding(
+                padding: const EdgeInsets.only(left: 180, top: 10),
+                child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: ThemeColor.darkPurple.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 22)),
               ),
             ],
           ),
