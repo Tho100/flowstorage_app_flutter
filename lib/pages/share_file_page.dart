@@ -1,12 +1,19 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/process_file_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
+import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +30,7 @@ class ShareFilePage extends StatelessWidget {
 
   final shareToController = TextEditingController();
   final commentController = TextEditingController();
+
   final storageData = GetIt.instance<StorageDataProvider>();
 
   Widget buildBody(BuildContext context) {
@@ -111,7 +119,6 @@ class ShareFilePage extends StatelessWidget {
           ),
         ),
 
-        if(Globals.imageType.contains(fileName.split('.').last))
         Padding(
           padding: const EdgeInsets.only(right: 16.0, top: 6.0),
           child: Align(
@@ -152,15 +159,43 @@ class ShareFilePage extends StatelessWidget {
 
   void shareExternalOnPressed() async {
 
+    final userData = GetIt.instance<UserDataProvider>();
+    final tempData = GetIt.instance<TempDataProvider>();
+
+    final retrieveData = RetrieveData();
+    final loadingDialog = SingleTextLoading();
+
     try {
-      
-      final imageBytes = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!;
+
+      late Uint8List fileBytes = Uint8List(0);
+
+      final fileType = fileName.split('.').last;
+
+      if (Globals.imageType.contains(fileType)) {
+        final index = storageData.fileNamesFilteredList.indexOf(fileName);
+        if (index >= 0) {
+          fileBytes = storageData.imageBytesFilteredList[index]!;
+        }
+
+      } else {
+        loadingDialog.startLoading(title: "Fetching data...", context: navigatorKey.currentContext!);
+
+        final tableName = tempData.origin == OriginFile.public
+            ? Globals.fileTypesToTableNamesPs[fileType]!
+            : Globals.fileTypesToTableNames[fileType]!;
+
+        fileBytes = await retrieveData.retrieveDataParams(
+            userData.username, fileName, tableName);
+
+        loadingDialog.stopLoading();
+
+      }
 
       final tempDir = await getTemporaryDirectory();
       final filePath = '${tempDir.path}/$fileName';
       final file = File(filePath);
 
-      await file.writeAsBytes(imageBytes);
+      await file.writeAsBytes(fileBytes);
 
       await Share.shareXFiles(
         [XFile(filePath)],
@@ -170,7 +205,7 @@ class ShareFilePage extends StatelessWidget {
       await file.delete();
 
     } catch (err) {
-      CustomAlertDialog.alertDialog("Failed to start sharing.");
+      SnakeAlert.errorSnake("Failed to start sharing.");
     }
 
   }

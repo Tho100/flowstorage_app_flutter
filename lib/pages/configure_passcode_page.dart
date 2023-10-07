@@ -53,23 +53,20 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
 
                           bool isPassCodeExists = await storage.containsKey(key: 'key0015');
 
-                          if(isPassCodeExists == false && isPasscodeEnabled == true) {
+                          if (!isPassCodeExists) {
                             isPasscodeEnabled = false;
-                            if(!mounted) return;
+                            if (!mounted) return;
                             NavigatePage.goToAddPasscodePage(context);
 
-                          } else if (isPassCodeExists == true && isPasscodeEnabled == true) {
-                            togglePasscode("true");
-                            isPasscodeEnabled = true;
-
-                          } else if (isPassCodeExists == true && isPasscodeEnabled == false) {
-                            togglePasscode("false");
-                            isPasscodeEnabled = false;
+                          } else {
+                            final isEnabled = isPasscodeEnabled ? "true" : "false";
+                            togglePasscode(isEnabled);
 
                           }
-                          
+
                         },
                       ),
+
                     ],
                   ),
                 ),
@@ -116,6 +113,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
   }
 
   Future<void> _loadPasscodeStatus() async {
+    
     bool isPasscodeExist = await storage.containsKey(key: 'key0015');
 
     if(isPasscodeExist) {

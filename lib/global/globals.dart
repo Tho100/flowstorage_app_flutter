@@ -33,7 +33,6 @@ class Globals {
     'jpg': fileInfoTable,
     'webp': fileInfoTable,
     'jpeg': fileInfoTable,
-    'gif': fileInfoTable,
 
     'txt': fileInfoExpandTable,
     'sql': fileInfoExpandTable,
@@ -68,7 +67,6 @@ class Globals {
     'jpg': 'ps_info_image',
     'webp': 'ps_info_image',
     'jpeg': 'ps_info_image',
-    'gif': 'ps_info_image',
 
     'txt': 'ps_info_text',
     'sql': 'ps_info_text',
