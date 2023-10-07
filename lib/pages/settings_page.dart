@@ -201,6 +201,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     
     if(await storage.containsKey(key: "key0015")) {
       await storage.delete(key: "key0015");
+      await storage.delete(key: "isEnabled");
     }
 
   }
@@ -508,10 +509,10 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
             const SizedBox(height: 10),
       
             _buildRowWithButtons(
-              topText: "Add passcode", 
+              topText: "Configure passcode", 
               bottomText: "Require to enter passcode before allowing to open Flowstorage", 
               onPressed: () async {
-                NavigatePage.goToAddPasscodePage(context);
+                NavigatePage.goToPageCongfigurePasscode(context);
               }
             ),
 
@@ -548,10 +549,28 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
             const SizedBox(height: 10),
       
-            _buildInfoText("Cache"),
+            _buildInfoText("Flowstorage"),
       
             const SizedBox(height: 10),
       
+            _buildRowWithButtons(
+              topText: "App version", 
+              bottomText: "1.04", 
+              onPressed: () {}
+            ),
+
+            const SizedBox(height: 15),
+
+            _buildRowWithButtons(
+              topText: "Rate us", 
+              bottomText: "Rate your experience with Flowstorage", 
+              onPressed: () {
+                //
+              }
+            ),
+
+            const SizedBox(height: 15),
+
             _buildRowWithButtons(
               topText: "Clear cache", 
               bottomText: "Clear Flowstorage cache", 
@@ -560,6 +579,8 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                 CallToast.call(message: "Cache cleared.");
               }
             ),
+
+            const SizedBox(height: 10),
 
             Visibility(
               visible: accountType != "Basic",

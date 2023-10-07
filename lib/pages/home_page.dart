@@ -2960,19 +2960,25 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _initializeOfflineFileNames() async {
 
-    final offlineMode = OfflineMode();
+    try {
 
-    final offlineDir = await offlineMode.returnOfflinePath();
-    final listOfflineFiles = offlineDir.listSync();
+      final offlineMode = OfflineMode();
+      final offlineDir = await offlineMode.returnOfflinePath();
 
-    if(listOfflineFiles.isNotEmpty) {
-      offlineFilesName = Set<String>.from(listOfflineFiles.map(
-        (entity) => entity.path.split('/').last,
-      ));
-    } else {
+      final listOfflineFiles = offlineDir.listSync();
+
+      if(listOfflineFiles.isNotEmpty) {
+        offlineFilesName = Set<String>.from(listOfflineFiles.map(
+          (entity) => entity.path.split('/').last,
+        ));
+      } else {
+        offlineFilesName = {};
+      }
+      
+    } catch (err) {
       offlineFilesName = {};
     }
-
+    
   }
 
   void _initializeShowUpgradeOccasionally() async {

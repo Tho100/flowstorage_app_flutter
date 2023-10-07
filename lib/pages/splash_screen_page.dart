@@ -207,6 +207,8 @@ class SplashScreenState extends State<SplashScreen> {
         const storage = FlutterSecureStorage();
         bool isPassCodeExists = await storage.containsKey(key: "key0015");
 
+        final isPasscodeEnabled = await storage.read(key: "isEnabled");
+
         userData.setAccountType(getLocalAccountType);
         userData.setUsername(getLocalUsername);
         userData.setEmail(getLocalEmail);
@@ -215,7 +217,7 @@ class SplashScreenState extends State<SplashScreen> {
             ? tempData.setOrigin(OriginFile.offline) 
             : tempData.setOrigin(OriginFile.home);
 
-        if(isPassCodeExists) {
+        if(isPassCodeExists && isPasscodeEnabled == "true") {
           
           await Future.delayed(const Duration(milliseconds: 850));
 

@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/pages/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/share_file_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
@@ -27,6 +28,13 @@ class NavigatePage {
      Navigator.push(
       context, 
       MaterialPageRoute(builder: (context) => ShareFilePage(fileName: fileName)),
+    );
+  }
+
+  static void goToPageCongfigurePasscode(BuildContext context) {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => const ConfigurePasscodePage()),
     );
   }
 

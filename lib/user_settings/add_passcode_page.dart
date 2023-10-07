@@ -42,6 +42,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     }
 
     await storage.write(key: "key0015",value: passCode);
+    await storage.write(key: "isEnabled", value: "true");
 
     CallToast.call(message: "Passcode added.");
 
