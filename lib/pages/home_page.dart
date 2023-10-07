@@ -922,6 +922,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
+    itemIsChecked = false;
     selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
@@ -967,6 +968,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _navDirectoryButtonVisibility(true);
     _floatingButtonVisibility(true);
 
+    itemIsChecked = false;
     togglePhotosPressed = false;
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
@@ -2990,7 +2992,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final dayOfWeek = now.weekday;
     final currentHour = now.hour;
 
-    if(dayToShow.contains(dayOfWeek) && currentHour >= 6 && currentHour < 21) {
+    if(dayToShow.contains(dayOfWeek) && 
+     ((currentHour >= 6 && currentHour < 11) || 
+     (currentHour >= 13 && currentHour < 18) || 
+     (currentHour >= 20 && currentHour < 22))) {
+      
       await Future.delayed(const Duration(milliseconds: 759));
       if(!mounted) return;
       UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
