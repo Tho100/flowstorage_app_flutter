@@ -107,6 +107,8 @@ class BottomTrailingSelectedItems {
               ),
             ),
 
+            const SizedBox(height: 12),
+
           ],
         );
       },

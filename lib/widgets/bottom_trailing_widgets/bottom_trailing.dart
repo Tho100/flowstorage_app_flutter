@@ -74,7 +74,7 @@ class BottomTrailing {
                 ),
               ],
             ),
-
+            
             const Divider(color: ThemeColor.lightGrey),
 
             Visibility(
@@ -113,7 +113,7 @@ class BottomTrailing {
             ),
 
             Visibility(
-              visible: VisibilityChecker.setNotVisible(OriginFile.offline),
+              visible: VisibilityChecker.setNotVisibleList([OriginFile.offline, OriginFile.public]),
               child: const Divider(color: ThemeColor.lightGrey)
             ),
 

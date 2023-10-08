@@ -161,7 +161,7 @@ class CreateTextPageState extends State<CreateText> {
 
     await CallNotify().customNotification(
       title: "Text File Saved",
-      subMesssage: ShortenText().cutText("$fileName Has been saved"),
+      subMesssage: "${ShortenText().cutText(fileName)} Has been saved",
     );
 
     if (!mounted) return;

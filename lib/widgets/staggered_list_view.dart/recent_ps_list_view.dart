@@ -37,11 +37,13 @@ class RecentPsListView extends StatelessWidget {
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
 
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
       onTap: fileOnPressed,
       onLongPress: fileOnLongPressed,
       child: Row(
         children: [
+          const SizedBox(width: 3),
           Stack(
             children: [
               Container(
@@ -119,8 +121,11 @@ class RecentPsListView extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 3),
+
             ],
           ),
+          const SizedBox(width: 3),
         ],
       ),
     );

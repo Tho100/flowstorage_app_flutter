@@ -1714,9 +1714,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     singleLoading.startLoading(title: "Preparing...", context: context);
 
     if(Globals.imageType.contains(fileType)) {
-      fileData = storageData.imageBytesFilteredList[indexFile]!;
+      fileData = tempData.origin != OriginFile.public 
+        ? storageData.imageBytesFilteredList[indexFile]! 
+        : psStorageData.psImageBytesList[indexFile];
+      
     } else {
       fileData = await _callFileByteData(fileName, tableName);
+      
     }
     
     setState(() {
@@ -2664,7 +2668,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             ],
             if (tempData.origin == OriginFile.public && index == 3) ... [
               Transform.translate(
-                offset: const Offset(0, -8),
+                offset: const Offset(0, -12),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: SingleChildScrollView(
@@ -2678,7 +2682,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                         if (storageData.imageBytesFilteredList.length > 4)
                           _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
               
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 26),
                         if (storageData.imageBytesFilteredList.length > 5)
                           _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
               
@@ -2692,14 +2696,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                   ),
                 ),
               ),
-              const SizedBox(height: 5),
               const Divider(color: ThemeColor.whiteGrey),
             ],
             if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
 
               if (index == 7)
               Transform.translate(
-                offset: const Offset(0, -10),  
+                offset: const Offset(0, -12),  
                 child: const Padding(
                   padding: EdgeInsets.only(left: 18.0),
                   child: Row(

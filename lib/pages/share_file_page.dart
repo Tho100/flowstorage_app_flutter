@@ -19,6 +19,7 @@ import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+// ignore: must_be_immutable
 class ShareFilePage extends StatelessWidget {
 
   final String fileName;
@@ -32,6 +33,8 @@ class ShareFilePage extends StatelessWidget {
   final commentController = TextEditingController();
 
   final storageData = GetIt.instance<StorageDataProvider>();
+
+  late Uint8List fileBytes = Uint8List(0);
 
   Widget buildBody(BuildContext context) {
 
@@ -167,27 +170,29 @@ class ShareFilePage extends StatelessWidget {
 
     try {
 
-      late Uint8List fileBytes = Uint8List(0);
+      if(fileBytes.isEmpty) {
 
-      final fileType = fileName.split('.').last;
+        final fileType = fileName.split('.').last;
 
-      if (Globals.imageType.contains(fileType)) {
-        final index = storageData.fileNamesFilteredList.indexOf(fileName);
-        if (index >= 0) {
-          fileBytes = storageData.imageBytesFilteredList[index]!;
+        if (Globals.imageType.contains(fileType)) {
+          final index = storageData.fileNamesFilteredList.indexOf(fileName);
+          if (index >= 0) {
+            fileBytes = storageData.imageBytesFilteredList[index]!;
+          }
+
+        } else {
+          loadingDialog.startLoading(title: "Fetching data...", context: navigatorKey.currentContext!);
+
+          final tableName = tempData.origin == OriginFile.public
+              ? Globals.fileTypesToTableNamesPs[fileType]!
+              : Globals.fileTypesToTableNames[fileType]!;
+
+          fileBytes = await retrieveData.retrieveDataParams(
+              userData.username, fileName, tableName);
+
+          loadingDialog.stopLoading();
+
         }
-
-      } else {
-        loadingDialog.startLoading(title: "Fetching data...", context: navigatorKey.currentContext!);
-
-        final tableName = tempData.origin == OriginFile.public
-            ? Globals.fileTypesToTableNamesPs[fileType]!
-            : Globals.fileTypesToTableNames[fileType]!;
-
-        fileBytes = await retrieveData.retrieveDataParams(
-            userData.username, fileName, tableName);
-
-        loadingDialog.stopLoading();
 
       }
 

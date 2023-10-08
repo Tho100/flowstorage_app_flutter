@@ -37,16 +37,19 @@ class SubPsListView extends StatelessWidget {
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
 
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
       onTap: fileOnPressed,
       onLongPress: fileOnLongPressed,
       child: Row(
         children: [
+          const SizedBox(width: 3),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
+
                   Container(
                     width: 185,
                     height: 158,
@@ -85,7 +88,7 @@ class SubPsListView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 18),
+                      ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
                       style: const TextStyle(
                         color: ThemeColor.justWhite,
                         fontSize: 17,
@@ -94,7 +97,7 @@ class SubPsListView extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      ShortenText().cutText(fileName, customLength: 18),
+                      ShortenText().cutText(fileName, customLength: 16),
                       style: const TextStyle(
                         color: ThemeColor.secondaryWhite,
                         fontSize: 15,
@@ -132,8 +135,11 @@ class SubPsListView extends StatelessWidget {
                   ],
                 ),
               ),
+            const SizedBox(height: 8),
             ],
           ),
+          const SizedBox(width: 3),
+
         ],
       ),
 

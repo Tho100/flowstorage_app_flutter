@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +53,13 @@ class PreviewImageState extends State<PreviewImage> {
 
   @override
   Widget build(BuildContext context) {
-
     return PageView.builder(
       physics: const ClampingScrollPhysics(),
       controller: pageController, 
       itemCount: filteredNames.length,
       onPageChanged: handlePageChange,
       itemBuilder: (context, index) {
+        final fileTypes = filteredNames[index].split('.').last;
         return InteractiveViewer(
           scaleEnabled: true,
           panEnabled: true,
@@ -66,7 +67,8 @@ class PreviewImageState extends State<PreviewImage> {
           constraints: const BoxConstraints.expand(),
           child: Image.memory(
             filteredImages[index]!,
-            fit: BoxFit.fitWidth,
+            fit: Globals.generalFileTypes.contains(fileTypes) 
+              ? BoxFit.scaleDown : BoxFit.fitWidth,
           ),
           ),
         );
