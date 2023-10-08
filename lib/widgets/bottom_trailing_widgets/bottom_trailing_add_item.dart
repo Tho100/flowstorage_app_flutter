@@ -175,7 +175,9 @@ class BottomTrailingAddItem {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+            
           ],
         );
       }

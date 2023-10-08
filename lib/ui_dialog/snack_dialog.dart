@@ -80,11 +80,8 @@ class SnakeAlert {
             const Spacer(),
             TextButton(
               onPressed: () async {
-                print("HELLO SEX");
-                final connection = await SqlConnection.initializeConnection();
-                print("FUCK YES");
-                await connection.close();
-                print("AH AH");
+                //final connection = await SqlConnection.initializeConnection();
+                //await connection.close();
               },
               child: const Text('Cancel'),
             ),

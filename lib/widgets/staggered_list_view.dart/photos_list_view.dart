@@ -31,39 +31,42 @@ class PhotosStaggeredListView extends StatelessWidget {
                   border: Border.all(
                     color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.lightGrey,
                     width: isPhotosSelected ? 2.5 : 1.6,
-                  )
+                  ),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.memory(imageBytes, fit: BoxFit.cover)
+                  child: Image.memory(imageBytes, fit: BoxFit.cover),
+                  
                 ),
               ),
                 
               if(Globals.videoType.contains(fileType))
-              Padding(
-                padding: const EdgeInsets.only(left: 8, top: 10),
+              Center(
                 child: Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: ThemeColor.mediumGrey.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(16),
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: ThemeColor.mediumGrey.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
                 ),
-                child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
-              ),
+            
 
               if(isPhotosSelected)
               Padding(
-                padding: const EdgeInsets.only(left: 180, top: 10),
+                padding: const EdgeInsets.only(left: 12, top: 10),
                 child: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: ThemeColor.darkPurple.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 22)),
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: ThemeColor.darkPurple.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 22)),
               ),
+              
+              
             ],
           ),
         ),
