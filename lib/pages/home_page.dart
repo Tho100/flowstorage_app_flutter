@@ -3014,7 +3014,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     if(dayToShow.contains(dayOfWeek) && 
      ((currentHour >= 6 && currentHour < 11) || 
       (currentHour >= 13 && currentHour < 16) || 
-      (currentHour >= 20 && currentHour < 22))) {
+      (currentHour >= 20 && currentHour < 21))) {
 
       await Future.delayed(const Duration(milliseconds: 759));
       if(!mounted) return;

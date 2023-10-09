@@ -555,7 +555,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       
             _buildRowWithButtons(
               topText: "App version", 
-              bottomText: "1.04", 
+              bottomText: "2.1.4", 
               onPressed: () {}
             ),
 
