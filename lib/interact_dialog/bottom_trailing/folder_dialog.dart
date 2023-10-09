@@ -40,8 +40,11 @@ class FolderDialog {
                   ),
                 ),
               ),
+
               const Divider(color: ThemeColor.lightGrey),
-              Expanded(  // Allow the ListView to take remaining vertical space
+
+              storageData.foldersNameList.isNotEmpty 
+              ? Expanded(  
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: storageData.foldersNameList.length,
@@ -72,7 +75,17 @@ class FolderDialog {
                         ),
                       ),
                     );
+
                   },
+                ),
+              )
+              : const Center(
+                child: Text("(Empty)",
+                  style: TextStyle(
+                    color: ThemeColor.thirdWhite,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600
+                  ),
                 ),
               ),
 

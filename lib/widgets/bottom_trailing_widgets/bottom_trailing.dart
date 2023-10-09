@@ -1,5 +1,7 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
@@ -12,6 +14,8 @@ import 'package:get_it/get_it.dart';
 class BottomTrailing {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final psStorageData = GetIt.instance<PsStorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   Future buildBottomTrailing({
     required String fileName,
@@ -60,15 +64,32 @@ class BottomTrailing {
 
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 12.0, top: 12.0),
-                    child: Text(
-                      ShortenText().cutText(fileName, customLength: 50),
-                      style: const TextStyle(
-                        color: ThemeColor.justWhite,
-                        fontSize: 15,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 12.0, top: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ShortenText().cutText(fileName, customLength: 50),
+                          style: const TextStyle(
+                            color: ThemeColor.justWhite,
+                            fontSize: 15,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        if(tempData.origin == OriginFile.public) ... [
+                          const SizedBox(height: 2),
+                          Text(
+                            "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}",
+                            style: const TextStyle(
+                              color: ThemeColor.secondaryWhite,
+                              fontSize: 14,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ]
+                      ],
                     ),
                   ),
                 ),
@@ -153,26 +174,24 @@ class BottomTrailing {
               ),
             ),
 
-            Visibility(
-              visible: VisibilityChecker.setNotVisible(OriginFile.public),
-              child: ElevatedButton(
-                onPressed: onDeletePressed,
-                style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-                child: const Row(
-                  children: [
-                    Icon(Icons.delete,color: ThemeColor.darkRed),
-                    SizedBox(width: 15.0),
-                    Text('Delete',
-                      style: TextStyle(
-                        color: ThemeColor.darkRed,
-                        fontSize: 17,
-                      )
-                    ),
-                  ],
-                ),
+            if((tempData.origin == OriginFile.public && tempData.appBarTitle != "Public Storage") || tempData.origin != OriginFile.public)
+            ElevatedButton(
+              onPressed: onDeletePressed,
+              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+              child: const Row(
+                children: [
+                  Icon(Icons.delete,color: ThemeColor.darkRed),
+                  SizedBox(width: 15.0),
+                  Text('Delete',
+                    style: TextStyle(
+                      color: ThemeColor.darkRed,
+                      fontSize: 17,
+                    )
+                  ),
+                ],
               ),
             ),
-
+          
             const SizedBox(height: 20),
 
           ],

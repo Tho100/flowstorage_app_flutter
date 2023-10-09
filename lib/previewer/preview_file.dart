@@ -938,7 +938,7 @@ class PreviewFileState extends State<PreviewFile> {
                   style: const TextStyle(
                     color: Color.fromARGB(255,232,232,232),
                     fontWeight: FontWeight.w500,
-                    fontSize: 16
+                    fontSize: 15
                   ),   
                   overflow: TextOverflow.ellipsis,
                 ),

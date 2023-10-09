@@ -202,9 +202,6 @@ class DataCaller {
 
     justLoading.startLoading(context: context);
 
-    psStorageData.psTagsList.clear();
-    psStorageData.psTitleList.clear();
-    
     final psDataRetriever = PublicStorageDataRetriever();
     final dataList = await psDataRetriever.retrieveParams(isFromMyPs: false);
 

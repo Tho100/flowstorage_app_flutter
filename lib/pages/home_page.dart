@@ -394,7 +394,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if (Globals.imageType.contains(fileExtension)) {
 
             final compressQuality = tempData.origin 
-              == OriginFile.public ? 76 : 85;
+              == OriginFile.public ? 71 : 85;
 
             List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
             String compressedImageBase64Encoded = base64.encode(bytes);
@@ -1674,20 +1674,31 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(extension == fileName) {
       await _deleteDirectoryData(fileName);
+
     } else {
-      await _deleteFileData(userData.username, fileName, Globals.fileTypesToTableNames[extension]!);
+      final tableName = tempData.origin == OriginFile.public 
+        ? Globals.fileTypesToTableNamesPs[extension]
+        : Globals.fileTypesToTableNames[extension];
+
+      await _deleteFileData(userData.username, fileName, tableName!);
+
     }
     
     if(tempData.origin == OriginFile.home) {
       storageData.homeImageBytesList.clear();
       storageData.homeThumbnailBytesList.clear();
+
+    } else if (tempData.origin == OriginFile.public) {
+      psStorageData.myPsImageBytesList.clear();
+      psStorageData.myPsThumbnailBytesList.clear();
+
     }
 
     if(offlineFilesName.contains(fileName)) {
       setState(() {
         offlineFilesName.remove(fileName);
       });
-    }
+    } 
 
     _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
 
@@ -2041,8 +2052,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if (count < limitUpload) {
             Navigator.pop(context);
             await _openDialogFile();
+
           } else {
             _showUpgradeLimitedDialog(limitUpload);
+
           } 
 
         } else {
@@ -2050,11 +2063,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if(tempData.origin == OriginFile.offline) {
             Navigator.pop(context);
             await _openDialogFile();
+
           } else if (storageData.fileNamesList.length < limitUpload) {
             Navigator.pop(context);
             await _openDialogFile();
+
           } else {
             _showUpgradeLimitedDialog(limitUpload);
+
           }
         }
 
@@ -2997,7 +3013,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(dayToShow.contains(dayOfWeek) && 
      ((currentHour >= 6 && currentHour < 11) || 
-      (currentHour >= 13 && currentHour < 18) || 
+      (currentHour >= 13 && currentHour < 16) || 
       (currentHour >= 20 && currentHour < 22))) {
 
       await Future.delayed(const Duration(milliseconds: 759));

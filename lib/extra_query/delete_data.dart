@@ -110,6 +110,10 @@ class DeleteData {
         params = {'username': username!, 'dirname': EncryptionClass().encrypt(tempData.directoryName), 'filename': fileName!};
         break;
 
+      case OriginFile.public:
+        query = "DELETE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
+        params = {'username': username!, 'filename': fileName!};
+
       default:
         break;
     }
