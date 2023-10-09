@@ -27,7 +27,7 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/upgrade_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
@@ -54,7 +54,7 @@ import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
 import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
-import 'package:flowstorage_fsc/interact_dialog/folder_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
@@ -739,12 +739,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       context, 
       MaterialPageRoute(
         builder: (context) => UploadPsPage(
-            fileName: fileName,
-            imageBase64Encoded: imagePreview,
-            fileBase64Encoded: base64Encoded,
-            onUploadPressed: () async {
+          fileName: fileName,
+          imageBase64Encoded: imagePreview,
+          fileBase64Encoded: base64Encoded,
+          onUploadPressed: () async {
 
-              SnakeAlert.uploadingSnake(
+            SnakeAlert.uploadingSnake(
               snackState: scaffoldMessenger, 
               message: "Uploading ${ShortenText().cutText(fileName)}"
             );
@@ -1914,7 +1914,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Future _buildFoldersDialog() async {
-    return FolderDialog().buildFolderDialog(
+    return FolderDialog().buildFoldersBottomSheet(
       folderOnPressed: (int index) async {
         
         final loadingDialog = MultipleTextLoading();

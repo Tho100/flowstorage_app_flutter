@@ -1,5 +1,7 @@
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -7,27 +9,39 @@ class FolderDialog {
 
   final storageData = GetIt.instance<StorageDataProvider>();
 
-  Future buildFolderDialog({
+  Future buildFoldersBottomSheet({
     required Function(int) folderOnPressed,
     required Function(int) trailingOnPressed,
     required BuildContext context
-  }) async {
-
-    return showDialog(
+  }) {
+    return showModalBottomSheet(
+      backgroundColor: ThemeColor.darkGrey,
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
-          ),
-          backgroundColor: ThemeColor.darkGrey,
-          contentPadding: EdgeInsets.zero,
-          content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5, 
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: SizedBox(
-                width: double.maxFinite,
+      shape: GlobalsStyle.bottomDialogBorderStyle,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height,  
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 12),
+              const SheetBar(),
+              const Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
+                  child: Text(
+                    "Folders",
+                    style: TextStyle(
+                      color: ThemeColor.secondaryWhite,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(color: ThemeColor.lightGrey),
+              Expanded(  // Allow the ListView to take remaining vertical space
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: storageData.foldersNameList.length,
@@ -54,35 +68,20 @@ class FolderDialog {
                           ),
                           trailing: GestureDetector(
                             onTap: () => trailingOnPressed(index),
-                          child: const Icon(Icons.more_vert,color: Colors.white)),
+                            child: const Icon(Icons.more_vert, color: Colors.white)),
                         ),
                       ),
                     );
                   },
                 ),
               ),
-            ),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Folders',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+
             ],
           ),
         );
-      },
+      }
     );
+
   }
+
 }

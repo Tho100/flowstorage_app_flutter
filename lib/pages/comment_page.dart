@@ -169,7 +169,8 @@ class CommentPageState extends State<CommentPage> {
 
   Future<Widget> _buildComment() async {
 
-    final commentText = TextEditingController(text: mainFileComment);
+    final commentValue = mainFileComment == "" ? '(No Comment)' : mainFileComment;
+    final commentController = TextEditingController(text: commentValue);
     final mediaQuery = MediaQuery.of(context).size;
 
     return Column(
@@ -192,7 +193,7 @@ class CommentPageState extends State<CommentPage> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: TextFormField(
-                      controller: commentText,
+                      controller: commentController,
                       readOnly: true,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
