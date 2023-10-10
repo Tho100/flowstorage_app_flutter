@@ -41,9 +41,9 @@ class CreateFolder {
         'folder_name': encryptedFolderName, 
         'username': userData.username, 
         'file_data': encryption.encrypt(fileValues[i]),
+        'file_name': encryption.encrypt(fileNames[i]),
         'file_type': fileTypes[i],
         'upload_date': formattedDate,
-        'file_name': encryption.encrypt(fileNames[i]),
         'thumbnail': videoThumbnail != null && videoThumbnail!.length > i
               ? videoThumbnail![i]
               : null

@@ -3055,6 +3055,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibileNotifier.dispose();
     searchHintText.dispose();
+    
+    tempData.clearFileData();
 
     NotificationApi.stopNotification(0);
 

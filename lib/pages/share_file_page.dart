@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -187,8 +188,14 @@ class ShareFilePage extends StatelessWidget {
               ? Globals.fileTypesToTableNamesPs[fileType]!
               : Globals.fileTypesToTableNames[fileType]!;
 
-          fileBytes = await retrieveData.retrieveDataParams(
+          if(tempData.fileByteData.isEmpty) {
+            fileBytes = await retrieveData.retrieveDataParams(
               userData.username, fileName, tableName);
+
+          } else {
+            fileBytes = CompressorApi.compressByte(tempData.fileByteData);
+
+          }
 
           loadingDialog.stopLoading();
 

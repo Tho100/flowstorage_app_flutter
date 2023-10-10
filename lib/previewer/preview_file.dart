@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/extra_query/rename_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -110,6 +111,7 @@ class PreviewFileState extends State<PreviewFile> {
     uploaderNameNotifer.dispose();
     fileResolutionNotifier.dispose();
     fileSizeNotifier.dispose();
+    tempData.clearFileData();
     super.dispose();
   }
 
@@ -377,15 +379,6 @@ class PreviewFileState extends State<PreviewFile> {
     ) : const SizedBox();
   }
 
-  Future<Uint8List> _callDataDownload() async {
-
-    return await retrieveData.retrieveDataParams(
-      userData.username,
-      widget.selectedFilename,
-      currentTable
-    );
-  }
-
   void _removeFileFromListView(String fileName) {
 
     try {
@@ -465,8 +458,10 @@ class PreviewFileState extends State<PreviewFile> {
     if(Globals.imageType.contains(fileType)) {
       final imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
       fileData = storageData.imageBytesFilteredList[imageIndex]!;
+
     } else {
-      fileData = await _callDataDownload();
+      fileData = CompressorApi.compressByte(tempData.fileByteData);
+
     }
     
     await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
@@ -497,7 +492,7 @@ class PreviewFileState extends State<PreviewFile> {
           fileData = storageData.imageBytesFilteredList[storageData.fileNamesList.indexOf(fileName)]!;
 
         } else {
-          fileData = await _callDataDownload();
+          fileData = CompressorApi.compressByte(tempData.fileByteData);
 
         }
 
@@ -509,7 +504,7 @@ class PreviewFileState extends State<PreviewFile> {
 
       } else {  
         await OfflineMode().downloadFile(fileName);
-        
+
       }
     
       loadingDialog.stopLoading();
@@ -724,6 +719,10 @@ class PreviewFileState extends State<PreviewFile> {
   Future<Uint8List> _getFileByteData() async {
 
     if(tempData.origin != OriginFile.offline) {
+      if(tempData.fileByteData.isNotEmpty) {
+        return tempData.fileByteData;
+      } 
+      
       return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
 
     } else {

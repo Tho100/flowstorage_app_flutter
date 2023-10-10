@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/thumbnail_retriever.dart';
@@ -51,7 +52,12 @@ class ProcessFileSharing {
   }
 
   Future<Uint8List> _callData(String selectedFilename, String tableName) async {
+    if(tempData.fileByteData.isNotEmpty) {
+      return CompressorApi.compressByte(tempData.fileByteData);
+    }
+
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+
   }
 
   Future<void> _prepareFileToShare({

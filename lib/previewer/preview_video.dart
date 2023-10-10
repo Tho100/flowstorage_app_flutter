@@ -87,10 +87,14 @@ class PreviewVideoState extends State<PreviewVideo> {
         tableNameHome: GlobalsTable.homeVideo, 
         fileValues: Globals.videoType
       );
+
+      tempData.setFileData(videoBytes);
+
     } 
 
     final videoUrl = "data:video/mp4;base64,${base64Encode(videoBytes)}";
     await initializeVideoPlayer(videoUrl, autoPlay: false);
+
   }
 
   Widget buildDurationText(ValueNotifier<String> notifier) {

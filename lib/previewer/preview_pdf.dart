@@ -36,10 +36,13 @@ class PreviewPdfState extends State<PreviewPdf> {
           fileValues: {"pdf"}
         );
 
+        tempData.setFileData(fileData);
+
         return fileData;
 
       } else {
         return await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
+
       }
 
     } catch (err, st) {

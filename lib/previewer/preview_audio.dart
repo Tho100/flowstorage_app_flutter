@@ -70,7 +70,9 @@ class PreviewAudioState extends State<PreviewAudio> {
           tableNameHome: GlobalsTable.homeAudio, 
           fileValues: Globals.audioType
         );
-        
+
+        tempData.setFileData(fileData);
+
         return fileData;
 
       } else {

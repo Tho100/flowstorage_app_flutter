@@ -95,9 +95,9 @@ class UpdateListView {
         final base64Encoded = base64.encode(compressedImage);
         fileValues.add(base64Encoded);
 
-      } else {
+      } else if (Globals.generalFileTypes.contains(getExtension)) {
 
-        final compressedFileData = CompressorApi.compressFile(folderFile.path);
+        final compressedFileData = CompressorApi.compressFile(folderFile.path.toString());
         final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
 
