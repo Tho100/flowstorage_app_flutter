@@ -1051,8 +1051,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if(Globals.imageType.contains(fileType)) {
           final fileIndex = storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i));
           getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
+
         } else {
           getBytes = await _callFileByteData(checkedItemsName.elementAt(i),tableName!);
+
         }
 
         await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: checkedItemsName.elementAt(i), fileData: getBytes);
@@ -1090,8 +1092,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if(Globals.imageType.contains(fileType)) {
             fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
+            
           } else {
             fileData = await _callFileByteData(checkedItemsName.elementAt(i), tableName);
+
           }
 
           await offlineMode.saveOfflineFile(
@@ -1291,28 +1295,35 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _editAllOnPressed() {
+
     setState(() {
       editAllIsPressed = !editAllIsPressed;
     });
+
     if(editAllIsPressed == true) {
       checkedList.clear();
       checkedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
     }
+
     if(!editAllIsPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
       setState(() {
         itemIsChecked = false;
       });
     }
+
   }
 
   void _updateCheckboxState(int index, bool value) {
+    
     setState(() {
       checkedList[index] = value;
       itemIsChecked = checkedList.where((item) => item == true).isNotEmpty ? true : false;
       value == true ? checkedItemsName.add(storageData.fileNamesFilteredList[index]) : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
+
     tempData.setAppBarTitle("${(checkedList.where((item) => item == true).length).toString()} item(s) selected");
+
   }
 
   void _itemSearchingImplementation(String value) async {
@@ -1967,7 +1978,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
       deleteOnPressed: () {
         _openDeleteSelectionDialog();
-      }
+      },
+      itemsName: checkedItemsName
     );
   }
 
@@ -2331,7 +2343,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           onPressed: () {
             checkedItemsName.clear();
             selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
-            editAllIsPressed ? selectAllItemsIsPressedNotifier.value = false : selectAllItemsIsPressedNotifier.value = true;
+
+            editAllIsPressed 
+              ? selectAllItemsIsPressedNotifier.value = false 
+              : selectAllItemsIsPressedNotifier.value = true;
+
             _editAllOnPressed();
           },
         ),
@@ -2383,7 +2399,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _onSelectAllItemsPressed() {
+
     checkedItemsName.clear();
+    final removedDirectoryNames = storageData.fileNamesFilteredList
+      .where((name) => name.contains('.'));
+
     for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
       final itemsName = storageData.fileNamesFilteredList[i];
       if(itemsName.split('.').last != itemsName) {
@@ -2391,8 +2411,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _updateCheckboxState(i, true);
       }
     }
-    checkedItemsName.addAll(storageData.fileNamesFilteredList);
+
+    checkedItemsName.addAll(removedDirectoryNames);
     selectAllItemsIsPressedNotifier.value = !selectAllItemsIsPressedNotifier.value;
+
   }
 
   Widget _buildMoreOptionsOnSelect() {
@@ -2503,6 +2525,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final loadingDialog = MultipleTextLoading();
 
       loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
+      
       await _callDirectoryData();
 
       loadingDialog.stopLoading();
@@ -2975,8 +2998,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _initializeCheckedItemList() async {
+    final length = storageData.fileNamesFilteredList.
+      where((name) => name.contains('.')).length;
+
     checkedList = List.generate(
-        storageData.fileNamesFilteredList.length, (index) => false);
+        length, (index) => false);
   }
 
   void _initializeOfflineFileNames() async {
@@ -3029,9 +3055,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     super.initState();
 
     _initializeProvider();
-    _initializeCheckedItemList();
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
+    _initializeCheckedItemList();
     _initializeShowUpgradeOccasionally();
 
   }

@@ -51,7 +51,7 @@ class ProcessFileSharing {
     );
   }
 
-  Future<Uint8List> _callData(String selectedFilename, String tableName) async {
+  Future<Uint8List> _callFileBytesData(String selectedFilename, String tableName) async {
     
     final fileType = selectedFilename.split('.').last;
 
@@ -65,8 +65,8 @@ class ProcessFileSharing {
         return CompressorApi.compressByte(tempData.fileByteData);
 
       } else {
-        final compressedBytesData = await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
-        return CompressorApi.compressByte(compressedBytesData);
+        final decompressedBytesData = await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+        return CompressorApi.compressByte(decompressedBytesData);
 
       }
 
@@ -125,8 +125,9 @@ class ProcessFileSharing {
     }
 
     if(getSharingAuth != "DEF") {
-
-      final fileData = EncryptionClass().encrypt(base64.encode(await _callData(fileName, tableName)));  
+      
+      final fileBytesData = await _callFileBytesData(fileName, tableName);
+      final encryptedFileBytesData = EncryptionClass().encrypt(base64.encode(fileBytesData));  
 
       if(context.mounted) {
 
@@ -134,7 +135,7 @@ class ProcessFileSharing {
           username, 
           encryptedFileName,
           shareToComment,
-          fileData,
+          encryptedFileBytesData,
           '.$fileExtension',
           getSharingAuth,
           context,
@@ -157,7 +158,8 @@ class ProcessFileSharing {
         title: "Sharing...", context: context);
     }
 
-    final fileData = base64.encode(await _callData(fileName, tableName));
+    final fileBytesData = await _callFileBytesData(fileName, tableName);
+    final fileData = base64.encode(fileBytesData);
     final encryptedFileData = EncryptionClass().encrypt(fileData);  
 
     await _sendFileToShare(

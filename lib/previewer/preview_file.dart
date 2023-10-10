@@ -191,6 +191,8 @@ class PreviewFileState extends State<PreviewFile> {
 
       }
 
+      tempData.clearFileData();
+      
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
       if(!mounted) return;

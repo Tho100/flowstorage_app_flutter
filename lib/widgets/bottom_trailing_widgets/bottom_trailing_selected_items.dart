@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -13,7 +14,8 @@ class BottomTrailingSelectedItems {
     required BuildContext context,
     required VoidCallback makeAoOnPressed,
     required VoidCallback saveOnPressed,
-    required VoidCallback deleteOnPressed
+    required VoidCallback deleteOnPressed,
+    required Set<String> itemsName
   }) {
 
     final tempData = GetIt.instance<TempDataProvider>();
@@ -47,65 +49,70 @@ class BottomTrailingSelectedItems {
             ),
             
             const Divider(color: ThemeColor.lightGrey),
-              
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                saveOnPressed();
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.download_rounded),
-                  SizedBox(width: 15.0),
-                  Text(
-                    'Save to device',
-                    style: GlobalsStyle.btnBottomDialogTextStyle,
-                  ),
-                ],
-              ),
-            ),
+            
+            if(itemsName.every((name) => name.contains('.'))) ... [
 
-            Visibility(
-              visible: VisibilityChecker.setNotVisible(OriginFile.offline),
-              child: ElevatedButton(
-                onPressed: () {
+              ElevatedButton(
+                onPressed: () async {
                   Navigator.pop(context);
-                  makeAoOnPressed();
+                  saveOnPressed();
                 },
                 style: GlobalsStyle.btnBottomDialogBackgroundStyle,
                 child: const Row(
                   children: [
-                    Icon(Icons.offline_bolt_rounded),
+                    Icon(Icons.download_rounded),
                     SizedBox(width: 15.0),
                     Text(
-                      'Make available offline',
+                      'Save to device',
                       style: GlobalsStyle.btnBottomDialogTextStyle,
                     ),
                   ],
                 ),
               ),
-            ),
-          
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                deleteOnPressed();
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.delete,color: ThemeColor.darkRed),
-                  SizedBox(width: 15.0),
-                  Text('Delete',
-                    style: TextStyle(
-                      color: ThemeColor.darkRed,
-                      fontSize: 17,
-                    )
+
+              Visibility(
+                visible: VisibilityChecker.setNotVisible(OriginFile.offline) 
+                      && itemsName.every((name) => !Globals.videoType.contains(name.split('.').last)),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    makeAoOnPressed();
+                  },
+                  style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+                  child: const Row(
+                    children: [
+                      Icon(Icons.offline_bolt_rounded),
+                      SizedBox(width: 15.0),
+                      Text(
+                        'Make available offline',
+                        style: GlobalsStyle.btnBottomDialogTextStyle,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  deleteOnPressed();
+                },
+                style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+                child: const Row(
+                  children: [
+                    Icon(Icons.delete,color: ThemeColor.darkRed),
+                    SizedBox(width: 15.0),
+                    Text('Delete',
+                      style: TextStyle(
+                        color: ThemeColor.darkRed,
+                        fontSize: 17,
+                      )
+                    ),
+                  ],
+                ),
+              ),
+
+            ],
 
             const SizedBox(height: 12),
 
