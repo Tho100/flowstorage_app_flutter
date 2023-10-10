@@ -1505,6 +1505,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     await dataCaller.directoryData(directoryName: tempData.appBarTitle);
 
     _itemSearchingImplementation('');
+
     searchBarController.text = '';
     searchHintText.value = "Search in ${tempData.appBarTitle}";
 
@@ -2019,7 +2020,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-    Future _showUpgradeExceededDialog()  {
+  Future _showUpgradeExceededDialog()  {
     return UpgradeDialog.buildUpgradeBottomSheet(
       message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
       context: context
@@ -2491,71 +2492,88 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     });
   }
 
-  Future<void> _navigateToPreviewFile(int index) async {
+  void _openDirectoryOnSelect() async {
 
-    const Set<String> externalFileTypes = {
-    ...Globals.wordType, ...Globals.excelType, ...Globals.ptxType};
+    tempData.setOrigin(OriginFile.directory);
+    tempData.setCurrentDirectory(tempData.selectedFileName);
+    tempData.setAppBarTitle(tempData.selectedFileName);
+
+    _navDirectoryButtonVisibility(false);
+
+    final loadingDialog = MultipleTextLoading();
+    
+    loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
+    
+    await _callDirectoryData();
+
+    loadingDialog.stopLoading();
+
+  }
+
+  void _openGeneralFileOnSelect(int index, String fileType) {
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PreviewFile(
+          selectedFilename: tempData.selectedFileName,
+          fileType: fileType,
+          tappedIndex: index
+        ),
+      ),
+    );
+
+  }
+
+  void _openExternalFileOnSelect(String fileType) async {
+
+    late Uint8List fileData;
+
+    final fileTable = Globals.fileTypesToTableNames[fileType]!;
+
+    if(tempData.origin != OriginFile.offline) {
+      fileData = await _callFileByteData(tempData.selectedFileName, fileTable);
+
+    } else {
+      fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
+
+    }
+
+    final result = await ExternalApp(
+      bytes: fileData, 
+      fileName: tempData.selectedFileName
+    ).openFileInExternalApp();
+
+    if(result.type != ResultType.done) {
+      CustomFormDialog.startDialog(
+        "Couldn't open ${tempData.selectedFileName}",
+        "No default app to open this file found."
+      );
+    }
+
+  }
+
+  void _navigateToPreviewFile(int index) {
+
+    const Set<String> externalFileTypes = 
+    {
+      ...Globals.wordType, ...Globals.excelType, ...Globals.ptxType
+    };
 
     tempData.setCurrentFileName(storageData.fileNamesFilteredList[index]);
 
-    final fileExtension = tempData.selectedFileName.split('.').last;    
+    final fileType = tempData.selectedFileName.split('.').last;    
 
-    if (Globals.supportedFileTypes.contains(fileExtension) && 
-      !(externalFileTypes.contains(fileExtension))) {
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => PreviewFile(
-            selectedFilename: tempData.selectedFileName,
-            fileType: fileExtension,
-            tappedIndex: index
-          ),
-        ),
-      );
-
-    } else if (fileExtension == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileExtension)) {
-      
-      tempData.setOrigin(OriginFile.directory);
-      tempData.setCurrentDirectory(tempData.selectedFileName);
-      tempData.setAppBarTitle(tempData.selectedFileName);
-
-      _navDirectoryButtonVisibility(false);
-      
-      final loadingDialog = MultipleTextLoading();
-
-      loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
-      
-      await _callDirectoryData();
-
-      loadingDialog.stopLoading();
-
+    if (Globals.supportedFileTypes.contains(fileType) && !(externalFileTypes.contains(fileType))) {
+      _openGeneralFileOnSelect(index, fileType);
       return;
 
-    } else if (externalFileTypes.contains(fileExtension)) {
+    } else if (fileType == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileType)) {
+      _openDirectoryOnSelect();
+      return;
 
-      late Uint8List fileData;
-
-      final fileTable = Globals.fileTypesToTableNames[fileExtension]!;
-
-      if(tempData.origin != OriginFile.offline) {
-        fileData = await _callFileByteData(tempData.selectedFileName, fileTable);
-      } else {
-        fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
-      }
-
-      final result = await ExternalApp(
-        bytes: fileData, 
-        fileName: tempData.selectedFileName
-      ).openFileInExternalApp();
-
-      if(result.type != ResultType.done) {
-        CustomFormDialog.startDialog(
-          "Couldn't open ${tempData.selectedFileName}",
-          "No default app to open this file found."
-        );
-      }
-      
+    } else if (externalFileTypes.contains(fileType)) {
+      _openExternalFileOnSelect(fileType);
       return;
 
     } else {
@@ -2563,7 +2581,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         "Couldn't open ${tempData.selectedFileName}",
         "It looks like you're trying to open a file which is not supported by Flowstorage"
       );
+
     }
+
   }
 
   Widget _buildRecentPsFiles(Uint8List imageBytes, int index) {
@@ -2580,8 +2600,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       imageBytes: imageBytes, 
       index: index, 
       uploadDate: shortFormDate,
-      fileOnPressed: () async {
-        await _navigateToPreviewFile(index);
+      fileOnPressed: () {
+        _navigateToPreviewFile(index);
       }, 
       fileOnLongPressed: () async {
         await _callBottomTrailling(index);
@@ -2604,8 +2624,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       imageBytes: imageBytes, 
       index: index, 
       uploadDate: shortFormDate,
-      fileOnPressed: () async {
-        await _navigateToPreviewFile(index);
+      fileOnPressed: () {
+        _navigateToPreviewFile(index);
       }, 
       fileOnLongPressed: () async {
         await _callBottomTrailling(index);
@@ -2645,13 +2665,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           }
         },
 
-        onTap: () async {
+        onTap: () {
           if (togglePhotosPressed && selectedPhotosIndex.isNotEmpty) {
             _onPhotosItemSelected(index);
 
           } else {
             if (!isRecent) {
-              await _navigateToPreviewFile(index);
+              _navigateToPreviewFile(index);
             }
             
           }
