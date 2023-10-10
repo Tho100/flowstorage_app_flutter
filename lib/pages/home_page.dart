@@ -1988,7 +1988,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     final fileName = storageData.fileNamesFilteredList[index];
 
-    return BottomTrailing().buildBottomTrailing(
+    return BottomTrailingOptions().buildBottomTrailing(
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
@@ -2326,8 +2326,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
 
       filterTypeOnPressed: () {
-        final bottomTrailingFilter = BottomTrailingFilter();
-        bottomTrailingFilter.buildFilterTypeAll(
+        BottomTrailingFilter().buildFilterTypeAll(
           filterTypePublicStorage: _filterTypePublicStorage, 
           filterTypeNormal: _itemSearchingImplementation, 
           context: context
@@ -2511,7 +2510,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _openGeneralFileOnSelect(int index, String fileType) {
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -3017,14 +3016,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     psStorageData = _locator<PsStorageDataProvider>();
   }
 
-  void _initializeCheckedItemList() async {
-    final length = storageData.fileNamesFilteredList.
-      where((name) => name.contains('.')).length;
-
-    checkedList = List.generate(
-        length, (index) => false);
-  }
-
   void _initializeOfflineFileNames() async {
 
     try {
@@ -3077,7 +3068,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _initializeProvider();
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
-    _initializeCheckedItemList();
     _initializeShowUpgradeOccasionally();
 
   }

@@ -225,7 +225,7 @@ class PreviewFileState extends State<PreviewFile> {
   
     final fileName = appBarTitleNotifier.value;
 
-    return BottomTrailing().buildBottomTrailing(
+    return BottomTrailingOptions().buildBottomTrailing(
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
