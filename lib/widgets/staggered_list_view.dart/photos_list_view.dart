@@ -54,7 +54,7 @@ class PhotosStaggeredListView extends StatelessWidget {
             
               if(isPhotosSelected)
               Padding(
-                padding: const EdgeInsets.only(left: 8, top: 10),
+                padding: const EdgeInsets.only(left: 12, top: 12),
                 child: Container(
                   width: 26,
                   height: 26,

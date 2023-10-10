@@ -52,11 +52,25 @@ class ProcessFileSharing {
   }
 
   Future<Uint8List> _callData(String selectedFilename, String tableName) async {
-    if(tempData.fileByteData.isNotEmpty) {
-      return CompressorApi.compressByte(tempData.fileByteData);
-    }
+    
+    final fileType = selectedFilename.split('.').last;
 
-    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+    if(Globals.imageType.contains(fileType)) {
+      final indexOfImage = storageData.fileNamesFilteredList.indexOf(selectedFilename);
+      return storageData.imageBytesFilteredList.elementAt(indexOfImage)!;
+
+    } else {
+
+      if(tempData.fileByteData.isNotEmpty) {
+        return CompressorApi.compressByte(tempData.fileByteData);
+
+      } else {
+        final compressedBytesData = await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+        return CompressorApi.compressByte(compressedBytesData);
+
+      }
+
+    }
 
   }
 

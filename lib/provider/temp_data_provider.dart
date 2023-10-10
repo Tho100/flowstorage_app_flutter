@@ -24,7 +24,7 @@ class TempDataProvider extends ChangeNotifier {
   String get appBarTitle => _appBarTitle;
 
   void clearFileData() {
-    _fileByteData.clear();
+    _fileByteData = Uint8List(0);
   }
 
   void setFileData(Uint8List byteData) {
