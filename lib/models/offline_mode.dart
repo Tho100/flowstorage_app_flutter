@@ -111,8 +111,9 @@ class OfflineMode {
       SaveApi().saveFile(fileName: fileName, fileData: textData);
 
     } else if (generalNonTextFileType.contains(fileType)) {
-
-      SaveApi().saveFile(fileName: fileName, fileData: fileDataValue);
+      
+      final decompressFileData = CompressorApi.decompressFile(fileDataValue);
+      SaveApi().saveFile(fileName: fileName, fileData: decompressFileData);
       
     } 
   }

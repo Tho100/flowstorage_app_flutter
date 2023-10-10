@@ -495,8 +495,10 @@ class PreviewFileState extends State<PreviewFile> {
 
         if(Globals.imageType.contains(fileType)) {
           fileData = storageData.imageBytesFilteredList[storageData.fileNamesList.indexOf(fileName)]!;
+
         } else {
           fileData = await _callDataDownload();
+
         }
 
         await SimplifyDownload(
@@ -507,6 +509,7 @@ class PreviewFileState extends State<PreviewFile> {
 
       } else {  
         await OfflineMode().downloadFile(fileName);
+        
       }
     
       loadingDialog.stopLoading();
