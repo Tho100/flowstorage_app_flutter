@@ -73,7 +73,7 @@ class SplashScreenState extends State<SplashScreen> {
 
       await CreateDirectory(name: directoryName).create();
 
-      final directoryImage = await GetAssets().loadAssetsFile('dir1.png');
+      final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
 
       setState(() {
 
@@ -365,7 +365,7 @@ class SplashScreenState extends State<SplashScreen> {
           child: SizedBox(
             height: 90,
             child: Image.asset(
-              'assets/images/splash_logo.png',
+              'assets/images/splash_logo.jpg',
             ),
           ),  
         ),

@@ -58,7 +58,7 @@ class FolderDialog {
                       child: Ink(
                         child: ListTile(
                           leading: Image.asset(
-                            'assets/images/dir1.png',
+                            'assets/images/dir1.jpg',
                             width: 35,
                             height: 35,
                           ),

@@ -589,11 +589,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       final compressedBytes = CompressorApi.compressFile(file.path.toString());
       final toBase64Encoded = base64.encode(compressedBytes);
-      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.png");
+      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
 
       if (tempData.origin == OriginFile.offline) {
 
-        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.png");
+        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
         final imageBytes = Uint8List.fromList(decodeToBytes);
         final decodedBase64String = base64.decode(toBase64Encoded);
 
@@ -915,6 +915,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _floatingButtonVisibility(true);
 
     _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv');
+    
   }
 
   void _deactivatePhotosView() {
@@ -1644,7 +1645,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await CreateDirectory(name: directoryName).create();
 
-      final directoryImage = await GetAssets().loadAssetsFile('dir1.png');
+      final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
 
       storageData.fileDateFilteredList.add("Directory");
       storageData.fileDateList.add("Directory");

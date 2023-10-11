@@ -93,18 +93,18 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
                 icon: SizedBox(
                   width: 26,
                   height: 26,
-                  child: Image.asset('assets/images/public_icon.png'),
+                  child: Image.asset('assets/images/public_icon.jpg'),
                 ),
                 activeIcon: tempData.origin == OriginFile.public
                 ? SizedBox(
                   width: 26,
                   height: 26,
-                  child: Image.asset('assets/images/public_icon_selected.png'),
+                  child: Image.asset('assets/images/public_icon_selected.jpg'),
                 ) 
                 : SizedBox(
                   width: 26,
                   height: 26,
-                  child: Image.asset('assets/images/public_icon.png'),
+                  child: Image.asset('assets/images/public_icon.jpg'),
                 ),
                 label: "Public",
               ),

@@ -21,14 +21,14 @@ class DataRetriever {
   final encryption = EncryptionClass();
 
   final tableNameToAssetsImage = {
-    GlobalsTable.homeText: "txt0.png",
-    GlobalsTable.homePdf: "pdf0.png",
-    GlobalsTable.homeAudio: "music0.png",
-    GlobalsTable.homeExcel: "exl0.png",
-    GlobalsTable.homePtx: "ptx0.png",
-    GlobalsTable.homeWord: "doc0.png",
-    GlobalsTable.homeExe: "exe0.png",
-    GlobalsTable.homeApk: "apk0.png"
+    GlobalsTable.homeText: "txt0.jpg",
+    GlobalsTable.homePdf: "pdf0.jpg",
+    GlobalsTable.homeAudio: "music0.jpg",
+    GlobalsTable.homeExcel: "exl0.jpg",
+    GlobalsTable.homePtx: "ptx0.jpg",
+    GlobalsTable.homeWord: "doc0.jpg",
+    GlobalsTable.homeExe: "exe0.jpg",
+    GlobalsTable.homeApk: "apk0.jpg"
   };
 
   Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String? username, String tableName) async {
@@ -103,7 +103,7 @@ class DataRetriever {
 
       if(storageData.directoryImageBytesList.isEmpty) {
 
-        final dirImage = await Future.wait(List.generate(1, (_) => getAssets.loadAssetsData('dir1.png')));
+        final dirImage = await Future.wait(List.generate(1, (_) => getAssets.loadAssetsData('dir1.jpg')));
         getByteValue.addAll(dirImage);
 
         storageData.setDirectoryImageBytes(dirImage);

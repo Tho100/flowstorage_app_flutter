@@ -92,7 +92,7 @@ class CreateTextPageState extends State<CreateText> {
 
   void _addTextFileToListView({required String fileName}) async {
 
-    final txtImageData = await getAssets.loadAssetsData('txt0.png');
+    final txtImageData = await getAssets.loadAssetsData('txt0.jpg');
 
     UpdateListView().addItemToListView(fileName: fileName);
 

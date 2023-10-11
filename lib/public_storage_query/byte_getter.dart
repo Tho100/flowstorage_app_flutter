@@ -32,15 +32,15 @@ class ByteGetterPs {
   final thumbnailGetter = ThumbnailGetterPs();
 
   final tableNameToAssetsImage = {
-    _textTable: "txt0.png",
-    _pdfTable: "pdf0.png",
-    _audioTable: "music0.png",
-    _exlTable: "exl0.png",
-    _ptxTable: "ptx0.png",
-    _msiTable: "exe0.png",
-    _docTable: "doc0.png",
-    _exeTable: "exe0.png",
-    _apkTable: "apk0.png"
+    _textTable: "txt0.jpg",
+    _pdfTable: "pdf0.jpg",
+    _audioTable: "music0.jpg",
+    _exlTable: "exl0.jpg",
+    _ptxTable: "ptx0.jpg",
+    _msiTable: "exe0.jpg",
+    _docTable: "doc0.jpg",
+    _exeTable: "exe0.jpg",
+    _apkTable: "apk0.jpg"
   };
 
   Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String tableName) async {

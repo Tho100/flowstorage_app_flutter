@@ -135,22 +135,22 @@ class Globals {
   }
 
   static const fileTypeToAssets = {
-    "txt": "txt0.png",
-    "csv": "txt0.png",
-    "html": "txt0.png",
-    "sql": "txt0.png",
-    "md": "txt0.png",
-    "pdf": "pdf0.png",
-    "doc": "doc0.png",
-    "docx": "doc0.png",
-    "xlsx": "exl0.png",
-    "xls": "exl0.png",
-    "pptx": "ptx0.png",
-    "ptx": "ptx0.png",
-    "apk": "apk0.png",
-    "mp3": "music0.png",
-    "wav": "music0.png",
-    "exe": "exe0.png",
+    "txt": "txt0.jpg",
+    "csv": "txt0.jpg",
+    "html": "txt0.jpg",
+    "sql": "txt0.jpg",
+    "md": "txt0.jpg",
+    "pdf": "pdf0.jpg",
+    "doc": "doc0.jpg",
+    "docx": "doc0.jpg",
+    "xlsx": "exl0.jpg",
+    "xls": "exl0.jpg",
+    "pptx": "ptx0.jpg",
+    "ptx": "ptx0.jpg",
+    "apk": "apk0.jpg",
+    "mp3": "music0.jpg",
+    "wav": "music0.jpg",
+    "exe": "exe0.jpg",
   };
 
 }
