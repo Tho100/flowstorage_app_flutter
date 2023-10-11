@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class UserDataProvider extends ChangeNotifier {
 
   String _sharingStatus = '';
+  String _sharingPasswordDisabled = '';
 
   String _accountType = '';
   String _username = '';
   String _email = '';
 
   String get sharingStatus => _sharingStatus;
+  String get sharingPasswordDisabled => _sharingPasswordDisabled;
 
   String get email => _email;
   String get username => _username;
@@ -16,7 +18,10 @@ class UserDataProvider extends ChangeNotifier {
 
   void setSharingStatus(String status) {
     _sharingStatus = status;
-    notifyListeners();
+  }
+
+  void setSharingPasswordStatus(String status) {
+    _sharingPasswordDisabled = status;
   }
   
   void setAccountType(String accountType) {

@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/pages/configure_passcode_page.dart';
+import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -13,7 +13,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 import '../pages/main_page.dart';
-import '../pages/passcode_page.dart';
+import '../pages/passcode/passcode_page.dart';
 import '../authentication/sign_in_page.dart';
 import '../authentication/sign_up_page.dart';
 import '../main.dart';

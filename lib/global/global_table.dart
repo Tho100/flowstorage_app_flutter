@@ -26,7 +26,7 @@ class GlobalsTable {
   static const psAudio = "ps_info_audio";
   static const psExe = "ps_info_exe";
 
-  static final Set<String> tableNames = {
+  static const Set<String> tableNames = {
     directoryInfoTable, homeImage, homeText, homeExe, homePdf,
     homeVideo,homeExcel, homePtx, homeAudio, homeWord,
     directoryUploadTable
@@ -38,7 +38,7 @@ class GlobalsTable {
     "ps_info_exe","ps_info_audio"
   };
 
-  static final Map<String,String> publicToPsTables = {
+  static const Map<String,String> publicToPsTables = {
     homeImage: "ps_info_image",
     homeVideo: "ps_info_video",
     homeExcel: "ps_info_excel",

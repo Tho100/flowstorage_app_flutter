@@ -31,13 +31,13 @@ class TempDataProvider extends ChangeNotifier {
     _fileByteData = byteData;
   }
 
+  void setOrigin(OriginFile value) {
+    _origin = value;
+  }
+
   void setAppBarTitle(String value) {
     _appBarTitle = value;
     notifyListeners();
-  }
-
-  void setOrigin(OriginFile value) {
-    _origin = value;
   }
 
   void setCurrentFolder(String value) {
