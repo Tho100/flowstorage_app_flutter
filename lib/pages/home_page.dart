@@ -12,7 +12,7 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
-import 'package:flowstorage_fsc/pages/share_file_page.dart';
+import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -915,7 +915,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _floatingButtonVisibility(true);
 
     _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv');
-    
+
   }
 
   void _deactivatePhotosView() {

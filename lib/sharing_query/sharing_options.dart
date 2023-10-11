@@ -42,8 +42,7 @@ class SharingOptions {
     
   } 
 
-
- static Future<String> retrievePassword(String username) async {
+  static Future<String> retrievePassword(String username) async {
 
     final conn = await SqlConnection.initializeConnection();
 
@@ -55,6 +54,24 @@ class SharingOptions {
     String? sharingAuth = "";
     for(final row in results.rows) {
       sharingAuth = row.assoc()['SET_PASS'];
+    }
+
+    return sharingAuth!;
+    
+  } 
+
+  static Future<String> retrievePasswordStatus(String username) async {
+
+    final conn = await SqlConnection.initializeConnection();
+
+    const query = "SELECT PASSWORD_DISABLED FROM sharing_info WHERE CUST_USERNAME = :username";
+    final params = {'username': username};
+
+    final results = await conn.execute(query,params);
+    
+    String? sharingAuth = "";
+    for(final row in results.rows) {
+      sharingAuth = row.assoc()['PASSWORD_DISABLED'];
     }
 
     return sharingAuth!;
