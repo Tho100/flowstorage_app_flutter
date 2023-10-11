@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,13 +49,16 @@ class UpgradePageState extends State<UpradePage> {
   }
   
   Future<String> _getUserCountryCode() async {
-    final response = await http.get(Uri.parse('https://ipapi.co/json'));
+    
+    final response = await http.get(Uri.parse('http://apiip.net/api/check?accessKey=61d755d2-ac10-4b0c-afb8-487a1f4f2cdd'));
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data['country'];
+      return data['countryCode'];
     } else {
       throw Exception('Failed to load user country');
     }
+
   }
 
   Future<String> _convertToLocalCurrency(double usdValue) async {
@@ -120,6 +124,7 @@ class UpgradePageState extends State<UpradePage> {
     }
 
     return ("$countryCurrency${usdValue*conversionRate}").toString();
+    
   }
 
   Widget _buildSubHeader(String text, {double? customFont}) {
@@ -608,6 +613,7 @@ class UpgradePageState extends State<UpradePage> {
 
     final setupPath = '${getDirApplication.path}/FlowStorageInfos';
     final setupInfosDir = Directory(setupPath);
+
     if (accountType.isNotEmpty) {
       if (setupInfosDir.existsSync()) {
         setupInfosDir.deleteSync(recursive: true);
@@ -625,12 +631,12 @@ class UpgradePageState extends State<UpradePage> {
 
         setupFiles.writeAsStringSync('${EncryptionClass().encrypt(userData.username)}\n${EncryptionClass().encrypt(userData.email)}\n$accountType');
 
-      } catch (e) {
-        // TODO: Ignore
+      } catch (st, e) { 
+        Logger().e(st, e);
+        
       }
-    } else {
-      // TODO: Ignore
-    }
+
+    } 
     
   }
 

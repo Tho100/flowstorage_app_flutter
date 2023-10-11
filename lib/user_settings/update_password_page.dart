@@ -27,7 +27,7 @@ class ChangePasswordState extends State<ChangePassword> {
   final valueNotifierNew = ValueNotifier<bool>(false);
   final valueNotifierCur = ValueNotifier<bool>(false);
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   @override
   void initState() {
@@ -124,12 +124,64 @@ class ChangePasswordState extends State<ChangePassword> {
         MainButton(
           text: "Update", 
           onPressed: () async {
-            await _exceuteChanges(curPassController.text, newPassController.text,curPinController.text, context);
+            await _processUpdatePassword(
+              currentAuth: curPassController.text, 
+              newAuth: newPassController.text, 
+              pinAuth: curPinController.text
+            );
           }
         ),
 
       ],
     );
+  }
+
+  Future<void> _processUpdatePassword({
+    required String currentAuth, 
+    required String newAuth, 
+    required String pinAuth
+  }) async {
+
+    if(newAuth.isEmpty && currentAuth.isEmpty) {
+      return;
+    }
+
+    final authCase0 = await _verifyAuthInput(currentAuth, "CUST_PASSWORD");
+    final authCase1 = await _verifyAuthInput(pinAuth, "CUST_PIN");
+    
+    if (!authCase0 && !authCase1) {
+
+      await _updateAuthPassword(newPasswordAuth: newAuth);
+
+      CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
+
+    } else if (authCase0) {
+      CustomAlertDialog.alertDialog("Password is incorrect.");
+
+    } else {
+      CustomAlertDialog.alertDialog("PIN key is incorrect.");
+
+    }
+
+  }
+
+  Future<bool> _verifyAuthInput(String inputStr, String columnName) async {
+
+    return await Verification().notEqual(
+      userData.username, 
+      AuthModel().computeAuth(inputStr),
+      columnName
+    );
+    
+  }
+
+  Future<void> _updateAuthPassword({required String newPasswordAuth}) async {
+
+    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
+
+    final params = {'newauth': AuthModel().computeAuth(newPasswordAuth), 'username': userData.username};
+    await Crud().update(query: updateAuthQuery, params: params);
+
   }
 
   @override
@@ -150,52 +202,6 @@ class ChangePasswordState extends State<ChangePassword> {
         body: _buildBody(context),
       ),
     );
-  }
-
-  Future<void> _exceuteChanges(String currentAuth, String newAuth,String curPin,BuildContext context) async {
-
-    if(newAuth.isEmpty && currentAuth.isEmpty) {
-      return;
-    }
-
-    final authCase0 = await _verifyAuth(currentAuth, "CUST_PASSWORD");
-    final authCase1 = await _verifyAuth(curPin, "CUST_PIN");
-    
-    if (!authCase0 && !authCase1) {
-
-      await _updateAuth(newAuth);
-
-      CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
-
-    } else if (authCase0) {
-      CustomAlertDialog.alertDialog("Password is incorrect.");
-    } else {
-      CustomAlertDialog.alertDialog("PIN key is incorrect.");
-    }
-
-  }
-
-  Future<bool> _verifyAuth(String inputStr,String columnName) async {
-
-    final userData = _locator<UserDataProvider>();
-
-    return await Verification().notEqual(
-      userData.username, 
-      AuthModel().computeAuth(inputStr),
-      columnName
-    );
-    
-  }
-
-  Future<void> _updateAuth(String newAuth) async {
-
-    final userData = _locator<UserDataProvider>();
-
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
-
-    final params = {'newauth': AuthModel().computeAuth(newAuth), 'username': userData.username};
-    await Crud().update(query: updateAuthQuery, params: params);
-
   }
 
 }

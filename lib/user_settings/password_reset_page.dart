@@ -96,12 +96,66 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
         MainButton(
           text: "Update Password",
           onPressed: () async {
-            await _executeChanges(widget.curPassController.text, widget.newPassController.text, context);
+            await _processResetPassword(
+              currentAuth: widget.curPassController.text, 
+              newAuth: widget.newPassController.text
+            );
           }
         ),
 
       ],
     );
+  }
+
+  Future<void> _processResetPassword({
+    required String currentAuth, 
+    required String newAuth
+  }) async {
+
+    try {
+
+      if(newAuth.isEmpty && currentAuth.isEmpty) {
+        return;
+      }
+      
+      if(newAuth != currentAuth) {
+        CustomAlertDialog.alertDialog("Password does not match.");
+        return;
+      }
+
+      final getUsername = await _getUsername(widget.custEmail);
+
+      await _updateAuthPassword(newAuth, getUsername);
+
+      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
+
+    } catch (err) {
+      SnakeAlert.errorSnake("Failed to update your password.");
+    }
+  }
+
+  Future<void> _updateAuthPassword(String newAuth,String username) async {
+
+    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
+    final params = {'newauth': AuthModel().computeAuth(newAuth), 'username': username};
+
+    await Crud().update(query: updateAuthQuery, params: params);
+
+  }
+
+  Future<String> _getUsername(String custEmail) async {
+
+    const selectUsername = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
+    final params = {'email': custEmail};
+
+    final returnedUsername = await Crud().select(
+      query: selectUsername, 
+      returnedColumn: "CUST_USERNAME", 
+      params: params
+    );
+
+    return returnedUsername;
+
   }
 
   @override
@@ -132,48 +186,4 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
     );
   }
 
-  Future<void> _executeChanges(String currentAuth, String newAuth,BuildContext context) async {
-
-    try {
-
-      if(newAuth.isEmpty && currentAuth.isEmpty) {
-        return;
-      }
-      
-      if(newAuth != currentAuth) {
-        CustomAlertDialog.alertDialog("Password does not match.");
-        return;
-      }
-
-      final getUsername = await _getUsername(widget.custEmail);
-
-      await _updateAuth(newAuth, getUsername);
-
-      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to update your password.");
-    }
-  }
-
-  Future<void> _updateAuth(String newAuth,String username) async {
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
-    final params = {'newauth': AuthModel().computeAuth(newAuth), 'username': username};
-    await Crud().update(query: updateAuthQuery, params: params);
-  }
-
-  Future<String> _getUsername(String custEmail) async {
-
-    const selectUsername = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
-    final params = {'email': custEmail};
-
-    final returnedUsername = await Crud().select(
-      query: selectUsername, 
-      returnedColumn: "CUST_USERNAME", 
-      params: params
-    );
-
-    return returnedUsername;
-
-  }
 }
