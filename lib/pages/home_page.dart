@@ -39,14 +39,14 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_add_item.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/add_item.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_filter.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_folder.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_selected_items.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_shared.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/bottom_trailing_sorting.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/filter_type.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/folder_options.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/selected_items_options.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/shared_options.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/sorting_options.dart';
 import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
 import 'package:flowstorage_fsc/widgets/empty_body.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
@@ -2208,8 +2208,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Future _callBottomTrailingShared() {
-    final bottomTrailingShared = BottomTrailingShared();
-    return bottomTrailingShared.buildTrailing(
+    return BottomTrailingShared().buildTrailing(
       context: context, 
       sharedToMeOnPressed: () async {
         tempData.setOrigin(OriginFile.sharedMe);
