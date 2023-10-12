@@ -102,7 +102,9 @@ class AddSharingPassword {
             const SizedBox(width: 18),
           ],
         ),
+        
         const SizedBox(height: 12),
+
       ]
     );
   }

@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';

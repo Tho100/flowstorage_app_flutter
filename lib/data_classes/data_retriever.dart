@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';

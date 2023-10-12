@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';

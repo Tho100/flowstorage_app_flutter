@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
+import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/main.dart';

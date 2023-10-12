@@ -13,18 +13,19 @@ class SharingPassword {
   final sharingPasswordController = TextEditingController();
   final shareFileData = ShareFileData();
 
-  Future buildAskPasswordDialog(
-    String? sendTo, 
-    String? fileName, 
-    String? comment, 
-    var fileVal, 
-    String? fileExt, 
-    String? authString,
-    BuildContext context, 
-    {dynamic thumbnail}){
+  Future buildAskPasswordDialog({
+    required String sendTo, 
+    required String fileName, 
+    required String comment, 
+    required String fileType, 
+    required String authInput,
+    required dynamic fileData, 
+    required dynamic thumbnail,
+    required BuildContext? context
+  }) {
 
     return InteractDialog().buildDialog(
-      context: context, 
+      context: context!, 
       childrenWidgets: <Widget>[
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +89,7 @@ class SharingPassword {
                     final loadingDialog = MultipleTextLoading();
                     final compare = AuthModel().computeAuth(sharingPasswordController.text);
         
-                    if(compare == authString) {
+                    if(compare == authInput) {
                       
                       loadingDialog.startLoading(title: "Sharing...",subText: "Sharing to $sendTo",context: context);  
 
@@ -96,8 +97,8 @@ class SharingPassword {
                         sendTo: sendTo, 
                         fileName: fileName, 
                         comment: comment, 
-                        fileData: fileVal, 
-                        fileType: fileExt, 
+                        fileData: fileData, 
+                        fileType: fileType, 
                         thumbnail: thumbnail
                       );
 

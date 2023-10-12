@@ -76,7 +76,7 @@ import 'package:image_picker_plus/image_picker_plus.dart';
 
 import 'package:flowstorage_fsc/directory_query/delete_directory.dart';
 import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/simplify_download.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
@@ -92,13 +92,13 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 
 import 'package:flowstorage_fsc/directory_query/create_directory.dart';
-import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
-import 'package:flowstorage_fsc/extra_query/insert_data.dart';
-import 'package:flowstorage_fsc/extra_query/delete_data.dart';
+import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
+import 'package:flowstorage_fsc/data_query/insert_data.dart';
+import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 import 'package:flowstorage_fsc/data_classes/date_getter.dart';
 import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/extra_query/rename_data.dart';
+import 'package:flowstorage_fsc/data_query/rename_data.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
@@ -1480,7 +1480,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Future<void> _callHomeData() async {
     
     _clearGlobalData();
+    
     await dataCaller.homeData();
+
+    searchHintText.value = "Search in Flowstorage";
 
   }
 
@@ -1496,6 +1499,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
+
+    searchHintText.value = "Search in Flowstorage";
  
   }
 
@@ -1503,12 +1508,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     _clearGlobalData();
 
-    await dataCaller.directoryData(directoryName: tempData.appBarTitle);
+    await dataCaller.directoryData(directoryName: tempData.directoryName);
 
     _itemSearchingImplementation('');
 
     searchBarController.text = '';
-    searchHintText.value = "Search in ${tempData.appBarTitle}";
+    searchHintText.value = "Search in ${ShortenText().cutText(tempData.appBarTitle)} directory";
 
   }
 
@@ -1519,6 +1524,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     await dataCaller.sharingData(originFrom);
     _itemSearchingImplementation('');
 
+    searchHintText.value = "Search in Flowstorage";
+
   }
 
   Future<void> _callPublicStorageData() async {
@@ -1527,17 +1534,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.publicStorageData(context: context);
 
-    tempData.setAppBarTitle("Public Storage");
     psButtonTextNotifier.value = "My Files";
 
     searchBarVisibileNotifier.value = false;
     staggeredListViewSelected.value = true;
 
     _itemSearchingImplementation('');
-    searchBarController.text = '';
-
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
+
+    searchBarController.text = '';
 
   }
 
@@ -1548,15 +1554,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.myPublicStorageData(context: context);
 
-    tempData.setAppBarTitle("My Public Storage");
     psButtonTextNotifier.value = "Back";
     
     _itemSearchingImplementation('');
+    _floatingButtonVisibility(false);
+
     await _sortDataDescendingPs();
 
     searchBarController.text = '';
-
-    _floatingButtonVisibility(false);
 
   }
 
@@ -1579,6 +1584,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     searchBarController.text = '';
     searchBarVisibileNotifier.value = true;
+    searchHintText.value = "Search in ${ShortenText().cutText(tempData.appBarTitle)} folder";
 
   }
 
@@ -2299,8 +2305,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       sortingOnPressed: () { _callBottomTrailingSorting(); },
         
       filterTypePsOnPressed: () {
-        final bottomTrailingFilter = BottomTrailingFilter();
-        bottomTrailingFilter.buildFilterTypeAll(
+        BottomTrailingFilter().buildFilterTypeAll(
           filterTypePublicStorage: _filterTypePublicStorage, 
           filterTypeNormal: _itemSearchingImplementation, 
           context: context

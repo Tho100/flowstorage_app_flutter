@@ -2,7 +2,7 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 
 class Verification {
 
-  Future<bool> notEqual(String getUsername,String getAuthString,String columnName) async {
+  Future<bool> notEqual(String getUsername, String getAuthString, String columnName) async {
 
     final conn = await SqlConnection.initializeConnection();
 

@@ -162,7 +162,7 @@ class NavigationButtons extends StatelessWidget {
     
               const Spacer(),
     
-              if(tempData.origin == OriginFile.public)
+              /*if(tempData.origin == OriginFile.public)
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: ElevatedButton(
@@ -180,7 +180,7 @@ class NavigationButtons extends StatelessWidget {
                   ),
                   child: const Icon(Icons.filter_list_outlined, size: 27),
                 ),
-              ),
+              ),*/
     
               if(tempData.origin != OriginFile.public)
               ElevatedButton(

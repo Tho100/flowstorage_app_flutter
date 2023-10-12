@@ -6,7 +6,7 @@ import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
 import 'package:flowstorage_fsc/data_classes/date_getter.dart';
 import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 import 'package:flowstorage_fsc/directory_query/directory_data.dart';
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/folder_query/folder_data_retriever.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -189,6 +189,7 @@ class DataCaller {
     storageData.setFilesName(uniqueFileNames);
     storageData.setImageBytes(uniqueBytes);
     storageData.setFilesDate(dates);
+    
     tempData.setAppBarTitle("Home");
 
     storageData.fileNamesFilteredList.clear();
@@ -223,6 +224,7 @@ class DataCaller {
     storageData.setImageBytes(byteList);
 
     tempData.setOrigin(OriginFile.public);
+    tempData.setAppBarTitle("Public Storage");
 
     justLoading.stopLoading();
     
@@ -263,6 +265,7 @@ class DataCaller {
     storageData.setImageBytes(byteList);
 
     tempData.setOrigin(OriginFile.public);
+    tempData.setAppBarTitle("My Public Storage");
 
     justLoading.stopLoading();
     

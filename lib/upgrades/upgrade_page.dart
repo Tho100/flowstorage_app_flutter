@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flowstorage_fsc/api/email_api.dart';
+import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
@@ -47,19 +48,6 @@ class UpgradePageState extends State<UpradePage> {
   void initState() {
     super.initState();
   }
-  
-  Future<String> _getUserCountryCode() async {
-    
-    final response = await http.get(Uri.parse('http://apiip.net/api/check?accessKey=61d755d2-ac10-4b0c-afb8-487a1f4f2cdd'));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return data['countryCode'];
-    } else {
-      throw Exception('Failed to load user country');
-    }
-
-  }
 
   Future<String> _convertToLocalCurrency(double usdValue) async {
 
@@ -101,7 +89,7 @@ class UpgradePageState extends State<UpradePage> {
 
     if(tempData.countryCode.isEmpty && tempData.currencyConversionRate == 0.0) {
 
-      countryCode = await _getUserCountryCode();
+      countryCode = await GeographicsApi().countryCode();
       countryCurrency = countryCodeToCurrency[countryCode]!;
 
       tempData.setCountryCode(countryCode);
@@ -633,7 +621,7 @@ class UpgradePageState extends State<UpradePage> {
 
       } catch (st, e) { 
         Logger().e(st, e);
-        
+
       }
 
     } 

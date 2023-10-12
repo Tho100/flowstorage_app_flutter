@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/extra_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
 
 class VerifySharing {
   

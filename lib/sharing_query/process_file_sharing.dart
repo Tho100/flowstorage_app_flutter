@@ -6,7 +6,7 @@ import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/thumbnail_retriever.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/extra_query/retrieve_data.dart';
+import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -38,7 +38,7 @@ class ProcessFileSharing {
     required String shareToComment, 
     required String fileExtension, 
     required dynamic fileData,
-    dynamic thumbnail,
+    required dynamic thumbnail,
   }) async {
 
       await shareFileData.insertValuesParams(
@@ -132,14 +132,14 @@ class ProcessFileSharing {
       if(context.mounted) {
 
         SharingPassword().buildAskPasswordDialog(
-          username, 
-          encryptedFileName,
-          shareToComment,
-          encryptedFileBytesData,
-          '.$fileExtension',
-          getSharingAuth,
-          context,
-          thumbnail: thumbnailBase64
+          sendTo: username, 
+          fileName: encryptedFileName,
+          comment: shareToComment,
+          fileData: encryptedFileBytesData,
+          fileType: '.$fileExtension',
+          authInput: getSharingAuth,
+          thumbnail: thumbnailBase64 ?? '',
+          context: context,
         );
 
       }
