@@ -19,6 +19,7 @@ class PsStaggeredListView extends StatelessWidget {
   final String fileType;
   final String originalDateValues;
   final Function callBottomTrailing;
+  final Function downloadOnPressed;
 
   PsStaggeredListView({
     required this.imageBytes,
@@ -27,13 +28,46 @@ class PsStaggeredListView extends StatelessWidget {
     required this.fileType,
     required this.originalDateValues,
     required this.callBottomTrailing,
+    required this.downloadOnPressed,
     Key? key
   }) : super(key: key);
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
-  
+
+  Widget buildAccessButton({
+    required bool isFromDownload,
+    required VoidCallback onPressed, 
+    required Widget child
+  }) {
+    return Padding(
+      padding: isFromDownload 
+        ? const EdgeInsets.only(left: 16.0) 
+        : const EdgeInsets.only(right: 16.0),
+      child: Align(
+        alignment: isFromDownload ? Alignment.bottomLeft : Alignment.bottomRight,
+        child: SizedBox(
+          width: isFromDownload ? 54 : 132, 
+          height: isFromDownload ? 40 : 42,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(isFromDownload ? 14 : 18),
+                  side: const BorderSide(color: ThemeColor.lightGrey, width: 1),
+                ),
+              ),
+            ),
+            onPressed: onPressed,
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -44,9 +78,11 @@ class PsStaggeredListView extends StatelessWidget {
       color: ThemeColor.darkBlack,
       child: Column(
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0),
@@ -61,14 +97,17 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                 ),
               ),
+
               IconButton(
                 onPressed: () {
                   callBottomTrailing(index);
                 },
                 icon: const Icon(Icons.more_vert, color: Colors.white, size: 25),
               ),
+
             ],
           ),
+
           Padding(
             padding: const EdgeInsets.only(left: 18.0),
             child: Align(
@@ -89,7 +128,9 @@ class PsStaggeredListView extends StatelessWidget {
               ),
             ),
           ),
+          
           const SizedBox(height: 8),
+
           Padding(
             padding: const EdgeInsets.only(left: 18.0),
             child: Align(
@@ -107,7 +148,9 @@ class PsStaggeredListView extends StatelessWidget {
               ),
             ),
           ),
+          
           const SizedBox(height: 10),
+
           Row(
             children: [
               Padding(
@@ -133,7 +176,9 @@ class PsStaggeredListView extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 15),
+
           Expanded(
             child: Stack(
               children: [
@@ -144,7 +189,7 @@ class PsStaggeredListView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: ThemeColor.lightGrey,
-                      width: 2,
+                      width: 1,
                     ),
                   ),
                   child: ClipRRect(
@@ -152,6 +197,7 @@ class PsStaggeredListView extends StatelessWidget {
                     child: Image.memory(imageBytes, fit: BoxFit.cover),
                   ),
                 ),
+
                 if (Globals.videoType.contains(fileType))
                 Padding(
                   padding: const EdgeInsets.only(left: 10, top: 8),
@@ -164,47 +210,53 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                   child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)),
                 ),
+
               ],
             ),
           ),
+
           const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: SizedBox(
-                width: 132, 
-                height: 38,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: const BorderSide(color: ThemeColor.lightGrey, width: 1),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    final fileName = storageData.fileNamesFilteredList[index];
-                    tempData.setCurrentFileName(fileName);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
-                    );
-                  },
-                  child: const Row(children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              buildAccessButton(
+                isFromDownload: true,
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(Icons.download, color: ThemeColor.justWhite, size: 21)
+                ),
+                onPressed: () async { 
+                  await downloadOnPressed(fileName: storageData.fileNamesFilteredList[index]); 
+                },
+              ),
+
+              buildAccessButton(
+                isFromDownload: false,
+                child: const Row(
+                  children: [
                     Icon(Icons.comment_outlined, color: ThemeColor.justWhite, size: 21),
                     SizedBox(width: 8),
                     Text("Comments")
-                  ]),
+                  ]
                 ),
+                onPressed: () {
+                  final fileName = storageData.fileNamesFilteredList[index];
+                  tempData.setCurrentFileName(fileName);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
+                  );
+                }
               ),
-            ),
+
+            ],
           ),
          
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           const Divider(color: ThemeColor.whiteGrey),
+
         ],
       ),
     );

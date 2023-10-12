@@ -1493,13 +1493,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.offlineData();
 
-    searchBarVisibileNotifier.value = true;
-
     _clearSelectAll(); 
 
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
 
+    searchBarVisibileNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
  
   }
@@ -1776,6 +1775,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       if(isItemDirectory) {
         await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: context);
         return;
+        
       }
 
       final loadingDialog = MultipleTextLoading();
@@ -1787,10 +1787,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         late Uint8List getBytes;
 
         if(Globals.imageType.contains(fileType)) {
-          int findIndexImage = storageData.fileNamesFilteredList.indexOf(fileName);
-          getBytes = storageData.imageBytesFilteredList[findIndexImage]!;
+          int imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
+          getBytes = storageData.imageBytesFilteredList[imageIndex]!;
+
         } else {
           getBytes = await _callFileByteData(fileName,tableName!);
+
         }
 
         await SimplifyDownload(
@@ -1801,6 +1803,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       } else {
         await OfflineMode().downloadFile(fileName);
+
       } 
 
       loadingDialog.stopLoading();
@@ -2817,6 +2820,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       fileType: fileType,
       originalDateValues: shortFormDate,
       callBottomTrailing: _callBottomTrailling,
+      downloadOnPressed: _callFileDownload,
     );
   }
 
