@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
@@ -33,16 +34,23 @@ class NavigatePage {
   }
 
   static void goToPageCongfigurePasscode(BuildContext context) {
-     Navigator.push(
+    Navigator.push(
       context, 
       MaterialPageRoute(builder: (context) => const ConfigurePasscodePage()),
     );
   }
 
   static void goToPageCongfigureSharingPassword(BuildContext context) {
-     Navigator.push(
+    Navigator.push(
       context, 
       MaterialPageRoute(builder: (context) => const ConfigureSharingPasswordPage()),
+    );
+  }
+
+  static void goToPageFileComment(BuildContext context, String fileName) {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
     );
   }
 

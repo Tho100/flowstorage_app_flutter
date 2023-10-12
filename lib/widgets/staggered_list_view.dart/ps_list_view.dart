@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -182,9 +182,10 @@ class PsStaggeredListView extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
+                
                 Container(
                   width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 35,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 325,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 320,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
@@ -228,7 +229,8 @@ class PsStaggeredListView extends StatelessWidget {
                   child: Icon(Icons.download, color: ThemeColor.justWhite, size: 21)
                 ),
                 onPressed: () async { 
-                  await downloadOnPressed(fileName: storageData.fileNamesFilteredList[index]); 
+                  final fileName = storageData.fileNamesFilteredList[index];
+                  await downloadOnPressed(fileName: fileName); 
                 },
               ),
 
@@ -243,11 +245,7 @@ class PsStaggeredListView extends StatelessWidget {
                 ),
                 onPressed: () {
                   final fileName = storageData.fileNamesFilteredList[index];
-                  tempData.setCurrentFileName(fileName);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
-                  );
+                  NavigatePage.goToPageFileComment(context, fileName);
                 }
               ),
 
