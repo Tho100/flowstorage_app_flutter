@@ -41,6 +41,7 @@ class DataCaller {
   final _dateGetterHome = DateGetter();
   
   final _directoryDataReceiver = DirectoryDataReceiver();
+  final _folderDataReceiver = FolderDataReceiver();
   final _sharingDataRetriever = SharingDataReceiver();
 
   Future<void> offlineData() async {
@@ -303,8 +304,7 @@ class DataCaller {
 
   Future<void> folderData({required String folderName}) async {
 
-    final folderDataReceiver = FolderDataReceiver();
-    final dataList = await folderDataReceiver.retrieveParams(userData.username, folderName);
+    final dataList = await _folderDataReceiver.retrieveParams(userData.username, folderName);
 
     final nameList = dataList.map((data) => data['name'] as String).toList();
     final fileDateList = dataList.map((data) => data['date'] as String).toList();
@@ -315,7 +315,8 @@ class DataCaller {
     storageData.setImageBytes(byteList);
 
     tempData.setOrigin(OriginFile.folder);
-    
+    tempData.setAppBarTitle(tempData.folderName);
+
   }
 
 }

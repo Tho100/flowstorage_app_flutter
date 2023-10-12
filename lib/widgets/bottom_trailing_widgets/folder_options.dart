@@ -19,7 +19,7 @@ class BottomTrailingFolder {
 
         const SizedBox(height: 12),
 
-        const SheetBar(),
+        const BottomsheetBar(),
 
         Align(
           alignment: Alignment.center,

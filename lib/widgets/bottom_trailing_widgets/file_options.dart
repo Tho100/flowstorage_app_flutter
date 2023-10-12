@@ -36,7 +36,7 @@ class BottomTrailingOptions {
 
         const SizedBox(height: 12),
 
-        const SheetBar(),
+        const BottomsheetBar(),
         
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

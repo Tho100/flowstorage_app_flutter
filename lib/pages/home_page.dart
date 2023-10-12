@@ -1480,7 +1480,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Future<void> _callHomeData() async {
     
     _clearGlobalData();
-    
+
     await dataCaller.homeData();
 
     searchHintText.value = "Search in Flowstorage";
@@ -1580,8 +1580,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _floatingButtonVisibility(false);
     _navDirectoryButtonVisibility(false);
     
-    tempData.setAppBarTitle(tempData.folderName);
-
     searchBarController.text = '';
     searchBarVisibileNotifier.value = true;
     searchHintText.value = "Search in ${ShortenText().cutText(tempData.appBarTitle)} folder";

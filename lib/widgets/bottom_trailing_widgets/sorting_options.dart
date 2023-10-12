@@ -23,7 +23,7 @@ class BottomTrailingSorting {
 
         const SizedBox(height: 12),
 
-        const SheetBar(),
+        const BottomsheetBar(),
 
         const Align(
           alignment: Alignment.center,

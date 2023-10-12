@@ -14,6 +14,7 @@ class FolderDialog {
     required Function(int) trailingOnPressed,
     required BuildContext context
   }) {
+
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -25,8 +26,11 @@ class FolderDialog {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              
               const SizedBox(height: 12),
-              const SheetBar(),
+
+              const BottomsheetBar(),
+
               const Align(
                 alignment: Alignment.center,
                 child: Padding(
