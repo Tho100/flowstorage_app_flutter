@@ -12,6 +12,7 @@ class CompressorApi {
     final archiveFile = archive.first;
     
     return Uint8List.fromList(archiveFile.content);
+
   }
 
   static Uint8List compressFile(String filePath) {
@@ -26,6 +27,7 @@ class CompressorApi {
     Uint8List compressedUint8List = Uint8List.fromList(compressedBytes!);
 
     return compressedUint8List;
+    
   }
 
   static Uint8List compressByte(Uint8List fileBytes) {

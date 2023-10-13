@@ -1427,7 +1427,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   
   Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
-    
   }
 
   Future<void> _deleteFolderOnPressed(String folderName) async {
@@ -1748,7 +1747,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         : psStorageData.psImageBytesList[indexFile];
       
     } else {
-      fileData = await _callFileByteData(fileName, tableName);
+      fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
       
     }
     

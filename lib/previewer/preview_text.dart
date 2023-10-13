@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -43,8 +44,9 @@ class PreviewTextState extends State<PreviewText> {
     final file = File('${offlineDirs.path}/$fileName');
 
     if (await file.exists()) {
-      final text = await file.readAsString();
-      return Uint8List.fromList(text.codeUnits);
+      final compressedBytes = await file.readAsBytes();
+      final decompressedBytes = CompressorApi.decompressFile(compressedBytes);
+      return decompressedBytes;
 
     } else {
       throw Exception('File not found');
