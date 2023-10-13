@@ -28,6 +28,7 @@ class DataRetriever {
     GlobalsTable.homePtx: "ptx0.jpg",
     GlobalsTable.homeWord: "doc0.jpg",
     GlobalsTable.homeExe: "exe0.jpg",
+    GlobalsTable.homeMsi: "exe0.jpg",
     GlobalsTable.homeApk: "apk0.jpg"
   };
 
@@ -97,6 +98,7 @@ class DataRetriever {
 
       } else {
         getByteValue.addAll(storageData.homeThumbnailBytesList);
+
       }
 
     } else if (tableName == GlobalsTable.directoryInfoTable) {
@@ -110,6 +112,7 @@ class DataRetriever {
 
       } else {
         getByteValue.addAll(storageData.directoryImageBytesList);
+
       }
 
     } else {

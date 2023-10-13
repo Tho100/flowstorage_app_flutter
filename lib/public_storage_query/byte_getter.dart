@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -12,18 +13,6 @@ import 'package:mysql_client/mysql_client.dart';
 
 class ByteGetterPs {
 
-  static const _imageTable = 'ps_info_image';
-  static const _textTable = 'ps_info_text';
-  static const _vidTable = 'ps_info_video';
-  static const _pdfTable = 'ps_info_pdf';
-  static const _ptxTable = 'ps_info_ptx';
-  static const _exlTable = 'ps_info_excel';
-  static const _docTable = 'ps_info_word';
-  static const _apkTable = 'ps_info_apk';
-  static const _audioTable = 'ps_info_audio';
-  static const _exeTable = 'ps_info_exe';
-  static const _msiTable = 'ps_info_msi';
-
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -32,39 +21,47 @@ class ByteGetterPs {
   final thumbnailGetter = ThumbnailGetterPs();
 
   final tableNameToAssetsImage = {
-    _textTable: "txt0.jpg",
-    _pdfTable: "pdf0.jpg",
-    _audioTable: "music0.jpg",
-    _exlTable: "exl0.jpg",
-    _ptxTable: "ptx0.jpg",
-    _msiTable: "exe0.jpg",
-    _docTable: "doc0.jpg",
-    _exeTable: "exe0.jpg",
-    _apkTable: "apk0.jpg"
+    GlobalsTable.psText: "txt0.jpg",
+    GlobalsTable.psPdf: "pdf0.jpg",
+    GlobalsTable.psAudio: "music0.jpg",
+    GlobalsTable.psExcel: "exl0.jpg",
+    GlobalsTable.psPtx: "ptx0.jpg",
+    GlobalsTable.psExe: "exe0.jpg",
+    GlobalsTable.psWord: "doc0.jpg",
+    GlobalsTable.psMsi: "exe0.jpg",
+    GlobalsTable.psApk: "apk0.jpg"
   };
 
   Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String tableName) async {
-    if (tableName == _imageTable) {
+
+    if (tableName == GlobalsTable.psImage) {
+
       if(psStorageData.psImageBytesList.isEmpty) {
         return getFileInfoParams(conn, false);
       } else {
         return psStorageData.psImageBytesList;
       }
+
     } else {
       return getOtherTableParams(conn, tableName, isFromMyPs: false);
     }
+
   }
 
   Future<List<Uint8List>> myGetLeadingParams(MySQLConnectionPool conn, String tableName) async {
-    if (tableName == _imageTable) {
+    
+    if (tableName == GlobalsTable.psImage) {
+
       if(psStorageData.myPsImageBytesList.isEmpty) {
         return getFileInfoParams(conn, true);
       } else {
         return psStorageData.myPsImageBytesList;
       }
+
     } else {
       return getOtherTableParams(conn, tableName, isFromMyPs: true);
     }
+
   }
 
   Future<List<Uint8List>> getFileInfoParams(MySQLConnectionPool conn, bool isFromMyPs) async {
@@ -74,14 +71,15 @@ class ByteGetterPs {
 
     if(isFromMyPs) {
 
-      query = 'SELECT CUST_FILE FROM $_imageTable WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
+      query = 'SELECT CUST_FILE FROM ${GlobalsTable.psImage} WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       final params = {'username': userData.username};
 
       executeRetrieval = await conn.execute(query,params);
 
     } else {
-      query = 'SELECT CUST_FILE FROM $_imageTable ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
+      query = 'SELECT CUST_FILE FROM ${GlobalsTable.psImage} ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       executeRetrieval = await conn.execute(query);
+
     }
     
     final getByteValue = <Uint8List>[];
@@ -95,6 +93,7 @@ class ByteGetterPs {
           Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
 
       getByteValue.add(bufferedFileBytes);
+
     }
     
     isFromMyPs 
@@ -102,6 +101,7 @@ class ByteGetterPs {
     : psStorageData.setPsImageBytes(getByteValue);
 
     return getByteValue;
+
   }
 
   Future<List<Uint8List>> getOtherTableParams(
@@ -139,7 +139,7 @@ class ByteGetterPs {
       getByteValue.addAll(loadImg);
     }
 
-    if (tableName == _vidTable) {
+    if (tableName == GlobalsTable.psVideo) {
 
       if(psStorageData.psThumbnailBytesList.isEmpty || psStorageData.myPsThumbnailBytesList.isEmpty) {
 

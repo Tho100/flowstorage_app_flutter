@@ -96,7 +96,9 @@ class MainPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 35.0),
           child: buildHeaderText(),
         ),
+        
         const SizedBox(height: 8),
+
         Padding(
           padding: const EdgeInsets.only(left: 35.0),
           child: buildSubText(),
@@ -104,6 +106,7 @@ class MainPage extends StatelessWidget {
       
         const Spacer(),
         buildBottomContainer(context)
+
       ],
     );
   }

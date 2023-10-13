@@ -13,8 +13,10 @@ class Globals {
   static const String fileInfoWordTable = 'file_info_word';
   static const String fileInfoPtxTable = 'file_info_ptx';
   static const String fileInfoExcelTable = 'file_info_excel';
+  static const String fileInfoMsiTable = 'file_info_msi';
   static const String fileInfoExeTable = 'file_info_exe';
   static const String fileInfoVidTable = 'file_info_vid';
+  static const String fileInfoApkTable = 'file_info_apk';
 
   static const Set<String> imageType = {"png","jpeg","jpg","webp"};
   static const Set<String> textType = {"txt","csv","html","sql","md"};
@@ -25,7 +27,7 @@ class Globals {
   static const Set<String> audioType = {"wav","mp3"};
 
   static const Set<String> unsupportedOfflineModeTypes = {
-    "mp4","wmv", "exe", "apk"
+    "mp4","wmv", "exe", "apk", "msi"
   };
 
   static const Map<String, String> fileTypesToTableNames = {
@@ -52,6 +54,8 @@ class Globals {
     'xls': fileInfoExcelTable,
 
     'exe': fileInfoExeTable,
+    'msi': fileInfoMsiTable,
+    'apk': fileInfoApkTable,
 
     'mp4': fileInfoVidTable,
     'avi': fileInfoVidTable,
@@ -83,6 +87,8 @@ class Globals {
     'xls': 'ps_info_excel',
     
     'exe': 'ps_info_exe',
+    'msi': 'ps_info_msi',
+    'apk': 'ps_info_apk',
 
     'mp4': 'ps_info_video',
     'avi': 'ps_info_video',
@@ -90,6 +96,7 @@ class Globals {
     
     'mp3' : 'ps_info_audio',
     'wav': 'ps_info_audio'
+    
   };
 
   static const generalFileTypes = {
@@ -100,14 +107,15 @@ class Globals {
     ...Globals.excelType,
     "apk",
     "exe",
-    "pdf"
+    "pdf",
+    "msi"
   };
 
   static const Set<String> supportedFileTypes = {
     "png","jpeg","jpg",
     "html","sql","md","txt","pptx","ptx",
     "pdf","doc","docx","mp4","wav","avi","wmv","mov","mp3",
-    "exe","xlsx","xls","csv","apk"
+    "exe","xlsx","xls","csv","apk", "msi"
   };
 
   static Map<OriginFile,String> get originToName {

@@ -10,6 +10,7 @@ class GlobalsTable {
   static const homeApk = "file_info_apk";
   static const homeAudio = "file_info_audi";
   static const homeExe = "file_info_exe";
+  static const homeMsi = "file_info_msi";
 
   static const directoryInfoTable = "file_info_directory";
   static const directoryUploadTable = "upload_info_directory";
@@ -25,6 +26,7 @@ class GlobalsTable {
   static const psApk = "ps_info_apk";
   static const psAudio = "ps_info_audio";
   static const psExe = "ps_info_exe";
+  static const psMsi = "ps_info_msi";
 
   static const Set<String> tableNames = {
     directoryInfoTable, homeImage, homeText, homeExe, homePdf,

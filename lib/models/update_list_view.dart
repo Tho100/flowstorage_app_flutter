@@ -26,7 +26,7 @@ class UpdateListView {
 
   final insertData = InsertData();
 
-  void addItemToListView({required String fileName}) {
+  void addItemDetailsToListView({required String fileName}) {
     storageData.fileDateFilteredList.add("Just now");
     storageData.fileDateList.add("Just now");
     storageData.fileNamesList.add(fileName);

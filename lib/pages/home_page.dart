@@ -273,7 +273,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         }
 
-        UpdateListView().addItemToListView(fileName: filesName);
+        UpdateListView().addItemDetailsToListView(fileName: filesName);
 
         scaffoldMessenger.hideCurrentSnackBar();
 
@@ -459,7 +459,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
           }
 
-          UpdateListView().addItemToListView(fileName: selectedFileName);
+          UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
 
           scaffoldMessenger.hideCurrentSnackBar();
 
@@ -614,7 +614,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       }
 
-      UpdateListView().addItemToListView(fileName: "$generateFileName.pdf");
+      UpdateListView().addItemDetailsToListView(fileName: "$generateFileName.pdf");
 
       await file.delete();
 
@@ -685,7 +685,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           
         }
 
-        UpdateListView().addItemToListView(fileName: imageName);
+        UpdateListView().addItemDetailsToListView(fileName: imageName);
 
         await File(imagePath).delete();
 
@@ -725,10 +725,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     late String? imagePreview = "";
 
     final fileType = fileName.split('.').last;
+    
     if(Globals.imageType.contains(fileType)) {
       imagePreview = base64Encoded;
+
     } else if (Globals.videoType.contains(fileType)) {
       imagePreview = base64.encode(thumbnail);
+
     } 
 
     if(!mounted) return;
@@ -763,7 +766,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
             scaffoldMessenger.hideCurrentSnackBar();
 
-            UpdateListView().addItemToListView(fileName: fileName);
+            UpdateListView().addItemDetailsToListView(fileName: fileName);
             _scrollEndListView();
 
             SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added");

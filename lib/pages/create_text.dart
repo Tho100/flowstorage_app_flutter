@@ -94,7 +94,7 @@ class CreateTextPageState extends State<CreateText> {
 
     final txtImageData = await getAssets.loadAssetsData('txt0.jpg');
 
-    UpdateListView().addItemToListView(fileName: fileName);
+    UpdateListView().addItemDetailsToListView(fileName: fileName);
 
     storageData.imageBytesList.add(txtImageData);
     storageData.imageBytesFilteredList.add(txtImageData);
@@ -137,10 +137,12 @@ class CreateTextPageState extends State<CreateText> {
     } catch (err, st) {
       _createTextFileOnOffline(fileName, inputValue);
       logger.e("Exception from _saveText {create_text}", err, st);
+
     }
   }
 
   void _createTextFileOnOffline(String fileName, String inputValue) {
+    
     OfflineMode().saveOfflineTextFile(
       inputValue: inputValue,
       fileName: fileName,
