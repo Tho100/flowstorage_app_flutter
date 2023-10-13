@@ -1427,6 +1427,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   
   Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+    
   }
 
   Future<void> _deleteFolderOnPressed(String folderName) async {
@@ -1733,6 +1734,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
       CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.");
       return;
+
     } 
 
     late final Uint8List fileData;

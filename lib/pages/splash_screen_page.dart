@@ -213,7 +213,7 @@ class SplashScreenState extends State<SplashScreen> {
         userData.setUsername(getLocalUsername);
         userData.setEmail(getLocalEmail);
 
-        selectedActionNotifier.value == "offline" 
+        selectedActionNotifier.value == goOfflinePageAction 
             ? tempData.setOrigin(OriginFile.offline) 
             : tempData.setOrigin(OriginFile.home);
 

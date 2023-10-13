@@ -77,12 +77,14 @@ class PreviewAudioState extends State<PreviewAudio> {
 
       } else {
         return await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
+        
       }
 
       
     } catch (err, st) {
       Logger().e("Exception from _callData {PreviewAudio}", err, st);
       return Future.value(Uint8List(0));
+      
     }
 
   }

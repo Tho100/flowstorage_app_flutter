@@ -58,9 +58,11 @@ class OfflineMode {
       offlineDirPath.createSync();
       final setupFiles = File('${offlineDirPath.path}/$fileName');
       await setupFiles.writeAsBytes(fileData);
+
     } else {
       final setupFiles = File('${offlineDirPath.path}/$fileName');
       await setupFiles.writeAsBytes(fileData);
+
     }
      
   }
@@ -128,8 +130,10 @@ class OfflineMode {
       final decompressedFileBytes = CompressorApi
                 .decompressFile(file.readAsBytesSync());
       return decompressedFileBytes;
+
     } else {
       throw Exception('File not found');
+      
     }
   }
 

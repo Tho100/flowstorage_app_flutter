@@ -45,9 +45,12 @@ class PreviewTextState extends State<PreviewText> {
     if (await file.exists()) {
       final text = await file.readAsString();
       return Uint8List.fromList(text.codeUnits);
+
     } else {
       throw Exception('File not found');
+      
     }
+
   }
 
   Future<Uint8List> _callTextDataAsync() async {
