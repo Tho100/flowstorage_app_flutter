@@ -322,65 +322,6 @@ class PreviewFileState extends State<PreviewFile> {
     
   }
 
-  Widget _buildPreviewerUnavailable() {
-    return const Center(
-      child: Text(
-        "(Preview is not available)",
-        style: TextStyle(
-          color: ThemeColor.secondaryWhite,
-          fontSize: 24,
-          fontWeight: FontWeight.w600
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextHeaderTitle() {
-
-    const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
-
-    return textTables.contains(currentTable) ? Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                tempData.selectedFileName.length > 28 ? "${tempData.selectedFileName.substring(0,28)}..." : tempData.selectedFileName,
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
-              )),
-            ),
-
-            if(tempData.origin == OriginFile.public)
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-              child: Text(
-               psStorageData.psTitleList[widget.tappedIndex],
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                softWrap: true,
-                textAlign: TextAlign.start,
-              ),
-            ),
-
-          ],
-        ),
-      ],
-    ) : const SizedBox();
-  }
-
   void _removeFileFromListView(String fileName) {
 
     try {
@@ -600,118 +541,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     }
 
-  }
-
-  Widget _uploadedByText() {
-
-    const generalOrigin = {
-      OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
-      OriginFile.directory, OriginFile.public, OriginFile.offline
-    };
-
-    return Text(
-      generalOrigin.contains(originFrom) 
-      ? "   Uploaded By" : "   Shared To",
-      textAlign: TextAlign.start,
-      style: const TextStyle(
-        fontSize: 12,
-        color: Color.fromARGB(255, 136, 136, 136),
-        fontWeight: FontWeight.w500,
-      ),
-    );
-
-  }
-
-  Widget _buildBottomBar() {
-    return Container(
-      height: 138,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: ThemeColor.darkBlack,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start, 
-        children: [
-  
-          const SizedBox(height: 2),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 6, top: 10), 
-            child: SizedBox(
-              width: double.infinity,
-              child: _uploadedByText()
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 12),
-            child: SizedBox(
-              width: double.infinity,
-              child: ValueListenableBuilder(
-                valueListenable: uploaderNameNotifer,
-                builder: (context, value, child) {
-                  return Text(
-                    value == userData.username ? "$value (You)" : value,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
-                }
-              ),
-            ),
-          ),
-  
-          const Spacer(),
-  
-          Row(
-            
-            children: [
-  
-              const SizedBox(width: 5),
-  
-              _buildBottomButtons(
-                textStyle: const Icon(Icons.comment, size: 22), 
-                color: ThemeColor.darkGrey, 
-                width: 60, 
-                height: 45,
-                buttonType: "comment", 
-                context: context
-              ),
-  
-              const Spacer(),
-  
-              _buildBottomButtons(
-                textStyle: const Icon(Icons.download, size: 22), 
-                color: ThemeColor.darkPurple, 
-                width: 60, 
-                height: 45,
-                buttonType: "download",
-                context: context
-              ),
-  
-              Visibility(
-                visible: tempData.origin != OriginFile.offline,
-                child: _buildBottomButtons(
-                  textStyle: const Text('SHARE',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
-                  color: ThemeColor.darkPurple,
-                  width: 105,
-                  height: 45,
-                  buttonType: "share",
-                  context: context
-                ),
-              ),
-  
-              const SizedBox(width: 5),
-  
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   Future<Size> _getImageResolution(Uint8List imageBytes) async {
@@ -967,6 +796,177 @@ class PreviewFileState extends State<PreviewFile> {
           : Text(value, style: GlobalsStyle.appBarTextStyle);
       },
     );
+  }
+
+Widget _uploadedByText() {
+
+    const generalOrigin = {
+      OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
+      OriginFile.directory, OriginFile.public, OriginFile.offline
+    };
+
+    return Text(
+      generalOrigin.contains(originFrom) 
+      ? "   Uploaded By" : "   Shared To",
+      textAlign: TextAlign.start,
+      style: const TextStyle(
+        fontSize: 12,
+        color: Color.fromARGB(255, 136, 136, 136),
+        fontWeight: FontWeight.w500,
+      ),
+    );
+
+  }
+
+  Widget _buildBottomBar() {
+    return Container(
+      height: 138,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: ThemeColor.darkBlack,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start, 
+        children: [
+  
+          const SizedBox(height: 2),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 6, top: 10), 
+            child: SizedBox(
+              width: double.infinity,
+              child: _uploadedByText()
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 12),
+            child: SizedBox(
+              width: double.infinity,
+              child: ValueListenableBuilder(
+                valueListenable: uploaderNameNotifer,
+                builder: (context, value, child) {
+                  return Text(
+                    value == userData.username ? "$value (You)" : value,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  );
+                }
+              ),
+            ),
+          ),
+  
+          const Spacer(),
+  
+          Row(
+            
+            children: [
+  
+              const SizedBox(width: 5),
+  
+              _buildBottomButtons(
+                textStyle: const Icon(Icons.comment, size: 22), 
+                color: ThemeColor.darkGrey, 
+                width: 60, 
+                height: 45,
+                buttonType: "comment", 
+                context: context
+              ),
+  
+              const Spacer(),
+  
+              _buildBottomButtons(
+                textStyle: const Icon(Icons.download, size: 22), 
+                color: ThemeColor.darkPurple, 
+                width: 60, 
+                height: 45,
+                buttonType: "download",
+                context: context
+              ),
+  
+              Visibility(
+                visible: tempData.origin != OriginFile.offline,
+                child: _buildBottomButtons(
+                  textStyle: const Text('SHARE',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
+                  color: ThemeColor.darkPurple,
+                  width: 105,
+                  height: 45,
+                  buttonType: "share",
+                  context: context
+                ),
+              ),
+  
+              const SizedBox(width: 5),
+  
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+ Widget _buildPreviewerUnavailable() {
+    return const Center(
+      child: Text(
+        "(Preview is not available)",
+        style: TextStyle(
+          color: ThemeColor.secondaryWhite,
+          fontSize: 24,
+          fontWeight: FontWeight.w600
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextHeaderTitle() {
+
+    const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
+
+    return textTables.contains(currentTable) ? Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                tempData.selectedFileName.length > 28 ? "${tempData.selectedFileName.substring(0,28)}..." : tempData.selectedFileName,
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+              )),
+            ),
+
+            if(tempData.origin == OriginFile.public)
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+              child: Text(
+               psStorageData.psTitleList[widget.tappedIndex],
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                softWrap: true,
+                textAlign: TextAlign.start,
+              ),
+            ),
+
+          ],
+        ),
+      ],
+    ) : const SizedBox();
   }
 
   Widget _buildBody() {

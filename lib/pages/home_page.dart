@@ -12,7 +12,6 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
-import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -108,7 +107,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   final _locator = GetIt.instance;
 
   late Set<String> offlineFilesName = {};
-  late List<bool> checkedList = [];
+  late List<bool> selectedItemsCheckedList = [];
 
   late final UserDataProvider userData;
   late final StorageDataProvider storageData;
@@ -158,17 +157,44 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
-  bool itemIsChecked = false;
+  bool selectedItemIsChecked = false;
 
   Set<int> selectedPhotosIndex = {};
   Set<String> checkedItemsName = {};
 
-  bool isAscendingItemName = false;
-  bool isAscendingUploadDate = false;
+  bool sortingIsAscendingItemName = false;
+  bool sortingIsAscendingUploadDate = false;
   
   Timer? debounceSearchingTimer;
 
-  Future<void> _openDialogGallery() async {
+  void _callStorageUsageWarning() async {
+    SnakeAlert.upgradeSnake();
+    await CallNotify().customNotification(
+      title: "Warning", 
+      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage.");
+  }
+
+  void _floatingButtonVisibility(bool visible) {
+    floatingActionButtonVisible.value = visible;
+  }
+
+  void _navDirectoryButtonVisibility(bool visible) {
+    navDirectoryButtonVisible.value = visible;
+  }
+
+  void _configureGoBackHome() {
+    tempData.setOrigin(OriginFile.home);
+    tempData.setCurrentFolder('');
+    tempData.setCurrentDirectory('');
+  }
+
+  void _callOnUploadFailed(String message, Object err, StackTrace stackTrace) {
+    logger.e(message, err, stackTrace);
+    SnakeAlert.errorSnake("Upload failed.");
+    NotificationApi.stopNotification(0);
+  }
+
+  Future<void> _openDialogUploadGallery() async {
 
     try {
 
@@ -303,13 +329,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
     } catch (err, st) {
-      logger.e('Exception from _openDialogGallery {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-      NotificationApi.stopNotification(0);
+      _callOnUploadFailed('Exception from _openDialogUploadGallery {main}',err,st);
     }
+
   }
 
-  Future<void> _openDialogFile() async {
+  Future<void> _openDialogUploadFile() async {
 
     try {
 
@@ -490,13 +515,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
     } catch (err, st) {
-      logger.e('Exception from _openDialogFile {main}', err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-      NotificationApi.stopNotification(0);
+      _callOnUploadFailed('Exception from _openDialogUploadFile {main}', err,st);
     }
   }
 
-  Future<void> _openDialogFolder() async {
+  Future<void> _openDialogUploadFolder() async {
 
     try {
 
@@ -552,9 +575,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
 
     } catch (err, st) {
-      logger.e('Exception from _openDialogFolder {main}',err,st);
-      SnakeAlert.errorSnake("Upload failed.");
-      NotificationApi.stopNotification(0);
+      _callOnUploadFailed('Exception from _openDialogUploadFolder {main}',err,st);
     }
   }
 
@@ -701,14 +722,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       SnakeAlert.errorSnake("Failed to start the camera.");
     }
 
-  }
-
-  void _openSharingPage(String fileName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ShareFilePage(fileName: fileName))
-    );
   }
 
   void _openPsUploadPage({
@@ -858,7 +871,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
          
         final countSelectedItems = togglePhotosPressed
           ? checkedItemsName.length
-          : checkedList.where((item) => item == true).length;
+          : selectedItemsCheckedList.where((item) => item == true).length;
         
         final loadingDialog = SingleTextLoading();
         loadingDialog.startLoading(title: "Deleting...",context: context);
@@ -903,8 +916,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: true);
-      _returnBackHomeFiles();
-      await _refreshListView();
+      _configureGoBackHome();
+      await _refreshListViewData();
     }
   }
 
@@ -926,7 +939,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
-    itemIsChecked = false;
+    selectedItemIsChecked = false;
     selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
@@ -963,16 +976,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
     if (tempData.origin == OriginFile.home && togglePhotosPressed) {
-      _returnBackHomeFiles();
+      _configureGoBackHome();
     } else {
-      _returnBackHomeFiles();
-      await _refreshListView();
+      _configureGoBackHome();
+      await _refreshListViewData();
     }
 
     _navDirectoryButtonVisibility(true);
     _floatingButtonVisibility(true);
 
-    itemIsChecked = false;
+    selectedItemIsChecked = false;
     togglePhotosPressed = false;
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
@@ -1015,7 +1028,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
     setState(() {
-      itemIsChecked = false;
+      selectedItemIsChecked = false;
       editAllIsPressed = false;
     });
 
@@ -1142,8 +1155,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _sortUploadDate() {
-    isAscendingUploadDate = !isAscendingUploadDate;
-    ascendingDescendingIconNotifier.value = isAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
+    sortingIsAscendingUploadDate = !sortingIsAscendingUploadDate;
+    ascendingDescendingIconNotifier.value = sortingIsAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
     sortingText.value = tempData.origin == OriginFile.public 
       ? "Default" : "Upload Date";
 
@@ -1151,18 +1164,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _sortItemName() {
-    isAscendingItemName = !isAscendingItemName;
-    ascendingDescendingIconNotifier.value = isAscendingItemName ? Icons.expand_less : Icons.expand_more;
+    sortingIsAscendingItemName = !sortingIsAscendingItemName;
+    ascendingDescendingIconNotifier.value = sortingIsAscendingItemName ? Icons.expand_less : Icons.expand_more;
     sortingText.value = "Item Name";
     _processfileNameSorting();
   }
 
   void _sortDefault() async {
     sortingText.value = "Default";
-    isAscendingItemName = false;
-    isAscendingUploadDate = false;
+    sortingIsAscendingItemName = false;
+    sortingIsAscendingUploadDate = false;
     ascendingDescendingIconNotifier.value = Icons.expand_more;
-    await _refreshListView();
+    await _refreshListViewData();
   }
 
   void _processUploadDateSorting() {
@@ -1198,7 +1211,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     }
 
-    isAscendingUploadDate 
+    sortingIsAscendingUploadDate 
     ? itemList.sort((a, b) => a['upload_date'].compareTo(b['upload_date']))
     : itemList.sort((a, b) => b['upload_date'].compareTo(a['upload_date']));
 
@@ -1239,7 +1252,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       });
     }
 
-    isAscendingItemName 
+    sortingIsAscendingItemName 
     ? itemList.sort((a, b) => a['file_name'].compareTo(b['file_name']))
     : itemList.sort((a, b) => b['file_name'].compareTo(a['file_name']));
 
@@ -1305,14 +1318,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     });
 
     if(editAllIsPressed == true) {
-      checkedList.clear();
-      checkedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
+      selectedItemsCheckedList.clear();
+      selectedItemsCheckedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
     }
 
     if(!editAllIsPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
       setState(() {
-        itemIsChecked = false;
+        selectedItemIsChecked = false;
       });
     }
 
@@ -1321,12 +1334,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _updateCheckboxState(int index, bool value) {
     
     setState(() {
-      checkedList[index] = value;
-      itemIsChecked = checkedList.where((item) => item == true).isNotEmpty ? true : false;
+      selectedItemsCheckedList[index] = value;
+      selectedItemIsChecked = selectedItemsCheckedList.where((item) => item == true).isNotEmpty ? true : false;
       value == true ? checkedItemsName.add(storageData.fileNamesFilteredList[index]) : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
 
-    tempData.setAppBarTitle("${(checkedList.where((item) => item == true).length).toString()} item(s) selected");
+    final setAppBarTitle = "${(selectedItemsCheckedList.where((item) => item == true).length).toString()} item(s) selected";
+    tempData.setAppBarTitle(setAppBarTitle);
 
   }
 
@@ -1406,27 +1420,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
   }
-
-  void _callStorageUsageWarning() async {
-    SnakeAlert.upgradeSnake();
-    await CallNotify().customNotification(
-      title: "Warning", 
-      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage.");
-  }
-
-  void _floatingButtonVisibility(bool visible) {
-    floatingActionButtonVisible.value = visible;
-  }
-
-  void _navDirectoryButtonVisibility(bool visible) {
-    navDirectoryButtonVisible.value = visible;
-  }
-
-  void _returnBackHomeFiles() {
-    tempData.setOrigin(OriginFile.home);
-    tempData.setCurrentFolder('');
-    tempData.setCurrentDirectory('');
-  }
   
   Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
     return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
@@ -1441,7 +1434,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       storageData.foldersNameList.remove(folderName);
       tempData.setOrigin(OriginFile.home);
 
-      await _refreshListView();
+      await _refreshListViewData();
       
       _navDirectoryButtonVisibility(true);
       _floatingButtonVisibility(true);
@@ -1588,7 +1581,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _refreshListView() async {
+  Future<void> _refreshListViewData() async {
 
     switch (tempData.origin) {
       case OriginFile.home:
@@ -2015,7 +2008,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       onSharingPressed: () {
         Navigator.pop(context);
-        _openSharingPage(fileName);
+        NavigatePage.goToPageSharing(context, fileName);
       }, 
       onAOPressed: () async {
         Navigator.pop(context);
@@ -2060,7 +2053,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         if(storageData.fileNamesList.length < limitUpload) {
           Navigator.pop(context);
-          await _openDialogGallery();
+          await _openDialogUploadGallery();
         } else {
           _showUpgradeLimitedDialog(limitUpload);
         }
@@ -2076,7 +2069,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if (count < limitUpload) {
             Navigator.pop(context);
-            await _openDialogFile();
+            await _openDialogUploadFile();
 
           } else {
             _showUpgradeLimitedDialog(limitUpload);
@@ -2087,11 +2080,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if(tempData.origin == OriginFile.offline) {
             Navigator.pop(context);
-            await _openDialogFile();
+            await _openDialogUploadFile();
 
           } else if (storageData.fileNamesList.length < limitUpload) {
             Navigator.pop(context);
-            await _openDialogFile();
+            await _openDialogUploadFile();
 
           } else {
             _showUpgradeLimitedDialog(limitUpload);
@@ -2103,7 +2096,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       folderOnPressed: () async {
 
         if(storageData.foldersNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
-          await _openDialogFolder();
+          await _openDialogUploadFolder();
           
           if(!mounted) return;
           Navigator.pop(context);
@@ -2126,7 +2119,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
           if (count < limitUpload) {
             Navigator.pop(context);
-            await _openDialogFile();
+            await _openDialogUploadFile();
           } else {
             _showUpgradeLimitedDialog(limitUpload);
           }
@@ -2268,7 +2261,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     return CheckBoxItems(
       index: index, 
       updateCheckboxState: _updateCheckboxState, 
-      checkedList: checkedList
+      checkedList: selectedItemsCheckedList
     );
   }
 
@@ -2390,13 +2383,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     if(selectedPhotosIndex.isEmpty) {
       _floatingButtonVisibility(true);
       tempData.setAppBarTitle("Photos");
-      itemIsChecked = false;
+      selectedItemIsChecked = false;
     }
     
   }
 
   void _onHoldPhotosItem(int index) {
-    itemIsChecked = true;
+    selectedItemIsChecked = true;
     setState(() {
       selectedPhotosIndex.add(index);
     });
@@ -2471,7 +2464,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
             _buildSelectAll(),  
 
-            if(itemIsChecked)
+            if(selectedItemIsChecked)
             _buildMoreOptionsOnSelect(),
 
             if(togglePhotosPressed)
@@ -2497,7 +2490,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Widget _buildEmptyBody() {
     return EmptyBody(
       refreshList: () async {
-        await _refreshListView();
+        await _refreshListViewData();
     });
   }
 
@@ -2912,7 +2905,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           _clearPublicStorageData(clearImage: true);
         }
 
-        await _refreshListView();
+        await _refreshListViewData();
       },
       child: SizedBox(
         height: mediaHeight,
