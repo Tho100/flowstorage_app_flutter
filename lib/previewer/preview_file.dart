@@ -619,9 +619,10 @@ class PreviewFileState extends State<PreviewFile> {
         fontWeight: FontWeight.w500,
       ),
     );
+
   }
 
-  Future<Widget> _buildBottomBar(BuildContext context) async {
+  Widget _buildBottomBar() {
     return Container(
       height: 138,
       width: double.infinity,
@@ -651,7 +652,7 @@ class PreviewFileState extends State<PreviewFile> {
                 valueListenable: uploaderNameNotifer,
                 builder: (context, value, child) {
                   return Text(
-                    value,
+                    value == userData.username ? "$value (You)" : value,
                     textAlign: TextAlign.start,
                     style: const TextStyle(
                       fontSize: 18,
@@ -973,24 +974,23 @@ class PreviewFileState extends State<PreviewFile> {
       decoration: _buildBackgroundDecoration(),
       child: Column(
         children: [
+
           _buildTextHeaderTitle(),
+
           Expanded(
             child: _buildFileOnCondition(),
           ),
+
           ValueListenableBuilder<bool>(
             valueListenable: bottomBarVisibleNotifier,
             builder: (context, value, child) {
               return Visibility(
                 visible: value,
-                child: FutureBuilder<Widget>(
-                  future: _buildBottomBar(context),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData ? snapshot.data! : Container();
-                  },
-                ),
+                child: _buildBottomBar(),
               );
             },
           ),
+
         ],
       ),
     );
