@@ -12,7 +12,7 @@ class SupremePage extends StatefulWidget {
 class _SupremePage extends State<SupremePage> {
 
   late final WebViewController controller;
-  final paymentUrl = "";
+  final paymentUrl = "https://buy.stripe.com/test_4gw3f6dXr5C755SdQY";
 
   @override
   void initState() {

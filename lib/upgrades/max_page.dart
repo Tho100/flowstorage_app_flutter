@@ -13,7 +13,7 @@ class MaxPage extends StatefulWidget {
 class _MaxPageState extends State<MaxPage> {
 
   late final WebViewController controller;
-  final paymentUrl = 'https://buy.stripe.com/test_9AQ16Y9Hb6GbfKwcMP';
+  final paymentUrl = 'https://buy.stripe.com/test_14k16Y5qVfcH9m88wC';
 
   @override 
   void initState() {

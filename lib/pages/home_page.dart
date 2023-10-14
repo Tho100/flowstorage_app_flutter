@@ -106,9 +106,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final _locator = GetIt.instance;
 
-  late Set<String> offlineFilesName = {};
-  late List<bool> selectedItemsCheckedList = [];
-
   late final UserDataProvider userData;
   late final StorageDataProvider storageData;
   late final PsStorageDataProvider psStorageData;
@@ -155,10 +152,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final searchBarVisibileNotifier = ValueNotifier<bool>(true);
 
+  late Set<String> offlineFilesName = {};
+
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
   bool selectedItemIsChecked = false;
 
+  List<bool> selectedItemsCheckedList = [];
+  
   Set<int> selectedPhotosIndex = {};
   Set<String> checkedItemsName = {};
 
@@ -183,7 +184,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _configureGoBackHome() {
+    searchHintText.value = "Search in Flowstorage";
     tempData.setOrigin(OriginFile.home);
+    tempData.setAppBarTitle("Home");
     tempData.setCurrentFolder('');
     tempData.setCurrentDirectory('');
   }
@@ -517,6 +520,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadFile {main}', err,st);
     }
+
   }
 
   Future<void> _openDialogUploadFolder() async {
@@ -989,11 +993,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     togglePhotosPressed = false;
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
-
-    searchHintText.value = "Search in Flowstorage";
-
-    tempData.setAppBarTitle("Home");
-    tempData.setOrigin(OriginFile.home);
     
     _itemSearchingImplementation('');
 

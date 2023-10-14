@@ -268,7 +268,7 @@ class UpgradePageState extends State<UpradePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildSubHeader("PRICE"),
-                        _buildPrice(2)
+                        _buildPrice(3)
                       ],
                     ),
                   ],

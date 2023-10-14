@@ -12,7 +12,7 @@ class ExpressPage extends StatefulWidget {
 class _Expresspage extends State<ExpressPage> {
 
   late final WebViewController controller;
-  final paymentUrl = "";
+  final paymentUrl = "https://buy.stripe.com/test_eVaeXO9Hb6Gb2XK14b";
 
   @override
   void initState() {
