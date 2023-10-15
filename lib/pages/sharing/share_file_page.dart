@@ -124,24 +124,30 @@ class ShareFilePage extends StatelessWidget {
         ),
 
         Padding(
-          padding: const EdgeInsets.only(right: 16.0, top: 6.0),
+          padding: const EdgeInsets.only(right: 15.0, top: 2.0),
           child: Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
-              width: 58,
-              height: 54,
+              width: 138,
+              height: 45,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(52),
                     side: const BorderSide(color: ThemeColor.lightGrey)
                   ),
-                  backgroundColor: ThemeColor.darkGrey,
+                  backgroundColor: ThemeColor.darkBlack,
                 ),
                 onPressed: () {
                   shareExternalOnPressed();
                 },
-                child: const Icon(Icons.share),
+                child: const Row(
+                  children: [
+                    Icon(Icons.share),
+                    SizedBox(width: 8),
+                    Text("Apps Share"),
+                  ],
+                ),
               ),
             ),
           ),
@@ -182,6 +188,7 @@ class ShareFilePage extends StatelessWidget {
           }
 
         } else {
+
           loadingDialog.startLoading(title: "Fetching data...", context: navigatorKey.currentContext!);
 
           final tableName = tempData.origin == OriginFile.public
