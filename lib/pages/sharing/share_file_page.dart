@@ -117,14 +117,14 @@ class ShareFilePage extends StatelessWidget {
               style: const TextStyle(color: ThemeColor.secondaryWhite),
               enabled: true,
               controller: commentController,
-              maxLines: 15,
+              maxLines: 12,
               maxLength: 100,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment"),
+              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
           ),
         ),
 
         Padding(
-          padding: const EdgeInsets.only(right: 15.0, top: 2.0),
+          padding: const EdgeInsets.only(right: 15.0),
           child: Align(
             alignment: Alignment.centerRight,
             child: SizedBox(

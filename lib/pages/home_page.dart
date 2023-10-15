@@ -12,13 +12,13 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
-import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
@@ -64,7 +64,6 @@ import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_vie
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -201,128 +200,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      late String? fileBase64Encoded;
-
-      final shortenText = ShortenText();
-
-      final details = await PickerModel()
-                        .galleryPicker(source: ImageSource.both);
-      
-      if(details == null) {
-        return;
-      }
-
-      int countSelectedFiles = details.selectedFiles.length;
-
-      if (countSelectedFiles == 0) {
-        return;
-      }
-
-      if (!mounted) return; 
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-      if(storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!) {
-        _showUpgradeExceededDialog();
-        return;
-        
-      }
-
-      if(tempData.origin != OriginFile.public) {
-        await CallNotify()
-          .uploadingNotification(numberOfFiles: countSelectedFiles);
-      }
-
-      if(countSelectedFiles > 2) {
-        SnakeAlert.uploadingSnake(
-          snackState: scaffoldMessenger, 
-          message: "Uploading $countSelectedFiles item(s)...");
-      }
-
-      for(var filesPath in details.selectedFiles) {
-
-        final pathToString = filesPath.selectedFile.toString().
-                              split(" ").last.replaceAll("'", "");
-        
-        final filesName = pathToString.split("/").last.replaceAll("'", "");
-        final fileExtension = filesName.split('.').last;
-
-        if (!Globals.supportedFileTypes.contains(fileExtension)) {
-          CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
-          await NotificationApi.stopNotification(0);
-          continue;
-        }
-
-        if (storageData.fileNamesList.contains(filesName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.");
-          await NotificationApi.stopNotification(0);
-          continue;
-        } 
-
-        if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
-          SnakeAlert.uploadingSnake(
-            snackState: scaffoldMessenger, 
-            message: "Uploading ${shortenText.cutText(filesName)}"); 
-        }
-
-        if (!(Globals.imageType.contains(fileExtension))) {
-          final compressedFileByte = CompressorApi.compressFile(pathToString);
-          fileBase64Encoded = base64.encode(compressedFileByte);
-        } else {
-          final filesBytes = File(pathToString).readAsBytesSync();
-          fileBase64Encoded = base64.encode(filesBytes);
-        }
-
-        if (Globals.imageType.contains(fileExtension)) {
-
-          List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
-          String compressedImageBase64Encoded = base64.encode(bytes);
-
-          await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
-
-        } else if (Globals.videoType.contains(fileExtension)) {
-
-          final generatedThumbnail = await GenerateThumbnail(
-            fileName: filesName, 
-            filePath: pathToString
-          ).generate();
-
-          final thumbnailBytes = generatedThumbnail[0] as Uint8List;
-          final thumbnailFile = generatedThumbnail[1] as File;
-
-          await UpdateListView().processUpdateListView(
-            filePathVal: pathToString, 
-            selectedFileName: filesName, 
-            tableName: GlobalsTable.homeVideo, 
-            fileBase64Encoded: fileBase64Encoded,
-            newFileToDisplay: thumbnailFile,
-            thumbnailBytes: thumbnailBytes
-          );
-
-          await thumbnailFile.delete();
-
-        }
-
-        UpdateListView().addItemDetailsToListView(fileName: filesName);
-
-        scaffoldMessenger.hideCurrentSnackBar();
-
-        if(countSelectedFiles < 2) {
-
-          SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(filesName)} Has been added.");
-          countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
-
-        }
-
-      }
-
-      await NotificationApi.stopNotification(0);
-
-      if(countSelectedFiles >= 2) {
-
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${countSelectedFiles.toString()} Items has been added");
-        countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
-
-      }
+      await UploadDialog(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+        publicStorageUploadPage: _openPsUploadPage
+      ).galleryDialog();
 
       _itemSearchingImplementation('');
 
@@ -341,174 +222,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-        late String? fileBase64;
-        late File? newFileToDisplayPath;
-
-        final shortenText = ShortenText();
-
-        final resultPicker = await PickerModel().filePicker();
-        if (resultPicker == null) {
-          return;
-        }
-
-        if(!mounted) return;
-        final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-        int countSelectedFiles = resultPicker.files.length;
-
-        final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
-        final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-
-        if (tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
-          _showUpgradeExceededDialog();
-          return;
-
-        } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
-          _showUpgradeExceededDialog();
-          return;
-          
-        }
-
-        if(tempData.origin != OriginFile.public) {
-          await CallNotify()
-            .uploadingNotification(numberOfFiles: countSelectedFiles);
-        }
-
-        if(countSelectedFiles > 2) {
-          SnakeAlert.uploadingSnake(
-            snackState: scaffoldMessenger, 
-            message: "Uploading $countSelectedFiles item(s)..."
-          );
-        } 
-
-        for (final pickedFile in resultPicker.files) {
-
-          final selectedFileName = pickedFile.name;
-          final fileExtension = selectedFileName.split('.').last;
-
-          if (!Globals.supportedFileTypes.contains(fileExtension)) {
-            CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
-            await NotificationApi.stopNotification(0);
-
-            if(tempData.origin == OriginFile.public) 
-            { return; } else { continue; }
-
-          }
-
-          if (storageData.fileNamesList.contains(selectedFileName)) {
-            CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
-            await NotificationApi.stopNotification(0);
-
-            if(tempData.origin == OriginFile.public) 
-            { return; } else { continue; }
-
-          }
-
-          if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
-            SnakeAlert.uploadingSnake(
-              snackState: scaffoldMessenger, 
-              message: "Uploading ${shortenText.cutText(selectedFileName)}"
-            ) ;
-
-          }
-
-          final filePathVal = pickedFile.path.toString();
-
-          if (!(Globals.imageType.contains(fileExtension))) {
-            final compressedFileBytes = CompressorApi.compressFile(filePathVal);
-            fileBase64 = base64.encode(compressedFileBytes);
-          }
-
-          if (Globals.imageType.contains(fileExtension)) {
-
-            final compressQuality = tempData.origin 
-              == OriginFile.public ? 71 : 85;
-
-            List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
-            String compressedImageBase64Encoded = base64.encode(bytes);
-
-            if(tempData.origin == OriginFile.public) {
-              _openPsUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
-              return;
-            }
-
-            await UpdateListView().processUpdateListView(
-              filePathVal: filePathVal, 
-              selectedFileName: selectedFileName, 
-              tableName: GlobalsTable.homeImage, 
-              fileBase64Encoded: compressedImageBase64Encoded
-            );
-
-          } else if (Globals.videoType.contains(fileExtension)) {
-
-            final generatedThumbnail = await GenerateThumbnail(
-              fileName: selectedFileName, 
-              filePath: filePathVal
-            ).generate();
-
-            final thumbnailBytes = generatedThumbnail[0] as Uint8List;
-            final thumbnailFile = generatedThumbnail[1] as File;
-
-            newFileToDisplayPath = thumbnailFile;
-
-            if(tempData.origin == OriginFile.public) {
-
-              _openPsUploadPage(
-                filePathVal: filePathVal, fileName: selectedFileName, 
-                tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
-                newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
-              );
-
-              return;
-
-            }
-
-            await UpdateListView().processUpdateListView(
-              filePathVal: filePathVal, selectedFileName: selectedFileName, 
-              tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
-              newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
-            );
-
-            await thumbnailFile.delete();
-
-          } else {
-
-            final getFileTable = tempData.origin == OriginFile.home 
-              ? Globals.fileTypesToTableNames[fileExtension]! 
-              : Globals.fileTypesToTableNamesPs[fileExtension]!;
-
-            newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
-
-            if(tempData.origin == OriginFile.public) {
-              _openPsUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
-              return;
-            }
-
-            await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
-          }
-
-          UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
-
-          scaffoldMessenger.hideCurrentSnackBar();
-
-          if(countSelectedFiles < 2) {
-            SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
-          }
-
-        }
-
-      if(countSelectedFiles > 2) {
-        SnakeAlert.temporarySnake(
-          snackState: scaffoldMessenger, 
-          message: "${countSelectedFiles.toString()} Items has been added"
-        );
-      }
-
-      await NotificationApi.stopNotification(0);
-
-      if(countSelectedFiles > 0) {
-        await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles);
-      }
+      await UploadDialog(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+        publicStorageUploadPage: _openPsUploadPage
+      ).filesDialog();
 
       _itemSearchingImplementation('');
 
@@ -527,60 +244,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final folderPath = await FilePicker.platform.getDirectoryPath();
-
-      if (folderPath == null) {
-        return;
-      }
-
-      final folderName = path.basename(folderPath);
-
-      if (storageData.foldersNameList.contains(folderName)) {
-        CustomFormDialog.startDialog("Upload Failed", "$folderName already exists.");
-        return;
-      }
-
-      await CallNotify().customNotification(title: "Uploading folder...", subMesssage: "${ShortenText().cutText(folderName)} In progress");
-
-      if(!mounted) return;
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text("Uploading $folderName folder..."),
-          backgroundColor: ThemeColor.mediumGrey,
-        ),
-      );
-
-      final files = Directory(folderPath).listSync().whereType<File>().toList();
-
-      if(files.length == AccountPlan.mapFilesUpload[userData.accountType]) {
-        CustomFormDialog.startDialog("Couldn't upload $folderName", "It looks like the number of files in this folder exceeded the number of file you can upload. Please upgrade your account plan.");
-        return;
-      }
-
-      await UpdateListView().insertFileDataFolder(
-        folderPath: folderPath, 
-        folderName: folderName, 
-        files: files
-      );
-
-      await NotificationApi.stopNotification(0);
-
-      scaffoldMessenger.hideCurrentSnackBar();
-      scaffoldMessenger.showSnackBar(
-        SnackBar(
-          content: Text("Folder $folderName has been added"),
-          duration: const Duration(seconds: 2),
-          backgroundColor: ThemeColor.mediumGrey,
-        ),
-      );
-
-      await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
+      await UploadDialog(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+        publicStorageUploadPage: _openPsUploadPage
+      ).foldersDialog();
 
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadFolder {main}',err,st);
     }
+    
   }
 
   Future<void> _initializeDocumentScanner() async {
@@ -2095,11 +1767,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       folderOnPressed: () async {
 
         if(storageData.foldersNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
-          await _openDialogUploadFolder();
-          
+
           if(!mounted) return;
           Navigator.pop(context);
 
+          await _openDialogUploadFolder();
+          
         } else {
           UpgradeDialog.buildUpgradeBottomSheet(
             message: "You're currently limited to ${AccountPlan.mapFoldersUpload[userData.accountType]} folders upload. Upgrade your account plan to upload more folder.",
