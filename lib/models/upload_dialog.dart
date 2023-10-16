@@ -250,7 +250,7 @@ class UploadDialog {
       if (Globals.imageType.contains(fileExtension)) {
 
         final compressQuality = tempData.origin 
-          == OriginFile.public ? 71 : 85;
+            == OriginFile.public ? 71 : 85;
 
         List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
         String compressedImageBase64Encoded = base64.encode(bytes);

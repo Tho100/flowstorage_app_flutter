@@ -14,6 +14,7 @@ class GenerateThumbnail {
   });
 
   Future<List<dynamic>> generate() async {
+
     String setupThumbnailName = fileName.replaceRange(fileName.lastIndexOf("."), fileName.length, ".jpeg");
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -23,10 +24,11 @@ class GenerateThumbnail {
     String tempThumbnailPath = '${tempDir.path}/$setupThumbnailName';
 
     File thumbnailFile = File(tempThumbnailPath);
+
     final thumbnailBytes = await VideoThumbnail.thumbnailData(
       video: filePath,
       imageFormat: ImageFormat.JPEG,
-      quality: 40,
+      quality: 25,
     );
 
     await thumbnailFile.writeAsBytes(thumbnailBytes!);
@@ -34,6 +36,7 @@ class GenerateThumbnail {
     await thumbnailFile.copy(thumbnailPath);
 
     return [thumbnailBytes, thumbnailFile];
+    
   }
 
 }

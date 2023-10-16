@@ -24,7 +24,7 @@ class PreviewPdfState extends State<PreviewPdf> {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<Uint8List> _callPDFDataAsync() async {
+  Future<Uint8List> callPDFDataAsync() async {
 
     try {
       
@@ -51,22 +51,26 @@ class PreviewPdfState extends State<PreviewPdf> {
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<Uint8List>(
-        future: _callPDFDataAsync(),
+        future: callPDFDataAsync(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+
             return SfPdfViewer.memory(
               snapshot.data!,
               enableDoubleTapZooming: true,
               enableTextSelection: true,
             );
+
           } else if (snapshot.hasError) {
             return FailedLoad.buildFailedLoad();
+
           } else {
             return LoadingFile.buildLoading();
+
           }
         }, 
       ),

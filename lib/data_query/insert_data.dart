@@ -18,21 +18,23 @@ class InsertData {
 
   final psUploadData = GetIt.instance<PsUploadDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
-  
+
   Future<void> insertValueParams({
     required String tableName,
     required String fileName,
     required String userName,
-    required dynamic fileVal,
-    dynamic vidThumb,
+    required dynamic fileValue,
+    required dynamic videoThumbnail,
   }) async {
 
     final conn = await SqlConnection.initializeConnection();
 
     final encryptedFilePath = encryption.encrypt(fileName);
-    final encryptedFileVal = encryption.encrypt(fileVal);
+    final encryptedFileVal = encryption.encrypt(fileValue);
 
-    final thumb = vidThumb != null ? base64.encode(vidThumb) : null;
+    final thumb = videoThumbnail != null 
+        ? base64.encode(videoThumbnail) 
+        : null;
 
     switch (tableName) {
 
@@ -44,16 +46,15 @@ class InsertData {
       case GlobalsTable.homeExcel:
       case GlobalsTable.homeWord:
       case GlobalsTable.homeExe:
-
-        await insertFileInfo(conn,tableName,encryptedFilePath,userName,encryptedFileVal);
+        await insertFileInfo(conn, tableName, encryptedFilePath, userName, encryptedFileVal);
         break;
 
       case GlobalsTable.homeVideo:
-        await insertVideoInfo(conn,tableName,encryptedFilePath,userName,encryptedFileVal,thumb);
+        await insertVideoInfo(conn, tableName, encryptedFilePath, userName, encryptedFileVal,thumb);
         break;
 
       case GlobalsTable.directoryUploadTable:
-        await insertDirectoryInfo(conn,tableName,userName,encryptedFileVal, tempData.directoryName,encryptedFilePath,thumb, fileName);
+        await insertDirectoryInfo(conn,tableName,userName, encryptedFileVal, tempData.directoryName,encryptedFilePath,thumb, fileName);
         break;
 
       case GlobalsTable.psText:
@@ -69,7 +70,7 @@ class InsertData {
         break;
 
       case GlobalsTable.psVideo:
-        await insertVideoInfoPs(conn,encryptedFilePath,userName,encryptedFileVal,thumb);
+        await insertVideoInfoPs(conn, encryptedFilePath, userName, encryptedFileVal, thumb);
         break;
 
       default:

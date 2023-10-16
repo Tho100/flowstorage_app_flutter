@@ -28,7 +28,7 @@ class ExternalApp {
       await tempFile.writeAsBytes(bytes, flush: true);
 
       String filePath = tempFile.path;
-      final OpenResult result = await OpenFile.open(filePath);
+      final result = await OpenFile.open(filePath);
 
       return result;
       

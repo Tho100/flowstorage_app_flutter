@@ -10,13 +10,10 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 
 class ResetAuthentication extends StatefulWidget {
 
-  final curPassController = TextEditingController();
-  final newPassController = TextEditingController();
-
   final String custUsername;
   final String custEmail;
 
-  ResetAuthentication({
+  const ResetAuthentication({
     Key? key,
     required this.custUsername,
     required this.custEmail,
@@ -29,8 +26,10 @@ class ResetAuthentication extends StatefulWidget {
 class ResetAuthenticationState extends State<ResetAuthentication> {
 
   final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
+  final curPassController = TextEditingController();
+  final newPassController = TextEditingController();
 
-  Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured, bool isPin) {
+  Widget _buildTextField(String hintText, TextEditingController controller, BuildContext context, bool isSecured, bool isPin) {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +46,7 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
-                controller: mainController,
+                controller: controller,
                 obscureText: isSecured == true ? !isVisible : true,
                 maxLines: 1,
                 decoration: GlobalsStyle.setupTextFieldDecoration(
@@ -85,20 +84,20 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter a new password", widget.newPassController, context, true, false),
+        _buildTextField("Enter a new password", newPassController, context, true, false),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Confirm your password", widget.curPassController, context, true, false),
+        _buildTextField("Confirm your password", curPassController, context, true, false),
         
         const SizedBox(height: 20),
 
         MainButton(
           text: "Update Password",
           onPressed: () async {
-            await _processResetPassword(
-              currentAuth: widget.curPassController.text, 
-              newAuth: widget.newPassController.text
+            await processResetPassword(
+              currentAuth: curPassController.text, 
+              newAuth: newPassController.text
             );
           }
         ),
@@ -107,7 +106,7 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
     );
   }
 
-  Future<void> _processResetPassword({
+  Future<void> processResetPassword({
     required String currentAuth, 
     required String newAuth
   }) async {
@@ -123,9 +122,9 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
         return;
       }
 
-      final getUsername = await _getUsername(widget.custEmail);
+      final getUsername = await getUsernameByEmail(widget.custEmail);
 
-      await _updateAuthPassword(newAuth, getUsername);
+      await updateAuthPassword(newAuth, getUsername);
 
       CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
 
@@ -134,7 +133,7 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
     }
   }
 
-  Future<void> _updateAuthPassword(String newAuth,String username) async {
+  Future<void> updateAuthPassword(String newAuth,String username) async {
 
     const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
     final params = {'newauth': AuthModel().computeAuth(newAuth), 'username': username};
@@ -143,7 +142,7 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
 
   }
 
-  Future<String> _getUsername(String custEmail) async {
+  Future<String> getUsernameByEmail(String custEmail) async {
 
     const selectUsername = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
     final params = {'email': custEmail};
@@ -160,6 +159,8 @@ class ResetAuthenticationState extends State<ResetAuthentication> {
 
   @override
   void dispose() {
+    newPassController.dispose();
+    curPassController.dispose();
     sufixIconVisibilityNotifier.dispose();
     super.dispose();
   }

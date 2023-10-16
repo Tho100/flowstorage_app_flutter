@@ -44,14 +44,14 @@ class ChangePasswordState extends State<ChangePassword> {
     super.dispose();
   }
 
-  Widget _buildTextField(
-    String hintText,
-    TextEditingController mainController,
-    BuildContext context,
-    bool isSecured,
-    bool isPin,
-    {ValueNotifier<bool>? valueNotifier}
-  ) {
+  Widget _buildTextField({
+    required String hintText,
+    required TextEditingController controller,
+    required BuildContext context,
+    required bool isSecured,
+    required bool isPin,
+    ValueNotifier<bool>? valueNotifier
+  }) {
 
     valueNotifier ??= ValueNotifier<bool>(false); 
 
@@ -70,7 +70,7 @@ class ChangePasswordState extends State<ChangePassword> {
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
-                controller: mainController,
+                controller: controller,
                 obscureText: isSecured == true ? !isVisible : true,
                 keyboardType: isPin == true ? TextInputType.number : TextInputType.text,
                 maxLength: isPin == true ? 3 : 3000,
@@ -109,22 +109,42 @@ class ChangePasswordState extends State<ChangePassword> {
         
         const SizedBox(height: 35),
 
-        _buildTextField("Enter a new password", newPassController, context, true, false,valueNotifier: valueNotifierNew),
+        _buildTextField(
+          hintText: "Enter a new password", 
+          controller: newPassController, 
+          context: context, 
+          isSecured: true, 
+          isPin: false, 
+          valueNotifier: valueNotifierNew
+        ),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your current password", curPassController, context, true, false,valueNotifier: valueNotifierCur),
+        _buildTextField(
+          hintText: "Enter your current password", 
+          controller: curPassController, 
+          context: context, 
+          isSecured: true, 
+          isPin: false,
+          valueNotifier: valueNotifierCur
+        ),
         
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your current PIN key", curPinController, context, false, true),
+        _buildTextField(
+          hintText: "Enter your current PIN key", 
+          controller: curPinController, 
+          context: context, 
+          isSecured: false, 
+          isPin: true
+        ),
 
         const SizedBox(height: 20),
 
         MainButton(
           text: "Update", 
           onPressed: () async {
-            await _processUpdatePassword(
+            await processUpdatePassword(
               currentAuth: curPassController.text, 
               newAuth: newPassController.text, 
               pinAuth: curPinController.text
@@ -136,7 +156,7 @@ class ChangePasswordState extends State<ChangePassword> {
     );
   }
 
-  Future<void> _processUpdatePassword({
+  Future<void> processUpdatePassword({
     required String currentAuth, 
     required String newAuth, 
     required String pinAuth
@@ -146,12 +166,12 @@ class ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
-    final authCase0 = await _verifyAuthInput(currentAuth, "CUST_PASSWORD");
-    final authCase1 = await _verifyAuthInput(pinAuth, "CUST_PIN");
+    final authCase0 = await verifyAuthInput(currentAuth, "CUST_PASSWORD");
+    final authCase1 = await verifyAuthInput(pinAuth, "CUST_PIN");
     
     if (!authCase0 && !authCase1) {
 
-      await _updateAuthPassword(newPasswordAuth: newAuth);
+      await updateAuthPassword(newPasswordAuth: newAuth);
 
       CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
 
@@ -165,7 +185,7 @@ class ChangePasswordState extends State<ChangePassword> {
 
   }
 
-  Future<bool> _verifyAuthInput(String inputStr, String columnName) async {
+  Future<bool> verifyAuthInput(String inputStr, String columnName) async {
 
     return await Verification().notEqual(
       userData.username, 
@@ -175,7 +195,7 @@ class ChangePasswordState extends State<ChangePassword> {
     
   }
 
-  Future<void> _updateAuthPassword({required String newPasswordAuth}) async {
+  Future<void> updateAuthPassword({required String newPasswordAuth}) async {
 
     const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
 

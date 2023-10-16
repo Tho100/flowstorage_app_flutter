@@ -15,10 +15,8 @@ import 'package:get_it/get_it.dart';
 
 class BackupRecovery extends StatelessWidget {
 
-  BackupRecovery({Key? key}) : super (key: key);
+  const BackupRecovery({Key? key}) : super (key: key);
   
-  final _locator = GetIt.instance;
-
   Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured, {bool isFromPin = false}) {
 
     final valueNotifier = ValueNotifier<bool>(false);
@@ -140,7 +138,7 @@ class BackupRecovery extends StatelessWidget {
 
     try {
 
-      final userData = _locator<UserDataProvider>();
+      final userData = GetIt.instance<UserDataProvider>();
 
       if(auth0.isEmpty && auth1.isEmpty) {
         return;

@@ -58,7 +58,8 @@ class CreateTextPageState extends State<CreateText> {
       tableName: table,
       fileName: filePath,
       userName: userData.username,
-      fileVal: fileValue,
+      fileValue: fileValue,
+      videoThumbnail: null
     ));
 
     await Future.wait(isolatedFileFutures);

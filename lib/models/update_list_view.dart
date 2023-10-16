@@ -46,8 +46,8 @@ class UpdateListView {
       tableName: table,
       fileName: filePath,
       userName: userData.username,
-      fileVal: fileValue,
-      vidThumb: vidThumbnail,
+      fileValue: fileValue,
+      videoThumbnail: vidThumbnail,
     ));
 
     await Future.wait(isolatedFileFutures);
