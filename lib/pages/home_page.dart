@@ -279,12 +279,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
       if(!mounted) return;
-      await scannerPdf.savePdf(fileName: generateFileName,context: context);
+      await scannerPdf.savePdf(fileName: generateFileName, context: context);
 
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/$generateFileName.pdf');
 
-      final compressedBytes = CompressorApi.compressFile(file.path.toString());
+      final compressedBytes = await CompressorApi.compressFile(file.path.toString());
       final toBase64Encoded = base64.encode(compressedBytes);
       final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
 
@@ -1400,7 +1400,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
       CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.");
       return;
-
     } 
 
     late final Uint8List fileData;

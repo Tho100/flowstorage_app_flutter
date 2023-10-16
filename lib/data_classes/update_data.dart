@@ -13,19 +13,17 @@ class UpdateValues  {
     required String tableName,
     required String filePath,
     required String userName,
-    required var newValue,
+    required dynamic newValue,
     required String columnName,
   }) async {
   
-    final tempData = GetIt.instance<TempDataProvider>();
-
     final conn = await SqlConnection.initializeConnection();
 
-    late final String encryptedFilePath;
-    late final String encryptedFileVal;
+    final encryption = EncryptionClass();
+    final tempData = GetIt.instance<TempDataProvider>();
 
-    encryptedFilePath = EncryptionClass().encrypt(filePath);
-    encryptedFileVal = EncryptionClass().encrypt(newValue);
+    final encryptedFilePath = encryption.encrypt(filePath);;
+    final encryptedFileVal = encryption.encrypt(newValue);
 
     if (tempData.origin == OriginFile.home) {
 
@@ -47,12 +45,7 @@ class UpdateValues  {
 
         await conn.execute(query, params);
 
-      } else if (tableName == "file_info_excel") {
-        final query = "UPDATE $tableName SET CUST_FILE = :newvalue WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        final params = {"username": userName, "newvalue": encryptedFileVal, "filename": encryptedFilePath};
-
-        await conn.execute(query, params);
-      }
+      } 
       
     } else if (tempData.origin == OriginFile.directory) {
 

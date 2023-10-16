@@ -81,7 +81,7 @@ class UpdateListView {
 
         videoThumbnails.add(thumbnailBase64);
 
-        final compressedFileData = CompressorApi.compressFile(folderFile.path);
+        final compressedFileData = await CompressorApi.compressFile(folderFile.path);
         final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
 
@@ -97,7 +97,7 @@ class UpdateListView {
 
       } else if (Globals.generalFileTypes.contains(getExtension)) {
 
-        final compressedFileData = CompressorApi.compressFile(folderFile.path.toString());
+        final compressedFileData = await CompressorApi.compressFile(folderFile.path.toString());
         final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
 

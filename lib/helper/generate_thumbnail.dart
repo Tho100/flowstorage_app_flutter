@@ -28,7 +28,7 @@ class GenerateThumbnail {
     final thumbnailBytes = await VideoThumbnail.thumbnailData(
       video: filePath,
       imageFormat: ImageFormat.JPEG,
-      quality: 25,
+      quality: 20,
     );
 
     await thumbnailFile.writeAsBytes(thumbnailBytes!);

@@ -107,10 +107,10 @@ class UploadDialog {
       }
 
       if (!(Globals.imageType.contains(fileExtension))) {
-        final compressedFileByte = CompressorApi.compressFile(pathToString);
+        final compressedFileByte = await CompressorApi.compressFile(pathToString);
         fileBase64Encoded = base64.encode(compressedFileByte);
       } else {
-        final filesBytes = File(pathToString).readAsBytesSync();
+        final filesBytes = await File(pathToString).readAsBytes();
         fileBase64Encoded = base64.encode(filesBytes);
       }
 
@@ -240,10 +240,10 @@ class UploadDialog {
 
       }
 
-      final filePathVal = pickedFile.path.toString();
+      final filePath = pickedFile.path.toString();
 
       if (!(Globals.imageType.contains(fileExtension))) {
-        final compressedFileBytes = CompressorApi.compressFile(filePathVal);
+        final compressedFileBytes = await CompressorApi.compressFile(filePath);
         fileBase64 = base64.encode(compressedFileBytes);
       }
 
@@ -252,16 +252,16 @@ class UploadDialog {
         final compressQuality = tempData.origin 
             == OriginFile.public ? 71 : 85;
 
-        List<int> bytes = await CompressorApi.compressedByteImage(path: filePathVal, quality: compressQuality);
+        List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
         String compressedImageBase64Encoded = base64.encode(bytes);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+          publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
           return;
         }
 
         await UpdateListView().processUpdateListView(
-          filePathVal: filePathVal, 
+          filePathVal: filePath, 
           selectedFileName: selectedFileName, 
           tableName: GlobalsTable.homeImage, 
           fileBase64Encoded: compressedImageBase64Encoded
@@ -271,7 +271,7 @@ class UploadDialog {
 
         final generatedThumbnail = await GenerateThumbnail(
           fileName: selectedFileName, 
-          filePath: filePathVal
+          filePath: filePath
         ).generate();
 
         final thumbnailBytes = generatedThumbnail[0] as Uint8List;
@@ -282,7 +282,7 @@ class UploadDialog {
         if(tempData.origin == OriginFile.public) {
 
           publicStorageUploadPage(
-            filePathVal: filePathVal, fileName: selectedFileName, 
+            filePathVal: filePath, fileName: selectedFileName, 
             tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
             newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
           );
@@ -292,7 +292,7 @@ class UploadDialog {
         }
 
         await UpdateListView().processUpdateListView(
-          filePathVal: filePathVal, selectedFileName: selectedFileName, 
+          filePathVal: filePath, selectedFileName: selectedFileName, 
           tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
           newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
         );
@@ -308,11 +308,11 @@ class UploadDialog {
         newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePathVal: filePathVal, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+          publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
           return;
         }
 
-        await UpdateListView().processUpdateListView(filePathVal: filePathVal, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+        await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
       }
 
       UpdateListView().addItemDetailsToListView(fileName: selectedFileName);

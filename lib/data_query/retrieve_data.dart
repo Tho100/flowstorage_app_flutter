@@ -78,7 +78,9 @@ class RetrieveData {
     }
 
     final row = (await fscDbCon.execute(query, queryParams)).rows.first;
-    final fileByteData = base64.decode(encryption.decrypt(row.assoc()['CUST_FILE']!));
+    
+    final decryptedData = encryption.decrypt(row.assoc()['CUST_FILE']!);
+    final fileByteData = base64.decode(decryptedData);
     final decompressedData = CompressorApi.decompressFile(fileByteData);
 
     return decompressedData.buffer.asUint8List(decompressedData.offsetInBytes, decompressedData.lengthInBytes);

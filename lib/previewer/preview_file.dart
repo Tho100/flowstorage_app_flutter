@@ -275,9 +275,8 @@ class PreviewFileState extends State<PreviewFile> {
       if (indexOldFileSearched != -1) {
 
         _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
-
-        if (!mounted) return;
         SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
+
       }
 
     } catch (err, st) {
@@ -371,7 +370,6 @@ class PreviewFileState extends State<PreviewFile> {
         
       } 
 
-      if(!mounted) return;
       SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
 
     } catch (err) {

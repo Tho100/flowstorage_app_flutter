@@ -167,15 +167,16 @@ class CreateTextPageState extends State<CreateText> {
       subMesssage: "${ShortenText().cutText(fileName)} Has been saved",
     );
 
-    if (!mounted) return;
-
     SnakeAlert.okSnake(
       message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved${tempData.origin == OriginFile.offline ? " as an offline file." : "."}",
       icon: Icons.check,
     );
 
     fileNameController.clear();
+
+    if(!mounted) return;
     Navigator.pop(context);
+    
   }
 
   Widget _buildTxt(BuildContext context) {
