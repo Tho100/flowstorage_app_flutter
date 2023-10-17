@@ -49,7 +49,7 @@ class PsStaggeredListView extends StatelessWidget {
         alignment: isFromDownload ? Alignment.bottomLeft : Alignment.bottomRight,
         child: SizedBox(
           width: isFromDownload ? 54 : 132, 
-          height: isFromDownload ? 40 : 42,
+          height: isFromDownload ? 38 : 40,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
@@ -185,7 +185,7 @@ class PsStaggeredListView extends StatelessWidget {
                 
                 Container(
                   width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 35,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 320,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 332,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(

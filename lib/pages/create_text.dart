@@ -186,18 +186,20 @@ class CreateTextPageState extends State<CreateText> {
 
   Widget _buildTxt(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 6.0, bottom: 16.0, right: 16, left: 16),
       child: TextFormField(
         autofocus: true,
         controller: textEditingController,
         enabled: textFormEnabled,
         keyboardType: TextInputType.multiline,
-          maxLines: null,
+          maxLines: 140,
+          maxLength: 3100,
           style: GoogleFonts.roboto(
-            color: const Color.fromARGB(255, 214, 213, 213),
+            color: const Color.fromARGB(255, 220, 220, 220),
             fontWeight: FontWeight.w500,
           ),
           decoration: const InputDecoration(
+            counterStyle: TextStyle(color: ThemeColor.secondaryWhite),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),

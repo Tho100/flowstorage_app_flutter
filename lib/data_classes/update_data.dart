@@ -29,7 +29,8 @@ class UpdateValues  {
 
   late String? encryptedFileName;
   late String? encryptedFileValue;
-  
+  late String? fileType;
+
   final encryption = EncryptionClass();
   final tempData = GetIt.instance<TempDataProvider>();
 
@@ -96,7 +97,7 @@ class UpdateValues  {
     encryptedFileName = encryption.encrypt(fileName);
     encryptedFileValue = encryption.encrypt(newValue);
 
-    final fileType = fileName.split('.').last;
+    fileType = fileName.split('.').last;
 
     if (tempData.origin == OriginFile.home) {
 
