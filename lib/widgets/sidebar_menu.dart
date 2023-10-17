@@ -209,14 +209,14 @@ class CustomSideBarMenu extends StatelessWidget {
               ),
 
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0, top: 8.0),
                 child: Container(
-                  height: 10,
-                  width: 260,
+                  height: 12,
+                  width: 265,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: ThemeColor.darkGrey,
+                      color: ThemeColor.darkBlack,
                       width: 2.0,
                     ),
                   ),
@@ -224,13 +224,13 @@ class CustomSideBarMenu extends StatelessWidget {
                     future: usageProgress,
                     builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LinearProgressIndicator(
-                          backgroundColor: Colors.grey[200],
+                        return const LinearProgressIndicator(
+                          backgroundColor: ThemeColor.lightGrey,
                         );
                       }
-                      final double progressValue = snapshot.data! / 100.0;
+                      final progressValue = snapshot.data! / 100.0;
                       return LinearProgressIndicator(
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: ThemeColor.lightGrey,
                         valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
                         value: progressValue,
                       );
