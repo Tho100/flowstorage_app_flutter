@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/rename_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -42,6 +43,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:open_file/open_file.dart';
 
 class PreviewFile extends StatefulWidget {
 
@@ -163,6 +165,22 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  void _openWithOnPressed() async {
+
+    final result = await ExternalApp(
+      fileName: tempData.selectedFileName, 
+      bytes: tempData.fileByteData
+    ).openFileInExternalApp();
+
+    if(result.type != ResultType.done) {
+      CustomFormDialog.startDialog(
+        "Couldn't open ${tempData.selectedFileName}",
+        "No default app to open this file found."
+      );
+    }
+
+  }
+
   void _onDeletePressed(String fileName) async {
 
     final fileExtension = fileName.split('.').last;
@@ -247,6 +265,9 @@ class PreviewFileState extends State<PreviewFile> {
         Navigator.pop(context);
         await _makeAvailableOffline(fileName: tempData.selectedFileName);
       }, 
+      onOpenWithPressed: () {
+        _openWithOnPressed();
+      },
       context: context
     );
   }
@@ -749,6 +770,13 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  Widget _buildOpenWithIconButton() {
+    return IconButton(
+      onPressed: _openWithOnPressed,
+      icon: const Icon(Icons.open_in_new_outlined),
+    );
+  }
+
   Widget _buildAppBarTitle() {
 
     if (filesWithCustomHeader.contains(currentTable)) {
@@ -1013,9 +1041,12 @@ Widget _uploadedByText() {
 
                   if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
                   _buildCommentIconButtonAudio(),
-  
+
+                  if(currentTable == GlobalsTable.homePdf || currentTable == GlobalsTable.psPdf)
+                  _buildOpenWithIconButton(),
+
                   _buildInfoIconButton(),
-                  _buildMoreIconButton()
+                  _buildMoreIconButton(),
 
                 ],
                 titleSpacing: 0,
@@ -1029,6 +1060,8 @@ Widget _uploadedByText() {
       ),
     );
   }
+
+
 
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));

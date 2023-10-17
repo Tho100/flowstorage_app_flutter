@@ -25,6 +25,7 @@ class BottomTrailingOptions {
     required VoidCallback onDeletePressed,
     required VoidCallback onSharingPressed,
     required VoidCallback onAOPressed,
+    required VoidCallback onOpenWithPressed,
     required BuildContext context
   }) {
 
@@ -110,6 +111,23 @@ class BottomTrailingOptions {
             ),
           ),
         ),
+
+        if(fileName.split('.').last == "pdf" || Globals.textType.contains(fileName.split('.').last))
+        ElevatedButton(
+          onPressed: onOpenWithPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.open_in_new_outlined),
+              SizedBox(width: 15.0),
+              Text(
+                "Open With",
+                style: GlobalsStyle.btnBottomDialogTextStyle,
+              ),
+            ],
+          ),
+        ),
+        
 
         Visibility(
           visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,

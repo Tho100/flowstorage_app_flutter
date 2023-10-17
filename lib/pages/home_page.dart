@@ -1684,6 +1684,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         Navigator.pop(context);
         await _makeAvailableOffline(fileName: fileName);
       }, 
+      onOpenWithPressed: () {
+        _openExternalFileOnSelect(fileName.split('.').last);
+      },
       context: context
     );
   }
