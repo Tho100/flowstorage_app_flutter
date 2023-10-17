@@ -121,7 +121,7 @@ class CreateTextPageState extends State<CreateText> {
       final compressedFileBase64 = base64.encode(compressedFileBytes);
       
       if (tempData.origin == OriginFile.offline) {
-        _createTextFileOnOffline(fileName, inputValue);
+        _createTextFileOnOffline(fileName, compressedFileBase64);
         return;
 
       } else {
@@ -147,10 +147,10 @@ class CreateTextPageState extends State<CreateText> {
     OfflineMode().saveOfflineTextFile(
       inputValue: inputValue,
       fileName: fileName,
-      isFromCreateTxt: true,
     );
 
     _updateUIAfterSave(fileName);
+
   }
 
   void _updateUIAfterSave(String fileName) async {

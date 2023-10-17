@@ -386,7 +386,6 @@ class PreviewFileState extends State<PreviewFile> {
         OfflineMode().saveOfflineTextFile(
           inputValue: changesUpdate, 
           fileName: tempData.selectedFileName, 
-          isFromCreateTxt: false
         );
         
       } 
@@ -501,10 +500,10 @@ class PreviewFileState extends State<PreviewFile> {
               await _callFileDownload(fileName: tempData.selectedFileName);
 
             } else if (buttonType == "comment") {
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
-              );
+
+              NavigatePage.goToPageFileComment(
+                context, tempData.selectedFileName);
+
             } else if (buttonType == "share") {
               
               NavigatePage.goToPageSharing(
@@ -515,8 +514,7 @@ class PreviewFileState extends State<PreviewFile> {
               final textValue = textController.text;
 
               if(textValue.isNotEmpty && currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText && tempData.origin == OriginFile.offline) {
-
-                await _updateTextChanges(textValue,context);
+                await _updateTextChanges(textValue, context);
                 return;
               } 
 
@@ -906,6 +904,18 @@ Widget _uploadedByText() {
   
               const Spacer(),
   
+              Visibility(
+                visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
+                child: _buildBottomButtons(
+                  textStyle: const Icon(Icons.save, size: 22), 
+                  color: ThemeColor.darkPurple, 
+                  width: 60, 
+                  height: 45,
+                  buttonType: "save",
+                  context: context
+                ),
+              ),
+
               _buildBottomButtons(
                 textStyle: const Icon(Icons.download, size: 22), 
                 color: ThemeColor.darkPurple, 

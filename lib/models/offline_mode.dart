@@ -70,10 +70,9 @@ class OfflineMode {
   void saveOfflineTextFile({
     required String inputValue, 
     required String fileName, 
-    required bool isFromCreateTxt
   }) async {
 
-    final toUtf8Bytes = utf8.encode(inputValue);
+    final decodeContent = base64.decode(inputValue);
 
     final getDirApplication = await getApplicationDocumentsDirectory();
     final offlineDirPath = Directory('${getDirApplication.path}/offline_files');
@@ -83,7 +82,8 @@ class OfflineMode {
     }
 
     final setupFiles = File('${offlineDirPath.path}/$fileName');
-    await setupFiles.writeAsBytes(toUtf8Bytes);
+    await setupFiles.writeAsBytes(decodeContent);
+
   }
 
   Future<void> downloadFile(String fileName) async {
@@ -121,15 +121,17 @@ class OfflineMode {
   }
 
   Future<Uint8List> loadOfflineFileByte(String fileName) async {
-    
-    final offlineDirsPath = await OfflineMode().returnOfflinePath();
 
+    final offlineDirsPath = await OfflineMode().returnOfflinePath();
+    
     final file = File('${offlineDirsPath.path}/$fileName');
 
     if (await file.exists()) {
-      final decompressedFileBytes = CompressorApi
-                .decompressFile(file.readAsBytesSync());
-      return decompressedFileBytes;
+      final fileContent = await file.readAsBytes();
+      final decompressedContent = CompressorApi.
+            decompressFile(fileContent);
+
+      return decompressedContent;
 
     } else {
       throw Exception('File not found');

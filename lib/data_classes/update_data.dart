@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:get_it/get_it.dart';
 
@@ -22,7 +25,7 @@ class UpdateValues  {
     final encryption = EncryptionClass();
     final tempData = GetIt.instance<TempDataProvider>();
 
-    final encryptedFilePath = encryption.encrypt(filePath);;
+    final encryptedFilePath = encryption.encrypt(filePath);
     final encryptedFileVal = encryption.encrypt(newValue);
 
     if (tempData.origin == OriginFile.home) {
@@ -37,15 +40,36 @@ class UpdateValues  {
       } else if (tableName == GlobalsTable.homeText) {
 
         final List<int> getUnits = newValue.codeUnits;  
-        final String getEncodedVers = base64.encode(getUnits);
-        final encryptedFileValText = EncryptionClass().encrypt(getEncodedVers);
+
+        final base64StringTextData = base64.encode(getUnits);
+        final compressedTextData = CompressorApi.compressByte(base64.decode(base64StringTextData));
+
+        final compressedBase64TextData = base64.encode(compressedTextData);
+        final encryptedFileText = encryption.encrypt(compressedBase64TextData);
 
         final query = "UPDATE $tableName SET CUST_FILE = :newvalue WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        final params = {"username": userName, "newvalue": encryptedFileValText, "filename": encryptedFilePath};
+        final params = {"username": userName, "newvalue": encryptedFileText, "filename": encryptedFilePath};
 
         await conn.execute(query, params);
 
-      } 
+      } else if (tableName == GlobalsTable.homeText && tempData.origin == OriginFile.offline) {
+
+        /*final List<int> getUnits = newValue.codeUnits;  
+
+        final base64StringTextData = base64.encode(getUnits);
+        final compressedTextData = CompressorApi.compressByte(base64.decode(base64StringTextData));
+
+        final compressedBase64TextData = base64.encode(compressedTextData);
+
+        final offlineDir = await OfflineMode().returnOfflinePath();
+        final textFile = File("$offlineDir/$filePath");
+
+        String content = textFile.readAsStringSync();*/
+        //print(content);
+
+        // update text file
+
+      }
       
     } else if (tempData.origin == OriginFile.directory) {
 
