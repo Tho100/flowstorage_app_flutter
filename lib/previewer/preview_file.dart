@@ -367,28 +367,17 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Future<void> _updateTextChanges(String changesUpdate,BuildContext context) async {
+  Future<void> _updateTextChanges(String changesUpdate, BuildContext context) async {
 
     try {
 
-      if(tempData.origin != OriginFile.offline) {
-
-        await UpdateValues().insertValueParams(
-          tableName: currentTable, 
-          filePath: tempData.selectedFileName, 
-          userName: userData.username, 
-          newValue: changesUpdate,
-          columnName: "null",
-        );
-
-      } else {
-
-        OfflineMode().saveOfflineTextFile(
-          inputValue: changesUpdate, 
-          fileName: tempData.selectedFileName, 
-        );
-        
-      } 
+      await UpdateValues(
+        fileName: tempData.selectedFileName, 
+        tableName: currentTable,
+        userName: userData.username,
+        newValue: changesUpdate,
+        columnName: "null"
+      ).updateDataValues();
 
       SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
 
@@ -512,8 +501,9 @@ class PreviewFileState extends State<PreviewFile> {
             } else if (buttonType == "save") {
               
               final textValue = textController.text;
+              final isTextType = Globals.textType.contains(tempData.selectedFileName.split('.').last);
 
-              if(textValue.isNotEmpty && currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText && tempData.origin == OriginFile.offline) {
+              if(textValue.isNotEmpty && isTextType) {
                 await _updateTextChanges(textValue, context);
                 return;
               } 

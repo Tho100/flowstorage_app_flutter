@@ -51,18 +51,24 @@ class CreateTextPageState extends State<CreateText> {
     required String filePath,
     required dynamic fileValue,
   }) async {
+
+    try {
     
-    List<Future<void>> isolatedFileFutures = [];
+      List<Future<void>> isolatedFileFutures = [];
 
-    isolatedFileFutures.add(InsertData().insertValueParams(
-      tableName: table,
-      fileName: filePath,
-      userName: userData.username,
-      fileValue: fileValue,
-      videoThumbnail: null
-    ));
+      isolatedFileFutures.add(InsertData().insertValueParams(
+        tableName: table,
+        fileName: filePath,
+        userName: userData.username,
+        fileValue: fileValue,
+        videoThumbnail: null
+      ));
 
-    await Future.wait(isolatedFileFutures);
+      await Future.wait(isolatedFileFutures);
+
+    } catch (err) {
+      _createTextFileOnOffline(filePath, fileValue);
+    }
 
   }
 
@@ -136,7 +142,6 @@ class CreateTextPageState extends State<CreateText> {
       _updateUIAfterSave(fileName);
 
     } catch (err, st) {
-      _createTextFileOnOffline(fileName, inputValue);
       logger.e("Exception from _saveText {create_text}", err, st);
 
     }
