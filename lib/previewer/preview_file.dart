@@ -333,7 +333,7 @@ class PreviewFileState extends State<PreviewFile> {
       return const PreviewVideo();
 
     } else if (fileType == "pdf") {
-      return const PreviewPdf();
+      return PreviewPdf();
 
     } else {
       return _buildPreviewerUnavailable();

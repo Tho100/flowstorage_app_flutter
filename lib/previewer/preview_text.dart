@@ -14,23 +14,11 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 
-
-class PreviewText extends StatefulWidget {
+class PreviewText extends StatelessWidget {
 
   final TextEditingController controller;
 
-  const PreviewText({
-    super.key,
-    required this.controller
-  });
-
-  @override
-  State<PreviewText> createState() => PreviewTextState();
-}
-
-class PreviewTextState extends State<PreviewText> {
-
-  static final textController = TextEditingController();
+  PreviewText({super.key, required this.controller});
 
   final tempData = GetIt.instance<TempDataProvider>();
 
@@ -68,10 +56,10 @@ class PreviewTextState extends State<PreviewText> {
       future: callTextDataAsync(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {        
-          widget.controller.text = utf8.decode(snapshot.data!);
+          controller.text = utf8.decode(snapshot.data!);
           return Padding(
             padding: const EdgeInsets.all(14.0),
-            child: TextFormField(controller: widget.controller,
+            child: TextFormField(controller: controller,
             keyboardType: TextInputType.multiline,
               maxLines: null,
               style: GoogleFonts.roboto(
@@ -89,10 +77,13 @@ class PreviewTextState extends State<PreviewText> {
               ),
             ),
           );
+
         } else if (snapshot.hasError) {
           return FailedLoad.buildFailedLoad();
+
         } else {
           return LoadingFile.buildLoading();
+
         }
       },
     );

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
@@ -8,26 +9,20 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/widgets/failed_load.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class PreviewPdf extends StatefulWidget {
-  
-  const PreviewPdf({super.key});
+class PreviewPdf extends StatelessWidget {
 
-  @override
-  State<PreviewPdf> createState() => PreviewPdfState();
-}
-
-class PreviewPdfState extends State<PreviewPdf> {
+  PreviewPdf({super.key});
 
   final tempData = GetIt.instance<TempDataProvider>();
 
   Future<Uint8List> callPDFDataAsync() async {
 
     try {
-      
+
       if(tempData.origin != OriginFile.offline) {
 
         final fileData = await CallPreviewData().callDataAsync(
@@ -49,6 +44,7 @@ class PreviewPdfState extends State<PreviewPdf> {
       Logger().e("Exception from _callData {PreviewPdf}", err, st);
       return Future.value(Uint8List(0));
     }
+
   }
 
   @override
@@ -57,23 +53,24 @@ class PreviewPdfState extends State<PreviewPdf> {
       child: FutureBuilder<Uint8List>(
         future: callPDFDataAsync(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-
-            return SfPdfViewer.memory(
-              snapshot.data!,
-              enableDoubleTapZooming: true,
-              enableTextSelection: true,
-            );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return LoadingFile.buildLoading();
 
           } else if (snapshot.hasError) {
             return FailedLoad.buildFailedLoad();
 
           } else {
-            return LoadingFile.buildLoading();
+            return PDFView(
+              pdfData: snapshot.data!,
+              swipeHorizontal: true,
+              fitPolicy: FitPolicy.WIDTH,
+              preventLinkNavigation: false,
+            );
 
           }
-        }, 
+        },
       ),
     );
   }
+
 }

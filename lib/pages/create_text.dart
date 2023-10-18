@@ -145,6 +145,7 @@ class CreateTextPageState extends State<CreateText> {
       logger.e("Exception from _saveText {create_text}", err, st);
 
     }
+    
   }
 
   void _createTextFileOnOffline(String fileName, String inputValue) {

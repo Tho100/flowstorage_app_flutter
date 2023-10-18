@@ -24,9 +24,9 @@ dependencies:
   webview_flutter: ^4.0.7
   clipboard: ^0.1.3
   google_fonts: ^4.0.3
+  flutter_pdfview: ^1.3.2
   syncfusion_flutter_charts: ^21.1.39
   flutter_launcher_icons: ^0.13.1
-  syncfusion_flutter_pdfviewer: ^21.1.41
   just_audio: ^0.9.32 
   video_player: ^2.6.1
   flutter_native_image: ^0.0.6+1
