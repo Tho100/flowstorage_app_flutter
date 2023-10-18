@@ -12,10 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'dart:math' as math;
 
 class PreviewPdf extends StatelessWidget {
 
-  PreviewPdf({super.key});
+  PreviewPdf({Key? key}) : super(key: key);
 
   final tempData = GetIt.instance<TempDataProvider>();
 
@@ -60,11 +61,15 @@ class PreviewPdf extends StatelessWidget {
             return FailedLoad.buildFailedLoad();
 
           } else {
-            return PDFView(
-              pdfData: snapshot.data!,
-              swipeHorizontal: true,
-              fitPolicy: FitPolicy.WIDTH,
-              preventLinkNavigation: false,
+            return Transform(
+              transform: Matrix4.rotationZ(math.pi),
+              alignment: Alignment.center,
+              child: PDFView(
+                pdfData: snapshot.data!,
+                swipeHorizontal: true,
+                fitPolicy: FitPolicy.WIDTH,
+                preventLinkNavigation: false,
+              ),
             );
 
           }

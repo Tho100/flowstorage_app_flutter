@@ -272,6 +272,7 @@ class SplashScreenState extends State<SplashScreen> {
     accountInfo.add(accountType);
 
     return accountInfo;
+
   }
 
   Future<void> _callData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType,BuildContext context) async {
@@ -280,9 +281,9 @@ class SplashScreenState extends State<SplashScreen> {
 
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);
-      userData.setAccountType(savedAccountType);
       
       final accountType = await accountInformationRetriever.retrieveAccountType(email: savedCustEmail);
+      
       userData.setAccountType(accountType);
 
       final dirListCount = await crud.countUserTableRow(GlobalsTable.directoryInfoTable);

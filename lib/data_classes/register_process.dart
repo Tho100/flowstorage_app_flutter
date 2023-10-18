@@ -1,5 +1,4 @@
 
-import 'package:flowstorage_fsc/api/email_api.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
@@ -16,7 +15,7 @@ import 'dart:io';
 class RegisterUser {
 
   Future<void> insertParams({
-    required String? userName, 
+    required String? userName,
     required String? auth0, 
     required String? email,
     required String? auth1,
@@ -95,13 +94,8 @@ class RegisterUser {
         params: param,
       );
     }
-
-    final emailSent = await EmailApi() 
-                            .sendFinishedRegistration(email: email!);
     
-    if(emailSent == true) {
-      NavigatePage.permanentPageMainboard(context);
-    }
+    NavigatePage.permanentPageMainboard(context);
 
     auth0 = null;
     userName = null;
@@ -135,7 +129,7 @@ class RegisterUser {
     } 
   }
 
-  Future<void> setupAutoLogin(String custUsername,String email) async {
+  Future<void> setupAutoLogin(String custUsername, String email) async {
     
     const accountType = "Basic";
     

@@ -18,7 +18,9 @@ class PreviewText extends StatelessWidget {
 
   final TextEditingController controller;
 
-  PreviewText({super.key, required this.controller});
+  PreviewText({
+    Key? key, required this.controller
+  }) : super(key: key);
 
   final tempData = GetIt.instance<TempDataProvider>();
 
