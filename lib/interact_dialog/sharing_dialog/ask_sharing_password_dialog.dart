@@ -27,23 +27,24 @@ class SharingPassword {
     return InteractDialog().buildDialog(
       context: context!, 
       childrenWidgets: <Widget>[
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Text(
-                "Enter this user Sharing Password",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  fontSize: 15,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+
+        const Padding(
+          padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+          child: Text(
+            "Enter this user sharing password",
+            style: TextStyle(
+              color: Color.fromARGB(255, 255, 255, 255),
+              fontSize: 17,
+              overflow: TextOverflow.ellipsis,
+              fontWeight: FontWeight.w500,
             ),
-          ],
+          ),
         ),
+        
+        const SizedBox(height: 5),
+
+        const Divider(color: ThemeColor.lightGrey),
+
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
@@ -59,8 +60,62 @@ class SharingPassword {
             ),
           ),
         ),
-        const SizedBox(height: 5),
+
+        const SizedBox(height: 10),
+
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            
+            const SizedBox(width: 5),
+
+            MainDialogButton(
+              text: "Close",
+              onPressed: () {
+                sharingPasswordController.clear();
+                Navigator.pop(context);
+              },
+              isButtonClose: true,
+            ),
+            
+            const SizedBox(width: 10),
+
+            MainDialogButton(
+              text: "Share",
+              onPressed: () async {
+
+                final loadingDialog = MultipleTextLoading();
+                final compare = AuthModel().computeAuth(sharingPasswordController.text);
+
+                if(compare == authInput) {
+                  
+                  loadingDialog.startLoading(title: "Sharing...",subText: "Sharing to $sendTo",context: context);  
+
+                  shareFileData.insertValuesParams(
+                    sendTo: sendTo, 
+                    fileName: fileName, 
+                    comment: comment, 
+                    fileData: fileData, 
+                    fileType: fileType, 
+                    thumbnail: thumbnail
+                  );
+
+                } else {
+                  CustomAlertDialog.alertDialogTitle("Sharing failed", "Entered password is incorrect.");
+                }
+                
+                loadingDialog.stopLoading();
+
+                Navigator.pop(context);
+              },
+              isButtonClose: false,
+            ),
+            
+            const SizedBox(width: 18),
+          ],
+        ),
+
+        /*Row(
           children: [
 
             const SizedBox(width: 5),
@@ -116,7 +171,7 @@ class SharingPassword {
             ),
 
           ],
-        ),
+        ),*/
         const SizedBox(height: 15),
       ],
     );  

@@ -9,7 +9,6 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
-import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/ask_sharing_password_dialog.dart';
 import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -18,7 +17,6 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/sharing_query/verify_sharing.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -171,8 +169,6 @@ class ProcessFileSharing {
     );
 
     singleTextLoading.stopLoading();
-
-    CustomFormDialog.startDialog("File Shared Successfully", "${ShortenText().cutText(fileName, customLength: 32)} Has been shared to $username.");
 
     await NotificationApi.stopNotification(0);
 

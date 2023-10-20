@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -10,9 +11,11 @@ import 'package:logger/logger.dart';
 class ShareFileData {
 
   final dateNow = DateFormat('dd/MM/yyyy');
+
+  final encryption = EncryptionClass();
   final crud = Crud();
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
 
   Future<void> startSharing({
     required String? receiverUsername,
@@ -24,8 +27,6 @@ class ShareFileData {
   }) async {
 
     try {
-
-      final userData = _locator<UserDataProvider>();
 
       final uploadDate = dateNow.format(DateTime.now());
 
@@ -74,8 +75,10 @@ class ShareFileData {
       await CallNotify().customNotification(
         title: "File Shared Successfully",
         subMesssage:
-        "${ShortenText().cutText(EncryptionClass().decrypt(fileName))} Has been shared to $sendTo",
+        "${ShortenText().cutText(encryption.decrypt(fileName))} Has been shared to $sendTo",
       );
+
+      await CustomFormDialog.startDialog("File Shared Successfully", "${ShortenText().cutText(encryption.decrypt(fileName), customLength: 32)} Has been shared to $sendTo.");
 
     } catch (err, st) {
       Logger().e("Exception from insertValuesParam {share_file}", err, st);
@@ -83,6 +86,7 @@ class ShareFileData {
         title: "Something went wrong",
         subMesssage: "Failed to share ${{ShortenText().cutText(EncryptionClass().decrypt(fileName))}}",
       );
+
     }
   }
 }
