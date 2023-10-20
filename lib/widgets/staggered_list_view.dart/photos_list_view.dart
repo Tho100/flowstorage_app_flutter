@@ -36,7 +36,6 @@ class PhotosStaggeredListView extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.memory(imageBytes, fit: BoxFit.cover),
-                  
                 ),
               ),
                 

@@ -24,7 +24,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
-import 'package:flowstorage_fsc/data_classes/update_data.dart';
+import 'package:flowstorage_fsc/data_query/update_data.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -133,12 +133,15 @@ class PreviewFileState extends State<PreviewFile> {
 
     if (Globals.generalFileTypes.contains(fileType) || Globals.videoType.contains(fileType)) {
       _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
+
     } 
 
     if (tempData.origin == OriginFile.home) {
       currentTable = Globals.fileTypesToTableNames[fileType]!;
+
     } else {
       currentTable = Globals.fileTypesToTableNamesPs[fileType]!;
+
     }
 
     fileSizeNotifier.value = "";
@@ -147,7 +150,9 @@ class PreviewFileState extends State<PreviewFile> {
     if (tempData.origin == OriginFile.public) {
       psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[fileIndex];
       _initializeUploaderName();
+
     }
+
   }
 
   void _navigateToPreviewFile(String selectedFileName, String fileType, int fileIndex) {
@@ -371,13 +376,13 @@ class PreviewFileState extends State<PreviewFile> {
 
     try {
 
-      await UpdateValues(
+      await UpdateTextData(
         fileName: tempData.selectedFileName, 
         tableName: currentTable,
         userName: userData.username,
         newValue: changesUpdate,
-        columnName: "null"
-      ).updateDataValues();
+        tappedIndex: widget.tappedIndex
+      ).update();
 
       SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
 
@@ -506,6 +511,7 @@ class PreviewFileState extends State<PreviewFile> {
               if(textValue.isNotEmpty && isTextType) {
                 await _updateTextChanges(textValue, context);
                 return;
+
               } 
 
             }
@@ -538,12 +544,10 @@ class PreviewFileState extends State<PreviewFile> {
       : await retrieveSharingName.sharerName();
 
     } else if (originFrom == OriginFile.public) {
-
       final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
       
     } else {
-
       uploaderNameNotifer.value = userData.username;
 
     }
@@ -893,7 +897,7 @@ Widget _uploadedByText() {
               ),
   
               const Spacer(),
-  
+
               Visibility(
                 visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
                 child: _buildBottomButtons(
