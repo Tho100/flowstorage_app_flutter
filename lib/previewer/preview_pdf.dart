@@ -9,10 +9,10 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/widgets/failed_load.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'dart:math' as math;
+
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PreviewPdf extends StatelessWidget {
 
@@ -61,17 +61,12 @@ class PreviewPdf extends StatelessWidget {
             return FailedLoad.buildFailedLoad();
 
           } else {
-            return Transform(
-              transform: Matrix4.rotationZ(math.pi),
-              alignment: Alignment.center,
-              child: PDFView(
-                pdfData: snapshot.data!,
-                swipeHorizontal: true,
-                fitPolicy: FitPolicy.WIDTH,
-                preventLinkNavigation: false,
-              ),
+            return SfPdfViewer.memory(
+              snapshot.data!,
+              enableDoubleTapZooming: true,
+              enableTextSelection: true,
             );
-
+          
           }
         },
       ),

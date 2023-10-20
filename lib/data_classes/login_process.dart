@@ -27,7 +27,9 @@ import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 
 class SignInUser {
 
-  final _locator = GetIt.instance;
+  final userData = GetIt.instance<UserDataProvider>();
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   final encryption = EncryptionClass();
   final nameGetterLogin = NameGetter();
@@ -41,10 +43,6 @@ class SignInUser {
   String custEmailInit = '';
 
   Future<void> _callData(MySQLConnectionPool conn, bool isChecked, BuildContext context) async {
-
-    final userData = _locator<UserDataProvider>();
-    final storageData = _locator<StorageDataProvider>();
-    final tempData = _locator<TempDataProvider>();
 
     final custUsernameList = await userDataRetriever.retrieveAccountTypeAndUsername(email: custEmailInit);
     final custUsernameGetter = custUsernameList[0]!;
@@ -114,6 +112,7 @@ class SignInUser {
 
     custUsernameList.clear();
     dirLists.clear();
+
   }
 
 
@@ -198,6 +197,7 @@ class SignInUser {
         }
 
       }
+
     } catch (err, st) {
 
       if(context.mounted) {

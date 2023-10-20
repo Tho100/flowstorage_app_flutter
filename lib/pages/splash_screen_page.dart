@@ -176,8 +176,10 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void _startTimer() async {
+    
+    _navigateToNextScreen();
 
-    if ((await _retrieveLocallyStoredInformation())[0] != '') {
+    /*if ((await _retrieveLocallyStoredInformation())[0] != '') {
       splashScreenTimer = Timer(const Duration(milliseconds: 0), () {
         _navigateToNextScreen();
       });
@@ -185,14 +187,14 @@ class SplashScreenState extends State<SplashScreen> {
       splashScreenTimer = Timer(const Duration(milliseconds: 1895), () {
         _navigateToNextScreen();
       });
-    }
+    }*/
     
   }
 
   Future<void> _navigateToNextScreen() async {
 
     try {
-      
+
       final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
       final getLocalEmail = (await _retrieveLocallyStoredInformation())[1];
       final getLocalAccountType = (await _retrieveLocallyStoredInformation())[2];
@@ -236,10 +238,12 @@ class SplashScreenState extends State<SplashScreen> {
           
         }
       }
+
     } catch (err, st) {
       logger.e("Exception from _navigateToNextScreen {SplashScreen}",err, st);
       NavigatePage.replacePageMain(context);
     }
+
   }
 
   Future<List<String>> _retrieveLocallyStoredInformation() async {
@@ -256,7 +260,7 @@ class SplashScreenState extends State<SplashScreen> {
       final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
 
       if (setupFiles.existsSync()) {
-        final lines = setupFiles.readAsLinesSync();
+        final lines = await setupFiles.readAsLines();
 
         if (lines.length >= 2) {
           username = lines[0];

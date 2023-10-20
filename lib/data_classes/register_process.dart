@@ -14,6 +14,8 @@ import 'dart:io';
 
 class RegisterUser {
 
+  final encryption = EncryptionClass();
+
   Future<void> insertParams({
     required String? userName,
     required String? auth0, 
@@ -152,7 +154,7 @@ class RegisterUser {
           setupFiles.deleteSync();
         }
 
-        setupFiles.writeAsStringSync('${EncryptionClass().encrypt(custUsername)}\n${EncryptionClass().encrypt(email)}\n$accountType');
+        setupFiles.writeAsStringSync('${encryption.encrypt(custUsername)}\n${encryption.encrypt(email)}\n$accountType');
 
       } catch (e, st) {
         Logger().e(e, st);

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
 
 class EncryptionClass {
@@ -9,8 +8,8 @@ class EncryptionClass {
   late IV _iv;
 
   EncryptionClass() {
-    _key = Key(Uint8List.fromList(utf8.encode("0123456789085746")));
-    _iv = IV.fromLength(16);
+    _key = Key.fromUtf8("0123456789012345");
+    _iv = IV.fromUtf8("0123456789012345");
     _encrypter = Encrypter(AES(_key, mode: AESMode.cbc, padding: 'PKCS7'));
   }
 
@@ -31,8 +30,10 @@ class EncryptionClass {
 
     try {
 
-      final decrypted = _encrypter.decrypt(Encrypted(base64.decode(encryptedText!)), iv: _iv);
-      return decrypted;
+      final decodeBytes = base64.decode(encryptedText!);      
+      final decryptedString = _encrypter.decrypt(Encrypted(decodeBytes), iv: _iv);
+
+      return decryptedString;
 
     } catch (err) {
       return "";

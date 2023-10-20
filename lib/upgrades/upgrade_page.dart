@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flowstorage_fsc/api/email_api.dart';
 import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
@@ -632,12 +631,6 @@ class UpgradePageState extends State<UpradePage> {
 
     try {
 
-      final planToPrice = {
-        "Supreme": await _convertToLocalCurrency(20),
-        "Express": await _convertToLocalCurrency(8),
-        "Max": await _convertToLocalCurrency(2),
-      };
-      
       singleLoading.startLoading(title: "Validating...",context: context);
 
       final returnedEmail = await StripeCustomers.getCustomersEmails("");
@@ -656,12 +649,6 @@ class UpgradePageState extends State<UpradePage> {
         userData.setAccountType(userChoosenPlan);      
 
         await updateLocallyStoredAccountType(userChoosenPlan);
-
-        await EmailApi().sendAccountUpgraded(
-          plan: userChoosenPlan.toUpperCase(), 
-          price: planToPrice[userChoosenPlan]!,
-          email: userData.email
-        );
 
         singleLoading.stopLoading();
 

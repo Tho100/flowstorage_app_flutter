@@ -54,7 +54,7 @@ class InsertData {
         break;
 
       case GlobalsTable.directoryUploadTable:
-        await insertDirectoryInfo(conn,tableName,userName, encryptedFileVal, tempData.directoryName,encryptedFilePath,thumb, fileName);
+        await insertDirectoryInfo(conn,tableName,userName, encryptedFileVal, tempData.directoryName, encryptedFilePath,thumb, fileName);
         break;
 
       case GlobalsTable.psText:
