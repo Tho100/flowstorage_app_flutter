@@ -117,14 +117,13 @@ class ProcessFileSharing {
     }
 
     final getSharingAuth = await SharingOptions.retrievePassword(username);
+    final passwordSharingDisabled = await SharingOptions.retrievePasswordStatus(username);
 
     if(Globals.videoType.contains(fileExtension)) {
-      
       thumbnailBase64 = await Future.value(ThumbnailGetter().retrieveParamsSingle(fileName: fileName));
-      
     }
 
-    if(getSharingAuth != "DEF") {
+    if(passwordSharingDisabled == "0") {
       
       final fileBytesData = await _callFileBytesData(fileName, tableName);
       final encryptedFileBytesData = EncryptionClass().encrypt(base64.encode(fileBytesData));  
