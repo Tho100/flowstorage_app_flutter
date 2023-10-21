@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 
@@ -10,6 +11,8 @@ class DeleteFolder {
   DeleteFolder({required this.folderName});
 
   final userData = GetIt.instance<UserDataProvider>();
+  final storageData = GetIt.instance<StorageDataProvider>();
+  
   final crud = Crud();
 
   Future<void> delete() async {
@@ -24,6 +27,8 @@ class DeleteFolder {
       query: deleteFolderQuery, 
       params: params
     );
+
+    storageData.foldersNameList.remove(folderName);
 
   }
 }

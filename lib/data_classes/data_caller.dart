@@ -300,6 +300,16 @@ class DataCaller {
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
 
+    if(originFrom == "sharedFiles") {
+      tempData.setOrigin(OriginFile.sharedOther);
+      tempData.setAppBarTitle("Shared files");
+      
+    } else {
+      tempData.setOrigin(OriginFile.sharedMe);
+      tempData.setAppBarTitle("Shared to me");
+
+    }
+
   }
 
   Future<void> folderData({required String folderName}) async {

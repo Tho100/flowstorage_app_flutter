@@ -12,12 +12,12 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
@@ -61,7 +61,6 @@ import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.da
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/recent_ps_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_view.dart';
 
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter/services.dart';
@@ -500,15 +499,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         } 
 
-        if (newFolderName.isNotEmpty) {
-          await _renameFolder(folderName, newFolderName);
-          RenameFolderDialog.folderRenameController.clear();
-
-        } else {
+        if(newFolderName.isEmpty) {
           CallToast.call(message: "Folder name cannot be empty.");
           return;
 
         }
+
+        await _renameFolder(folderName, newFolderName);
+        RenameFolderDialog.folderRenameController.clear();
 
       }
     );
@@ -810,35 +808,25 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  String _formatDateTime(DateTime dateTime) {
-
-    final now = DateTime.now();
-    final difference = now.difference(dateTime).inDays;
-    final adjustedDateTime = difference.isNegative ? dateTime.add(const Duration(days: 1)) : dateTime;
-    final adjustedDifference = adjustedDateTime.difference(now).inDays.abs();
-
-    if (adjustedDifference == 0) {
-      return '0 days ago ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
-    } else {
-      final daysAgoText = '$adjustedDifference days ago';
-      return '$daysAgoText ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
-    }
-  }
-
   void _sortUploadDate() {
     sortingIsAscendingUploadDate = !sortingIsAscendingUploadDate;
     ascendingDescendingIconNotifier.value = sortingIsAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
     sortingText.value = tempData.origin == OriginFile.public 
       ? "Default" : "Upload Date";
 
-    _processUploadDateSorting();
+    setState(() {
+      SortingModel().uploadDate(sortingIsAscendingUploadDate: sortingIsAscendingUploadDate);
+    });
   }
 
   void _sortItemName() {
     sortingIsAscendingItemName = !sortingIsAscendingItemName;
     ascendingDescendingIconNotifier.value = sortingIsAscendingItemName ? Icons.expand_less : Icons.expand_more;
     sortingText.value = "Item Name";
-    _processfileNameSorting();
+    
+    setState((){
+      SortingModel().fileName(sortingIsAscendingItemName: sortingIsAscendingItemName);
+    });
   }
 
   void _sortDefault() async {
@@ -847,101 +835,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     sortingIsAscendingUploadDate = false;
     ascendingDescendingIconNotifier.value = Icons.expand_more;
     await _refreshListViewData();
-  }
-
-  void _processUploadDateSorting() {
-
-    List<Map<String, dynamic>> itemList = [];
-
-    if(tempData.origin != OriginFile.public) {
-
-      for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
-        itemList.add({
-          'file_name': storageData.fileNamesFilteredList[i],
-          'image_byte': storageData.imageBytesFilteredList[i],
-          'upload_date': DateParser(date: storageData.fileDateFilteredList[i]).parse(),
-        });
-      }
-
-    } else {
-
-      for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
-        itemList.add({
-          'file_name': storageData.fileNamesFilteredList[i],
-          'image_byte': storageData.imageBytesFilteredList[i],
-          'upload_date': DateParser(date: storageData.fileDateFilteredList[i]).parse(),
-          'title': psStorageData.psTitleList[i],
-          'tag_value': psStorageData.psTagsList[i],
-          'uploader_name': psStorageData.psUploaderList[i]
-        });
-      }
-
-      psStorageData.psTitleList.clear();
-      psStorageData.psTagsList.clear();
-      psStorageData.psUploaderList.clear();
-
-    }
-
-    sortingIsAscendingUploadDate 
-    ? itemList.sort((a, b) => a['upload_date'].compareTo(b['upload_date']))
-    : itemList.sort((a, b) => b['upload_date'].compareTo(a['upload_date']));
-
-    setState(() {
-
-      storageData.fileDateFilteredList.clear();
-      storageData.fileNamesFilteredList.clear();
-      storageData.imageBytesFilteredList.clear();
-
-      for (var item in itemList) {
-
-        storageData.fileNamesFilteredList.add(item['file_name']);
-        storageData.imageBytesFilteredList.add(item['image_byte']);
-        storageData.fileDateFilteredList.add(_formatDateTime(item['upload_date']));
-
-        if(tempData.origin == OriginFile.public) {
-          psStorageData.psTagsList.add(item['tag_value']);
-          psStorageData.psUploaderList.add(item['uploader_name']);
-          psStorageData.psTitleList.add(item['title']);
-        }
-
-      }
-    });
-
-    itemList.clear();
-
-  }
-
-  void _processfileNameSorting() {
-
-   List<Map<String, dynamic>> itemList = [];
-
-    for (int i = 0; i < storageData.fileNamesFilteredList.length; i++) {
-      itemList.add({
-        'file_name': storageData.fileNamesFilteredList[i],
-        'image_byte': storageData.imageBytesFilteredList[i],
-        'upload_date': storageData.fileDateFilteredList[i],
-      });
-    }
-
-    sortingIsAscendingItemName 
-    ? itemList.sort((a, b) => a['file_name'].compareTo(b['file_name']))
-    : itemList.sort((a, b) => b['file_name'].compareTo(a['file_name']));
-
-    setState(() {
-      storageData.fileNamesFilteredList.clear();
-      storageData.imageBytesFilteredList.clear();
-      storageData.fileDateFilteredList.clear();
-
-      for (var item in itemList) {
-        storageData.fileNamesFilteredList.add(item['file_name']);
-        storageData.imageBytesFilteredList.add(item['image_byte']);
-        storageData.fileDateFilteredList.add(item['upload_date']);
-      }
-      
-    });
-
-    itemList.clear();
-
   }
 
   Future<void> _deleteMultiSelectedFiles({
@@ -980,6 +873,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       logger.e('Exception from _processDeletingAllItems {main}',err,st);
       SnakeAlert.errorSnake("An error occurred.");
     } 
+    
   }
 
   void _editAllOnPressed() {
@@ -1046,6 +940,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         storageData.setFilteredImageBytes(filteredByteValues);
         storageData.setFilteredFilesDate(filteredFilesDate);
       });
+
     });
 
   }
@@ -1102,7 +997,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await DeleteFolder(folderName: folderName).delete();
 
-      storageData.foldersNameList.remove(folderName);
       tempData.setOrigin(OriginFile.home);
 
       await _refreshListViewData();
@@ -1188,7 +1082,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _clearGlobalData();
 
     await dataCaller.sharingData(originFrom);
+
     _itemSearchingImplementation('');
+    _floatingButtonVisibility(false);
+    _navDirectoryButtonVisibility(false);
 
     searchHintText.value = "Search in Flowstorage";
 
@@ -1200,14 +1097,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.publicStorageData(context: context);
 
-    psButtonTextNotifier.value = "My Files";
-
-    searchBarVisibileNotifier.value = false;
-    staggeredListViewSelected.value = true;
-
     _itemSearchingImplementation('');
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
+
+    psButtonTextNotifier.value = "My Files";
+    searchBarVisibileNotifier.value = false;
+    staggeredListViewSelected.value = true;
 
     searchBarController.text = '';
 
@@ -1220,13 +1116,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.myPublicStorageData(context: context);
 
-    psButtonTextNotifier.value = "Back";
-    
     _itemSearchingImplementation('');
     _floatingButtonVisibility(false);
-
     await _sortDataDescendingPs();
 
+    psButtonTextNotifier.value = "Back";
     searchBarController.text = '';
 
   }
@@ -1353,15 +1247,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   Future<void> _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
 
-    final extension = fileName.split('.').last;
+    final fileType = fileName.split('.').last;
+    final isItemDirectory = fileType == fileName && !Globals.supportedFileTypes.contains(fileType);
 
-    if(extension == fileName) {
+    if(isItemDirectory) {
       await _deleteDirectoryData(fileName);
-
+      
     } else {
       final tableName = tempData.origin == OriginFile.public 
-        ? Globals.fileTypesToTableNamesPs[extension]
-        : Globals.fileTypesToTableNames[extension];
+        ? Globals.fileTypesToTableNamesPs[fileType]
+        : Globals.fileTypesToTableNames[fileType];
 
       await _deleteFileData(userData.username, fileName, tableName!);
 
@@ -1563,9 +1458,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
         CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
-      } else {
-        await _renameFileData(fileName, newRenameValue);
-      }
+        return;
+
+      } 
+
+      await _renameFileData(fileName, newRenameValue);
       
     } catch (err, st) {
       logger.e('Exception from _onRenamedPressed {main}',err,st);
@@ -1590,19 +1487,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      if(tempData.origin != OriginFile.offline) {
-
-        final encryptVals = EncryptionClass().encrypt(fileName);
-        await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
-
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
-
-      } else {
-
+      if(tempData.origin == OriginFile.offline) {
         await OfflineMode().deleteFile(fileName);
         SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
+        return;
 
-      }
+      } 
+
+      final encryptVals = EncryptionClass().encrypt(fileName);
+      await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
+      
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
     } catch (err, st) {
       logger.e('Exception from _deletionFile {main}',err,st);
@@ -1767,7 +1662,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       }, 
       folderOnPressed: () async {
-
+        
         if(storageData.foldersNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
 
           if(!mounted) return;
@@ -1890,31 +1785,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     return BottomTrailingShared().buildTrailing(
       context: context, 
       sharedToMeOnPressed: () async {
-        tempData.setOrigin(OriginFile.sharedMe);
-        tempData.setAppBarTitle("Shared to me");
-
-        _floatingButtonVisibility(false);
-        _navDirectoryButtonVisibility(false);
         Navigator.pop(context);
-
         await _callSharingData("sharedToMe");
       }, 
       sharedToOthersOnPressed: () async {
-        tempData.setOrigin(OriginFile.sharedOther);
-        tempData.setAppBarTitle("Shared files");
-        
-        _floatingButtonVisibility(false);
-        _navDirectoryButtonVisibility(false);
         Navigator.pop(context);
-
         await _callSharingData("sharedFiles");
       }
     );
   }
 
   Future _callBottomTrailingSorting() {
-    final sortingBottomTrailing = BottomTrailingSorting();
-    return sortingBottomTrailing.buildTrailing(
+    return BottomTrailingSorting().buildTrailing(
       context: context, 
       sortUploadDateOnPressed: () {
         _sortUploadDate();
