@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
+import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -117,29 +118,14 @@ class CommentPageState extends State<CommentPage> {
 
   }
 
-  Future<String> _sharerName() async {
-
-    final conn = await SqlConnection.initializeConnection();
-    
-    const query = "SELECT CUST_FROM FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await conn.execute(query,params);
-
-    String? sharedToMeName;
-    for(final row in results.rows) {
-      sharedToMeName = row.assoc()['CUST_FROM'];
-    }
-
-    return sharedToMeName!;
-    
-  }
-
   Future<String> _sharedToMeComment() async {
 
     final conn = await SqlConnection.initializeConnection();
-    
+
+    final sharerName = await SharingName().sharerName();
+
     const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': await _sharerName()};
+    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': sharerName};
     final results = await conn.execute(query,params);
 
     String? decryptedComment;

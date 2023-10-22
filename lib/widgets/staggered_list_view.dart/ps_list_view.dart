@@ -230,6 +230,7 @@ class PsStaggeredListView extends StatelessWidget {
                 ),
                 onPressed: () async { 
                   final fileName = storageData.fileNamesFilteredList[index];
+                  tempData.setCurrentFileName(fileName);
                   await downloadOnPressed(fileName: fileName); 
                 },
               ),
@@ -245,6 +246,7 @@ class PsStaggeredListView extends StatelessWidget {
                 ),
                 onPressed: () {
                   final fileName = storageData.fileNamesFilteredList[index];
+                  tempData.setCurrentFileName(fileName);
                   NavigatePage.goToPageFileComment(context, fileName);
                 }
               ),
@@ -252,7 +254,7 @@ class PsStaggeredListView extends StatelessWidget {
             ],
           ),
          
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           const Divider(color: ThemeColor.whiteGrey),
 
         ],

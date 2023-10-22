@@ -84,7 +84,7 @@ class BottomTrailingOptions {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ]
+                    ],
                   ],
                 ),
               ),

@@ -43,6 +43,7 @@ class CreateDirectoryDialog {
             autofocus: true,
             style: const TextStyle(color: ThemeColor.justWhite),
             enabled: true,
+            maxLength: 50,
             controller: directoryNameController,
             decoration: GlobalsStyle.setupTextFieldDecoration("Enter directory name"),
           ),
