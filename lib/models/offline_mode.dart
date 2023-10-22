@@ -109,8 +109,10 @@ class OfflineMode {
 
     } else if (Globals.textType.contains(fileType)) {
 
-      final textData = utf8.decode(fileDataValue);
-      SaveApi().saveFile(fileName: fileName, fileData: textData);
+      final decompressedFile = CompressorApi.decompressFile(fileDataValue);
+      final textFileContent = utf8.decode(decompressedFile);
+
+      SaveApi().saveFile(fileName: fileName, fileData: textFileContent);
 
     } else if (generalNonTextFileType.contains(fileType)) {
       

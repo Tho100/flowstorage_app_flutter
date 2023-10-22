@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -60,9 +61,11 @@ class SimplifyDownload {
         await ImageGallerySaver.saveImage(fileDataValue!);
 
       } else if (currentTableValue == GlobalsTable.homeText || currentTableValue == GlobalsTable.psText) {
-
-        String textFileContent = utf8.decode(fileDataValue!);
-        await SaveApi().saveFile(fileName: fileNameValue!,fileData: textFileContent);
+        
+        final decompressedFile = CompressorApi.decompressFile(fileDataValue!);
+        final textFileContent = utf8.decode(decompressedFile);
+        
+        await SaveApi().saveFile(fileName: fileNameValue!, fileData: textFileContent);
         
       } else if (currentTableValue == GlobalsTable.homeVideo || currentTableValue == GlobalsTable.psVideo) { 
 
@@ -70,7 +73,8 @@ class SimplifyDownload {
 
       } else if (!(generalFilesTableName.contains(currentTableValue))) {
 
-        await SaveApi().saveFile(fileName: fileNameValue!, fileData: fileDataValue!);
+        final decompressedFile = CompressorApi.decompressFile(fileDataValue!);
+        await SaveApi().saveFile(fileName: fileNameValue!, fileData: decompressedFile);
 
       }
 

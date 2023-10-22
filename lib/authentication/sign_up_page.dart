@@ -211,6 +211,7 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
 
             MainTextField(
               hintText: "Enter a username", 
+              maxLength: 32,
               controller: usernameController
             ),
 

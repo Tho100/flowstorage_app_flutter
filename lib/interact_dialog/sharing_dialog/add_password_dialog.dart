@@ -48,6 +48,7 @@ class AddSharingPassword {
             child: TextFormField(
               style: const TextStyle(color: ThemeColor.justWhite),
               enabled: true,
+              maxLength: 90,
               controller: addPasswordController,
               decoration: GlobalsStyle.setupTextFieldDecoration("Enter password")
             ),

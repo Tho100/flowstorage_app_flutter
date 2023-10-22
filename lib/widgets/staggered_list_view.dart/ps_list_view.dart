@@ -48,14 +48,14 @@ class PsStaggeredListView extends StatelessWidget {
       child: Align(
         alignment: isFromDownload ? Alignment.bottomLeft : Alignment.bottomRight,
         child: SizedBox(
-          width: isFromDownload ? 54 : 132, 
-          height: isFromDownload ? 38 : 40,
+          width: isFromDownload ? 56 : 132, 
+          height: isFromDownload ? 40 : 40,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(isFromDownload ? 14 : 18),
+                  borderRadius: BorderRadius.circular(isFromDownload ? 12 : 18),
                   side: const BorderSide(color: ThemeColor.lightGrey, width: 1),
                 ),
               ),
@@ -102,7 +102,7 @@ class PsStaggeredListView extends StatelessWidget {
                 onPressed: () {
                   callBottomTrailing(index);
                 },
-                icon: const Icon(Icons.more_vert, color: Colors.white, size: 25),
+                icon: const Icon(Icons.more_vert, color: Colors.white, size: 22),
               ),
 
             ],
@@ -184,17 +184,17 @@ class PsStaggeredListView extends StatelessWidget {
               children: [
                 
                 Container(
-                  width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 35,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 332,
+                  width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 33,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 338,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: ThemeColor.lightGrey,
                       width: 1,
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
                     child: Image.memory(imageBytes, fit: BoxFit.cover),
                   ),
                 ),
@@ -225,7 +225,7 @@ class PsStaggeredListView extends StatelessWidget {
               buildAccessButton(
                 isFromDownload: true,
                 child: const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Icon(Icons.download, color: ThemeColor.justWhite, size: 21)
                 ),
                 onPressed: () async { 

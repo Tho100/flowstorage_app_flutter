@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 class MainTextField extends StatelessWidget {
 
   final String hintText;
+  final int? maxLength;
   final TextEditingController controller;
   
   const MainTextField({
     super.key,
     required this.hintText,
-    required this.controller
+    required this.controller,
+    this.maxLength
   });
 
   @override
@@ -18,6 +20,7 @@ class MainTextField extends StatelessWidget {
     return TextFormField(
       style: const TextStyle(color: ThemeColor.secondaryWhite),
       enabled: true,
+      maxLength: maxLength,
       controller: controller,
       decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
     );
