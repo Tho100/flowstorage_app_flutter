@@ -715,6 +715,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } else {
       return;
     }
+
   }
 
   Future<void> _callMultipleFilesDownload({
@@ -739,7 +740,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
 
         } else {
-          getBytes = await _callFileByteData(checkedItemsName.elementAt(i),tableName!);
+          getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i),tableName!));
 
         }
 
@@ -780,7 +781,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
             
           } else {
-            fileData = await _callFileByteData(checkedItemsName.elementAt(i), tableName);
+            fileData = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName));
 
           }
 
@@ -806,6 +807,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err) {
       SnakeAlert.errorSnake("An error occurred.");
     }
+    
   }
 
   void _sortUploadDate() {

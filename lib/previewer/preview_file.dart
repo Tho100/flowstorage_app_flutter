@@ -482,7 +482,7 @@ class PreviewFileState extends State<PreviewFile> {
     required BuildContext context
   }) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 9.0, top: 9.0, left: 5, right: 4),
       child: SizedBox(
         width: width, 
         height: height, 
@@ -520,7 +520,7 @@ class PreviewFileState extends State<PreviewFile> {
             backgroundColor: color,
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
           child: textStyle,
@@ -816,7 +816,7 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-Widget _uploadedByText() {
+  Widget _uploadedByText() {
 
     const generalOrigin = {
       OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
@@ -838,16 +838,18 @@ Widget _uploadedByText() {
 
   Widget _buildBottomBar() {
     return Container(
-      height: 138,
+      height: 135,
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: ThemeColor.darkBlack,
+        color: ThemeColor.darkBlack
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
   
+          const Divider(height: 1, color: ThemeColor.lightGrey),
+
           const SizedBox(height: 2),
 
           Padding(
@@ -859,7 +861,7 @@ Widget _uploadedByText() {
           ),
 
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 12),
+            padding: const EdgeInsets.only(left: 15, top: 8),
             child: SizedBox(
               width: double.infinity,
               child: ValueListenableBuilder(
@@ -869,7 +871,7 @@ Widget _uploadedByText() {
                     value == userData.username ? "$value (You)" : value,
                     textAlign: TextAlign.start,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
