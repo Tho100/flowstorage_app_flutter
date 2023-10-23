@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:get_it/get_it.dart';
 
@@ -6,19 +7,7 @@ class Globals {
 
   static final _tempData = GetIt.instance<TempDataProvider>();
 
-  static const String fileInfoTable = 'file_info';
-  static const String fileInfoExpandTable = 'file_info_expand';
-  static const String fileInfoPdfTable = 'file_info_pdf';
-  static const String fileInfoAudioTable = 'file_info_audi';
-  static const String fileInfoWordTable = 'file_info_word';
-  static const String fileInfoPtxTable = 'file_info_ptx';
-  static const String fileInfoExcelTable = 'file_info_excel';
-  static const String fileInfoMsiTable = 'file_info_msi';
-  static const String fileInfoExeTable = 'file_info_exe';
-  static const String fileInfoVidTable = 'file_info_vid';
-  static const String fileInfoApkTable = 'file_info_apk';
-
-  static const Set<String> imageType = {"png","jpeg","jpg","webp"};
+  static const Set<String> imageType = {"png","jpeg","jpg"};
   static const Set<String> textType = {"txt","csv","html","sql","md"};
   static const Set<String> videoType = {"mp4","wmv","avi","mov","mkv"};
   static const Set<String> wordType = {"docx","doc"};
@@ -27,75 +16,75 @@ class Globals {
   static const Set<String> audioType = {"wav","mp3"};
 
   static const Set<String> unsupportedOfflineModeTypes = {
-    "mp4","wmv", "exe", "apk", "msi"
+    ...videoType, "exe", "apk", "msi"
   };
 
   static const Map<String, String> fileTypesToTableNames = {
-    'png': fileInfoTable,
-    'jpg': fileInfoTable,
-    'webp': fileInfoTable,
-    'jpeg': fileInfoTable,
+    'png': GlobalsTable.homeImage,
+    'jpg': GlobalsTable.homeImage,
+    'jpeg': GlobalsTable.homeImage,
 
-    'txt': fileInfoExpandTable,
-    'sql': fileInfoExpandTable,
-    'md': fileInfoExpandTable,
-    'csv': fileInfoExpandTable,
-    'html': fileInfoExpandTable,
+    'txt': GlobalsTable.homeText,
+    'sql': GlobalsTable.homeText,
+    'md': GlobalsTable.homeText,
+    'csv': GlobalsTable.homeText,
+    'html': GlobalsTable.homeText,
 
-    'pdf': fileInfoPdfTable,
+    'pdf': GlobalsTable.homePdf,
 
-    'doc': fileInfoWordTable,
-    'docx': fileInfoWordTable,
+    'doc': GlobalsTable.homeWord,
+    'docx': GlobalsTable.homeWord,
 
-    'pptx': fileInfoPtxTable,
-    'ptx': fileInfoPtxTable,
+    'pptx': GlobalsTable.homePtx,
+    'ptx': GlobalsTable.homePtx,
 
-    'xlsx': fileInfoExcelTable,
-    'xls': fileInfoExcelTable,
+    'xlsx': GlobalsTable.homeExcel,
+    'xls': GlobalsTable.homeExcel,
 
-    'exe': fileInfoExeTable,
-    'msi': fileInfoMsiTable,
-    'apk': fileInfoApkTable,
+    'exe': GlobalsTable.homeExe,
+    'msi': GlobalsTable.homeMsi,
+    'apk': GlobalsTable.homeApk,
 
-    'mp4': fileInfoVidTable,
-    'avi': fileInfoVidTable,
-    'mov': fileInfoVidTable,
+    'mp4': GlobalsTable.homeVideo,
+    'avi': GlobalsTable.homeVideo,
+    'mov': GlobalsTable.homeVideo,
+    'wmv': GlobalsTable.homeVideo,
 
-    'mp3' : fileInfoAudioTable,
-    'wav': fileInfoAudioTable
+    'mp3' : GlobalsTable.homeAudio,
+    'wav': GlobalsTable.homeAudio
   };
 
   static const Map<String, String> fileTypesToTableNamesPs = {
 
-    'png': 'ps_info_image',
-    'jpg': 'ps_info_image',
-    'webp': 'ps_info_image',
-    'jpeg': 'ps_info_image',
+    'png': GlobalsTable.psImage,
+    'jpg': GlobalsTable.psImage,
+    'jpeg': GlobalsTable.psImage,
 
-    'txt': 'ps_info_text',
-    'sql': 'ps_info_text',
-    'md': 'ps_info_text',
-    'csv': 'ps_info_text',
-    'html': 'ps_info_text',
+    'txt': GlobalsTable.psText,
+    'sql': GlobalsTable.psText,
+    'md': GlobalsTable.psText,
+    'csv': GlobalsTable.psText,
+    'html': GlobalsTable.psText,
 
-    'pdf': 'ps_info_pdf',
-    'doc': 'file_info_word',
-    'docx': 'file_info_word',
-    'pptx': 'file_info_ptx',
-    'ptx': 'file_info_ptx',
-    'xlsx': 'ps_info_excel',
-    'xls': 'ps_info_excel',
+    'pdf': GlobalsTable.psPdf,
+    'doc': GlobalsTable.psWord,
+    'docx': GlobalsTable.psWord,
+    'pptx': GlobalsTable.psPtx,
+    'ptx': GlobalsTable.psPtx,
+    'xlsx': GlobalsTable.psExcel,
+    'xls': GlobalsTable.psExcel,
     
-    'exe': 'ps_info_exe',
-    'msi': 'ps_info_msi',
-    'apk': 'ps_info_apk',
+    'exe': GlobalsTable.psExe,
+    'msi': GlobalsTable.psMsi,
+    'apk': GlobalsTable.psApk,
 
-    'mp4': 'ps_info_video',
-    'avi': 'ps_info_video',
-    'mov': 'ps_info_video',
-    
-    'mp3' : 'ps_info_audio',
-    'wav': 'ps_info_audio'
+    'mp4': GlobalsTable.psVideo,
+    'avi': GlobalsTable.psVideo,
+    'mov': GlobalsTable.psVideo,
+    'wmv': GlobalsTable.psVideo,
+
+    'mp3' : GlobalsTable.psAudio,
+    'wav': GlobalsTable.psAudio
     
   };
 
@@ -127,18 +116,6 @@ class Globals {
       OriginFile.public: 'Public Storage',
       OriginFile.folder: _tempData.folderName,
       OriginFile.directory: _tempData.directoryName
-    };
-  }
-
-  static Map<String,String> get nameToOrigin {
-    return {
-      'Home': 'homeFiles',
-      _tempData.folderName: 'folderFiles',
-      _tempData.directoryName: 'dirFiles',
-      'Shared to me': 'sharedToMe',
-      'Shared files': 'sharedFiles',
-      'Offline': 'offlineFiles',
-      'Public Storage': 'psFiles',
     };
   }
 

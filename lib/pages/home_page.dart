@@ -1355,7 +1355,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           getBytes = storageData.imageBytesFilteredList[imageIndex]!;
 
         } else {
-          getBytes = await _callFileByteData(fileName,tableName!);
+          getBytes = CompressorApi.compressByte(await _callFileByteData(fileName, tableName!));
 
         }
 

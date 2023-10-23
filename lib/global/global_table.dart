@@ -35,22 +35,21 @@ class GlobalsTable {
   };
 
   static const Set<String> tableNamesPs = {
-    "ps_info_image","ps_info_text","ps_info_video","ps_info_excel",
-    "ps_info_pdf","ps_info_word","ps_info_ptx","ps_info_msi","ps_info_apk",
-    "ps_info_exe","ps_info_audio"
+    psImage, psText, psVideo, psExcel, psWord, psAudio,
+    psMsi, psExe, psApk, psPdf, psPtx
   };
 
   static const Map<String,String> publicToPsTables = {
-    homeImage: "ps_info_image",
-    homeVideo: "ps_info_video",
-    homeExcel: "ps_info_excel",
-    homeText: "ps_info_text",
-    homeWord: "ps_info_word",
-    homePtx: "ps_info_ptx",
-    homePdf: "ps_info_pdf",
-    homeApk: "ps_info_apk",
-    homeExe: "ps_info_exe",
-    homeAudio: "ps_info_audio",
+    homeImage: psImage,
+    homeVideo: psVideo,
+    homeExcel: psExcel,
+    homeText: psText,
+    homeWord: psWord,
+    homePtx: psPtx,
+    homePdf: psPdf,
+    homeApk: psApk,
+    homeExe: psExe,
+    homeAudio: psAudio,
   };
 
 }

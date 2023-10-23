@@ -39,4 +39,5 @@ class ScannerPdf {
       SnakeAlert.errorSnake("Failed to save PDF");
     }
   }
+  
 }
