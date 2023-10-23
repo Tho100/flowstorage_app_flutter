@@ -35,8 +35,8 @@ class GlobalsStyle {
   );
 
   static const sidebarMenuButtonsStyle = TextStyle(
-    color: Color.fromARGB(255, 222, 222, 222),
-    fontSize: 16,
+    color: Color.fromARGB(255, 216, 216, 216),
+    fontSize: 15,
     fontWeight: FontWeight.w500,
   );
 

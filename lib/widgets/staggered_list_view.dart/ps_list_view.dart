@@ -185,16 +185,16 @@ class PsStaggeredListView extends StatelessWidget {
                 
                 Container(
                   width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 33,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 338,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 355,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: ThemeColor.lightGrey,
                       width: 1,
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                     child: Image.memory(imageBytes, fit: BoxFit.cover),
                   ),
                 ),
