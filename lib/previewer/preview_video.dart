@@ -343,7 +343,6 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   void forwardingImplementation(String value) {
-
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
@@ -360,13 +359,12 @@ class PreviewVideoState extends State<PreviewVideo> {
     }
   }
 
+  String twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
   String getDurationString(Duration duration) {
-
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
 

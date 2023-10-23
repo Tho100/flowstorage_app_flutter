@@ -116,7 +116,7 @@ class UploadDialog {
 
       if (Globals.imageType.contains(fileExtension)) {
 
-        List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 85);
+        List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 80);
         String compressedImageBase64Encoded = base64.encode(bytes);
 
         await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
@@ -250,7 +250,7 @@ class UploadDialog {
       if (Globals.imageType.contains(fileExtension)) {
 
         final compressQuality = tempData.origin 
-            == OriginFile.public ? 71 : 85;
+            == OriginFile.public ? 71 : 80;
 
         List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
         String compressedImageBase64Encoded = base64.encode(bytes);
