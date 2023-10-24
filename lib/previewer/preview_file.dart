@@ -151,6 +151,9 @@ class PreviewFileState extends State<PreviewFile> {
       psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[fileIndex];
       _initializeUploaderName();
 
+    } else if (tempData.origin == OriginFile.sharedMe || tempData.origin == OriginFile.sharedOther) {
+      _initializeUploaderName();
+
     }
 
   }
@@ -387,7 +390,6 @@ class PreviewFileState extends State<PreviewFile> {
       SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
 
     } catch (err) {
-
       SnakeAlert.errorSnake("Failed to save changes.");
 
     }
@@ -533,18 +535,21 @@ class PreviewFileState extends State<PreviewFile> {
 
     const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
     const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
+  
+    final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
     if(localOriginFrom.contains(originFrom)) {
-      
+
       uploaderNameNotifer.value = userData.username;
 
     } else if (sharingOriginFrom.contains(originFrom)) {
-      uploaderNameNotifer.value = originFrom == OriginFile.sharedOther 
-      ? await retrieveSharingName.shareToOtherName(usernameIndex: widget.tappedIndex) 
-      : await retrieveSharingName.sharerName();
+      await Future.delayed(const Duration(milliseconds: 450));
+      final uploaderName = originFrom == OriginFile.sharedOther 
+        ? await retrieveSharingName.shareToOtherName(usernameIndex: uploaderNameIndex) 
+        : await retrieveSharingName.sharerName();
+      uploaderNameNotifer.value = uploaderName;
 
     } else if (originFrom == OriginFile.public) {
-      final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
       
     } else {

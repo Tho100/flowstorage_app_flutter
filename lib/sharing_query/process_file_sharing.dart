@@ -25,7 +25,8 @@ class ProcessFileSharing {
   
   final retrieveData = RetrieveData();
   final shareFileData = ShareFileData();
-  
+  final verifySharing = VerifySharing();
+
   final tempData = GetIt.instance<TempDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -97,13 +98,18 @@ class ProcessFileSharing {
       return;
     }
 
-    if (await VerifySharing().isAlreadyUploaded(encryptedFileName, username, userData.username)) {
+    if (await verifySharing.isAlreadyUploaded(encryptedFileName, username, userData.username)) {
       CustomAlertDialog.alertDialogTitle("Sharing Failed", "You've already shared this file.");
       return;
     }
 
-    if (await VerifySharing().unknownUser(username)) {
+    if (await verifySharing.unknownUser(username)) {
       CustomAlertDialog.alertDialogTitle("Sharing Failed", "User `$username` not found.");
+      return;
+    }
+
+    if(await verifySharing.isDuplicatedFileName(encryptedFileName, userData.username)) {
+      CustomAlertDialog.alertDialogTitle("Sharing Failed", "A file with this name already exists. Try to rename the file.");
       return;
     }
 
