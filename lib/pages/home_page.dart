@@ -604,7 +604,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
 
-    _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv');
+    _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv,.avi');
 
   }
 

@@ -147,12 +147,38 @@ class PreviewFileState extends State<PreviewFile> {
     fileSizeNotifier.value = "";
     fileResolutionNotifier.value = "";
 
-    if (tempData.origin == OriginFile.public) {
-      psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[fileIndex];
+    if (tempData.origin == OriginFile.public ||
+        tempData.origin == OriginFile.sharedMe ||
+        tempData.origin == OriginFile.sharedOther) {
       _initializeUploaderName();
+    }
 
-    } else if (tempData.origin == OriginFile.sharedMe || tempData.origin == OriginFile.sharedOther) {
-      _initializeUploaderName();
+  }
+
+  void _initializeUploaderName() async {
+
+    const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
+    const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
+  
+    final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+
+    if(localOriginFrom.contains(originFrom)) {
+
+      uploaderNameNotifer.value = userData.username;
+
+    } else if (sharingOriginFrom.contains(originFrom)) {
+      await Future.delayed(const Duration(milliseconds: 450));
+      final uploaderName = originFrom == OriginFile.sharedOther 
+        ? await retrieveSharingName.shareToOtherName(usernameIndex: uploaderNameIndex) 
+        : await retrieveSharingName.sharerName();
+      uploaderNameNotifer.value = uploaderName;
+
+    } else if (originFrom == OriginFile.public) {
+      psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
+      uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
+      
+    } else {
+      uploaderNameNotifer.value = userData.username;
 
     }
 
@@ -529,34 +555,6 @@ class PreviewFileState extends State<PreviewFile> {
         ),
       ),
     );
-  }
-  
-  void _initializeUploaderName() async {
-
-    const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
-    const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
-  
-    final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-
-    if(localOriginFrom.contains(originFrom)) {
-
-      uploaderNameNotifer.value = userData.username;
-
-    } else if (sharingOriginFrom.contains(originFrom)) {
-      await Future.delayed(const Duration(milliseconds: 450));
-      final uploaderName = originFrom == OriginFile.sharedOther 
-        ? await retrieveSharingName.shareToOtherName(usernameIndex: uploaderNameIndex) 
-        : await retrieveSharingName.sharerName();
-      uploaderNameNotifer.value = uploaderName;
-
-    } else if (originFrom == OriginFile.public) {
-      uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
-      
-    } else {
-      uploaderNameNotifer.value = userData.username;
-
-    }
-
   }
 
   Future<Size> _getImageResolution(Uint8List imageBytes) async {

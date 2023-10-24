@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:get_it/get_it.dart';
@@ -13,6 +14,7 @@ import 'package:mysql_client/mysql_client.dart';
 class InsertData {
   
   final logger = Logger();
+  final specialFile = SpecialFile();
   final encryption = EncryptionClass();
   final dateNow = DateFormat('dd/MM/yyyy').format(DateTime.now());
 
@@ -32,6 +34,8 @@ class InsertData {
     final encryptedFilePath = encryption.encrypt(fileName);
     final encryptedFileVal = encryption.encrypt(fileValue);
 
+    final fileType = fileName.split('.').last;
+
     final thumb = videoThumbnail != null 
         ? base64.encode(videoThumbnail) 
         : null;
@@ -42,7 +46,6 @@ class InsertData {
       case GlobalsTable.homeText:
       case GlobalsTable.homePdf:
       case GlobalsTable.homePtx:
-      case GlobalsTable.homeAudio:
       case GlobalsTable.homeExcel:
       case GlobalsTable.homeWord:
       case GlobalsTable.homeExe:
@@ -50,11 +53,17 @@ class InsertData {
         break;
 
       case GlobalsTable.homeVideo:
-        await insertVideoInfo(conn, tableName, encryptedFilePath, userName, encryptedFileVal,thumb);
+        await insertVideoInfo(conn, tableName, encryptedFilePath, userName, fileValue, thumb);
+        break;
+
+      case GlobalsTable.homeAudio:
+        await insertFileInfo(conn, tableName, encryptedFilePath, userName, fileValue);
         break;
 
       case GlobalsTable.directoryUploadTable:
-        await insertDirectoryInfo(conn,tableName,userName, encryptedFileVal, tempData.directoryName, encryptedFilePath,thumb, fileName);
+        final fileData = specialFile.ignoreEncryption(fileType) 
+                          ? fileValue : encryptedFileVal;
+        await insertDirectoryInfo(conn, tableName, userName, fileData, tempData.directoryName, encryptedFilePath,thumb, fileName);
         break;
 
       case GlobalsTable.psText:
@@ -63,14 +72,16 @@ class InsertData {
       case GlobalsTable.psExcel:
       case GlobalsTable.psPdf:
       case GlobalsTable.psWord:
-      case GlobalsTable.psAudio:
       case GlobalsTable.psApk:
-        
         await insertFileInfoPs(conn, tableName, encryptedFilePath, userName, encryptedFileVal);
         break;
 
       case GlobalsTable.psVideo:
-        await insertVideoInfoPs(conn, encryptedFilePath, userName, encryptedFileVal, thumb);
+        await insertVideoInfoPs(conn, encryptedFilePath, userName, fileValue, thumb);
+        break;
+
+      case GlobalsTable.psAudio:
+        await insertFileInfoPs(conn, tableName, encryptedFilePath, userName, fileValue);
         break;
 
       default:

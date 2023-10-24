@@ -58,14 +58,16 @@ class PreviewVideoState extends State<PreviewVideo> {
     if (autoPlay) {
       await videoPlayerController.initialize();
       videoPlayerController.play();
+
     } else {
       await videoPlayerController.initialize();
+
     }
 
-    setState(() {});
-
-    videoIsPlaying = true;
-    videoIsLoading = false;
+    setState(() {
+      videoIsPlaying = true;
+      videoIsLoading = false;
+    });
 
     videoSize = videoPlayerController.value.size;
     videoDurationNotifier.value = getDurationString(videoPlayerController.value.duration);
@@ -78,8 +80,6 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   Future<void> playVideoDataAsync() async {
     
-    setState(() {});
-
     if (videoBytes.isEmpty) {
       videoIsLoading = true;
       videoBytes = await CallPreviewData().callDataAsync(

@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
+import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/ask_sharing_password_dialog.dart';
 import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -130,7 +131,9 @@ class ProcessFileSharing {
     if(passwordSharingDisabled == "0") {
       
       final fileBytesData = await _callFileBytesData(fileName, tableName);
-      final encryptedFileBytesData = EncryptionClass().encrypt(base64.encode(fileBytesData));  
+      final fileData = base64.encode(fileBytesData);
+      final encryptedFileData = SpecialFile().ignoreEncryption(fileExtension) 
+        ? fileData : EncryptionClass().encrypt(fileData);  
 
       if(context.mounted) {
 
@@ -138,7 +141,7 @@ class ProcessFileSharing {
           sendTo: username, 
           fileName: encryptedFileName,
           comment: shareToComment,
-          fileData: encryptedFileBytesData,
+          fileData: encryptedFileData,
           fileType: '.$fileExtension',
           authInput: getSharingAuth,
           thumbnail: thumbnailBase64 ?? '',
@@ -163,7 +166,8 @@ class ProcessFileSharing {
 
     final fileBytesData = await _callFileBytesData(fileName, tableName);
     final fileData = base64.encode(fileBytesData);
-    final encryptedFileData = EncryptionClass().encrypt(fileData);  
+    final encryptedFileData = SpecialFile().ignoreEncryption(fileExtension) 
+        ? fileData : EncryptionClass().encrypt(fileData);  
 
     await _sendFileToShare(
       shareToName: username,

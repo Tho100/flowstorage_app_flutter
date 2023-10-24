@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -18,7 +19,8 @@ import 'package:mysql_client/mysql_client.dart';
 class RetrieveData {
 
   final encryption = EncryptionClass();
-  
+  final specialFile = SpecialFile();
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
@@ -30,7 +32,8 @@ class RetrieveData {
     String? tableName,
   ) async {
 
-    final encryptedFileName = encryption.encrypt(fileName!);
+    final fileType = fileName!.split('.').last;
+    final encryptedFileName = encryption.encrypt(fileName);
 
     late final String query;
     late final Map<String, String> queryParams;
@@ -79,7 +82,10 @@ class RetrieveData {
 
     final row = (await fscDbCon.execute(query, queryParams)).rows.first;
     
-    final decryptedData = encryption.decrypt(row.assoc()['CUST_FILE']!);
+    final decryptedData = specialFile.ignoreEncryption(fileType)
+      ? row.assoc()['CUST_FILE']! 
+      : encryption.decrypt(row.assoc()['CUST_FILE']!);
+
     final fileByteData = base64.decode(decryptedData);
     final decompressedData = CompressorApi.decompressFile(fileByteData);
 

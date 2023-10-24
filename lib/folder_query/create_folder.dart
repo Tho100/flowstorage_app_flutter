@@ -1,6 +1,7 @@
 
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
+import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,7 @@ class CreateFolder {
   });
 
   final encryption = EncryptionClass(); 
+  final specialFile = SpecialFile();
   final formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now()); 
 
   final userData = GetIt.instance<UserDataProvider>();
@@ -37,10 +39,12 @@ class CreateFolder {
 
     for (int i = 0; i < fileNames.length; i++) {
 
+      final fileType = fileNames[i].split('.').last;
+
       final params = {
         'folder_name': encryptedFolderName, 
         'username': userData.username, 
-        'file_data': encryption.encrypt(fileValues[i]),
+        'file_data': specialFile.ignoreEncryption(fileType) ? fileValues[i] : encryption.encrypt(fileValues[i]),
         'file_name': encryption.encrypt(fileNames[i]),
         'file_type': fileTypes[i],
         'upload_date': formattedDate,
