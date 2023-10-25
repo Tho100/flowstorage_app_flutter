@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
@@ -24,7 +25,7 @@ class ThumbnailGetter {
 
       query = "SELECT CUST_THUMB FROM ";
       if (tempData.origin == OriginFile.home) {
-        query += "file_info_vid WHERE CUST_USERNAME = :username";
+        query += "${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";
 
       } else {
         query += "cust_sharing WHERE CUST_FROM = :username";
@@ -41,7 +42,7 @@ class ThumbnailGetter {
       params = {'username': userData.username, 'filename': encryption.encrypt(fileName)};
 
     } else {
-      query = "SELECT CUST_THUMB FROM file_info_vid WHERE CUST_USERNAME = :username";
+      query = "SELECT CUST_THUMB FROM ${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";
       params = {'username': userData.username};
 
     }
@@ -71,7 +72,7 @@ class ThumbnailGetter {
 
     if(tempData.origin == OriginFile.home) {
 
-      const query = "SELECT CUST_THUMB FROM file_info_vid WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
+      const query = "SELECT CUST_THUMB FROM file_info_video WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
       final params = {
         'username': userData.username,
         'filename': encryptedFileName

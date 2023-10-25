@@ -1,14 +1,14 @@
 class GlobalsTable {
 
-  static const homeImage = "file_info";
-  static const homeText = "file_info_expand";
-  static const homeVideo = "file_info_vid";
+  static const homeImage = "file_info_image";
+  static const homeText = "file_info_text";
+  static const homeVideo = "file_info_video";
   static const homeExcel = "file_info_excel";
   static const homePdf = "file_info_pdf";
   static const homeWord = "file_info_word";
   static const homePtx = "file_info_ptx";
   static const homeApk = "file_info_apk";
-  static const homeAudio = "file_info_audi";
+  static const homeAudio = "file_info_audio";
   static const homeExe = "file_info_exe";
   static const homeMsi = "file_info_msi";
 

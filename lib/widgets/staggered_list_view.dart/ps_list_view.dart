@@ -48,8 +48,8 @@ class PsStaggeredListView extends StatelessWidget {
       child: Align(
         alignment: isFromDownload ? Alignment.bottomLeft : Alignment.bottomRight,
         child: SizedBox(
-          width: isFromDownload ? 56 : 132, 
-          height: isFromDownload ? 40 : 40,
+          width: isFromDownload ? 52 : 128, 
+          height: isFromDownload ? 36 : 36,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
@@ -185,7 +185,7 @@ class PsStaggeredListView extends StatelessWidget {
                 
                 Container(
                   width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 33,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 355,
+                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 395,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
@@ -226,7 +226,7 @@ class PsStaggeredListView extends StatelessWidget {
                 isFromDownload: true,
                 child: const Align(
                   alignment: Alignment.center,
-                  child: Icon(Icons.download, color: ThemeColor.justWhite, size: 21)
+                  child: Icon(Icons.download, color: ThemeColor.justWhite, size: 20)
                 ),
                 onPressed: () async { 
                   final fileName = storageData.fileNamesFilteredList[index];
@@ -239,9 +239,9 @@ class PsStaggeredListView extends StatelessWidget {
                 isFromDownload: false,
                 child: const Row(
                   children: [
-                    Icon(Icons.comment_outlined, color: ThemeColor.justWhite, size: 21),
+                    Icon(Icons.mode_comment_outlined, color: ThemeColor.justWhite, size: 19),
                     SizedBox(width: 8),
-                    Text("Comments")
+                    Text("Comments", style: TextStyle(fontSize: 13))
                   ]
                 ),
                 onPressed: () {
