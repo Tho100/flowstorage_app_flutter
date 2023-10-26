@@ -8,8 +8,8 @@ class EncryptionClass {
   late IV _iv;
 
   EncryptionClass() {
-    _key = Key.fromUtf8("0123456789012345");
-    _iv = IV.fromUtf8("0123456789012345");
+    _key = Key.fromUtf8("Rw2345_789qTz345");
+    _iv = IV.fromUtf8("Rw2345_789qTz345"); 
     _encrypter = Encrypter(AES(_key, mode: AESMode.cbc, padding: 'PKCS7'));
   }
 

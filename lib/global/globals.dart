@@ -29,6 +29,8 @@ class Globals {
     'md': GlobalsTable.homeText,
     'csv': GlobalsTable.homeText,
     'html': GlobalsTable.homeText,
+    'css': GlobalsTable.homeText,
+    'js': GlobalsTable.homeText,
 
     'pdf': GlobalsTable.homePdf,
 
@@ -65,6 +67,8 @@ class Globals {
     'md': GlobalsTable.psText,
     'csv': GlobalsTable.psText,
     'html': GlobalsTable.psText,
+    'css': GlobalsTable.psText,
+    'js': GlobalsTable.psText,
 
     'pdf': GlobalsTable.psPdf,
     'doc': GlobalsTable.psWord,
