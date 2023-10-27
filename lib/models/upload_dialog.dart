@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
@@ -11,8 +12,11 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
+import 'package:flowstorage_fsc/helper/random_generator.dart';
+import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/main.dart';
+import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -26,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker_plus/image_picker_plus.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 class UploadDialog {
 
@@ -255,6 +260,10 @@ class UploadDialog {
         List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
         String compressedImageBase64Encoded = base64.encode(bytes);
 
+        if(tempData.origin == OriginFile.offline) {
+
+        }
+
         if(tempData.origin == OriginFile.public) {
           publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
           return;
@@ -388,6 +397,134 @@ class UploadDialog {
 
     await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
 
+  }
+
+  Future<void> scannerUpload() async {
+    
+    final scannerPdf = ScannerPdf();
+
+    final imagePath = await CunningDocumentScanner.getPictures();
+
+    if(imagePath!.isEmpty) {
+      return;
+    }
+
+    final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
+
+    await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
+    
+    for(var images in imagePath) {
+
+      File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
+      await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
+      
+    }
+
+    await scannerPdf.savePdf(fileName: generateFileName);
+
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/$generateFileName.pdf');
+
+    final compressedBytes = await CompressorApi.compressFile(file.path.toString());
+    final toBase64Encoded = base64.encode(compressedBytes);
+    final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
+
+    if (tempData.origin == OriginFile.offline) {
+
+      final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
+      final imageBytes = Uint8List.fromList(decodeToBytes);
+      final decodedBase64String = base64.decode(toBase64Encoded);
+
+      await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
+
+      storageData.imageBytesFilteredList.add(imageBytes);
+      storageData.imageBytesList.add(imageBytes);
+
+    } else {
+      
+      await UpdateListView().processUpdateListView(
+        filePathVal: file.path,
+        selectedFileName: "$generateFileName.pdf",
+        tableName: GlobalsTable.homePdf, 
+        fileBase64Encoded: toBase64Encoded,
+        newFileToDisplay: newFileToDisplay
+      );
+
+    }
+
+    UpdateListView().addItemDetailsToListView(fileName: "$generateFileName.pdf");
+
+    await file.delete();
+
+    await NotificationApi.stopNotification(0);
+
+    SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
+
+    await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+
+  }
+
+  Future<void> photoUpload() async {
+
+    final details = await PickerModel()
+                        .galleryPicker(source: ImageSource.camera);
+
+    if (details!.selectedFiles.isEmpty) {
+      return;
+    }
+
+    for(var photoTaken in details.selectedFiles) {
+
+      final imagePath = photoTaken.selectedFile.toString()
+                        .split(" ").last.replaceAll("'", "");
+
+      final imageName = imagePath.split("/").last.replaceAll("'", "");
+      final fileExtension = imageName.split('.').last;
+
+      if(!(Globals.imageType.contains(fileExtension))) {
+        CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
+        return;
+      }
+
+      List<int> bytes = await CompressorApi.compressedByteImage(path: imagePath, quality: 78);
+    
+      final imageBase64Encoded = base64.encode(bytes); 
+
+      if(storageData.fileNamesList.contains(imageName)) {
+        CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
+        return;
+      }
+
+      if (tempData.origin == OriginFile.offline) {
+
+        final decodeToBytes = base64.decode(imageBase64Encoded);
+        final imageBytes = Uint8List.fromList(decodeToBytes);
+        await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
+
+        storageData.imageBytesFilteredList.add(decodeToBytes);
+        storageData.imageBytesList.add(decodeToBytes);
+
+      } else {
+
+        await UpdateListView().processUpdateListView(
+          filePathVal: imagePath, 
+          selectedFileName: imageName, 
+          tableName: GlobalsTable.homeImage, 
+          fileBase64Encoded: imageBase64Encoded
+        );
+        
+      }
+
+      UpdateListView().addItemDetailsToListView(fileName: imageName);
+
+      await File(imagePath).delete();
+
+    }
+
+    SnakeAlert.okSnake(message: "1 photo has been added", icon: Icons.check);
+
+    await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
+    
   }
 
 }

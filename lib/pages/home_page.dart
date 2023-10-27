@@ -9,7 +9,6 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/directory_query/save_directory.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
-import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
@@ -19,16 +18,13 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
-import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
-import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
-import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
@@ -66,10 +62,7 @@ import 'package:open_file/open_file.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:cunning_document_scanner/cunning_document_scanner.dart';
-import 'package:image_picker_plus/image_picker_plus.dart';
 
 import 'package:flowstorage_fsc/directory_query/delete_directory.dart';
 import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
@@ -258,67 +251,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final scannerPdf = ScannerPdf();
-
-      final imagePath = await CunningDocumentScanner.getPictures();
-
-      if(imagePath!.isEmpty) {
-        return;
-      }
-
-      final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
-
-      await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
-      
-      for(var images in imagePath) {
-
-        File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
-        await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
-        
-      }
-
-      if(!mounted) return;
-      await scannerPdf.savePdf(fileName: generateFileName, context: context);
-
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/$generateFileName.pdf');
-
-      final compressedBytes = await CompressorApi.compressFile(file.path.toString());
-      final toBase64Encoded = base64.encode(compressedBytes);
-      final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
-
-      if (tempData.origin == OriginFile.offline) {
-
-        final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
-        final imageBytes = Uint8List.fromList(decodeToBytes);
-        final decodedBase64String = base64.decode(toBase64Encoded);
-
-        await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
-
-        storageData.imageBytesFilteredList.add(imageBytes);
-        storageData.imageBytesList.add(imageBytes);
-
-      } else {
-        
-        await UpdateListView().processUpdateListView(
-          filePathVal: file.path,
-          selectedFileName: "$generateFileName.pdf",
-          tableName: GlobalsTable.homePdf, 
-          fileBase64Encoded: toBase64Encoded,
-          newFileToDisplay: newFileToDisplay
-        );
-
-      }
-
-      UpdateListView().addItemDetailsToListView(fileName: "$generateFileName.pdf");
-
-      await file.delete();
-
-      await NotificationApi.stopNotification(0);
-
-      SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
-
-      await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+      await UploadDialog(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+        publicStorageUploadPage: _openPsUploadPage
+      ).scannerUpload();
 
       _itemSearchingImplementation('');
 
@@ -332,64 +268,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final details = await PickerModel()
-                        .galleryPicker(source: ImageSource.camera);
-
-      if (details!.selectedFiles.isEmpty) {
-        return;
-      }
-
-      for(var photoTaken in details.selectedFiles) {
-
-        final imagePath = photoTaken.selectedFile.toString()
-                          .split(" ").last.replaceAll("'", "");
-
-        final imageName = imagePath.split("/").last.replaceAll("'", "");
-        final fileExtension = imageName.split('.').last;
-
-        if(!(Globals.imageType.contains(fileExtension))) {
-          CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
-          return;
-        }
-
-        List<int> bytes = await CompressorApi.compressedByteImage(path: imagePath, quality: 78);
-      
-        final imageBase64Encoded = base64.encode(bytes); 
-
-        if(storageData.fileNamesList.contains(imageName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
-          return;
-        }
-
-        if (tempData.origin == OriginFile.offline) {
-
-          final decodeToBytes = base64.decode(imageBase64Encoded);
-          final imageBytes = Uint8List.fromList(decodeToBytes);
-          await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
-
-          storageData.imageBytesFilteredList.add(decodeToBytes);
-          storageData.imageBytesList.add(decodeToBytes);
-
-        } else {
-
-          await UpdateListView().processUpdateListView(
-            filePathVal: imagePath, 
-            selectedFileName: imageName, 
-            tableName: GlobalsTable.homeImage, 
-            fileBase64Encoded: imageBase64Encoded
-          );
-          
-        }
-
-        UpdateListView().addItemDetailsToListView(fileName: imageName);
-
-        await File(imagePath).delete();
-
-      }
-
-      SnakeAlert.okSnake(message: "1 photo has been added", icon: Icons.check);
-
-      await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
+      await UploadDialog(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+        publicStorageUploadPage: _openPsUploadPage
+      ).photoUpload();
 
       _itemSearchingImplementation('');
 
