@@ -258,10 +258,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       _itemSearchingImplementation('');
 
-    } catch (err, st) {
-      logger.e('Exception from _initializeCameraScanner {main}',err, st);
+    } catch (err) {
       SnakeAlert.errorSnake("Failed to start scanner.");
     }
+    
   }
 
   Future<void> _initializePhotoCamera() async {

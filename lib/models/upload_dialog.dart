@@ -202,7 +202,7 @@ class UploadDialog {
       
     }
 
-    if(tempData.origin != OriginFile.public) {
+    if(tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) {
       await CallNotify()
         .uploadingNotification(numberOfFiles: countSelectedFiles);
     }
@@ -261,7 +261,19 @@ class UploadDialog {
         String compressedImageBase64Encoded = base64.encode(bytes);
 
         if(tempData.origin == OriginFile.offline) {
+          final decodeToBytes = base64.decode(compressedImageBase64Encoded);
+          final imageBytes = Uint8List.fromList(decodeToBytes);
+          await OfflineMode().saveOfflineFile(fileName: selectedFileName, fileData: imageBytes);
 
+          UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
+
+          storageData.imageBytesList.add(imageBytes);
+          storageData.imageBytesFilteredList.add(imageBytes);
+
+          scaffoldMessenger.hideCurrentSnackBar();
+          SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
+        
+          return;
         }
 
         if(tempData.origin == OriginFile.public) {
