@@ -181,6 +181,7 @@ class UploadDialog {
     final shortenText = ShortenText();
 
     final resultPicker = await PickerModel().filePicker();
+
     if (resultPicker == null) {
       return;
     }
@@ -214,8 +215,41 @@ class UploadDialog {
       );
     } 
 
-    for (final pickedFile in resultPicker.files) {
+    final fileTypes = resultPicker.names.map((name) => name!.split('.').last).toList();
 
+    if(tempData.origin == OriginFile.offline && fileTypes.any((type) => Globals.imageType.contains(type))) {
+
+      for(var item in resultPicker.files) {
+
+        final filePath = item.path.toString();
+        final fileName = item.name;
+
+        final compressQuality = tempData.origin 
+            == OriginFile.public ? 71 : 80;
+
+        List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
+        String compressedImageBase64Encoded = base64.encode(bytes);
+
+        final decodeToBytes = base64.decode(compressedImageBase64Encoded);
+        final imageBytes = Uint8List.fromList(decodeToBytes);
+        await OfflineMode().saveOfflineFile(fileName: fileName, fileData: imageBytes);
+
+        UpdateListView().addItemDetailsToListView(fileName: fileName);
+
+        storageData.imageBytesList.add(imageBytes);
+        storageData.imageBytesFilteredList.add(imageBytes);
+
+        scaffoldMessenger.hideCurrentSnackBar();
+        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(fileName)} Has been added");
+      
+      }
+
+      return;
+
+    }
+
+    for (final pickedFile in resultPicker.files) {
+      
       final selectedFileName = pickedFile.name;
       final fileExtension = selectedFileName.split('.').last;
 
@@ -259,22 +293,6 @@ class UploadDialog {
 
         List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
         String compressedImageBase64Encoded = base64.encode(bytes);
-
-        if(tempData.origin == OriginFile.offline) {
-          final decodeToBytes = base64.decode(compressedImageBase64Encoded);
-          final imageBytes = Uint8List.fromList(decodeToBytes);
-          await OfflineMode().saveOfflineFile(fileName: selectedFileName, fileData: imageBytes);
-
-          UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
-
-          storageData.imageBytesList.add(imageBytes);
-          storageData.imageBytesFilteredList.add(imageBytes);
-
-          scaffoldMessenger.hideCurrentSnackBar();
-          SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
-        
-          return;
-        }
 
         if(tempData.origin == OriginFile.public) {
           publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
