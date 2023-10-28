@@ -324,9 +324,9 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   Widget buildLoadingVideo() {
-    return Positioned.fill(
+    return const Positioned.fill(
       child: Center(
-        child: LoadingFile.buildLoading()
+        child: LoadingIndicator()
       ),
     );
   }

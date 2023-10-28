@@ -81,10 +81,10 @@ class PreviewText extends StatelessWidget {
           );
 
         } else if (snapshot.hasError) {
-          return FailedLoad.buildFailedLoad();
+          return const FailedLoad();
 
         } else {
-          return LoadingFile.buildLoading();
+          return const LoadingIndicator();
 
         }
       },

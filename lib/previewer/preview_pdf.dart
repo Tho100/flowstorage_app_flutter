@@ -55,10 +55,10 @@ class PreviewPdf extends StatelessWidget {
         future: callPDFDataAsync(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return LoadingFile.buildLoading();
+            return const LoadingIndicator();
 
           } else if (snapshot.hasError) {
-            return FailedLoad.buildFailedLoad();
+            return const FailedLoad();
 
           } else {
             return SfPdfViewer.memory(
