@@ -1,23 +1,35 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
+import 'package:flowstorage_fsc/api/notification_api.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/call_notification.dart';
+import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/main.dart';
+import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class IntentSharingPage extends StatelessWidget {
 
   final String fileName;
+  final String filePath;
   final String fileData;
   final String? imageBase64Encoded;
 
   IntentSharingPage({
     required this.fileName,
+    required this.filePath,
     required this.fileData,
     required this.imageBase64Encoded,
     Key? key
@@ -45,7 +57,7 @@ class IntentSharingPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(16),
                     child: Image.memory(
                       base64.decode(imageBase64Encoded!),
                       width: 105,
@@ -121,8 +133,77 @@ class IntentSharingPage extends StatelessWidget {
     
   }
 
-  void processFileUpload(String fileName, BuildContext context) {
-    
+  Future<void> processFileUpload(BuildContext context) async {
+
+    try {
+
+      await CallNotify()
+        .uploadingNotification(numberOfFiles: 1);
+
+      String? fileBase64Encoded;
+
+      final fileType = fileName.split('.').last;
+
+      if (!(Globals.imageType.contains(fileType))) {
+        final compressedFileByte = await CompressorApi.compressFile(filePath);
+        fileBase64Encoded = base64.encode(compressedFileByte);
+
+      } else {
+        final filesBytes = await File(filePath).readAsBytes();
+        fileBase64Encoded = base64.encode(filesBytes);
+
+      }
+
+      if (Globals.imageType.contains(fileType)) {
+
+        List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: 80);
+        String compressedImageBase64Encoded = base64.encode(bytes);
+
+        await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+
+      } else if (Globals.videoType.contains(fileType)) {
+
+        final generatedThumbnail = await GenerateThumbnail(
+          fileName: fileName, 
+          filePath: filePath
+        ).generate();
+
+        final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+        final thumbnailFile = generatedThumbnail[1] as File;
+
+        await UpdateListView().processUpdateListView(
+          filePathVal: filePath, 
+          selectedFileName: fileName, 
+          tableName: GlobalsTable.homeVideo, 
+          fileBase64Encoded: fileBase64Encoded,
+          newFileToDisplay: thumbnailFile,
+          thumbnailBytes: thumbnailBytes
+        );
+
+        await thumbnailFile.delete();
+
+      }
+
+      UpdateListView().addItemDetailsToListView(fileName: fileName);
+
+      await NotificationApi.stopNotification(0);
+
+      final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
+      SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added.");
+
+      await CallNotify().
+        uploadedNotification(title: "Upload Finished", count: 1);
+
+      Navigator.pop(context);
+
+    } catch (err, st) {
+      Logger().e('Exception from _openDialogUploadGallery {main}', err, st);
+      SnakeAlert.errorSnake("Upload failed.");
+      NotificationApi.stopNotification(0);
+      
+    }
+
   }
 
   @override
@@ -141,8 +222,8 @@ class IntentSharingPage extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            onPressed: () {
-              processFileUpload(fileName, context);
+            onPressed: () async {
+              await processFileUpload(context);
             }
           ),
         ],

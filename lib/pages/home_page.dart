@@ -2580,6 +2580,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       MaterialPageRoute(builder: (context) => 
       IntentSharingPage(
         fileName: fileName, 
+        filePath: file.path,
         imageBase64Encoded: imagePreview, 
         fileData: fileBase64
       ))
@@ -2595,8 +2596,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _initializeProvider();
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
-    _initializeShowUpgradeOccasionally();
     _initializeSharingIntentListener();
+    _initializeShowUpgradeOccasionally();
 
   }
 
