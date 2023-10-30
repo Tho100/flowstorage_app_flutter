@@ -90,11 +90,13 @@ class PreviewFileState extends State<PreviewFile> {
 
   final filesWithCustomHeader = {
     GlobalsTable.homeText, GlobalsTable.homeAudio, 
-    GlobalsTable.psAudio, GlobalsTable.psText};
+    GlobalsTable.psAudio, GlobalsTable.psText
+  };
 
   final filesInfrontAppBar = {
     GlobalsTable.homeText, GlobalsTable.homePdf, 
-    GlobalsTable.psText, GlobalsTable.psPdf};
+    GlobalsTable.psText, GlobalsTable.psPdf
+  };
 
   @override
   void initState() {
@@ -367,7 +369,7 @@ class PreviewFileState extends State<PreviewFile> {
       return const PreviewVideo();
 
     } else if (fileType == "pdf") {
-      return PreviewPdf();
+      return const PreviewPdf();
 
     } else {
       return _buildPreviewerUnavailable();

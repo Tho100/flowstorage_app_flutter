@@ -18,13 +18,14 @@ class PreviewText extends StatelessWidget {
 
   final TextEditingController controller;
 
-  PreviewText({
-    Key? key, required this.controller
+  const PreviewText({
+    Key? key, 
+    required this.controller
   }) : super(key: key);
 
-  final tempData = GetIt.instance<TempDataProvider>();
-
   Future<Uint8List> callTextDataAsync() async {
+
+    final tempData = GetIt.instance<TempDataProvider>();
 
     try {
       
@@ -90,4 +91,5 @@ class PreviewText extends StatelessWidget {
       },
     );
   }
+
 }

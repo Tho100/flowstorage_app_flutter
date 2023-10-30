@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -78,7 +79,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     String countryCurrency = 'USD';
     double conversionRate = 2.0;
 
-    countryCode = await _getUserCountryCode();
+    countryCode = await GeographicsApi().countryCode();
     countryCurrency = countryCodeToCurrency[countryCode]!;
 
     final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));

@@ -11,8 +11,10 @@ import 'package:flowstorage_fsc/directory_query/save_directory.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
+import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -56,6 +58,7 @@ import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_vie
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/recent_ps_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_view.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
@@ -90,6 +93,7 @@ import 'package:flowstorage_fsc/data_classes/date_getter.dart';
 import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
 import 'package:flowstorage_fsc/data_query/rename_data.dart';
 
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
 
@@ -144,6 +148,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   final searchBarVisibileNotifier = ValueNotifier<bool>(true);
 
   late Set<String> offlineFilesName = {};
+
+  late StreamSubscription intentDataStreamSubscription;
 
   bool togglePhotosPressed = false;
   bool editAllIsPressed = false;
@@ -2509,6 +2515,78 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
+  void _initializeSharingIntentListener() {
+
+    try {
+
+      intentDataStreamSubscription = FlutterSharingIntent.instance.getMediaStream()
+      .listen((List<SharedFile> value) {
+        final path = value.map((f) => f.value).join(",");
+        if(path.isNotEmpty) {
+          _navigateToIntentSharing(path);
+        } else {
+          return;
+        }
+
+      }, onError: (err) { return; });
+
+      FlutterSharingIntent.instance.getInitialSharing().then((List<SharedFile> value) {
+        final path = value.map((f) => f.value).join(",");
+        if(path.isNotEmpty) {
+          _navigateToIntentSharing(path);
+        } else {
+          return;
+        }
+        
+      });
+
+    } catch (err, st) {
+      Logger().e("Exception from main {_initializeSharingIntentListener}", err, st);
+      return;
+
+    }
+
+  }
+
+  void _navigateToIntentSharing(String filePath) async {
+
+    final file = File(filePath);
+    final fileName = file.path.split('/').last;
+
+    final fileBytes = await file.readAsBytes();
+    final fileBase64 = base64.encode(fileBytes);
+
+    late String? imagePreview = "";
+
+    final fileType = fileName.split('.').last;
+    
+    if(Globals.imageType.contains(fileType)) {
+      imagePreview = fileBase64;
+
+    } else if (Globals.videoType.contains(fileType)) {
+      final generatedThumbnail = await GenerateThumbnail(
+        fileName: fileName, 
+        filePath: filePath
+      ).generate();
+
+      final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+      imagePreview = base64.encode(thumbnailBytes);
+
+    } 
+
+    if(!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => 
+      IntentSharingPage(
+        fileName: fileName, 
+        imageBase64Encoded: imagePreview, 
+        fileData: fileBase64
+      ))
+    );
+
+  }
+
   @override
   void initState() {
 
@@ -2518,6 +2596,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
     _initializeShowUpgradeOccasionally();
+    _initializeSharingIntentListener();
 
   }
 
@@ -2531,6 +2610,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     focusNodeRedudane.dispose();
     scrollListViewController.dispose();
     psButtonTextNotifier.dispose();
+    intentDataStreamSubscription.cancel();
 
     staggeredListViewSelected.dispose();
     floatingActionButtonVisible.dispose();

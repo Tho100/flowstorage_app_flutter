@@ -78,10 +78,7 @@ class SnakeAlert {
             Text(message), 
             const Spacer(),
             TextButton(
-              onPressed: () async {
-                //final connection = await SqlConnection.initializeConnection();
-                //await connection.close();
-              },
+              onPressed: () async { },
               child: const Text('Cancel'),
             ),
           ],

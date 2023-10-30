@@ -16,11 +16,11 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PreviewPdf extends StatelessWidget {
 
-  PreviewPdf({Key? key}) : super(key: key);
-
-  final tempData = GetIt.instance<TempDataProvider>();
+  const PreviewPdf({Key? key}) : super(key: key);
 
   Future<Uint8List> callPDFDataAsync() async {
+
+    final tempData = GetIt.instance<TempDataProvider>();
 
     try {
 

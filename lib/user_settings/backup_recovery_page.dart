@@ -19,7 +19,7 @@ class BackupRecovery extends StatelessWidget {
   
   Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured, {bool isFromPin = false}) {
 
-    final valueNotifier = ValueNotifier<bool>(false);
+    final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,7 +32,7 @@ class BackupRecovery extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: ValueListenableBuilder<bool>(
-              valueListenable: valueNotifier,
+              valueListenable: sufixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
@@ -50,7 +50,7 @@ class BackupRecovery extends StatelessWidget {
                         color: ThemeColor.thirdWhite,
                       ),
                       onPressed: () {
-                        valueNotifier.value = !isVisible;
+                        sufixIconVisibilityNotifier.value = !isVisible;
                       },
                     )
                   : null,
