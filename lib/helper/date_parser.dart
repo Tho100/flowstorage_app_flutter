@@ -6,9 +6,9 @@ class DateParser {
 
   DateParser({required this.date});
 
-  DateTime parse() {
+  final now = DateTime.now();
 
-    DateTime now = DateTime.now();
+  DateTime parse() {
 
     if(date == "Directory") {
       return now;

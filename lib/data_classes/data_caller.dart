@@ -83,39 +83,30 @@ class DataCaller {
       actualFileSize = "${fileSizeMB.toStringAsFixed(2)}Mb";
 
       if (Globals.imageType.contains(fileType)) {
-
         imageBytes = await file.readAsBytes();
 
       } else if (Globals.textType.contains(fileType)) {
-        
         imageBytes = await getAssets.loadAssetsData("txt0.jpg");
 
       } else if (Globals.audioType.contains(fileType)) {
-
         imageBytes = await getAssets.loadAssetsData("music0.jpg");
 
       } else if (fileType == "pdf") {
-
         imageBytes = await getAssets.loadAssetsData("pdf0.jpg");
 
       } else if (Globals.wordType.contains(fileType)) {
-
         imageBytes = await getAssets.loadAssetsData("doc0.jpg");
 
       } else if (Globals.excelType.contains(fileType)) {
-
         imageBytes = await getAssets.loadAssetsData("exl0.jpg");
 
       } else if (fileType == "exe") {
-
         imageBytes = await getAssets.loadAssetsData("exe0.jpg");
 
       } else if (fileType == "apk") {
-        
         imageBytes = await getAssets.loadAssetsData("apk0.jpg");
 
       } else if (Globals.ptxType.contains(fileType)) {
-
         imageBytes = await getAssets.loadAssetsData("pptx0.jpg");
 
       } else {

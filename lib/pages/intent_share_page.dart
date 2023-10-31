@@ -68,25 +68,21 @@ class IntentSharingPage extends StatelessWidget {
                 ),
 
                 if(Globals.videoType.contains(fileName.split('.').last))
-                Padding(
-                  padding: const EdgeInsets.only(top: 18.0, left: 20.0),
+                Center(
                   child: Container(
-                    width: 35,
-                    height: 35,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
                       color: ThemeColor.mediumGrey.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
+                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 20)
                     ),
                   ),
                 ],
               ),
 
               const SizedBox(width: 10),
-
-              if(Globals.generalFileTypes.contains(fileName.split('.').last))
-              const SizedBox(width: 18),
 
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -137,8 +133,14 @@ class IntentSharingPage extends StatelessWidget {
 
     try {
 
+      final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
       await CallNotify()
         .uploadingNotification(numberOfFiles: 1);
+
+      SnakeAlert.uploadingSnake(
+        snackState: scaffoldMessenger, 
+        message: "Uploading ${ShortenText().cutText(fileName)}...");
 
       String? fileBase64Encoded;
 
@@ -188,8 +190,6 @@ class IntentSharingPage extends StatelessWidget {
 
       await NotificationApi.stopNotification(0);
 
-      final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
       SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added.");
 
       await CallNotify().
@@ -198,12 +198,16 @@ class IntentSharingPage extends StatelessWidget {
       Navigator.pop(context);
 
     } catch (err, st) {
-      Logger().e('Exception from _openDialogUploadGallery {main}', err, st);
-      SnakeAlert.errorSnake("Upload failed.");
-      NotificationApi.stopNotification(0);
+      callOnUploadFailed('Exception from _openDialogUploadGallery {main}', err, st);
       
     }
 
+  }
+
+  void callOnUploadFailed(String errMessage, dynamic error, StackTrace stackTrace) {
+    SnakeAlert.errorSnake("Upload failed.");
+    NotificationApi.stopNotification(0);
+    Logger().e(errMessage, error, stackTrace);      
   }
 
   @override

@@ -19,13 +19,12 @@ class SharingName {
     final params = {'from': userData.username};
     final results = await conn.execute(query,params);
 
-    String? sharedToName;
     for(final row in results.rows) {
-      sharedToName = row.assoc()['CUST_TO'];
-      sharedToNameList.add(sharedToName!);
+      sharedToNameList.add(row.assoc()['CUST_TO']!);
+      return sharedToNameList[usernameIndex];
     }
 
-    return sharedToNameList[usernameIndex];
+    return ""; 
     
   }
 
@@ -37,12 +36,11 @@ class SharingName {
     final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
     final results = await conn.execute(query,params);
 
-    String? sharedToMeName;
     for(final row in results.rows) {
-      sharedToMeName = row.assoc()['CUST_FROM'];
+      return row.assoc()['CUST_FROM']!;
     }
 
-    return sharedToMeName!;
+    return "";
     
   }
 }

@@ -4,8 +4,6 @@ import 'package:get_it/get_it.dart';
 
 class Crud {
 
-  final _locator = GetIt.instance;
-
   Future<void> processCud(
     String? query,
     Map<String,dynamic>? params
@@ -43,12 +41,11 @@ class Crud {
     final conn = await SqlConnection.initializeConnection();
     final results = await conn.execute(query!,params!);
 
-    int totalRow = 0;
     for(var row in results.rows) {
-      totalRow = row.typedColAt<int>(0)!;
+      return row.typedColAt<int>(0)!;
     }
 
-    return totalRow;
+    return 0;
   }
 
   Future<dynamic> select({
@@ -68,7 +65,7 @@ class Crud {
 
   Future<int> countUserTableRow(String tableName) async {
 
-    final userData = _locator<UserDataProvider>();
+    final userData = GetIt.instance<UserDataProvider>();
 
     final conn = await SqlConnection.initializeConnection();
 
@@ -77,12 +74,11 @@ class Crud {
 
     final results = await conn.execute(countRowQuery,params);
 
-    int totalRow = 0;
     for(var row in results.rows) {
-      totalRow = row.typedColAt<int>(0)!;
+      return row.typedColAt<int>(0)!;
     }
 
-    return totalRow;
+    return 0;
 
   }
 

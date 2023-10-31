@@ -71,7 +71,7 @@ class SharingDataReceiver {
             connection: conn
           );
 
-          fileBytes = base64.decode(EncryptionClass().decrypt(encryptedBase64));
+          fileBytes = base64.decode(encryption.decrypt(encryptedBase64));
 
         } else if (Globals.videoType.contains(fileType)) {
 

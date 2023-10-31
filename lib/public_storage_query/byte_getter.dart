@@ -144,8 +144,8 @@ class ByteGetterPs {
       if(psStorageData.psThumbnailBytesList.isEmpty || psStorageData.myPsThumbnailBytesList.isEmpty) {
 
         final thumbnailBytes = isFromMyPs 
-          ? await thumbnailGetter.myRetrieveParams() 
-          : await thumbnailGetter.retrieveParams();
+          ? await thumbnailGetter.myRetrieveParams(conn) 
+          : await thumbnailGetter.retrieveParams(conn);
 
         isFromMyPs 
         ? psStorageData.setMyPsThumbnailBytes(thumbnailBytes)

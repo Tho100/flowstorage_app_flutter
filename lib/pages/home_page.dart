@@ -4,14 +4,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flowstorage_fsc/api/notification_api.dart';
-import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
-import 'package:flowstorage_fsc/directory_query/save_directory.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
@@ -20,7 +19,6 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
-import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
@@ -67,31 +65,25 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flowstorage_fsc/directory_query/delete_directory.dart';
 import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
-import 'package:flowstorage_fsc/helper/simplify_download.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/folder_query/delete_folder.dart';
-import 'package:flowstorage_fsc/folder_query/rename_folder.dart';
 
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 
-import 'package:flowstorage_fsc/directory_query/create_directory.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 import 'package:flowstorage_fsc/data_classes/date_getter.dart';
 import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/data_query/rename_data.dart';
 
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -115,6 +107,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   final dataCaller = DataCaller();
   final updateListView = UpdateListView();
   final deleteData = DeleteData();
+  final functionModel = FunctionModel();
 
   final crud = Crud();
   final logger = Logger();
@@ -393,7 +386,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         }
 
-        await _renameFolder(folderName, newFolderName);
+        await functionModel.renameFolderData(folderName, newFolderName);
         RenameFolderDialog.folderRenameController.clear();
 
       }
@@ -416,7 +409,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           return;
         }
 
-        await _buildDirectory(getDirectoryTitle);
+        await functionModel.createDirectoryData(getDirectoryTitle);
         CreateDirectoryDialog.directoryNameController.clear();
 
       }
@@ -599,49 +592,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
     if (directoryPath != null) {
-      await _callMultipleFilesDownload(count: count, directoryPath: directoryPath);
+
+      await functionModel.multipleFilesDownload(
+        count: count, 
+        checkedItemsName: checkedItemsName, 
+        directoryPath: directoryPath
+      );
+
     } else {
       return;
-    }
-
-  }
-
-  Future<void> _callMultipleFilesDownload({
-    required int count,
-    required String directoryPath
-  }) async {
-
-    try {
-
-      final loadingDialog = SingleTextLoading();      
-      loadingDialog.startLoading(title: "Saving...", context: context);
-
-      for(int i=0; i<count; i++) {
-
-        late Uint8List getBytes;
-
-        final fileType = checkedItemsName.elementAt(i).split('.').last;
-        final tableName = Globals.fileTypesToTableNames[fileType];
-
-        if(Globals.imageType.contains(fileType)) {
-          final fileIndex = storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i));
-          getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
-
-        } else {
-          getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i),tableName!));
-
-        }
-
-        await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: checkedItemsName.elementAt(i), fileData: getBytes);
-
-      }
-
-      loadingDialog.stopLoading();
-
-      SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check);
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to save files.");
     }
 
   }
@@ -835,31 +794,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  void _filterTypePublicStorage(String value) async {
-
-    debounceSearchingTimer?.cancel();
-    debounceSearchingTimer = Timer(const Duration(milliseconds: 499), () {
-      final searchTerms =
-          value.split(",").map((term) => term.trim().toLowerCase()).toList();
-
-      final filteredFiles = storageData.fileNamesList.where((file) {
-        return searchTerms.any((term) => file.toLowerCase().contains(term));
-      }).toList();
-
-      final filteredByteValues = storageData.imageBytesList
-          .where((bytes) => filteredFiles.contains(storageData.fileNamesList[storageData.imageBytesList.indexOf(bytes)]))
-          .toList();
-
-      final filteredFilesDate = <String>[];
-
-      setState(() {
-        storageData.setFilteredFilesName(filteredFiles);
-        storageData.setFilteredImageBytes(filteredByteValues);
-        storageData.setFilteredFilesDate(filteredFilesDate);
-      });
-    });
-  }
-
   Future<int> _getStorageUsagePercentage() async {
 
     try {
@@ -901,29 +835,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     } catch (err) {
       SnakeAlert.errorSnake("Failed to delete this folder.");
-    }
-
-  }
-
-  Future<void> _renameFolder(String oldFolderName, String newFolderName) async {
-
-    try {
-
-      await RenameFolder(
-        oldFolderTitle: oldFolderName, 
-        newFolderTitle: newFolderName).rename();
-
-      final indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
-      if(indexOldFolder != -1) {
-        storageData.foldersNameList[indexOldFolder] = newFolderName;
-      }
-
-      await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "$oldFolderName renamed to $newFolderName");
-
-      SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to rename this folder.");
     }
 
   }
@@ -1093,62 +1004,21 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _buildDirectory(String directoryName) async {
-
-    try {
-
-      await CreateDirectory(name: directoryName).create();
-
-      final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
-
-      storageData.fileDateFilteredList.add("Directory");
-      storageData.fileDateList.add("Directory");
-      storageData.imageBytesList.add(directoryImage.readAsBytesSync());
-      storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
-
-      storageData.directoryImageBytesList.clear();
-      storageData.fileNamesFilteredList.add(directoryName);
-      storageData.fileNamesList.add(directoryName);
-
-      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
-
-    } catch (err, st) {
-      logger.e('Exception from _buildDirectory {main}',err,st);
-      CustomAlertDialog.alertDialog('Failed to create directory.');
-    }
-  }
-  
-  Future<void> _deleteDirectoryData(String directoryName) async {
-
-    try {
-
-      await DeleteDirectory(name: directoryName).delete();
-    
-      storageData.directoryImageBytesList.clear();
-
-      SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
-
-    } catch (err, st) {
-      logger.e('Exception from _deletionDirectory {main}',err,st);
-      SnakeAlert.errorSnake("Failed to delete $directoryName");
-    }
-
-  }
-
   Future<void> _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
 
     final fileType = fileName.split('.').last;
     final isItemDirectory = fileType == fileName && !Globals.supportedFileTypes.contains(fileType);
 
     if(isItemDirectory) {
-      await _deleteDirectoryData(fileName);
+      await functionModel.deleteDirectoryData(fileName);
       
     } else {
       final tableName = tempData.origin == OriginFile.public 
         ? Globals.fileTypesToTableNamesPs[fileType]
         : Globals.fileTypesToTableNames[fileType];
 
-      await _deleteFileData(userData.username, fileName, tableName!);
+      await functionModel.deleteFileData(
+        userData.username, fileName, tableName!);
 
     }
     
@@ -1218,64 +1088,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _callFileDownload({required String fileName}) async {
-
-    try {
-
-      final fileType = fileName.split('.').last;
-      final tableName = tempData.origin != OriginFile.home 
-                        ? Globals.fileTypesToTableNamesPs[fileType] 
-                        : Globals.fileTypesToTableNames[fileType];
-
-      final isItemDirectory = fileType == fileName;
-
-      if(isItemDirectory) {
-        await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: context);
-        return;
-        
-      }
-
-      final loadingDialog = MultipleTextLoading();
-      
-      loadingDialog.startLoading(title: "Downloading...", subText: "File name  $fileName", context: context);
-
-      if(tempData.origin != OriginFile.offline) {
-
-        late Uint8List getBytes;
-
-        if(Globals.imageType.contains(fileType)) {
-          int imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
-          getBytes = storageData.imageBytesFilteredList[imageIndex]!;
-
-        } else {
-          getBytes = CompressorApi.compressByte(await _callFileByteData(fileName, tableName!));
-
-        }
-
-        await SimplifyDownload(
-          fileName: fileName,
-          currentTable: tableName!,
-          fileData: getBytes
-        ).downloadFile();
-
-      } else {
-        await OfflineMode().downloadFile(fileName);
-
-      } 
-
-      loadingDialog.stopLoading();
-
-      await CallNotify().downloadedNotification(fileName: fileName);
-
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
-
-    } catch (err) {
-      await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
-    }
-
-  }
-
   void _removeFileFromListView({
     required String fileName, 
     required bool isFromSelectAll, 
@@ -1302,54 +1114,27 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
   }
 
-  Future<void> _renameFileData(String oldFileName, String newFileName) async {
-    
-    final fileType = oldFileName.split('.').last;
-    final tableName = Globals.fileTypesToTableNames[fileType]!;
-
-    try {
-      
-      tempData.origin != OriginFile.offline 
-        ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
-        : await OfflineMode().renameFile(oldFileName,newFileName);
-
-      int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
-      int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
-
-      if (indexOldFileSearched != -1) {
-        storageData.updateRenameFile(
-            newFileName, indexOldFile, indexOldFileSearched);
-
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
-      }
-
-    } catch (err, st) {
-      logger.e('Exception from _renameFile {main}', err, st);
-      SnakeAlert.errorSnake("Failed to rename this file.");
-    }
-  }
-
   void _onRenameItemPressed(String fileName) async {
 
     try {
 
       final verifyItemType = fileName.split('.').last;
-      final newItemValue = RenameDialog.renameController.text;
+      final newItemName = RenameDialog.renameController.text;
 
       if(verifyItemType == fileName) {
 
-        await _renameDirectory(oldDirName: fileName, newDirName: newItemValue);
+        await _renameDirectory(oldDirName: fileName, newDirName: newItemName);
 
         final indexOldFile = storageData.fileNamesList.indexOf(fileName);
         final indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(fileName);
 
         storageData.updateRenameFile(
-            newItemValue, indexOldFile, indexOldFileSearched);
+            newItemName, indexOldFile, indexOldFileSearched);
         
         return;
       }
 
-      final newRenameValue = "$newItemValue.${fileName.split('.').last}";
+      final newRenameValue = "$newItemName.${fileName.split('.').last}";
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
         CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
@@ -1357,7 +1142,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       } 
 
-      await _renameFileData(fileName, newRenameValue);
+      await functionModel.renameFileData(fileName, newRenameValue);
       
     } catch (err, st) {
       logger.e('Exception from _onRenamedPressed {main}',err,st);
@@ -1376,29 +1161,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
     
-  }
-
-  Future<void> _deleteFileData(String username, String fileName, String tableName) async {
-
-    try {
-
-      if(tempData.origin == OriginFile.offline) {
-        await OfflineMode().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
-        return;
-
-      } 
-
-      final encryptVals = EncryptionClass().encrypt(fileName);
-      await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
-      
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
-
-    } catch (err, st) {
-      logger.e('Exception from _deletionFile {main}',err,st);
-      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
-    }
-
   }
 
   Future _buildFoldersDialog() async {
@@ -1461,7 +1223,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
       onDownloadPressed: () async {
         Navigator.pop(context);
-        await _callFileDownload(fileName: fileName);
+        await functionModel.downloadFileData(fileName: fileName);
       }, 
       onDeletePressed: () {
         _openDeleteDialog(fileName);
@@ -1755,7 +1517,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         
       filterTypePsOnPressed: () {
         BottomTrailingFilter().buildFilterTypeAll(
-          filterTypePublicStorage: _filterTypePublicStorage, 
           filterTypeNormal: _itemSearchingImplementation, 
           context: context
         );
@@ -1781,7 +1542,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       filterTypeOnPressed: () {
         BottomTrailingFilter().buildFilterTypeAll(
-          filterTypePublicStorage: _filterTypePublicStorage, 
           filterTypeNormal: _itemSearchingImplementation, 
           context: context
         );
@@ -1885,7 +1645,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       onPressed: () {
         final bottomTrailingFilter = BottomTrailingFilter();
         bottomTrailingFilter.buildFilterTypePhotos(
-          filterTypePublicStorage: _filterTypePublicStorage, 
           filterTypeNormal: _itemSearchingImplementation, 
           context: context
         );
@@ -2268,7 +2027,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       fileType: fileType,
       originalDateValues: shortFormDate,
       callBottomTrailing: _callBottomTrailling,
-      downloadOnPressed: _callFileDownload,
+      downloadOnPressed: functionModel.downloadFileData,
     );
   }
 
@@ -2411,14 +2170,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
           ),
           if (tempData.origin == OriginFile.public)
-            TextSpan(
-              text: " ${psStorageData.psTagsList[index]}",
-              style: TextStyle(
-                color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-                fontWeight: FontWeight.w500,
-                fontSize: 12.8,
-              ),
+          TextSpan(
+            text: " ${psStorageData.psTagsList[index]}",
+            style: TextStyle(
+              color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
+              fontWeight: FontWeight.w500,
+              fontSize: 12.8,
             ),
+          ),
         ];
       },
     );
@@ -2543,7 +2302,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       Logger().e("Exception from main {_initializeSharingIntentListener}", err, st);
       return;
-
     }
 
   }

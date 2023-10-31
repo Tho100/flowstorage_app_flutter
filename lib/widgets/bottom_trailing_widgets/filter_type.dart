@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -14,16 +13,12 @@ class BottomTrailingFilter {
     String filterName, 
     IconData icon, 
     String filterType,
-    Function filterTypePublicStorage,
     Function filterTypeNormal,
     BuildContext context 
   ) {
     return ElevatedButton.icon(
-      onPressed: () {
-        tempData.origin == OriginFile.public 
-          ? filterTypePublicStorage(filterType) 
-          : filterTypeNormal(filterType);
-          
+      onPressed: () { 
+        filterTypeNormal(filterType);  
         Navigator.pop(context);
       },
       icon: Icon(icon),
@@ -41,7 +36,6 @@ class BottomTrailingFilter {
   }
 
   Future buildFilterTypeAll({
-    required Function filterTypePublicStorage,
     required Function filterTypeNormal,
     required BuildContext context
   }) {
@@ -99,7 +93,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypePublicStorage, filterTypeNormal, context),
+                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypeNormal, context),
               
                         const SizedBox(height: 3),
 
@@ -107,15 +101,15 @@ class BottomTrailingFilter {
       
                           children: [
 
-                          _buildFilterTypeButtons("Text",Icons.text_snippet_rounded,'.txt,.html', filterTypePublicStorage, filterTypeNormal, context),
+                          _buildFilterTypeButtons("Text",Icons.text_snippet_rounded,'.txt,.html', filterTypeNormal, context),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Audio",Icons.music_note_rounded,'.mp3,.wav', filterTypePublicStorage, filterTypeNormal, context),
+                          _buildFilterTypeButtons("Audio",Icons.music_note_rounded,'.mp3,.wav', filterTypeNormal, context),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypePublicStorage, filterTypeNormal, context),
+                          _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
               
                         ],
                       ),
@@ -136,9 +130,9 @@ class BottomTrailingFilter {
                         Row(
                           children: [
 
-                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf', filterTypePublicStorage, filterTypeNormal, context),
+                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf',  filterTypeNormal, context),
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx', filterTypePublicStorage, filterTypeNormal, context),
+                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx', filterTypeNormal, context),
 
                           ]
                         ),
@@ -149,15 +143,15 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc', filterTypePublicStorage, filterTypeNormal, context),
+                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc', filterTypeNormal, context),
               
                             const SizedBox(width: 8),
               
-                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv', filterTypePublicStorage, filterTypeNormal, context),
+                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv', filterTypeNormal, context),
                   
                             const SizedBox(width: 8),
 
-                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' ', filterTypePublicStorage, filterTypeNormal, context),
+                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' ', filterTypeNormal, context),
                                     
                           ],
                         ),
@@ -176,7 +170,6 @@ class BottomTrailingFilter {
   }
 
   Future buildFilterTypePhotos({
-    required Function filterTypePublicStorage,
     required Function filterTypeNormal,
     required BuildContext context
   }) {
@@ -218,11 +211,11 @@ class BottomTrailingFilter {
           
                   children: [
                     
-                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypePublicStorage, filterTypeNormal, context),
+                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypeNormal, context),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypePublicStorage, filterTypeNormal, context),
+                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv', filterTypePublicStorage, filterTypeNormal, context),
+                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
           
                   ],
                 ),
