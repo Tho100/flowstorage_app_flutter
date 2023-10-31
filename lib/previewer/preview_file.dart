@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/data_query/rename_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/helper/simplify_download.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
@@ -25,15 +23,11 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/data_query/update_data.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
@@ -81,6 +75,9 @@ class PreviewFileState extends State<PreviewFile> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   
+  final functionModel = FunctionModel();
+  final logger = Logger();
+
   final textController = TextEditingController();
 
   final uploaderNameNotifer = ValueNotifier<String>('');
@@ -217,52 +214,60 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  void _onDeletePressed(String fileName) async {
+  void _onDeleteItemPressed(String fileName) async {
+    
+    try {
 
-    final fileExtension = fileName.split('.').last;
+      final fileExtension = fileName.split('.').last;
+      final tableName = Globals.fileTypesToTableNames[fileExtension]!;
 
-    await _deleteFileData(userData.username, fileName, Globals.fileTypesToTableNames[fileExtension]!, context);
-    _removeFileFromListView(fileName);
+      await functionModel.deleteFileData(
+        userData.username, fileName, tableName);
 
-  }
+      final indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
 
-   Future<void> _deleteFileData(String username, String fileName, String tableName, BuildContext context) async {
-
-    try {   
-
-      if(tempData.origin != OriginFile.offline) {
-
-        final encryptVals = EncryptionClass().encrypt(fileName);
-        await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
-
-        storageData.homeImageBytesList.clear();
-        storageData.homeThumbnailBytesList.clear();
-
-      } else {
-
-        await OfflineMode().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
-
+      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+        storageData.updateRemoveFile(indexOfFile);
       }
 
       tempData.clearFileData();
       
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
-
       if(!mounted) return;
       NavigatePage.permanentPageMainboard(context);
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
-      Logger().e("Exception from _deletionFile {PreviewFile}", err, st);
+      logger.e("Exception from _onRenamePressed {preview_file}", err, st);
     }
+
+  }
+
+  void _onRenameItemPressed(String fileName) async {
+
+    try {
+
+      final newFileName = RenameDialog.renameController.text;
+      final newRenameValue = "$newFileName.${fileName.split('.').last}";
+
+      if (storageData.fileNamesList.contains(newRenameValue)) {
+        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
+        return;
+      } 
     
+      functionModel.renameFileData(fileName, newRenameValue);
+
+      appBarTitleNotifier.value = newRenameValue;
+      tempData.setCurrentFileName(newRenameValue);
+      
+    } catch (err, st) {
+      logger.e("Exception from _onRenamePressed {preview_file}", err, st);
+    }
+
   }
 
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog(
       fileName: fileName, 
-      onDeletePressed: () => _onDeletePressed(fileName), 
+      onDeletePressed: () => _onDeleteItemPressed(fileName), 
       context: context
     );
   }
@@ -270,7 +275,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openRenameDialog(String fileName) {
     RenameDialog().buildRenameFileDialog(
       fileName: fileName, 
-      onRenamePressed: () => _onRenamePressed(fileName),
+      onRenamePressed: () => _onRenameItemPressed(fileName),
       context: context
     );
   }
@@ -284,80 +289,34 @@ class PreviewFileState extends State<PreviewFile> {
       onRenamePressed: () {
         Navigator.pop(context);
         _openRenameDialog(fileName);
+
       }, 
       onDownloadPressed: () async {
         Navigator.pop(context);
-        await _callFileDownload(fileName: fileName);
+        await functionModel.downloadFileData(fileName: fileName);
+
       }, 
       onDeletePressed: () {
         _openDeleteDialog(fileName);
+
       },
       onSharingPressed: () {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(
             context, tempData.selectedFileName);
+
       }, 
       onAOPressed: () async {
         Navigator.pop(context);
-        await _makeAvailableOffline(fileName: tempData.selectedFileName);
+        await functionModel.makeAvailableOffline(fileName: fileName);
+
       }, 
       onOpenWithPressed: () {
         _openWithOnPressed();
+
       },
       context: context
     );
-  }
-
-  void _updateRenameFile(String newFileName, int indexOldFile, int indexOldFileSearched) {
-    storageData.fileNamesList[indexOldFile] = newFileName;
-    storageData.fileNamesFilteredList[indexOldFileSearched] = newFileName;
-    tempData.setCurrentFileName(newFileName);
-    appBarTitleNotifier.value = newFileName;
-  }
-
-  Future<void> _renameFileData(String oldFileName, String newFileName) async {
-    
-    final fileType = oldFileName.split('.').last;
-    final tableName = Globals.fileTypesToTableNames[fileType]!;
-
-    try {
-      
-      tempData.origin != OriginFile.offline 
-        ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
-        : await OfflineMode().renameFile(oldFileName,newFileName);
-        
-      int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
-      int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
-
-      if (indexOldFileSearched != -1) {
-
-        _updateRenameFile(newFileName,indexOldFile,indexOldFileSearched);
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
-
-      }
-
-    } catch (err, st) {
-      SnakeAlert.errorSnake("Failed to rename this file.");
-      Logger().e("Exception from _renameFile {main}", err, st);
-    }
-  }
-
-  void _onRenamePressed(String fileName) async {
-
-    try {
-
-      String newItemValue = RenameDialog.renameController.text;
-      String newRenameValue = "$newItemValue.${fileName.split('.').last}";
-
-      if (storageData.fileNamesList.contains(newRenameValue)) {
-        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
-      } else {
-        await _renameFileData(fileName, newRenameValue);
-      }
-      
-    } catch (err, st) {
-      Logger().e("Exception from _onRenamePressed {main}", err, st);
-    }
   }
 
   Widget _buildFileDataWidget() {
@@ -376,22 +335,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     }
     
-  }
-
-  void _removeFileFromListView(String fileName) {
-
-    try {
-
-      int indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
-
-      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
-        storageData.updateRemoveFile(indexOfFile);
-      }
-      
-    } catch (err, st) {
-      Logger().e("Exception on _removeFileFromListView {PreviewFile}", err, st);
-    }
-
   }
 
   Widget _buildFilePreview() {
@@ -423,86 +366,6 @@ class PreviewFileState extends State<PreviewFile> {
     }
   }
 
-  Future<void> _makeAvailableOffline({
-    required String fileName
-  }) async {
-
-    final offlineMode = OfflineMode();
-    final singleLoading = SingleTextLoading();
-
-    late final Uint8List fileData;
-    final fileType = fileName.split('.').last;
-
-    if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
-      CustomFormDialog.startDialog(ShortenText().cutText(fileName), "This file is unavailable for offline mode.");
-      return;
-    } 
-
-    singleLoading.startLoading(title: "Preparing...", context: context);
-
-    if(Globals.imageType.contains(fileType)) {
-      final imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
-      fileData = storageData.imageBytesFilteredList[imageIndex]!;
-
-    } else {
-      fileData = CompressorApi.compressByte(tempData.fileByteData);
-
-    }
-    
-    await offlineMode.processSaveOfflineFile(fileName: fileName,fileData: fileData);
-
-    singleLoading.stopLoading();
-
-  }
-
-  Future<void> _callFileDownload({required String fileName}) async {
-
-    try {
-
-      final fileType = fileName.split('.').last;
-      
-      final tableName = tempData.origin != OriginFile.home 
-        ? Globals.fileTypesToTableNamesPs[fileType]! 
-        : Globals.fileTypesToTableNames[fileType];
-
-      final loadingDialog = MultipleTextLoading();
-      
-      loadingDialog.startLoading(title: "Downloading...", subText: fileName, context: context);
-
-      late Uint8List fileData;
-
-      if(tempData.origin != OriginFile.offline) {
-
-        if(Globals.imageType.contains(fileType)) {
-          fileData = storageData.imageBytesFilteredList[storageData.fileNamesList.indexOf(fileName)]!;
-
-        } else {
-          fileData = CompressorApi.compressByte(tempData.fileByteData);
-
-        }
-
-        await SimplifyDownload(
-          fileName: fileName,
-          currentTable: tableName!,
-          fileData: fileData
-        ).downloadFile();
-
-      } else {  
-        await OfflineMode().downloadFile(fileName);
-
-      }
-    
-      loadingDialog.stopLoading();
-
-      if(!mounted) return;
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
-    }
-
-  }
-
   Widget _buildBottomButtons({
     required Widget textStyle, 
     required Color color, 
@@ -520,8 +383,9 @@ class PreviewFileState extends State<PreviewFile> {
           onPressed: () async {
             
             if(buttonType == "download") {
-
-              await _callFileDownload(fileName: tempData.selectedFileName);
+              
+              await functionModel.downloadFileData(
+                fileName: tempData.selectedFileName);
 
             } else if (buttonType == "comment") {
 
@@ -675,15 +539,20 @@ class PreviewFileState extends State<PreviewFile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 30),
+
               _buildFileInfoHeader("File Name", tempData.selectedFileName),
+
               const SizedBox(height: 8),
+
               ValueListenableBuilder<String>(
                 valueListenable: fileResolutionNotifier,
                 builder: (context, value, child) {
                   return _buildFileInfoHeader("File Resolution", value);
                 },
               ),
+
               const SizedBox(height: 8),
+
               ValueListenableBuilder<String>(
                 valueListenable: fileSizeNotifier,
                 builder: (context, value, child) {
@@ -705,11 +574,14 @@ class PreviewFileState extends State<PreviewFile> {
 
     if(textTables.contains(currentTable)) {
       return PreviewText(controller: textController);
+
     } else if (audioTables.contains(currentTable)) {
       bottomBarVisibleNotifier.value = false;
       return const PreviewAudio();
+
     } else {
       return _buildFilePreview();
+
     }
 
   }
@@ -1071,8 +943,6 @@ class PreviewFileState extends State<PreviewFile> {
       ),
     );
   }
-
-
 
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));

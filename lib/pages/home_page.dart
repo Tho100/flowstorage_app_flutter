@@ -352,7 +352,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog( 
       fileName: fileName, 
-      onDeletePressed:() async => await _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
+      onDeletePressed:() async => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
       context: context
     );
   }
@@ -431,7 +431,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final loadingDialog = SingleTextLoading();
         loadingDialog.startLoading(title: "Deleting...",context: context);
 
-        await _processDeletingAllItems(count: countSelectedItems);
+        await _deleteMultipleSelectedFiles(count: countSelectedItems);
 
         loadingDialog.stopLoading();
 
@@ -492,9 +492,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _deactivatePhotosView() {
 
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
+
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
     selectedItemIsChecked = false;
+
     selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
@@ -585,9 +587,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectAllItemsIsPressedNotifier.value = false;
     selectedPhotosIndex.clear();
     checkedItemsName.clear();
+
   }
 
-  Future<void> _selectDirectoryMultipleSave(int count) async {
+  Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
+    return await retrieveData.retrieveDataParams(
+      userData.username, selectedFilename, tableName);
+  }
+
+  Future<void> _selectDirectoryOnMultipleDownload(int count) async {
 
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
@@ -603,58 +611,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       return;
     }
 
-  }
-
-  Future<void> _processSaveOfflineFileSelectAll({required int count}) async {
-
-    try {
-
-      final offlineMode = OfflineMode();
-
-      final singleLoading = SingleTextLoading();
-      singleLoading.startLoading(title: "Preparing...", context: context);
-
-      for(int i=0; i<count; i++) {
-        
-        late final Uint8List fileData;
-
-        final fileType = checkedItemsName.elementAt(i).split('.').last;
-
-        if(Globals.supportedFileTypes.contains(fileType)) {
-
-          final tableName = Globals.fileTypesToTableNames[fileType]!;
-
-          if(Globals.imageType.contains(fileType)) {
-            fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
-            
-          } else {
-            fileData = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName));
-
-          }
-
-          await offlineMode.saveOfflineFile(
-            fileName: checkedItemsName.elementAt(i), 
-            fileData: fileData
-          );
-
-          setState(() {
-            offlineFilesName.add(checkedItemsName.elementAt(i));
-          });
-
-        } 
-
-      }
-
-      singleLoading.stopLoading();
-
-      SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
-
-      _clearSelectAll();
-
-    } catch (err) {
-      SnakeAlert.errorSnake("An error occurred.");
-    }
-    
   }
 
   void _sortUploadDate() {
@@ -684,45 +640,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     sortingIsAscendingUploadDate = false;
     ascendingDescendingIconNotifier.value = Icons.expand_more;
     await _refreshListViewData();
-  }
-
-  Future<void> _deleteMultiSelectedFiles({
-    required int count
-  }) async {
-
-    for (int i = 0; i < count; i++) {
-      final fileName = checkedItemsName.elementAt(i);
-      await deleteData.deleteOnMultiSelection(fileName: fileName);
-
-      await Future.delayed(const Duration(milliseconds: 855));
-      _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
-
-      if(offlineFilesName.contains(fileName)) {
-        setState(() {
-          offlineFilesName.remove(fileName);
-        });
-      }
-
-    }
-
-    _clearSelectAll();
-
-  }
-
-  Future<void> _processDeletingAllItems({
-    required int count
-  }) async {
-
-    try {
-
-      await _deleteMultiSelectedFiles(count: count);
-      SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
-
-    } catch (err, st) {
-      logger.e('Exception from _processDeletingAllItems {main}',err,st);
-      SnakeAlert.errorSnake("An error occurred.");
-    } 
-    
   }
 
   void _editAllOnPressed() {
@@ -810,12 +727,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
   }
-  
-  Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
-    return await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
-  }
 
-  Future<void> _deleteFolderOnPressed(String folderName) async {
+  void _deleteFolderOnPressed(String folderName) async {
     
     try {
 
@@ -1004,87 +917,115 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Future<void> _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+  Future<void> _deleteMultipleSelectedFiles({
+    required int count
+  }) async {
 
-    final fileType = fileName.split('.').last;
-    final isItemDirectory = fileType == fileName && !Globals.supportedFileTypes.contains(fileType);
+    try {
 
-    if(isItemDirectory) {
-      await functionModel.deleteDirectoryData(fileName);
-      
-    } else {
-      final tableName = tempData.origin == OriginFile.public 
-        ? Globals.fileTypesToTableNamesPs[fileType]
-        : Globals.fileTypesToTableNames[fileType];
+    for (int i = 0; i < count; i++) {
+      final fileName = checkedItemsName.elementAt(i);
+      await deleteData.deleteOnMultiSelection(fileName: fileName);
 
-      await functionModel.deleteFileData(
-        userData.username, fileName, tableName!);
+      await Future.delayed(const Duration(milliseconds: 855));
+      _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
 
-    }
-    
-    if(tempData.origin == OriginFile.home) {
-      storageData.homeImageBytesList.clear();
-      storageData.homeThumbnailBytesList.clear();
-
-    } else if (tempData.origin == OriginFile.public) {
-      psStorageData.myPsImageBytesList.clear();
-      psStorageData.myPsThumbnailBytesList.clear();
+      if(offlineFilesName.contains(fileName)) {
+        setState(() {
+          offlineFilesName.remove(fileName);
+        });
+      }
 
     }
 
-    if(offlineFilesName.contains(fileName)) {
-      setState(() {
-        offlineFilesName.remove(fileName);
-      });
-    } 
+    _clearSelectAll();
 
-    _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
+    SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
+
+    } catch(err, st) {
+      SnakeAlert.errorSnake("An error occurred.");
+      logger.e('Exception from _deleteMultipleSelectedFiles {main}', err, st);
+    }
 
   }
 
-  Future<void> _makeAvailableOffline({
+  Future<void> _makeMultipleSelectedFilesOffline({
+    required int count
+  }) async {
+
+    try {
+
+      final offlineMode = OfflineMode();
+      final singleLoading = SingleTextLoading();
+
+      singleLoading.startLoading(title: "Preparing...", context: context);
+
+      for(int i=0; i<count; i++) {
+        
+        late final Uint8List fileData;
+
+        final fileType = checkedItemsName.elementAt(i).split('.').last;
+
+        if(Globals.supportedFileTypes.contains(fileType)) {
+
+          final tableName = Globals.fileTypesToTableNames[fileType]!;
+
+          if(Globals.imageType.contains(fileType)) {
+            fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
+            
+          } else {
+            fileData = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName));
+
+          }
+
+          await offlineMode.saveOfflineFile(
+            fileName: checkedItemsName.elementAt(i), 
+            fileData: fileData
+          );
+
+          setState(() {
+            offlineFilesName.add(checkedItemsName.elementAt(i));
+          });
+
+        } 
+
+      }
+
+      singleLoading.stopLoading();
+
+      SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
+
+      _clearSelectAll();
+
+    } catch (err, st) {
+      SnakeAlert.errorSnake("An error occurred.");
+      logger.e('Exception from _makeMultipleFiles', err, st);
+    }
+    
+  }
+
+  void _makeAvailableOfflineOnPressed({
     required String fileName
   }) async {
 
-    final offlineMode = OfflineMode();
-    final singleLoading = SingleTextLoading();
+    try {
 
-    final fileType = fileName.split('.').last;
-    final tableName = Globals.fileTypesToTableNames[fileType]!;
+      if(offlineFilesName.contains(fileName)) {
+        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
+        return;
+      }
 
-    if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
-      CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
-      return;
-    } 
+      await functionModel.makeAvailableOffline(fileName: fileName);
 
-    if(offlineFilesName.contains(fileName)) {
-      CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
-      return;
-    }
-
-    late final Uint8List fileData;
-    final indexFile = storageData.fileNamesList.indexOf(fileName);
-
-    singleLoading.startLoading(title: "Preparing...", context: context);
-
-    if(Globals.imageType.contains(fileType)) {
-      fileData = tempData.origin != OriginFile.public 
-        ? storageData.imageBytesFilteredList[indexFile]! 
-        : psStorageData.psImageBytesList[indexFile];
+      setState(() {
+        offlineFilesName.add(fileName);
+      });
       
-    } else {
-      fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
-      
-    }
-    
-    setState(() {
-      offlineFilesName.add(fileName);
-    });
-    
-    await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
+      _clearSelectAll();
 
-    singleLoading.stopLoading();
-    _clearSelectAll();
+    } catch (err, st) {
+      logger.e('Exception from _makeAvailableOfflineOnPressed {main}', err, st);
+    }
 
   }
 
@@ -1093,25 +1034,75 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     required bool isFromSelectAll, 
   }) {
 
-    final indexOfFile = togglePhotosPressed 
-      ? storageData.fileNamesFilteredList.indexOf(fileName)+1
-      : storageData.fileNamesFilteredList.indexOf(fileName);
+    try {
 
-    if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
-      storageData.updateRemoveFile(indexOfFile);
-    }
+      final indexOfFile = togglePhotosPressed 
+        ? storageData.fileNamesFilteredList.indexOf(fileName)+1
+        : storageData.fileNamesFilteredList.indexOf(fileName);
 
-    if (!isFromSelectAll) {
-      Navigator.pop(context);
-    }
+      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+        storageData.updateRemoveFile(indexOfFile);
+      }
 
-    if(togglePhotosPressed) {
-      _togglePhotos();
-      return;
-    } else {
-      _itemSearchingImplementation('');
+      if (!isFromSelectAll) {
+        Navigator.pop(context);
+      }
+
+      if(togglePhotosPressed) {
+        _togglePhotos();
+        return;
+      } else {
+        _itemSearchingImplementation('');
+      }
+
+    } catch (err, st) {
+      logger.e('Exception from _removeFileFromListView {main}', err, st);
     }
     
+  }
+
+  void _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+
+    try {
+
+      final fileType = fileName.split('.').last;
+      final isItemDirectory = fileType == fileName && !Globals.supportedFileTypes.contains(fileType);
+
+      if(isItemDirectory) {
+        await functionModel.deleteDirectoryData(fileName);
+        
+      } else {
+        final tableName = tempData.origin == OriginFile.public 
+          ? Globals.fileTypesToTableNamesPs[fileType]
+          : Globals.fileTypesToTableNames[fileType];
+
+        await functionModel.deleteFileData(
+          userData.username, fileName, tableName!);
+
+      }
+      
+      if(tempData.origin == OriginFile.home) {
+        storageData.homeImageBytesList.clear();
+        storageData.homeThumbnailBytesList.clear();
+
+      } else if (tempData.origin == OriginFile.public) {
+        psStorageData.myPsImageBytesList.clear();
+        psStorageData.myPsThumbnailBytesList.clear();
+
+      }
+
+      if(offlineFilesName.contains(fileName)) {
+        setState(() {
+          offlineFilesName.remove(fileName);
+        });
+      } 
+
+      _removeFileFromListView(fileName: fileName, isFromSelectAll: false);
+      
+    } catch (err, st) {
+      logger.e('Exception from _onDeleteItemPressed {main}', err, st);
+    }
+
   }
 
   void _onRenameItemPressed(String fileName) async {
@@ -1147,6 +1138,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     } catch (err, st) {
       logger.e('Exception from _onRenamedPressed {main}',err,st);
     }
+
   }
 
   Future<void> _renameDirectory({
@@ -1197,11 +1189,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     return BottomTrailingSelectedItems().buildTrailing(
       context: context, 
       makeAoOnPressed: () async {
-        await _processSaveOfflineFileSelectAll(
+        await _makeMultipleSelectedFilesOffline(
           count: length);
       }, 
       saveOnPressed: () async {
-        await _selectDirectoryMultipleSave(
+        await _selectDirectoryOnMultipleDownload(
           length);
       }, 
       deleteOnPressed: () {
@@ -1232,9 +1224,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(context, fileName);
       }, 
-      onAOPressed: () async {
+      onAOPressed: () {
         Navigator.pop(context);
-        await _makeAvailableOffline(fileName: fileName);
+        _makeAvailableOfflineOnPressed(fileName: fileName);
       }, 
       onOpenWithPressed: () {
         _openExternalFileOnSelect(fileName.split('.').last);
@@ -1430,7 +1422,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         DeleteDialog().buildDeleteDialog(
           fileName: "$folderName folder", 
           onDeletePressed: () async {
-            await _deleteFolderOnPressed(folderName);
+            _deleteFolderOnPressed(folderName);
           }, 
           context: context
         );
@@ -1707,8 +1699,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _openDirectoryOnSelect() async {
 
     tempData.setOrigin(OriginFile.directory);
-    tempData.setCurrentDirectory(tempData.selectedFileName);
-    tempData.setAppBarTitle(tempData.selectedFileName);
 
     _navDirectoryButtonVisibility(false);
 
@@ -1717,6 +1707,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
     
     await _callDirectoryData();
+    
+    tempData.setCurrentDirectory(tempData.selectedFileName);
+    tempData.setAppBarTitle(tempData.selectedFileName);
 
     loadingDialog.stopLoading();
 

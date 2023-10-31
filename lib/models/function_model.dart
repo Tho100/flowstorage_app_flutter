@@ -18,10 +18,12 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/simplify_download.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
@@ -32,6 +34,7 @@ import 'package:logger/logger.dart';
 class FunctionModel {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -81,7 +84,7 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
 
     } catch (err, st) {
-      logger.e('Exception from _deletionFile {main}',err,st);
+      logger.e('Exception from _deletionFile {function_model}',err,st);
       SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
     }
 
@@ -109,7 +112,7 @@ class FunctionModel {
       }
 
     } catch (err, st) {
-      logger.e('Exception from _renameFile {main}', err, st);
+      logger.e('Exception from _renameFile {function_model}', err, st);
       SnakeAlert.errorSnake("Failed to rename this file.");
     }
 
@@ -234,7 +237,7 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
     } catch (err, st) {
-      logger.e('Exception from _buildDirectory {main}',err,st);
+      logger.e('Exception from _buildDirectory {function_model}',err,st);
       CustomAlertDialog.alertDialog('Failed to create directory.');
     }
   }
@@ -250,8 +253,50 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {
-      logger.e('Exception from _deletionDirectory {main}',err,st);
+      logger.e('Exception from _deletionDirectory {function_model}',err,st);
       SnakeAlert.errorSnake("Failed to delete $directoryName");
+    }
+
+  }
+
+  Future<void> makeAvailableOffline({
+    required String fileName
+  }) async {
+
+    try {
+
+      final offlineMode = OfflineMode();
+      final singleLoading = SingleTextLoading();
+
+      final fileType = fileName.split('.').last;
+      final tableName = Globals.fileTypesToTableNames[fileType]!;
+
+      if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
+        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
+        return;
+      } 
+
+      late final Uint8List fileData;
+      final indexFile = storageData.fileNamesList.indexOf(fileName);
+
+      singleLoading.startLoading(title: "Preparing...", context: navigatorKey.currentContext!);
+
+      if(Globals.imageType.contains(fileType)) {
+        fileData = tempData.origin != OriginFile.public 
+          ? storageData.imageBytesFilteredList[indexFile]! 
+          : psStorageData.psImageBytesList[indexFile];
+        
+      } else {
+        fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
+        
+      }
+      
+      await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
+
+      singleLoading.stopLoading();
+
+    } catch (err, st) {
+      logger.e('Exception from _deletionDirectory {function_model}',err,st); 
     }
 
   }
