@@ -155,7 +155,11 @@ class UploadDialog {
 
       if(countSelectedFiles < 2) {
 
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(filesName)} Has been added.");
+        SnakeAlert.temporarySnake(
+          snackState: scaffoldMessenger, 
+          message: "${shortenText.cutText(filesName)} Has been added."
+        );
+
         countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
 
       }
@@ -166,7 +170,11 @@ class UploadDialog {
 
     if(countSelectedFiles >= 2) {
 
-      SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${countSelectedFiles.toString()} Items has been added");
+      SnakeAlert.temporarySnake(
+        snackState: scaffoldMessenger, 
+        message: "${countSelectedFiles.toString()} Items has been added"
+      );
+
       countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
 
     }
@@ -240,7 +248,11 @@ class UploadDialog {
         storageData.imageBytesFilteredList.add(imageBytes);
 
         scaffoldMessenger.hideCurrentSnackBar();
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(fileName)} Has been added");
+
+        SnakeAlert.temporarySnake(
+          snackState: scaffoldMessenger, 
+          message: "${shortenText.cutText(fileName)} Has been added"
+        );
       
       }
 
@@ -359,7 +371,10 @@ class UploadDialog {
       scaffoldMessenger.hideCurrentSnackBar();
 
       if(countSelectedFiles < 2) {
-        SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${shortenText.cutText(selectedFileName)} Has been added");
+        SnakeAlert.temporarySnake(
+          snackState: scaffoldMessenger, 
+          message: "${shortenText.cutText(selectedFileName)} Has been added"
+        );
       }
 
     }

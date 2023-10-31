@@ -418,23 +418,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _openDeleteSelectionDialog() {
-
     DeleteSelectionDialog().buildDeleteSelectionDialog(
       context: context, 
       appBarTitle: tempData.appBarTitle, 
       deleteOnPressed: () async {
-         
         final countSelectedItems = togglePhotosPressed
           ? checkedItemsName.length
           : selectedItemsCheckedList.where((item) => item == true).length;
         
-        final loadingDialog = SingleTextLoading();
-        loadingDialog.startLoading(title: "Deleting...",context: context);
-
         await _deleteMultipleSelectedFiles(count: countSelectedItems);
-
-        loadingDialog.stopLoading();
-
       }
     );
   }
@@ -923,24 +915,33 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-    for (int i = 0; i < count; i++) {
-      final fileName = checkedItemsName.elementAt(i);
-      await deleteData.deleteOnMultiSelection(fileName: fileName);
+      final loadingDialog = SingleTextLoading();
 
-      await Future.delayed(const Duration(milliseconds: 855));
-      _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
+      loadingDialog.startLoading(title: "Deleting...", context: context);
 
-      if(offlineFilesName.contains(fileName)) {
-        setState(() {
-          offlineFilesName.remove(fileName);
-        });
+      for (int i = 0; i < count; i++) {
+        
+        final fileName = checkedItemsName.elementAt(i);
+        await deleteData.deleteOnMultiSelection(fileName: fileName);
+
+        await Future.delayed(const Duration(milliseconds: 855));
+        _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
+
+        if(offlineFilesName.contains(fileName)) {
+
+          setState(() {
+            offlineFilesName.remove(fileName);
+          });
+
+        }
+
       }
 
-    }
+      loadingDialog.stopLoading();
 
-    _clearSelectAll();
+      SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
 
-    SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
+      _clearSelectAll();
 
     } catch(err, st) {
       SnakeAlert.errorSnake("An error occurred.");
