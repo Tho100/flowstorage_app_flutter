@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
@@ -20,10 +21,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
-import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-
-import 'package:flowstorage_fsc/data_classes/date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 
 class SignInUser {
 
@@ -32,9 +29,6 @@ class SignInUser {
   final tempData = GetIt.instance<TempDataProvider>();
 
   final encryption = EncryptionClass();
-  final nameGetterLogin = NameGetter();
-  final loginGetterLogin = DataRetriever();
-  final dateGetterLogin = DateGetter();
   final userDataRetriever = UserDataRetriever();
   
   final crud = Crud();
@@ -42,7 +36,7 @@ class SignInUser {
 
   String custEmailInit = '';
 
-  Future<void> _callData(MySQLConnectionPool conn, bool isChecked, BuildContext context) async {
+  Future<void> _callFileData(MySQLConnectionPool conn, bool isChecked, BuildContext context) async {
 
     final custUsernameList = await userDataRetriever.retrieveAccountTypeAndUsername(email: custEmailInit);
     final custUsernameGetter = custUsernameList[0]!;
@@ -53,27 +47,8 @@ class SignInUser {
     userData.setEmail(custEmailInit);
     userData.setAccountType(custTypeGetter);
 
-    final dirListCount = await crud.countUserTableRow(GlobalsTable.directoryInfoTable);
-
-    final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
-
-    final tablesToCheck = [
-      ...dirLists,
-      GlobalsTable.homeImage, GlobalsTable.homeText, 
-      GlobalsTable.homePdf, GlobalsTable.homeExcel, 
-      GlobalsTable.homeVideo, GlobalsTable.homeAudio,
-      GlobalsTable.homePtx, GlobalsTable.homeWord,
-      GlobalsTable.homeExe, GlobalsTable.homeApk
-    ];
-
-    final futures = tablesToCheck.map((table) async {
-      final fileNames = await nameGetterLogin.retrieveParams(conn, custUsernameGetter, table);
-      final bytes = await loginGetterLogin.getLeadingParams(conn, custUsernameGetter, table);
-      final dates = table == GlobalsTable.directoryInfoTable
-          ? ["Directory"]
-          : await dateGetterLogin.getDateParams(conn, custUsernameGetter, table);
-      return [fileNames, bytes, dates];
-    }).toList();
+    final futures = await DataCaller().startupDataCaller(
+      conn: conn, username: custUsernameGetter);
   
     final results = await Future.wait(futures);
 
@@ -111,7 +86,6 @@ class SignInUser {
     }
 
     custUsernameList.clear();
-    dirLists.clear();
 
   }
 
@@ -175,7 +149,7 @@ class SignInUser {
             justLoading.startLoading(context: context);
           }
 
-          await _callData(conn,isChecked, context);
+          await _callFileData(conn, isChecked, context);
 
           justLoading.stopLoading();
           

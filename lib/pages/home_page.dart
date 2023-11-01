@@ -338,8 +338,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             UpdateListView().addItemDetailsToListView(fileName: fileName);
             _scrollEndListView();
 
-            SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added");
+            SnakeAlert.temporarySnake(
+              snackState: scaffoldMessenger, 
+              message: "${ShortenText().cutText(fileName)} Has been added"
+            );
+
             await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
+            
           }, 
         )
       )
@@ -386,7 +391,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         }
 
-        await functionModel.renameFolderData(folderName, newFolderName);
+        await functionModel.renameFolderData(
+          folderName, newFolderName);
+
         RenameFolderDialog.folderRenameController.clear();
 
       }
@@ -466,6 +473,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       _configureGoBackHome();
       await _refreshListViewData();
     }
+    
   }
 
   void _activatePhotosView() {
@@ -563,7 +571,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  void _clearSelectAll() {
+  void _clearItemSelection() {
 
     if(togglePhotosPressed == false) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
@@ -760,7 +768,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     await dataCaller.offlineData();
 
-    _clearSelectAll(); 
+    _clearItemSelection(); 
 
     _navDirectoryButtonVisibility(false);
     _floatingButtonVisibility(true);
@@ -920,7 +928,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       loadingDialog.startLoading(title: "Deleting...", context: context);
 
       for (int i = 0; i < count; i++) {
-        
+
         final fileName = checkedItemsName.elementAt(i);
         await deleteData.deleteOnMultiSelection(fileName: fileName);
 
@@ -941,7 +949,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
 
-      _clearSelectAll();
+      _clearItemSelection();
 
     } catch(err, st) {
       SnakeAlert.errorSnake("An error occurred.");
@@ -996,7 +1004,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
 
-      _clearSelectAll();
+      _clearItemSelection();
 
     } catch (err, st) {
       SnakeAlert.errorSnake("An error occurred.");
@@ -1022,7 +1030,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         offlineFilesName.add(fileName);
       });
       
-      _clearSelectAll();
+      _clearItemSelection();
 
     } catch (err, st) {
       logger.e('Exception from _makeAvailableOfflineOnPressed {main}', err, st);
@@ -1202,6 +1210,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       itemsName: checkedItemsName
     );
+
   }
 
   Future _callBottomTrailling(int index) {
@@ -1234,6 +1243,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       context: context
     );
+    
   }
 
   Future _showUpgradeLimitedDialog(int value)  {

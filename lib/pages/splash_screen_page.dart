@@ -9,9 +9,6 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/data_classes/date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -47,9 +44,6 @@ class SplashScreenState extends State<SplashScreen> {
   final logger = Logger();
 
   final encryption = EncryptionClass();
-  final nameGetterStartup = NameGetter();
-  final dataGetterStartup = DataRetriever();
-  final dateGetterStartup = DateGetter();
   final accountInformationRetriever = UserDataRetriever();
 
   final storageData = GetIt.instance<StorageDataProvider>();
@@ -177,9 +171,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   void _startTimer() async {
     
-    _navigateToNextScreen();
-
-    /*if ((await _retrieveLocallyStoredInformation())[0] != '') {
+    if ((await _retrieveLocallyStoredInformation())[0] != '') {
       splashScreenTimer = Timer(const Duration(milliseconds: 0), () {
         _navigateToNextScreen();
       });
@@ -187,7 +179,7 @@ class SplashScreenState extends State<SplashScreen> {
       splashScreenTimer = Timer(const Duration(milliseconds: 1895), () {
         _navigateToNextScreen();
       });
-    }*/
+    }
     
   }
 
@@ -231,7 +223,10 @@ class SplashScreenState extends State<SplashScreen> {
           final conn = await SqlConnection.initializeConnection();
           
           if(!mounted) return;
-          await _callData(conn, getLocalUsername, getLocalEmail, getLocalAccountType, context);
+          
+          await _callFileData(
+            conn, getLocalUsername, getLocalEmail, 
+            getLocalAccountType, context);
           
           if(!mounted) return;
           NavigatePage.permanentPageMainboard(context);
@@ -279,7 +274,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   }
 
-  Future<void> _callData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType,BuildContext context) async {
+  Future<void> _callFileData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType,BuildContext context) async {
 
     try {
 
@@ -289,27 +284,9 @@ class SplashScreenState extends State<SplashScreen> {
       final accountType = await accountInformationRetriever.retrieveAccountType(email: savedCustEmail);
       
       userData.setAccountType(accountType);
-
-      final dirListCount = await crud.countUserTableRow(GlobalsTable.directoryInfoTable);
-      final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
-
-      final tablesToCheck = [
-        ...dirLists,
-        GlobalsTable.homeImage, GlobalsTable.homeText, 
-        GlobalsTable.homePdf, GlobalsTable.homeExcel, 
-        GlobalsTable.homeVideo, GlobalsTable.homeAudio,
-        GlobalsTable.homePtx, GlobalsTable.homeWord,
-        GlobalsTable.homeExe, GlobalsTable.homeApk
-      ];
-
-      final futures = tablesToCheck.map((table) async {
-        final fileNames = await nameGetterStartup.retrieveParams(conn, savedCustUsername, table);
-        final bytes = await dataGetterStartup.getLeadingParams(conn, savedCustUsername, table);
-        final dates = table == GlobalsTable.directoryInfoTable
-            ? ["Directory"]
-            : await dateGetterStartup.getDateParams(conn, savedCustUsername, table);
-        return [fileNames, bytes, dates];
-      }).toList();
+      
+      final futures = await DataCaller().startupDataCaller(
+        conn: conn, username: savedCustUsername);
 
       final results = await Future.wait(futures);
 

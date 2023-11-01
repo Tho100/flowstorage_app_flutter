@@ -190,7 +190,10 @@ class IntentSharingPage extends StatelessWidget {
 
       await NotificationApi.stopNotification(0);
 
-      SnakeAlert.temporarySnake(snackState: scaffoldMessenger, message: "${ShortenText().cutText(fileName)} Has been added.");
+      SnakeAlert.temporarySnake(
+        snackState: scaffoldMessenger, 
+        message: "${ShortenText().cutText(fileName)} Has been added."
+      );
 
       await CallNotify().
         uploadedNotification(title: "Upload Finished", count: 1);

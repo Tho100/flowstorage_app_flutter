@@ -69,14 +69,13 @@ class PreviewFileState extends State<PreviewFile> {
 
   final retrieveData = RetrieveData();
   final retrieveSharingName = SharingName();
+  final functionModel = FunctionModel();
+  final logger = Logger();
 
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
-  
-  final functionModel = FunctionModel();
-  final logger = Logger();
 
   final textController = TextEditingController();
 
@@ -156,8 +155,11 @@ class PreviewFileState extends State<PreviewFile> {
 
   void _initializeUploaderName() async {
 
-    const localOriginFrom = {OriginFile.home, OriginFile.folder, OriginFile.directory};
-    const sharingOriginFrom = {OriginFile.sharedMe, OriginFile.sharedOther};
+    const localOriginFrom = {
+      OriginFile.home, OriginFile.folder, OriginFile.directory};
+
+    const sharingOriginFrom = {
+      OriginFile.sharedMe, OriginFile.sharedOther};
   
     final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
@@ -249,7 +251,8 @@ class PreviewFileState extends State<PreviewFile> {
       final newRenameValue = "$newFileName.${fileName.split('.').last}";
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
-        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
+        CustomAlertDialog.alertDialogTitle(
+          newRenameValue, "Item with this name already exists.");
         return;
       } 
     
@@ -346,6 +349,25 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  Widget _buildFileOnCondition() {
+    
+    const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
+    const audioTables = {GlobalsTable.homeAudio, GlobalsTable.psAudio};
+
+    if(textTables.contains(currentTable)) {
+      return PreviewText(controller: textController);
+
+    } else if (audioTables.contains(currentTable)) {
+      bottomBarVisibleNotifier.value = false;
+      return const PreviewAudio();
+
+    } else {
+      return _buildFilePreview();
+
+    }
+
+  }
+
   Future<void> _updateTextChanges(String changesUpdate, BuildContext context) async {
 
     try {
@@ -400,7 +422,8 @@ class PreviewFileState extends State<PreviewFile> {
             } else if (buttonType == "save") {
               
               final textValue = textController.text;
-              final isTextType = Globals.textType.contains(tempData.selectedFileName.split('.').last);
+              final isTextType = Globals.textType.contains(
+                  tempData.selectedFileName.split('.').last);
 
               if(textValue.isNotEmpty && isTextType) {
                 await _updateTextChanges(textValue, context);
@@ -475,24 +498,26 @@ class PreviewFileState extends State<PreviewFile> {
     final imageResolution = "${imageWidth}x$imageHeight";
 
     return imageResolution;
+    
   }
 
   Widget _buildFileInfoHeader(String headerText, String subHeader) {
     return Padding(
       padding: const EdgeInsets.only(left: 42.0),
       child: Row(
-    
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-    
         children: [
+
           Text(headerText,
             style: const TextStyle(
               color: Colors.white38,
               fontSize: 15,
             ),
           ),
+
           const SizedBox(width: 8),
+
           Text(ShortenText().cutText(subHeader, customLength: 30),
             style: const TextStyle(
               overflow: TextOverflow.ellipsis,
@@ -502,6 +527,7 @@ class PreviewFileState extends State<PreviewFile> {
             ),
             textAlign: TextAlign.center,
           ),
+
         ]
       ),
     );
@@ -564,25 +590,6 @@ class PreviewFileState extends State<PreviewFile> {
         );
       },
     );
-
-  }
-
-  Widget _buildFileOnCondition() {
-    
-    const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
-    const audioTables = {GlobalsTable.homeAudio, GlobalsTable.psAudio};
-
-    if(textTables.contains(currentTable)) {
-      return PreviewText(controller: textController);
-
-    } else if (audioTables.contains(currentTable)) {
-      bottomBarVisibleNotifier.value = false;
-      return const PreviewAudio();
-
-    } else {
-      return _buildFilePreview();
-
-    }
 
   }
 

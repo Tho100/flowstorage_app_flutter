@@ -116,7 +116,6 @@ class DataRetriever {
       }
 
     } else {
-
       await retrieveValue(tableNameToAssetsImage[tableName]!);
 
     }

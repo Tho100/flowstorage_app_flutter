@@ -1,6 +1,4 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
-import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flutter/material.dart';
 
 class UserDataRetriever {
 
@@ -39,31 +37,6 @@ class UserDataRetriever {
     }
 
     return '';
-  }
-
-  Future<String> retrieveEmail({required String? username, BuildContext? context}) async {
-    
-    try {
-
-      final conn = await SqlConnection.initializeConnection();
-
-      const query = "SELECT CUST_EMAIL FROM information WHERE CUST_USERNAME = :username";
-      final params = {'username': username};
-
-      final execute = await conn.execute(query,params);
-      String? email;
-
-      for(final emailRows in execute.rows) {
-        email = emailRows.assoc()['CUST_EMAIL']!;
-      }
-      
-      return email!;
-
-    } catch (err) {
-      NavigatePage.permanentPageMainboard(context!);
-      return "";
-    }
-  
   }
 
   Future<List<String?>> retrieveAccountTypeAndUsername({

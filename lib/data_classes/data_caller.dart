@@ -21,6 +21,7 @@ import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:mysql_client/mysql_client.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -317,6 +318,36 @@ class DataCaller {
 
     tempData.setOrigin(OriginFile.folder);
     tempData.setAppBarTitle(tempData.folderName);
+
+  }
+
+  Future<List<Future<List<List<Object>>>>> startupDataCaller({
+    required MySQLConnectionPool conn,
+    required String username,
+  }) async {
+
+    final dirListCount = await _crud.countUserTableRow(GlobalsTable.directoryInfoTable);
+    final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
+
+    final tablesToCheck = [
+      ...dirLists,
+      GlobalsTable.homeImage, GlobalsTable.homeText, 
+      GlobalsTable.homeVideo, GlobalsTable.homePdf,
+      GlobalsTable.homeAudio, GlobalsTable.homeExcel, 
+      GlobalsTable.homePtx, GlobalsTable.homeWord,
+      GlobalsTable.homeExe, GlobalsTable.homeApk
+    ];
+
+    final futures = tablesToCheck.map((table) async {
+      final fileNames = await _fileNameGetterHome.retrieveParams(conn, username, table);
+      final bytes = await _dataGetterHome.getLeadingParams(conn, username, table);
+      final dates = table == GlobalsTable.directoryInfoTable
+          ? ["Directory"]
+          : await _dateGetterHome.getDateParams(conn, username, table);
+      return [fileNames, bytes, dates];
+    }).toList();
+    
+    return futures;
 
   }
 

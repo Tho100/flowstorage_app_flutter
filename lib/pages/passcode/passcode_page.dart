@@ -1,8 +1,6 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/data_classes/date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -41,9 +39,6 @@ class PasscodePageState extends State<PasscodePage> {
   final controllers = List.generate(4, (_) => TextEditingController());
   final focusNodes = List.generate(4, (_) => FocusNode());
 
-  final fileNameGetterStartup = NameGetter();
-  final dataGetterStartup = DataRetriever();
-  final dateGetterStartup = DateGetter();
   final accountInformationRetriever = UserDataRetriever();
 
   final storageData = GetIt.instance<StorageDataProvider>();
@@ -59,7 +54,7 @@ class PasscodePageState extends State<PasscodePage> {
     isButtonsEnabledNotifier.value = false;
   }
 
-  Future<void> _callData(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType ,BuildContext context) async {
+  Future<void> _callFileData(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType ,BuildContext context) async {
 
     try {
       
@@ -70,26 +65,8 @@ class PasscodePageState extends State<PasscodePage> {
       
       userData.setAccountType(accountType);
 
-      final dirListCount = await crud.countUserTableRow(GlobalsTable.directoryInfoTable);
-      final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
-
-      final tablesToCheck = [
-        ...dirLists,
-        GlobalsTable.homeImage, GlobalsTable.homeText, 
-        GlobalsTable.homePdf, GlobalsTable.homeExcel, 
-        GlobalsTable.homeVideo, GlobalsTable.homeAudio,
-        GlobalsTable.homePtx, GlobalsTable.homeWord,
-        GlobalsTable.homeExe, GlobalsTable.homeApk
-      ];
-
-      final futures = tablesToCheck.map((table) async {
-        final fileNames = await fileNameGetterStartup.retrieveParams(conn, savedCustUsername, table);
-        final bytes = await dataGetterStartup.getLeadingParams(conn, savedCustUsername, table);
-        final dates = table == GlobalsTable.directoryInfoTable
-            ? ["Directory"]
-            : await dateGetterStartup.getDateParams(conn, savedCustUsername, table);
-        return [fileNames, bytes, dates];
-      }).toList();
+      final futures = await DataCaller().startupDataCaller(
+        conn: conn, username: savedCustUsername);
 
       final results = await Future.wait(futures);
 
@@ -156,7 +133,9 @@ class PasscodePageState extends State<PasscodePage> {
         if(!mounted) return;
         justLoading.startLoading(context: context);
 
-        await _callData(conn, userData.username, userData.email, userData.accountType, context);
+        await _callFileData(
+          conn, userData.username, userData.email, 
+          userData.accountType, context);
 
         justLoading.stopLoading();
         

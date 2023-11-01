@@ -24,11 +24,15 @@ class SaveApi {
 
       if (fileData is Uint8List) {
         await file.writeAsBytes(fileData);
+
       } else if (fileData is String) {
         await file.writeAsString(fileData);
+
       } else {
         logger.e('Exception from saveMultipleFiles {save_api}: unsupported file format');
+
       }
+
     }
 
     return filePath;
@@ -45,10 +49,13 @@ class SaveApi {
    
     if (fileData is Uint8List) {
       await file.writeAsBytes(fileData);
+      
     } else if (fileData is String) {
       await file.writeAsString(fileData);
+
     } else {
       logger.e('Exception from saveMultipleFiles {save_api}: unsupported file format');
+
     }
 
   }

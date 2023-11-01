@@ -23,9 +23,9 @@ class CakeSignInPage extends StatefulWidget {
 
 class CakeSignInPageState extends State<CakeSignInPage> {
 
-  final _locator = GetIt.instance;
-
   BuildContext? loginContext;
+
+  final userData = GetIt.instance<UserDataProvider>();
 
   final isCheckedNotifier = ValueNotifier<bool>(true); 
   final visiblePasswordNotifier = ValueNotifier<bool>(false); 
@@ -260,7 +260,6 @@ class CakeSignInPageState extends State<CakeSignInPage> {
 
                   TextButton(
                     onPressed: () {
-                      final userData = _locator<UserDataProvider>();
                       Navigator.push(
                         context, 
                         MaterialPageRoute(builder: (context) => ResetBackup(username: userData.username)));
