@@ -48,26 +48,25 @@ class CreateTextPageState extends State<CreateText> {
 
   Future<void> _insertUserFile({
     required String table,
-    required String filePath,
+    required String fileName,
     required dynamic fileValue,
   }) async {
 
     try {
     
-      List<Future<void>> isolatedFileFutures = [];
-
-      isolatedFileFutures.add(InsertData().insertValueParams(
+      await InsertData().insertValueParams(
         tableName: table,
-        fileName: filePath,
+        fileName: fileName,
         userName: userData.username,
         fileValue: fileValue,
         videoThumbnail: null
-      ));
+      );
 
-      await Future.wait(isolatedFileFutures);
+      _updateUIAfterSave(fileName, false);
 
     } catch (err) {
-      _createTextFileOnOffline(filePath, fileValue);
+      _createTextFileOnOffline(fileName, fileValue);
+      return;
     }
 
   }
@@ -133,13 +132,11 @@ class CreateTextPageState extends State<CreateText> {
       } else {
         await _insertUserFile(
           table: _tableToUploadTo(),
-          filePath: fileName,
+          fileName: fileName,
           fileValue: compressedFileBase64,
         );
         
-      }
-
-      _updateUIAfterSave(fileName);
+      } 
 
     } catch (err, st) {
       logger.e("Exception from _saveText {create_text}", err, st);
@@ -155,11 +152,11 @@ class CreateTextPageState extends State<CreateText> {
       fileName: fileName,
     );
 
-    _updateUIAfterSave(fileName);
+    _updateUIAfterSave(fileName, true);
 
   }
 
-  void _updateUIAfterSave(String fileName) async {
+  void _updateUIAfterSave(String fileName, bool isFromOffline) async {
 
     _addTextFileToListView(fileName: fileName);
 
@@ -174,7 +171,7 @@ class CreateTextPageState extends State<CreateText> {
     );
 
     SnakeAlert.okSnake(
-      message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved${tempData.origin == OriginFile.offline ? " as an offline file." : "."}",
+      message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved${isFromOffline ? " as an offline file." : "."}",
       icon: Icons.check,
     );
 
