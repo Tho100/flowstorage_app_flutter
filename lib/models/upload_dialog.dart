@@ -307,7 +307,7 @@ class UploadDialog {
         String compressedImageBase64Encoded = base64.encode(bytes);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+          publicStorageUploadPage(filePath: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
           return;
         }
 
@@ -333,9 +333,9 @@ class UploadDialog {
         if(tempData.origin == OriginFile.public) {
 
           publicStorageUploadPage(
-            filePathVal: filePath, fileName: selectedFileName, 
+            filePath: filePath, fileName: selectedFileName, 
             tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
-            newFileToDisplay: newFileToDisplayPath, thumbnail: thumbnailBytes
+            previewData: newFileToDisplayPath, thumbnail: thumbnailBytes
           );
 
           return;
@@ -359,7 +359,10 @@ class UploadDialog {
         newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePathVal: filePath, fileName: selectedFileName, tableName: getFileTable, base64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+          publicStorageUploadPage(
+            filePath: filePath, fileName: selectedFileName, 
+            tableName: getFileTable, base64Encoded: fileBase64!, 
+            previewData: newFileToDisplayPath);
           return;
         }
 

@@ -133,21 +133,27 @@ class UpdateTextData {
       case OriginFile.home:
         await _updateTextFile();
         break;
+
       case OriginFile.directory:
         await _updateDirectoryData();
         break;
+
       case OriginFile.folder:
         await _updateFolderData();
         break;
+        
       case OriginFile.offline:
         _updateOfflineData();
         break;
+
       case OriginFile.sharedOther:
         await _updateSharedOthersData();
         break;
+
       case OriginFile.sharedMe:
         await _updateSharedMeData();
         break;
+
       case OriginFile.public:
         await _updatePublicData();
         break;

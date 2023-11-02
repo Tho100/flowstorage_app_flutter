@@ -281,11 +281,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   void _openPsUploadPage({
-    required String filePathVal,
+    required String filePath,
     required String fileName,
     required String tableName,
     required String base64Encoded,
-    File? newFileToDisplay,
+    File? previewData,
     dynamic thumbnail,
   }) async {
 
@@ -303,9 +303,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     } 
 
-    if(!mounted) return;
-
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    if(!mounted) return;    
     
     Navigator.push(
       context, 
@@ -315,42 +313,62 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           imageBase64Encoded: imagePreview,
           fileBase64Encoded: base64Encoded,
           onUploadPressed: () async {
-
-            SnakeAlert.uploadingSnake(
-              snackState: scaffoldMessenger, 
-              message: "Uploading ${ShortenText().cutText(fileName)}"
+            await _onPsUploadPressed(
+              fileName: fileName,
+              fileData: base64Encoded,
+              filePath: filePath,
+              tableName: tableName,
+              previewData: previewData,
+              videoThumbnail: thumbnail
             );
-
-            await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
-
-            await UpdateListView().processUpdateListView(
-              filePathVal: filePathVal, selectedFileName: fileName,
-              tableName: tableName, fileBase64Encoded: base64Encoded, 
-              newFileToDisplay: newFileToDisplay, thumbnailBytes: thumbnail
-            );
-
-            psStorageData.psTitleList.add(psUploadData.psTitleValue);
-            psStorageData.psTagsList.add(psUploadData.psTagValue);
-            psStorageData.psUploaderList.add(userData.username);
-
-            scaffoldMessenger.hideCurrentSnackBar();
-
-            UpdateListView().addItemDetailsToListView(fileName: fileName);
-            _scrollEndListView();
-
-            SnakeAlert.temporarySnake(
-              snackState: scaffoldMessenger, 
-              message: "${ShortenText().cutText(fileName)} Has been added"
-            );
-
-            await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
-            
           }, 
         )
       )
     );
 
     await NotificationApi.stopNotification(0);
+
+  }
+
+  Future<void> _onPsUploadPressed({
+    required String fileName, 
+    required String fileData,
+    required String filePath,
+    required String tableName,
+    required File? previewData,
+    required dynamic videoThumbnail,
+  }) async {
+
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    SnakeAlert.uploadingSnake(
+      snackState: scaffoldMessenger, 
+      message: "Uploading ${ShortenText().cutText(fileName)}"
+    );
+
+    await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
+
+    await UpdateListView().processUpdateListView(
+      filePathVal: filePath, selectedFileName: fileName,
+      tableName: tableName, fileBase64Encoded: fileData, 
+      newFileToDisplay: previewData, thumbnailBytes: videoThumbnail
+    );
+
+    psStorageData.psTitleList.add(psUploadData.psTitleValue);
+    psStorageData.psTagsList.add(psUploadData.psTagValue);
+    psStorageData.psUploaderList.add(userData.username);
+
+    scaffoldMessenger.hideCurrentSnackBar();
+
+    UpdateListView().addItemDetailsToListView(fileName: fileName);
+    _scrollEndListView();
+
+    SnakeAlert.temporarySnake(
+      snackState: scaffoldMessenger, 
+      message: "${ShortenText().cutText(fileName)} Has been added"
+    );
+
+    await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
   }
 

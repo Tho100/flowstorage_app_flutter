@@ -89,6 +89,7 @@ class SplashScreenState extends State<SplashScreen> {
       logger.e('Exception from _buildDirectory {main}',err,st);
       CustomAlertDialog.alertDialog('Failed to create directory.');
     }
+    
   }
 
   void _openCreateDirectoryDialog() {
