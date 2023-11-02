@@ -45,10 +45,10 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.edit),
+              Icon(Icons.edit_outlined),
               SizedBox(width: 15.0),
               Text(
-                'Rename Folder',
+                'Rename folder',
                 style: GlobalsStyle.btnBottomDialogTextStyle,
               ),
             ],
@@ -60,7 +60,7 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.download_rounded),
+              Icon(Icons.file_download_outlined),
               SizedBox(width: 15.0),
               Text('Download',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -78,7 +78,7 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.delete,color: ThemeColor.darkRed),
+              Icon(Icons.delete_outline,color: ThemeColor.darkRed),
               SizedBox(width: 15.0),
               Text('Delete',
                 style: TextStyle(

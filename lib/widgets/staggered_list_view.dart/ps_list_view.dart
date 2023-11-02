@@ -226,7 +226,7 @@ class PsStaggeredListView extends StatelessWidget {
                 isFromDownload: true,
                 child: const Align(
                   alignment: Alignment.center,
-                  child: Icon(Icons.download, color: ThemeColor.justWhite, size: 20)
+                  child: Icon(Icons.file_download_outlined, color: ThemeColor.justWhite, size: 20)
                 ),
                 onPressed: () async { 
                   final fileName = storageData.fileNamesFilteredList[index];
