@@ -9,13 +9,17 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -37,6 +41,8 @@ class IntentSharingPage extends StatelessWidget {
   }) : super(key: key);
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
 
   late Uint8List fileBytes = Uint8List(0);
 
@@ -136,6 +142,14 @@ class IntentSharingPage extends StatelessWidget {
 
       final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
+      final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+      if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
+        return UpgradeDialog.buildUpgradeBottomSheet(
+          message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
+          context: context
+        );
+      }
+
       await CallNotify()
         .uploadingNotification(numberOfFiles: 1);
 
@@ -184,6 +198,8 @@ class IntentSharingPage extends StatelessWidget {
         );
 
         await thumbnailFile.delete();
+
+      } else {
 
       }
 
