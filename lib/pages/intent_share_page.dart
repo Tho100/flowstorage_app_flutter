@@ -14,6 +14,7 @@ import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -230,7 +231,17 @@ class IntentSharingPage extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              await processFileUpload(context);
+
+              final fileType = fileName.split('.').last;
+              
+              if(Globals.supportedFileTypes.contains(fileType)) {
+                await processFileUpload(context);
+
+              } else {
+                CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+
+              }
+
             }
           ),
         ],
