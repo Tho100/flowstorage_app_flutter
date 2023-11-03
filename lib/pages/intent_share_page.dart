@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
+import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
@@ -193,9 +194,18 @@ class IntentSharingPage extends StatelessWidget {
 
       } else {
 
+        final getFileTable = Globals.fileTypesToTableNames[fileType]!;
+
+        final imagePreview = await GetAssets()
+              .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
+
+        await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
+        
       }
 
       UpdateListView().addItemDetailsToListView(fileName: fileName);
+      
+      scaffoldMessenger.hideCurrentSnackBar();
 
       await NotificationApi.stopNotification(0);
 
@@ -254,7 +264,7 @@ class IntentSharingPage extends StatelessWidget {
               }
 
               final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-              
+
               if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
                 return UpgradeDialog.buildUpgradeBottomSheet(
                   message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",

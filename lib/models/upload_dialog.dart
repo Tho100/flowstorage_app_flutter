@@ -356,7 +356,8 @@ class UploadDialog {
           ? Globals.fileTypesToTableNames[fileExtension]! 
           : Globals.fileTypesToTableNamesPs[fileExtension]!;
 
-        newFileToDisplayPath = await GetAssets().loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
+        newFileToDisplayPath = await GetAssets()
+          .loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
         if(tempData.origin == OriginFile.public) {
           publicStorageUploadPage(
@@ -367,6 +368,7 @@ class UploadDialog {
         }
 
         await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+
       }
 
       UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
