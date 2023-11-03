@@ -35,11 +35,9 @@ import 'package:path_provider/path_provider.dart';
 class UploadDialog {
 
   final VoidCallback upgradeExceededDialog;
-  final Function publicStorageUploadPage;
 
   UploadDialog({
     required this.upgradeExceededDialog,
-    required this.publicStorageUploadPage
   });
 
   final storageData = GetIt.instance<StorageDataProvider>();
@@ -181,7 +179,7 @@ class UploadDialog {
 
   }
 
-  Future<void> filesDialog() async {
+  Future<void> filesDialog(Function publicStorageUploadPage) async {
 
     late String? fileBase64;
     late File? newFileToDisplayPath;
@@ -575,6 +573,89 @@ class UploadDialog {
 
     await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
     
+  }
+
+  Future<void> intentShareUpload({
+    required String fileName,
+    required String filePath
+  }) async {
+    
+    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
+    await CallNotify()
+      .uploadingNotification(numberOfFiles: 1);
+
+    SnakeAlert.uploadingSnake(
+      snackState: scaffoldMessenger, 
+      message: "Uploading ${ShortenText().cutText(fileName)}...");
+
+    final fileType = fileName.split('.').last;
+
+    String? fileBase64Encoded;
+
+    if (!(Globals.imageType.contains(fileType))) {
+      final compressedFileByte = await CompressorApi.compressFile(filePath);
+      fileBase64Encoded = base64.encode(compressedFileByte);
+
+    } else {
+      final filesBytes = await File(filePath).readAsBytes();
+      fileBase64Encoded = base64.encode(filesBytes);
+
+    }
+
+    if (Globals.imageType.contains(fileType)) {
+
+      List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: 80);
+      String compressedImageBase64Encoded = base64.encode(bytes);
+
+      await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+
+    } else if (Globals.videoType.contains(fileType)) {
+
+      final generatedThumbnail = await GenerateThumbnail(
+        fileName: fileName, 
+        filePath: filePath
+      ).generate();
+
+      final thumbnailBytes = generatedThumbnail[0] as Uint8List;
+      final thumbnailFile = generatedThumbnail[1] as File;
+
+      await UpdateListView().processUpdateListView(
+        filePathVal: filePath, 
+        selectedFileName: fileName, 
+        tableName: GlobalsTable.homeVideo, 
+        fileBase64Encoded: fileBase64Encoded,
+        newFileToDisplay: thumbnailFile,
+        thumbnailBytes: thumbnailBytes
+      );
+
+      await thumbnailFile.delete();
+
+    } else {
+
+      final getFileTable = Globals.fileTypesToTableNames[fileType]!;
+
+      final imagePreview = await GetAssets()
+            .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
+
+      await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
+      
+    }
+
+    UpdateListView().addItemDetailsToListView(fileName: fileName);
+    
+    scaffoldMessenger.hideCurrentSnackBar();
+
+    await NotificationApi.stopNotification(0);
+
+    SnakeAlert.temporarySnake(
+      snackState: scaffoldMessenger, 
+      message: "${ShortenText().cutText(fileName)} Has been added."
+    );
+
+    await CallNotify().
+      uploadedNotification(title: "Upload Finished", count: 1);
+
   }
 
 }

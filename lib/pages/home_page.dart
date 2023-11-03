@@ -193,7 +193,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await UploadDialog(
         upgradeExceededDialog: _showUpgradeExceededDialog,
-        publicStorageUploadPage: _openPsUploadPage
       ).galleryDialog();
 
       _itemSearchingImplementation('');
@@ -215,8 +214,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await UploadDialog(
         upgradeExceededDialog: _showUpgradeExceededDialog,
-        publicStorageUploadPage: _openPsUploadPage
-      ).filesDialog();
+      ).filesDialog(_openPsUploadPage);
 
       _itemSearchingImplementation('');
 
@@ -237,7 +235,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await UploadDialog(
         upgradeExceededDialog: _showUpgradeExceededDialog,
-        publicStorageUploadPage: _openPsUploadPage
       ).foldersDialog();
 
     } catch (err, st) {
@@ -252,7 +249,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await UploadDialog(
         upgradeExceededDialog: _showUpgradeExceededDialog,
-        publicStorageUploadPage: _openPsUploadPage
       ).scannerUpload();
 
       _itemSearchingImplementation('');
@@ -269,7 +265,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await UploadDialog(
         upgradeExceededDialog: _showUpgradeExceededDialog,
-        publicStorageUploadPage: _openPsUploadPage
       ).photoUpload();
 
       _itemSearchingImplementation('');
