@@ -142,14 +142,6 @@ class IntentSharingPage extends StatelessWidget {
 
       final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
-      final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-      if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
-        return UpgradeDialog.buildUpgradeBottomSheet(
-          message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
-          context: context
-        );
-      }
-
       await CallNotify()
         .uploadingNotification(numberOfFiles: 1);
 
@@ -157,9 +149,9 @@ class IntentSharingPage extends StatelessWidget {
         snackState: scaffoldMessenger, 
         message: "Uploading ${ShortenText().cutText(fileName)}...");
 
-      String? fileBase64Encoded;
-
       final fileType = fileName.split('.').last;
+
+      String? fileBase64Encoded;
 
       if (!(Globals.imageType.contains(fileType))) {
         final compressedFileByte = await CompressorApi.compressFile(filePath);
@@ -249,14 +241,28 @@ class IntentSharingPage extends StatelessWidget {
             onPressed: () async {
 
               final fileType = fileName.split('.').last;
-              
-              if(Globals.supportedFileTypes.contains(fileType)) {
-                await processFileUpload(context);
 
-              } else {
-                CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+              if (storageData.fileNamesList.contains(fileName)) {
+                CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
+                return;
 
               }
+
+              if(!Globals.supportedFileTypes.contains(fileType)) {
+                CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+                return;
+              }
+
+              final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+              
+              if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
+                return UpgradeDialog.buildUpgradeBottomSheet(
+                  message: "It looks like you're exceeding the number of files you can upload. Upgrade your account to upload more.",
+                  context: context
+                );
+              }
+
+              await processFileUpload(context);
 
             }
           ),
