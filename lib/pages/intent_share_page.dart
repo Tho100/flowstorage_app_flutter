@@ -71,7 +71,7 @@ class IntentSharingPage extends StatelessWidget {
                   ),
                 ),
 
-                if(Globals.videoType.contains(fileName.split('.').last))
+                if(Globals.videoType.contains(fileType))
                 Center(
                   child: Container(
                     width: 32,
@@ -214,5 +214,4 @@ class IntentSharingPage extends StatelessWidget {
       body: buildBody(context),
     );
   }
-
 }

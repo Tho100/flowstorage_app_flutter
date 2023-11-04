@@ -77,8 +77,7 @@ class RenameDialog {
 
             IconButton(
               onPressed: () {
-                Clipboard.setData(ClipboardData(text: fileName));
-                CallToast.call(message: "Copied to clipboard.");
+                copyOnPressed(fileName);
               },
               icon: const Icon(Icons.copy,color: ThemeColor.thirdWhite,size: 22),
             ),
@@ -135,4 +134,13 @@ class RenameDialog {
       ]
     );  
   }
+
+  void copyOnPressed(String fileName) {
+    final removedFileType = fileName
+      .substring(0, fileName.lastIndexOf('.'));
+
+    Clipboard.setData(ClipboardData(text: removedFileType));
+    CallToast.call(message: "Copied to clipboard.");
+  }
+
 }
