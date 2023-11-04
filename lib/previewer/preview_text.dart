@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/widgets/failed_load.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,12 +17,9 @@ import 'package:logger/logger.dart';
 
 class PreviewText extends StatelessWidget {
 
-  final TextEditingController controller;
+  const PreviewText({Key? key}) : super(key: key);
 
-  const PreviewText({
-    Key? key, 
-    required this.controller
-  }) : super(key: key);
+  static final textController = TextEditingController();
 
   Future<Uint8List> callTextDataAsync() async {
 
@@ -59,10 +57,10 @@ class PreviewText extends StatelessWidget {
       future: callTextDataAsync(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {        
-          controller.text = utf8.decode(snapshot.data!);
+          textController.text = utf8.decode(snapshot.data!);
           return Padding(
             padding: const EdgeInsets.all(14.0),
-            child: TextFormField(controller: controller,
+            child: TextFormField(controller: textController,
             keyboardType: TextInputType.multiline,
               maxLines: null,
               style: GoogleFonts.roboto(

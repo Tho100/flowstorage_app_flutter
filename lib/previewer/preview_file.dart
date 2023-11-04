@@ -77,8 +77,6 @@ class PreviewFileState extends State<PreviewFile> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
-  final textController = TextEditingController();
-
   final uploaderNameNotifer = ValueNotifier<String>('');
 
   final fileSizeNotifier = ValueNotifier<String>('');
@@ -106,7 +104,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   @override
   void dispose() {
-    textController.dispose();
     appBarTitleNotifier.dispose();
     uploaderNameNotifer.dispose();
     fileResolutionNotifier.dispose();
@@ -355,7 +352,7 @@ class PreviewFileState extends State<PreviewFile> {
     const audioTables = {GlobalsTable.homeAudio, GlobalsTable.psAudio};
 
     if(textTables.contains(currentTable)) {
-      return PreviewText(controller: textController);
+      return PreviewText();
 
     } else if (audioTables.contains(currentTable)) {
       bottomBarVisibleNotifier.value = false;
@@ -421,7 +418,7 @@ class PreviewFileState extends State<PreviewFile> {
 
             } else if (buttonType == "save") {
               
-              final textValue = textController.text;
+              final textValue = PreviewText.textController.text;
               final isTextType = Globals.textType.contains(
                   tempData.selectedFileName.split('.').last);
 
@@ -596,7 +593,7 @@ class PreviewFileState extends State<PreviewFile> {
   Widget _buildCopyTextIconButton() {
     return IconButton(
       onPressed: () {
-        final textValue = textController.text;
+        final textValue = PreviewText.textController.text;
         Clipboard.setData(ClipboardData(text: textValue));
         CallToast.call(message: "Copied to clipboard");
       },
