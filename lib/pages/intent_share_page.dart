@@ -43,6 +43,8 @@ class IntentSharingPage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) {
 
+    final fileType = fileName.split('.').last;
+
     return Column(
       children: [
 
@@ -53,7 +55,6 @@ class IntentSharingPage extends StatelessWidget {
           child: Row(
             children: [
 
-              if(Globals.imageType.contains(fileName.split('.').last) || Globals.videoType.contains(fileName.split('.').last))
               Stack(
                 children: [
                 Padding(
@@ -64,7 +65,8 @@ class IntentSharingPage extends StatelessWidget {
                       base64.decode(imageBase64Encoded!),
                       width: 105,
                       height: 105,
-                      fit: BoxFit.fitWidth,
+                      fit: Globals.generalFileTypes.contains(fileType) 
+                        ? BoxFit.scaleDown : BoxFit.fitWidth,
                     )
                   ),
                 ),

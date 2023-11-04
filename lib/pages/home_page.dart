@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
+import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
@@ -2347,7 +2348,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final thumbnailBytes = generatedThumbnail[0] as Uint8List;
       imagePreview = base64.encode(thumbnailBytes);
 
-    } 
+    } else {
+      final getImageAsset = await GetAssets().
+        loadAssetsData(Globals.fileTypeToAssets[fileType]!);
+
+      imagePreview = base64.encode(getImageAsset);
+
+    }
 
     if(!mounted) return;
     Navigator.push(
