@@ -2201,7 +2201,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-
   Widget _buildMyPsFilesButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, right: 8.0),
@@ -2398,7 +2397,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     staggeredListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
     navDirectoryButtonVisible.dispose();
-    selectAllItemsIconNotifier.dispose();
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibileNotifier.dispose();

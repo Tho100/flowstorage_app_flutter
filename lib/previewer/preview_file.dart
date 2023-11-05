@@ -225,7 +225,7 @@ class PreviewFileState extends State<PreviewFile> {
 
       final indexOfFile = storageData.fileNamesFilteredList.indexOf(fileName);
 
-      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesFilteredList.length) {
         storageData.updateRemoveFile(indexOfFile);
       }
 
