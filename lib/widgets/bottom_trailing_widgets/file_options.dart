@@ -49,9 +49,9 @@ class BottomTrailingOptions {
                 borderRadius: BorderRadius.circular(6),
                 child: Image(
                   width: Globals.generalFileTypes.contains(fileType) 
-                    ? 46 : 60,
+                    ? 38 : 60,
                   height: Globals.generalFileTypes.contains(fileType) 
-                    ? 46 : 60,
+                    ? 38 : 60,
                   fit: BoxFit.cover,
                   image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                 ),
@@ -112,7 +112,7 @@ class BottomTrailingOptions {
           ),
         ),
 
-        if(fileName.split('.').last == "pdf" || Globals.textType.contains(fileName.split('.').last))
+        if(Globals.generalFileTypes.contains(fileType))
         ElevatedButton(
           onPressed: onOpenWithPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
