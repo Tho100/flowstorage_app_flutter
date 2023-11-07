@@ -5,11 +5,9 @@ import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
-import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
-import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/quick_actions_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -42,6 +40,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   final encryption = EncryptionClass();
   final accountInformationRetriever = UserDataRetriever();
+  final quickActionsModel = QuickActionsModel();
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -56,33 +55,6 @@ class SplashScreenState extends State<SplashScreen> {
     super.initState();
     _initializeQuickActions();
     _startTimer();
-  }
-
-  void _openCreateDirectoryDialog() {
-    CreateDirectoryDialog().buildCreateDirectoryDialog(
-      context: context, 
-      createOnPressed: () async {
-        
-        final getDirectoryTitle = CreateDirectoryDialog.directoryNameController.text.trim();
-
-        if(getDirectoryTitle.isEmpty) {
-          return;
-        }
-
-        if(storageData.fileNamesList.contains(getDirectoryTitle)) {
-          CallToast.call(message: "Directory with this name already exists.");
-          return;
-        }
-
-        await FunctionModel().createDirectoryData(getDirectoryTitle);
-
-        setState(() {});
-
-        CreateDirectoryDialog.directoryNameController.clear();
-
-      }
-
-    );
   }
 
   void _initializeQuickActions() async {
@@ -101,17 +73,12 @@ class SplashScreenState extends State<SplashScreen> {
       if(getLocalUsername.isNotEmpty) {
 
         if(shortcutType == newDirectoryAction && isPassCodeExists == false) {
-
           await _navigateToNextScreen();
-
-          _openCreateDirectoryDialog();
+          quickActionsModel.newDirectory();          
 
         } else if (shortcutType == goOfflinePageAction) {
-
-          final dataCaller = DataCaller();
-          await dataCaller.offlineData();
-
           setState(() {});
+          await quickActionsModel.offline();          
 
         } 
         

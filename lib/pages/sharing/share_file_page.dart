@@ -39,6 +39,8 @@ class ShareFilePage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) {
 
+    final fileType = fileName.split('.').last;
+
     return Column(
       children: [
 
@@ -53,8 +55,10 @@ class ShareFilePage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
-                      width: 55,
-                      height: 55,
+                      width: Globals.generalFileTypes.contains(fileType) 
+                        ? 38 : 55,
+                      height: Globals.generalFileTypes.contains(fileType) 
+                        ? 38 : 55,
                       fit: BoxFit.cover, 
                       image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),
