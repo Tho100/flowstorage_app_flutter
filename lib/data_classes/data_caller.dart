@@ -134,26 +134,8 @@ class DataCaller {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final dirListCount = await _crud.countUserTableRow(GlobalsTable.directoryInfoTable);
-    final dirLists = List.generate(dirListCount, (_) => GlobalsTable.directoryInfoTable);
-
-    final tablesToCheck = [
-      ...dirLists,
-      GlobalsTable.homeImage, GlobalsTable.homeText, 
-      GlobalsTable.homePdf, GlobalsTable.homeExcel, 
-      GlobalsTable.homeVideo, GlobalsTable.homeAudio,
-      GlobalsTable.homePtx, GlobalsTable.homeWord,
-      GlobalsTable.homeExe, GlobalsTable.homeApk
-    ];
-
-    final futures = tablesToCheck.map((table) async {
-      final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
-      final bytes = await _dataGetterHome.getLeadingParams(conn, userData.username, table);
-      final dates = table == GlobalsTable.directoryInfoTable
-          ? ["Directory"]
-          : await _dateGetterHome.getDateParams(conn, userData.username, table);
-      return [fileNames, bytes, dates];
-    }).toList();
+    final futures = await startupDataCaller(
+      conn: conn, username: userData.username);
 
     final results = await Future.wait(futures);
 

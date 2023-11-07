@@ -2,21 +2,18 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
-import 'package:flowstorage_fsc/directory_query/create_directory.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 
 import 'dart:async';
 import 'dart:io';
@@ -61,37 +58,6 @@ class SplashScreenState extends State<SplashScreen> {
     _startTimer();
   }
 
-  Future<void> _buildDirectory(String directoryName) async {
-
-    try {
-
-      await CreateDirectory(name: directoryName).create();
-
-      final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
-
-      setState(() {
-
-        storageData.fileDateFilteredList.add("Directory");
-        storageData.fileDateList.add("Directory");
-        storageData.imageBytesList.add(directoryImage.readAsBytesSync());
-        storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
-
-      });
-
-      storageData.directoryImageBytesList.clear();
-      storageData.fileNamesFilteredList.add(directoryName);
-      storageData.fileNamesList.add(directoryName);
-
-      if (!mounted) return;
-      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
-
-    } catch (err, st) {
-      logger.e('Exception from _buildDirectory {main}',err,st);
-      CustomAlertDialog.alertDialog('Failed to create directory.');
-    }
-    
-  }
-
   void _openCreateDirectoryDialog() {
     CreateDirectoryDialog().buildCreateDirectoryDialog(
       context: context, 
@@ -108,7 +74,8 @@ class SplashScreenState extends State<SplashScreen> {
           return;
         }
 
-        await _buildDirectory(getDirectoryTitle);
+        await FunctionModel().createDirectoryData(getDirectoryTitle);
+
         setState(() {});
 
         CreateDirectoryDialog.directoryNameController.clear();
