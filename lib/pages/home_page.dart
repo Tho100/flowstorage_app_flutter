@@ -1496,6 +1496,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildNavigationButtons() {
+
+    final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+
     return NavigationButtons(
       isVisible: togglePhotosPressed, 
       isCreateDirectoryVisible: navDirectoryButtonVisible, 
@@ -1505,33 +1508,37 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       sharedOnPressed: () { 
         _callBottomTrailingShared(); 
       }, 
-      
       scannerOnPressed: () async {
-        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
+        if(storageData.fileNamesList.length < limitFileUploads) {
           await _initializeDocumentScanner();
         } else {
-          _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
+          _showUpgradeLimitedDialog(limitFileUploads);
         }
       }, 
-        
       createDirectoryOnPressed: () async {
-        final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
-        if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
-          if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
-            _openCreateDirectoryDialog();
+        final directoryCount = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
+        if (storageData.fileNamesList.length < limitFileUploads) {
+          if (directoryCount != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
+            if (tempData.origin != OriginFile.offline) {
+              _openCreateDirectoryDialog();
+            } else {
+              CustomAlertDialog.alertDialog("Can't create Directory on offline mode.");
+            }
           } else {
             UpgradeDialog.buildUpgradeBottomSheet(
-              message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directory.",
-              context: context
+              message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directories.",
+              context: context,
             );
           }
+
         } else {
           _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
         }
+
       }, 
-        
-      sortingOnPressed: () { _callBottomTrailingSorting(); },
-        
+      sortingOnPressed: () { 
+        _callBottomTrailingSorting(); 
+      },
       filterTypePsOnPressed: () {
         BottomTrailingFilter().buildFilterTypeAll(
           filterTypeNormal: _itemSearchingImplementation, 
