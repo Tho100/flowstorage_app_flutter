@@ -15,11 +15,11 @@ class QuickActionsModel {
   final _userData = GetIt.instance<UserDataProvider>();
   final _dataCaller = DataCaller();
 
-  final context = navigatorKey.currentContext!;
+  final _context = navigatorKey.currentContext!;
 
   void _openCreateDirectoryDialog() {
     CreateDirectoryDialog().buildCreateDirectoryDialog(
-      context: context, 
+      context: _context, 
       createOnPressed: () async {
         
         final getDirectoryTitle = CreateDirectoryDialog.directoryNameController.text.trim();
@@ -55,7 +55,7 @@ class QuickActionsModel {
       } else {
         UpgradeDialog.buildUpgradeBottomSheet(
           message: "You're currently limited to $limitDirectoryUpload directory uploads. Upgrade your account to upload more directory.",
-          context: context
+          context: _context
         );
 
       }
@@ -63,8 +63,9 @@ class QuickActionsModel {
     } else {
       UpgradeDialog.buildUpgradeBottomSheet(
         message: "You're currently limited to $limitFilesUpload uploads. Upgrade your account to upload more.",
-        context: context
+        context: _context
       );
+      
     }
     
   }
