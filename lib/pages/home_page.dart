@@ -1496,9 +1496,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildNavigationButtons() {
-
-    final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-
     return NavigationButtons(
       isVisible: togglePhotosPressed, 
       isCreateDirectoryVisible: navDirectoryButtonVisible, 
@@ -1509,6 +1506,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _callBottomTrailingShared(); 
       }, 
       scannerOnPressed: () async {
+        final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
         if(storageData.fileNamesList.length < limitFileUploads) {
           await _initializeDocumentScanner();
         } else {
@@ -1516,6 +1514,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         }
       }, 
       createDirectoryOnPressed: () async {
+        final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
         final directoryCount = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
         if (storageData.fileNamesList.length < limitFileUploads) {
           if (directoryCount != AccountPlan.mapDirectoryUpload[userData.accountType]!) {

@@ -8,7 +8,7 @@ class Globals {
   static final _tempData = GetIt.instance<TempDataProvider>();
 
   static const Set<String> imageType = {"png","jpeg","jpg"};
-  static const Set<String> textType = {"txt","csv","html","sql","md"};
+  static const Set<String> textType = {"txt","csv","html","sql","md","py","xml"};
   static const Set<String> videoType = {"mp4","wmv","avi","mov","mkv"};
   static const Set<String> wordType = {"docx","doc"};
   static const Set<String> excelType = {"xls","xlsx"};
@@ -25,6 +25,8 @@ class Globals {
     'jpeg': GlobalsTable.homeImage,
 
     'txt': GlobalsTable.homeText,
+    'xml': GlobalsTable.homeText,
+    'py': GlobalsTable.homeText,
     'sql': GlobalsTable.homeText,
     'md': GlobalsTable.homeText,
     'csv': GlobalsTable.homeText,
@@ -64,6 +66,8 @@ class Globals {
 
     'txt': GlobalsTable.psText,
     'sql': GlobalsTable.psText,
+    'xml': GlobalsTable.psText,
+    'py': GlobalsTable.psText,
     'md': GlobalsTable.psText,
     'csv': GlobalsTable.psText,
     'html': GlobalsTable.psText,
@@ -106,7 +110,7 @@ class Globals {
 
   static const Set<String> supportedFileTypes = {
     "png","jpeg","jpg",
-    "html","sql","md","txt","pptx","ptx",
+    "html","sql","md","txt","xml","py","pptx","ptx",
     "pdf","doc","docx","mp4","wav","avi","wmv","mov","mp3",
     "exe","xlsx","xls","csv","apk", "msi"
   };
@@ -126,6 +130,8 @@ class Globals {
   static const fileTypeToAssets = {
     "txt": "txt0.jpg",
     "csv": "txt0.jpg",
+    "xml": "txt0.jpg",
+    "py": "txt0.jpg",
     "html": "txt0.jpg",
     "sql": "txt0.jpg",
     "md": "txt0.jpg",
