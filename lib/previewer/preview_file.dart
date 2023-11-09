@@ -394,7 +394,7 @@ class PreviewFileState extends State<PreviewFile> {
     required BuildContext context
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 9.0, top: 9.0, left: 5, right: 4),
+      padding: const EdgeInsets.only(bottom: 10.0, top: 9.0, left: 5, right: 5),
       child: SizedBox(
         width: width, 
         height: height, 
