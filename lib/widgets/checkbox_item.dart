@@ -16,31 +16,37 @@ class CheckBoxItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxTheme(
-      data: CheckboxThemeData(
-        fillColor: MaterialStateColor.resolveWith(
-          (states) => ThemeColor.secondaryWhite,
+    return Transform.scale(
+      scale: 1.1,
+      child: CheckboxTheme(
+        data: CheckboxThemeData(
+          fillColor: MaterialStateColor.resolveWith(
+            (states) {
+              if (states.contains(MaterialState.selected)) {
+                return ThemeColor.darkPurple;
+              } else {
+                return ThemeColor.darkBlack; 
+              }
+            },
+          ),
+          checkColor: MaterialStateColor.resolveWith(
+            (states) => ThemeColor.darkBlack,
+          ),
+          side: const BorderSide(
+            color: ThemeColor.secondaryWhite,
+            width: 2.0,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(1.5),
+          ),
         ),
-        checkColor: MaterialStateColor.resolveWith(
-          (states) => ThemeColor.darkPurple,
-        ),
-        overlayColor: MaterialStateColor.resolveWith(
-          (states) => ThemeColor.darkPurple.withOpacity(0.1),
-        ),
-        side: const BorderSide(
-          color: ThemeColor.secondaryWhite,
-          width: 2.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(2.0),
-        ),
+        child: Checkbox(
+          value: checkedList[index], 
+          onChanged: (bool? value) { 
+            updateCheckboxState(index, value!);
+          },
+        )
       ),
-      child: Checkbox(
-        value: checkedList[index], 
-        onChanged: (bool? value) { 
-          updateCheckboxState(index, value!);
-        },
-      )
     );     
   }
 

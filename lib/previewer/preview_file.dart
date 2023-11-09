@@ -280,6 +280,40 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  void _updateTextChanges(String changesUpdate) async {
+
+    try {
+
+      await UpdateTextData(
+        fileName: tempData.selectedFileName, 
+        tableName: currentTable,
+        userName: userData.username,
+        newValue: changesUpdate,
+        tappedIndex: widget.tappedIndex
+      ).update();
+
+      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
+
+    } catch (err) {
+      SnakeAlert.errorSnake("Failed to save changes.");
+    }
+    
+  }
+
+  void _saveTextChangesOnPressed() async {
+
+    final textValue = PreviewText.textController.text;
+    final isTextType = Globals.textType.contains(
+        tempData.selectedFileName.split('.').last);
+
+    if(textValue.isNotEmpty && isTextType) {
+      _updateTextChanges(textValue);
+      return;
+
+    } 
+
+  }
+
   Future _callBottomTrailling() {
   
     final fileName = appBarTitleNotifier.value;
@@ -619,7 +653,7 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _uploadedByText() {
+  Widget _buildUploadedByText() {
 
     const generalOrigin = {
       OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
@@ -637,26 +671,6 @@ class PreviewFileState extends State<PreviewFile> {
       ),
     );
 
-  }
-
-  Future<void> _updateTextChanges(String changesUpdate, BuildContext context) async {
-
-    try {
-
-      await UpdateTextData(
-        fileName: tempData.selectedFileName, 
-        tableName: currentTable,
-        userName: userData.username,
-        newValue: changesUpdate,
-        tappedIndex: widget.tappedIndex
-      ).update();
-
-      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to save changes.");
-    }
-    
   }
 
   Widget _buildBottomButtons({
@@ -703,20 +717,6 @@ class PreviewFileState extends State<PreviewFile> {
       ),
     );
   }
-  
-  void _saveTextChangesOnPressed() async {
-
-    final textValue = PreviewText.textController.text;
-    final isTextType = Globals.textType.contains(
-        tempData.selectedFileName.split('.').last);
-
-    if(textValue.isNotEmpty && isTextType) {
-      await _updateTextChanges(textValue, context);
-      return;
-
-    } 
-
-  }
 
   Widget _buildBottomBar() {
     return Container(
@@ -738,7 +738,7 @@ class PreviewFileState extends State<PreviewFile> {
             padding: const EdgeInsets.only(left: 6, top: 10), 
             child: SizedBox(
               width: double.infinity,
-              child: _uploadedByText()
+              child: _buildUploadedByText()
             ),
           ),
 
