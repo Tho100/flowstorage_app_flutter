@@ -346,13 +346,13 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildFileOnCondition() {
+  Widget _buildFilePreviewOnCondition() {
     
     const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
     const audioTables = {GlobalsTable.homeAudio, GlobalsTable.psAudio};
 
     if(textTables.contains(currentTable)) {
-      return PreviewText();
+      return const PreviewText();
 
     } else if (audioTables.contains(currentTable)) {
       bottomBarVisibleNotifier.value = false;
@@ -363,84 +363,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     }
 
-  }
-
-  Future<void> _updateTextChanges(String changesUpdate, BuildContext context) async {
-
-    try {
-
-      await UpdateTextData(
-        fileName: tempData.selectedFileName, 
-        tableName: currentTable,
-        userName: userData.username,
-        newValue: changesUpdate,
-        tappedIndex: widget.tappedIndex
-      ).update();
-
-      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
-
-    } catch (err) {
-      SnakeAlert.errorSnake("Failed to save changes.");
-
-    }
-  }
-
-  Widget _buildBottomButtons({
-    required Widget textStyle, 
-    required Color color, 
-    required double? width, 
-    required double? height,
-    required String buttonType, 
-    required BuildContext context
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0, top: 9.0, left: 5, right: 5),
-      child: SizedBox(
-        width: width, 
-        height: height, 
-        child: ElevatedButton(
-          onPressed: () async {
-            
-            if(buttonType == "download") {
-              
-              await functionModel.downloadFileData(
-                fileName: tempData.selectedFileName);
-
-            } else if (buttonType == "comment") {
-
-              NavigatePage.goToPageFileComment(
-                context, tempData.selectedFileName);
-
-            } else if (buttonType == "share") {
-              
-              NavigatePage.goToPageSharing(
-                context, tempData.selectedFileName);
-
-            } else if (buttonType == "save") {
-              
-              final textValue = PreviewText.textController.text;
-              final isTextType = Globals.textType.contains(
-                  tempData.selectedFileName.split('.').last);
-
-              if(textValue.isNotEmpty && isTextType) {
-                await _updateTextChanges(textValue, context);
-                return;
-
-              } 
-
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: color,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          child: textStyle,
-        ),
-      ),
-    );
   }
 
   Future<Size> _getImageResolution(Uint8List imageBytes) async {
@@ -717,6 +639,85 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
+  Future<void> _updateTextChanges(String changesUpdate, BuildContext context) async {
+
+    try {
+
+      await UpdateTextData(
+        fileName: tempData.selectedFileName, 
+        tableName: currentTable,
+        userName: userData.username,
+        newValue: changesUpdate,
+        tappedIndex: widget.tappedIndex
+      ).update();
+
+      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
+
+    } catch (err) {
+      SnakeAlert.errorSnake("Failed to save changes.");
+    }
+    
+  }
+
+  Widget _buildBottomButtons({
+    required Widget textStyle, 
+    required Color color, 
+    required double width, 
+    required double height,
+    required String buttonType, 
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0, top: 9.0, left: 5, right: 5),
+      child: SizedBox(
+        width: width, 
+        height: height, 
+        child: ElevatedButton(
+          onPressed: () async {
+            
+            if(buttonType == "download") {
+              await functionModel.downloadFileData(
+                fileName: tempData.selectedFileName);
+
+            } else if (buttonType == "comment") {
+              NavigatePage.goToPageFileComment(
+                context, tempData.selectedFileName);
+
+            } else if (buttonType == "share") {
+              NavigatePage.goToPageSharing(
+                context, tempData.selectedFileName);
+
+            } else if (buttonType == "save") {
+              _saveTextChangesOnPressed();
+
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: color,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: textStyle,
+        ),
+      ),
+    );
+  }
+  
+  void _saveTextChangesOnPressed() async {
+
+    final textValue = PreviewText.textController.text;
+    final isTextType = Globals.textType.contains(
+        tempData.selectedFileName.split('.').last);
+
+    if(textValue.isNotEmpty && isTextType) {
+      await _updateTextChanges(textValue, context);
+      return;
+
+    } 
+
+  }
+
   Widget _buildBottomBar() {
     return Container(
       height: 135,
@@ -776,7 +777,6 @@ class PreviewFileState extends State<PreviewFile> {
                 width: 60, 
                 height: 45,
                 buttonType: "comment", 
-                context: context
               ),
   
               const Spacer(),
@@ -789,7 +789,6 @@ class PreviewFileState extends State<PreviewFile> {
                   width: 60, 
                   height: 45,
                   buttonType: "save",
-                  context: context
                 ),
               ),
 
@@ -799,7 +798,6 @@ class PreviewFileState extends State<PreviewFile> {
                 width: 60, 
                 height: 45,
                 buttonType: "download",
-                context: context
               ),
   
               Visibility(
@@ -810,7 +808,6 @@ class PreviewFileState extends State<PreviewFile> {
                   width: 105,
                   height: 45,
                   buttonType: "share",
-                  context: context
                 ),
               ),
   
@@ -891,7 +888,7 @@ class PreviewFileState extends State<PreviewFile> {
           _buildTextHeaderTitle(),
 
           Expanded(
-            child: _buildFileOnCondition(),
+            child: _buildFilePreviewOnCondition(),
           ),
 
           ValueListenableBuilder<bool>(
