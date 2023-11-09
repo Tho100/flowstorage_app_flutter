@@ -8,7 +8,7 @@ class Globals {
   static final _tempData = GetIt.instance<TempDataProvider>();
 
   static const Set<String> imageType = {"png","jpeg","jpg"};
-  static const Set<String> textType = {"txt","csv","html","sql","md","py","xml"};
+  static const Set<String> textType = {"txt","csv","html","sql","md","py","xml","js","css"};
   static const Set<String> videoType = {"mp4","wmv","avi","mov","mkv"};
   static const Set<String> wordType = {"docx","doc"};
   static const Set<String> excelType = {"xls","xlsx"};
@@ -26,13 +26,13 @@ class Globals {
 
     'txt': GlobalsTable.homeText,
     'xml': GlobalsTable.homeText,
+    'js': GlobalsTable.homeText,
+    'css': GlobalsTable.homeText,
     'py': GlobalsTable.homeText,
     'sql': GlobalsTable.homeText,
     'md': GlobalsTable.homeText,
     'csv': GlobalsTable.homeText,
     'html': GlobalsTable.homeText,
-    'css': GlobalsTable.homeText,
-    'js': GlobalsTable.homeText,
 
     'pdf': GlobalsTable.homePdf,
 
@@ -59,20 +59,19 @@ class Globals {
   };
 
   static const Map<String, String> fileTypesToTableNamesPs = {
-
     'png': GlobalsTable.psImage,
     'jpg': GlobalsTable.psImage,
     'jpeg': GlobalsTable.psImage,
 
     'txt': GlobalsTable.psText,
     'sql': GlobalsTable.psText,
+    'js': GlobalsTable.psText,
+    'css': GlobalsTable.psText,
     'xml': GlobalsTable.psText,
     'py': GlobalsTable.psText,
     'md': GlobalsTable.psText,
     'csv': GlobalsTable.psText,
     'html': GlobalsTable.psText,
-    'css': GlobalsTable.psText,
-    'js': GlobalsTable.psText,
 
     'pdf': GlobalsTable.psPdf,
     'doc': GlobalsTable.psWord,
@@ -110,7 +109,7 @@ class Globals {
 
   static const Set<String> supportedFileTypes = {
     "png","jpeg","jpg",
-    "html","sql","md","txt","xml","py","pptx","ptx",
+    "html","sql","md","txt","xml","py","js","css","pptx","ptx",
     "pdf","doc","docx","mp4","wav","avi","wmv","mov","mp3",
     "exe","xlsx","xls","csv","apk", "msi"
   };
@@ -131,21 +130,29 @@ class Globals {
     "txt": "txt0.jpg",
     "csv": "txt0.jpg",
     "xml": "txt0.jpg",
+    "js": "txt0.jpg",
+    "css": "txt0.jpg",
     "py": "txt0.jpg",
     "html": "txt0.jpg",
     "sql": "txt0.jpg",
     "md": "txt0.jpg",
+
     "pdf": "pdf0.jpg",
+
     "doc": "doc0.jpg",
     "docx": "doc0.jpg",
+
     "xlsx": "exl0.jpg",
     "xls": "exl0.jpg",
+
     "pptx": "ptx0.jpg",
     "ptx": "ptx0.jpg",
+
+    "exe": "exe0.jpg",
     "apk": "apk0.jpg",
+
     "mp3": "music0.jpg",
     "wav": "music0.jpg",
-    "exe": "exe0.jpg",
   };
 
 }
