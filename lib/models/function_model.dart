@@ -271,6 +271,11 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
       final tableName = Globals.fileTypesToTableNames[fileType]!;
 
+      if(storageData.offlineFilesName.contains(fileName)) {
+        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
+        return;
+      }
+
       if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
         return;

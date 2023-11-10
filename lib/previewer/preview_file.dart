@@ -240,6 +240,22 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
+  void _makeAvailableOfflineOnPressed({
+    required String fileName
+  }) async {
+
+    try {
+
+      await functionModel.makeAvailableOffline(fileName: fileName);
+      
+      storageData.addOfflineFileName(fileName);
+
+    } catch (err, st) {
+      logger.e('Exception from _makeAvailableOfflineOnPressed {main}', err, st);
+    }
+
+  }
+
   void _onRenameItemPressed(String fileName) async {
 
     try {
@@ -342,8 +358,7 @@ class PreviewFileState extends State<PreviewFile> {
       }, 
       onAOPressed: () async {
         Navigator.pop(context);
-        await functionModel.makeAvailableOffline(fileName: fileName);
-
+        _makeAvailableOfflineOnPressed(fileName: fileName);
       }, 
       onOpenWithPressed: () {
         _openWithOnPressed();

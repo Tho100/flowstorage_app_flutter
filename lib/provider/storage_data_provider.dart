@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class StorageDataProvider extends ChangeNotifier {
 
+  Set<String> _offlineFilesName = <String>{};
+
   List<String> _statisticsFilesName = <String>[];
 
   List<String> _folderNamesList = <String>[];
@@ -22,6 +24,7 @@ class StorageDataProvider extends ChangeNotifier {
   List<Uint8List> _directoryImageBytesList = <Uint8List>[];
 
   List<String> get statisticsFilesName => _statisticsFilesName;
+  Set<String> get offlineFilesName => _offlineFilesName;
 
   List<String> get foldersNameList => _folderNamesList;
 
@@ -66,6 +69,16 @@ class StorageDataProvider extends ChangeNotifier {
 
   void setStatsFilesName(List<String> statisticsFilesName) {
     _statisticsFilesName = statisticsFilesName;
+    notifyListeners();
+  }
+
+  void setOfflineFilesName(Set<String> offlineFilesName) {
+    _offlineFilesName = offlineFilesName;
+    notifyListeners();
+  }
+
+  void addOfflineFileName(String name) {
+    _offlineFilesName.add(name);
     notifyListeners();
   }
 

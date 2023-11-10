@@ -141,8 +141,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   final searchBarVisibileNotifier = ValueNotifier<bool>(true);
 
-  late Set<String> offlineFilesName = {};
-
   late StreamSubscription intentDataStreamSubscription;
 
   bool togglePhotosPressed = false;
@@ -949,10 +947,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         await Future.delayed(const Duration(milliseconds: 855));
         _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
 
-        if(offlineFilesName.contains(fileName)) {
+        if(storageData.offlineFilesName.contains(fileName)) {
 
           setState(() {
-            offlineFilesName.remove(fileName);
+            storageData.offlineFilesName.remove(fileName);
           });
 
         }
@@ -1006,10 +1004,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             fileData: fileData
           );
 
-          setState(() {
-            offlineFilesName.add(checkedItemsName.elementAt(i));
-          });
-
+          storageData.addOfflineFileName(
+            checkedItemsName.elementAt(i));
+            
         } 
 
       }
@@ -1033,16 +1030,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      if(offlineFilesName.contains(fileName)) {
-        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
-        return;
-      }
-
       await functionModel.makeAvailableOffline(fileName: fileName);
 
-      setState(() {
-        offlineFilesName.add(fileName);
-      });
+      storageData.addOfflineFileName(fileName);
       
       _clearItemSelection();
 
@@ -1114,9 +1104,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       }
 
-      if(offlineFilesName.contains(fileName)) {
+      if(storageData.offlineFilesName.contains(fileName)) {
         setState(() {
-          offlineFilesName.remove(fileName);
+          storageData.offlineFilesName.remove(fileName);
         });
       } 
 
@@ -2168,7 +2158,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       itemOnLongPress: _callBottomTrailling,
       itemOnTap: _navigateToPreviewFile,
       childrens: (int index) {
-        final isOffline = offlineFilesName
+        final isOffline = storageData.offlineFilesName
                       .contains(fileNamesFilteredList[index]);
 
         return [
@@ -2263,15 +2253,16 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       final listOfflineFiles = offlineDir.listSync();
 
       if(listOfflineFiles.isNotEmpty) {
-        offlineFilesName = Set<String>.from(listOfflineFiles.map(
+        final offlineFiles = Set<String>.from(listOfflineFiles.map(
           (entity) => entity.path.split('/').last,
         ));
+        storageData.setOfflineFilesName(offlineFiles);
       } else {
-        offlineFilesName = {};
+        storageData.setOfflineFilesName({});
       }
       
     } catch (err) {
-      offlineFilesName = {};
+      storageData.setOfflineFilesName({});
     }
     
   }
