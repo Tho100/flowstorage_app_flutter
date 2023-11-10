@@ -7,13 +7,15 @@ class MaxPage extends StatefulWidget {
   const MaxPage({Key? key}) : super(key: key);
 
   @override
-  State<MaxPage> createState() => _MaxPageState();
+  State<MaxPage> createState() => MaxPageState();
 }
 
-class _MaxPageState extends State<MaxPage> {
+class MaxPageState extends State<MaxPage> {
 
   late final WebViewController controller;
   final paymentUrl = 'https://buy.stripe.com/test_14k16Y5qVfcH9m88wC';
+
+  static DateTime? startTime;
 
   @override 
   void initState() {
@@ -21,8 +23,13 @@ class _MaxPageState extends State<MaxPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(paymentUrl));
+    onPageLoaded();
   }
  
+  void onPageLoaded() {
+    startTime = DateTime.now();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

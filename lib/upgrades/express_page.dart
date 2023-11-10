@@ -6,13 +6,15 @@ class ExpressPage extends StatefulWidget {
   const ExpressPage({super.key});
 
   @override
-  State<ExpressPage> createState() => _Expresspage();
+  State<ExpressPage> createState() => ExpressPageState();
 }
 
-class _Expresspage extends State<ExpressPage> {
+class ExpressPageState extends State<ExpressPage> {
 
   late final WebViewController controller;
   final paymentUrl = "https://buy.stripe.com/test_eVaeXO9Hb6Gb2XK14b";
+
+  static DateTime? startTime;
 
   @override
   void initState() {
@@ -20,6 +22,11 @@ class _Expresspage extends State<ExpressPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(paymentUrl));
+    onPageLoaded();
+  }
+
+  void onPageLoaded() {
+    startTime = DateTime.now();
   }
 
   @override

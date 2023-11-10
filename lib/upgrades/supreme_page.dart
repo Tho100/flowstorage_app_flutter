@@ -6,13 +6,15 @@ class SupremePage extends StatefulWidget {
   const SupremePage({super.key});
 
   @override
-  State<SupremePage> createState() => _SupremePage();
+  State<SupremePage> createState() => SupremePageState();
 }
 
-class _SupremePage extends State<SupremePage> {
+class SupremePageState extends State<SupremePage> {
 
   late final WebViewController controller;
   final paymentUrl = "https://buy.stripe.com/test_4gw3f6dXr5C755SdQY";
+
+  static DateTime? startTime;
 
   @override
   void initState() {
@@ -20,6 +22,11 @@ class _SupremePage extends State<SupremePage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(paymentUrl));
+    onPageLoaded();
+  }
+
+  void onPageLoaded() {
+    startTime = DateTime.now();
   }
 
   @override

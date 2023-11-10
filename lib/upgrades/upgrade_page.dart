@@ -48,72 +48,6 @@ class UpgradePageState extends State<UpradePage> {
     super.initState();
   }
 
-  Future<String> _convertToLocalCurrency(double usdValue) async {
-
-    final countryCodeToCurrency = {
-      "US": "USD",
-      "DE": "EUR",
-      "GB": "GBP",
-      "ID": "IDR",
-      "MY": "MYR",
-      "BN": "BND",
-      "SG": "SGD",
-      "TH": "THB",
-      "PH": "PHP",
-      "VN": "VND",
-      "CN": "CNY",
-      "HK": "HKD",
-      "TW": "TWD",
-      "KO": "KRW",
-      "BR": "BRL",
-      "ME": "MXN",
-      "AU": "AUD",
-      "NZ": "NZD",
-      "IN": "INR",
-      "LK": "LKR",
-      "PA": "PKR",
-      "SA": "SAR",
-      "AR": "AED",
-      "IS": "ILS",
-      "EG": "EGP",
-      "TU": "TND",
-      "CH": "CHF",
-      "ES": "EUR",
-      "SW": "SEK"
-    };
-
-    String countryCode = 'US';
-    String countryCurrency = 'USD';
-    double conversionRate = 2.0;
-
-    if(tempData.countryCode.isEmpty && tempData.currencyConversionRate == 0.0) {
-
-      countryCode = await GeographicsApi().countryCode();
-      countryCurrency = countryCodeToCurrency[countryCode]!;
-
-      tempData.setCountryCode(countryCode);
-      tempData.setCountryCurrency(countryCurrency);
-
-      final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        conversionRate = data['data'][countryCurrency]; 
-        tempData.setCurrencyConversion(conversionRate);
-      } else {
-        throw Exception('Failed to load exchange rates');
-      }
-
-    } else {
-      countryCode = tempData.countryCode;
-      countryCurrency = tempData.countryCurrency;
-      conversionRate = tempData.currencyConversionRate;
-    }
-
-    return ("$countryCurrency${usdValue*conversionRate}").toString();
-    
-  }
-
   Widget _buildSubHeader(String text, {double? customFont}) {
     return Text(
       text,
@@ -300,12 +234,12 @@ class UpgradePageState extends State<UpradePage> {
                   alignment: Alignment.center,
                   child: _buildGetNowButton(() {
                     userChoosenPlan = "Max";
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => const MaxPage())).
-                      then((value) 
-                        async => await validatePayment()
-                    );
+                    Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const MaxPage()))
+                      .then((value) {
+                        _validatePaymentOnTime("Max");
+                    });
+
                   }),
                 ),
 
@@ -409,12 +343,11 @@ class UpgradePageState extends State<UpradePage> {
                   alignment: Alignment.center,
                   child: _buildGetNowButton(() {
                     userChoosenPlan = "Supreme";
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => const SupremePage())).
-                      then((value) 
-                        async => await validatePayment()
-                    );
+                    Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const SupremePage()))
+                      .then((value) {
+                        _validatePaymentOnTime("Supreme");
+                    });
                   }),
                 ),
 
@@ -517,12 +450,11 @@ class UpgradePageState extends State<UpradePage> {
                   alignment: Alignment.center,
                   child: _buildGetNowButton(() {
                     userChoosenPlan = "Express";
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => const ExpressPage())).
-                      then((value) 
-                        async => await validatePayment()
-                    );
+                    Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const ExpressPage()))
+                      .then((value) {
+                        _validatePaymentOnTime("Express");
+                    });
                   }),
                 ),
 
@@ -580,6 +512,97 @@ class UpgradePageState extends State<UpradePage> {
     );
   }
 
+  void _validatePaymentOnTime(String planType) async {
+
+    DateTime endTime = DateTime.now();
+    Duration? timeSpent;
+
+    switch(planType) {
+      case "Max":
+        timeSpent = endTime.difference(MaxPageState.startTime!);
+        break;
+
+      case "Express":
+        timeSpent = endTime.difference(ExpressPageState.startTime!);
+        break;
+
+      case "Supreme":
+        timeSpent = endTime.difference(SupremePageState.startTime!);
+        break;
+    }
+
+    if (timeSpent!.inSeconds > 6) {
+      await _validatePayment();
+    }
+
+  }
+
+  Future<String> _convertToLocalCurrency(double usdValue) async {
+
+    final countryCodeToCurrency = {
+      "US": "USD",
+      "DE": "EUR",
+      "GB": "GBP",
+      "ID": "IDR",
+      "MY": "MYR",
+      "BN": "BND",
+      "SG": "SGD",
+      "TH": "THB",
+      "PH": "PHP",
+      "VN": "VND",
+      "CN": "CNY",
+      "HK": "HKD",
+      "TW": "TWD",
+      "KO": "KRW",
+      "BR": "BRL",
+      "ME": "MXN",
+      "AU": "AUD",
+      "NZ": "NZD",
+      "IN": "INR",
+      "LK": "LKR",
+      "PA": "PKR",
+      "SA": "SAR",
+      "AR": "AED",
+      "IS": "ILS",
+      "EG": "EGP",
+      "TU": "TND",
+      "CH": "CHF",
+      "ES": "EUR",
+      "SW": "SEK"
+    };
+
+    String countryCode = 'US';
+    String countryCurrency = 'USD';
+    double conversionRate = 2.0;
+
+    if(tempData.countryCode.isEmpty && tempData.currencyConversionRate == 0.0) {
+
+      countryCode = await GeographicsApi().countryCode();
+      countryCurrency = countryCodeToCurrency[countryCode]!;
+
+      tempData.setCountryCode(countryCode);
+      tempData.setCountryCurrency(countryCurrency);
+
+      final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        conversionRate = data['data'][countryCurrency]; 
+        tempData.setCurrencyConversion(conversionRate);
+      } else {
+        throw Exception('Failed to load exchange rates');
+      }
+
+    } else {
+      countryCode = tempData.countryCode;
+      countryCurrency = tempData.countryCurrency;
+      conversionRate = tempData.currencyConversionRate;
+    }
+
+    return ("$countryCurrency${usdValue*conversionRate}").toString();
+    
+  }
+
   Future<void> updateUserAccountPlan(String customerId) async {
 
     final dateToStr = DateFormat('yyyy/MM/dd').format(DateTime.now());
@@ -627,7 +650,7 @@ class UpgradePageState extends State<UpradePage> {
     
   }
 
-  Future<void> validatePayment() async {
+  Future<void> _validatePayment() async {
 
     try {
 
