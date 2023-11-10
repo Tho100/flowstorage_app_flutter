@@ -148,14 +148,16 @@ class PreviewVideoState extends State<PreviewVideo> {
             child: IconButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                setState(() {
-                  isLandscapeMode = !isLandscapeMode;
-                  if (isLandscapeMode) {
-                    toLandscapeMode();
-                  } else {
-                    toPotraitMode();
-                  }
-                });
+                isLandscapeMode = !isLandscapeMode;
+                if (isLandscapeMode) {
+                  toLandscapeMode();
+                  PreviewFileState.bottomBarVisibleNotifier.value = false;
+                  videoIsTappedNotifier.value = false;
+                } else {
+                  toPotraitMode();
+                  PreviewFileState.bottomBarVisibleNotifier.value = true;
+                  videoIsTappedNotifier.value = true;
+                }
               },
               icon: const Icon(Icons.stay_current_landscape_rounded, color: ThemeColor.secondaryWhite, size: 22),
             ),
