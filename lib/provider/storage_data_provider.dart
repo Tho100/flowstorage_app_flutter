@@ -72,16 +72,6 @@ class StorageDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setOfflineFilesName(Set<String> offlineFilesName) {
-    _offlineFilesName = offlineFilesName;
-    notifyListeners();
-  }
-
-  void addOfflineFileName(String name) {
-    _offlineFilesName.add(name);
-    notifyListeners();
-  }
-
   void setFoldersName(List<String> folderName) {
     _folderNamesList = folderName;
     notifyListeners();
@@ -129,6 +119,16 @@ class StorageDataProvider extends ChangeNotifier {
 
   void setHomeThumbnailBytes(List<Uint8List> bytes) {
     _homeThumbnailBytesList = bytes;
+    notifyListeners();
+  }
+
+  void setOfflineFilesName(Set<String> offlineFilesName) {
+    _offlineFilesName = offlineFilesName;
+    notifyListeners();
+  }
+
+  void addOfflineFileName(String name) {
+    _offlineFilesName.add(name);
     notifyListeners();
   }
 

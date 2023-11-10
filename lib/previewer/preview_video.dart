@@ -10,7 +10,9 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:video_player/video_player.dart';
 
@@ -44,6 +46,8 @@ class PreviewVideoState extends State<PreviewVideo> {
   bool videoIsLoading = false;
   bool videoIsEnded = false;
   bool buttonPlayPausePressed = true;
+
+  bool isLandscapeMode = false;
 
   late int indexThumbnail; 
   late Uint8List videoThumbailByte; 
@@ -124,6 +128,43 @@ class PreviewVideoState extends State<PreviewVideo> {
     );
   }
 
+  Widget buildPotraitModeButton() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 12.0, top: 92.0),
+        child: SizedBox(
+          height: 38,
+          width: 38,
+          child: Container(
+            decoration: BoxDecoration(
+              color: ThemeColor.lightGrey.withOpacity(0.5),
+              border: Border.all(
+                color: Colors.transparent,
+                width: 2.0,
+              ),
+              borderRadius: BorderRadius.circular(65),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                setState(() {
+                  isLandscapeMode = !isLandscapeMode;
+                  if (isLandscapeMode) {
+                    toLandscapeMode();
+                  } else {
+                    toPotraitMode();
+                  }
+                });
+              },
+              icon: const Icon(Icons.stay_current_landscape_rounded, color: ThemeColor.secondaryWhite, size: 22),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildSkipForward() {
     return SizedBox(
       height: 45,
@@ -175,79 +216,82 @@ class PreviewVideoState extends State<PreviewVideo> {
   Widget buildButtons() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          buildSeekSlider(),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildDurationText(currentVideoDurationNotifier),
-                const SizedBox(width: 35),
-                buildSkipPrevious(),
-                const SizedBox(width: 18),
-                SizedBox(
-                  height: 63,
-                  width: 63,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ThemeColor.lightGrey.withOpacity(0.5),
-                      border: Border.all(
-                        color: Colors.transparent,
-                        width: 2.0,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 25.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            buildSeekSlider(),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildDurationText(currentVideoDurationNotifier),
+                  const SizedBox(width: 35),
+                  buildSkipPrevious(),
+                  const SizedBox(width: 18),
+                  SizedBox(
+                    height: 63,
+                    width: 63,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ThemeColor.lightGrey.withOpacity(0.5),
+                        border: Border.all(
+                          color: Colors.transparent,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(65),
                       ),
-                      borderRadius: BorderRadius.circular(65),
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        
-                        buttonPlayPausePressed = !buttonPlayPausePressed;
-
-                        if(videoIsEnded == true) {
-                          iconPausePlayNotifier.value = Icons.pause;
-                          videoPlayerController.play();
-                          videoIsEnded = false;
-                        } else {
-                          iconPausePlayNotifier.value = buttonPlayPausePressed 
-                          ? Icons.play_arrow
-                          : Icons.pause;
-                        }
-                        
-                        if (buttonPlayPausePressed) {
-                          videoPlayerController.pause();
-                        } else {                
-                          iconPausePlayNotifier.value = Icons.pause;
-                          videoPlayerController.play();
-                        }
-
-                        Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
-                    
-                      },
-                      icon: ValueListenableBuilder(
-                        valueListenable: iconPausePlayNotifier,
-                        builder: (context, value, child) {
-                          return Icon(
-                            value,
-                            size: 40,
-                            color: ThemeColor.secondaryWhite,
-                          );
-                        }
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          
+                          buttonPlayPausePressed = !buttonPlayPausePressed;
+      
+                          if(videoIsEnded == true) {
+                            iconPausePlayNotifier.value = Icons.pause;
+                            videoPlayerController.play();
+                            videoIsEnded = false;
+                          } else {
+                            iconPausePlayNotifier.value = buttonPlayPausePressed 
+                            ? Icons.play_arrow
+                            : Icons.pause;
+                          }
+                          
+                          if (buttonPlayPausePressed) {
+                            videoPlayerController.pause();
+                          } else {                
+                            iconPausePlayNotifier.value = Icons.pause;
+                            videoPlayerController.play();
+                          }
+      
+                          Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
+                      
+                        },
+                        icon: ValueListenableBuilder(
+                          valueListenable: iconPausePlayNotifier,
+                          builder: (context, value, child) {
+                            return Icon(
+                              value,
+                              size: 40,
+                              color: ThemeColor.secondaryWhite,
+                            );
+                          }
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 18),
-                buildSkipForward(),
-                const SizedBox(width: 35),
-                buildDurationText(videoDurationNotifier),
-              ],
+                  const SizedBox(width: 18),
+                  buildSkipForward(),
+                  const SizedBox(width: 35),
+                  buildDurationText(videoDurationNotifier),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -304,20 +348,23 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 25.0),
-            child: ValueListenableBuilder(
-              valueListenable: videoIsTappedNotifier,
-              builder: (context, value, child) {
-                return Visibility(
-                  visible: value && videoBytes.isNotEmpty,
-                  child: buildButtons(),
-                );
-              },
-            ),
-          ),
+        ValueListenableBuilder(
+          valueListenable: videoIsTappedNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: value,
+              child: buildPotraitModeButton()
+            );
+          },
+        ),
+        ValueListenableBuilder(
+          valueListenable: videoIsTappedNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: value && videoBytes.isNotEmpty,
+              child: buildButtons(),
+            );
+          },
         ),
       ],
     );
@@ -403,6 +450,20 @@ class PreviewVideoState extends State<PreviewVideo> {
     videoPlayerController = VideoPlayerController.networkUrl(Uri());
   }
 
+  void toPotraitMode() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  void toLandscapeMode() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -412,6 +473,7 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   @override
   void dispose() {
+    toPotraitMode();
     videoPlayerController.removeListener(videoPlayerListener);
     videoPlayerController.dispose();
     videoDurationNotifier.dispose();
