@@ -16,6 +16,7 @@ import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -98,6 +99,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   late final StorageDataProvider storageData;
   late final PsStorageDataProvider psStorageData;
   late final PsUploadDataProvider psUploadData;
+  late final TempStorageProvider tempStorageData;
   late final TempDataProvider tempData;
 
   final fileNameGetterHome = NameGetter();
@@ -390,7 +392,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         final newFolderName = RenameFolderDialog.folderRenameController.text;
 
-        if (storageData.foldersNameList.contains(newFolderName)) {
+        if (tempStorageData.folderNameList.contains(newFolderName)) {
           CallToast.call(message: "Folder with this name already exists.");
           RenameFolderDialog.folderRenameController.clear();
           return;
@@ -947,10 +949,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         await Future.delayed(const Duration(milliseconds: 855));
         _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
 
-        if(storageData.offlineFilesName.contains(fileName)) {
-
+        if(tempStorageData.offlineFileNameList.contains(fileName)) {
           setState(() {
-            storageData.offlineFilesName.remove(fileName);
+            tempStorageData.offlineFileNameList.remove(fileName);
           });
 
         }
@@ -1004,7 +1005,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             fileData: fileData
           );
 
-          storageData.addOfflineFileName(
+          tempStorageData.addOfflineFileName(
             checkedItemsName.elementAt(i));
             
         } 
@@ -1032,7 +1033,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       await functionModel.makeAvailableOffline(fileName: fileName);
 
-      storageData.addOfflineFileName(fileName);
+      tempStorageData.addOfflineFileName(fileName);
       
       _clearItemSelection();
 
@@ -1104,9 +1105,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       }
 
-      if(storageData.offlineFilesName.contains(fileName)) {
+      if(tempStorageData.offlineFileNameList.contains(fileName)) {
         setState(() {
-          storageData.offlineFilesName.remove(fileName);
+          tempStorageData.offlineFileNameList.remove(fileName);
         });
       } 
 
@@ -1174,10 +1175,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         
         final loadingDialog = MultipleTextLoading();
 
-        tempData.setCurrentFolder(storageData.foldersNameList[index]);
+        tempData.setCurrentFolder(tempStorageData.folderNameList[index]);
 
         loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.folderName} files.",context: context);
-        await _callFolderData(storageData.foldersNameList[index]);
+        await _callFolderData(tempStorageData.folderNameList[index]);
 
         loadingDialog.stopLoading();
  
@@ -1186,7 +1187,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       },
       trailingOnPressed: (int index) {
-        _callBottomTrailingFolder(storageData.foldersNameList[index]);
+        _callBottomTrailingFolder(tempStorageData.folderNameList[index]);
       }, 
       context: context
     );
@@ -1327,7 +1328,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
       folderOnPressed: () async {
         
-        if(storageData.foldersNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
+        if(tempStorageData.folderNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
 
           if(!mounted) return;
           Navigator.pop(context);
@@ -2158,7 +2159,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       itemOnLongPress: _callBottomTrailling,
       itemOnTap: _navigateToPreviewFile,
       childrens: (int index) {
-        final isOffline = storageData.offlineFilesName
+        final isOffline = tempStorageData.offlineFileNameList
                       .contains(fileNamesFilteredList[index]);
 
         return [
@@ -2238,8 +2239,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _initializeProvider() {
     userData = _locator<UserDataProvider>();
     storageData = _locator<StorageDataProvider>();
-    psUploadData = _locator<PsUploadDataProvider>();
     tempData = _locator<TempDataProvider>();
+    tempStorageData = _locator<TempStorageProvider>();
+    psUploadData = _locator<PsUploadDataProvider>();
     psStorageData = _locator<PsStorageDataProvider>();
   }
 
@@ -2256,13 +2258,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final offlineFiles = Set<String>.from(listOfflineFiles.map(
           (entity) => entity.path.split('/').last,
         ));
-        storageData.setOfflineFilesName(offlineFiles);
+        tempStorageData.setOfflineFilesName(offlineFiles);
       } else {
-        storageData.setOfflineFilesName({});
+        tempStorageData.setOfflineFilesName({});
       }
       
     } catch (err) {
-      storageData.setOfflineFilesName({});
+      tempStorageData.setOfflineFilesName({});
     }
     
   }

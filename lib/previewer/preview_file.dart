@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -73,7 +74,10 @@ class PreviewFileState extends State<PreviewFile> {
   final logger = Logger();
 
   final tempData = GetIt.instance<TempDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
+
   final userData = GetIt.instance<UserDataProvider>();
+  
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
@@ -246,7 +250,7 @@ class PreviewFileState extends State<PreviewFile> {
 
       await functionModel.makeAvailableOffline(fileName: fileName);
 
-      storageData.addOfflineFileName(fileName);
+      tempStorageData.addOfflineFileName(fileName);
 
     } catch (err, st) {
       logger.e('Exception from _makeAvailableOfflineOnPressed {preview_file}', err, st);

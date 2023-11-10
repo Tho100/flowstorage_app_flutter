@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 
 class FolderDialog {
 
-  final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
 
   Future buildFoldersBottomSheet({
     required Function(int) folderOnPressed,
@@ -47,11 +47,11 @@ class FolderDialog {
 
               const Divider(color: ThemeColor.lightGrey),
 
-              storageData.foldersNameList.isNotEmpty 
+              tempStorageData.folderNameList.isNotEmpty 
               ? Expanded(  
                 child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: storageData.foldersNameList.length,
+                  itemCount: tempStorageData.folderNameList.length,
                   separatorBuilder: (BuildContext context, int index) => const Divider(
                     color: ThemeColor.whiteGrey,
                     height: 1,
@@ -67,7 +67,7 @@ class FolderDialog {
                             height: 35,
                           ),
                           title: Text(  
-                            storageData.foldersNameList[index],
+                            tempStorageData.folderNameList[index],
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,

@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
@@ -48,7 +49,9 @@ class StatsPageState extends State<StatisticsPage> {
   
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
+  
   final tempData = GetIt.instance<TempDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
 
   @override 
   void initState() {
@@ -59,7 +62,7 @@ class StatsPageState extends State<StatisticsPage> {
   @override
   void dispose() {
     dataIsLoading.dispose();
-    storageData.statisticsFilesName.clear();
+    tempStorageData.statsFileNameList.clear();
     super.dispose();
   }
 
@@ -106,7 +109,7 @@ class StatsPageState extends State<StatisticsPage> {
 
       final countDirectories = await _countUploadFoldAndDir(GlobalsTable.directoryInfoTable, "DIR_NAME");
 
-      folderCount = storageData.foldersNameList.length;
+      folderCount = tempStorageData.folderNameList.length;
       directoryCount = countDirectories;
       offlineCount = await _countUploadOffline();
 
@@ -136,7 +139,7 @@ class StatsPageState extends State<StatisticsPage> {
   Future<int> _countUpload(String tableName) async {
 
     final dataOrigin = tempData.origin != OriginFile.home
-    ? storageData.statisticsFilesName
+    ? tempStorageData.statsFileNameList
     : storageData.fileNamesFilteredList;
 
     final fileTypeList = <String>[];
@@ -165,7 +168,7 @@ class StatsPageState extends State<StatisticsPage> {
       .where((dir) => !dir.contains('.')).length;
 
     int countFolderOrDirectory = tableName == GlobalsTable.folderUploadTable 
-    ? storageData.foldersNameList.length
+    ? tempStorageData.folderNameList.length
     : countDirectory;
 
     return countFolderOrDirectory;

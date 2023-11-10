@@ -1,14 +1,7 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
 class StorageDataProvider extends ChangeNotifier {
-
-  Set<String> _offlineFilesName = <String>{};
-
-  List<String> _statisticsFilesName = <String>[];
-
-  List<String> _folderNamesList = <String>[];
 
   List<String> _fileNamesList = <String>[];
   List<String> _fileNamesFilteredList = <String>[];
@@ -22,11 +15,6 @@ class StorageDataProvider extends ChangeNotifier {
   List<Uint8List?> _imageBytesList = <Uint8List?>[];
   List<Uint8List?> _imageBytesFilteredList = <Uint8List?>[];
   List<Uint8List> _directoryImageBytesList = <Uint8List>[];
-
-  List<String> get statisticsFilesName => _statisticsFilesName;
-  Set<String> get offlineFilesName => _offlineFilesName;
-
-  List<String> get foldersNameList => _folderNamesList;
 
   List<String> get fileNamesList => _fileNamesList;
   List<String> get fileNamesFilteredList => _fileNamesFilteredList;
@@ -64,16 +52,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   void updateImageBytes(List<Uint8List?> bytes) {
     _imageBytesList.addAll(bytes);
-    notifyListeners();
-  }
-
-  void setStatsFilesName(List<String> statisticsFilesName) {
-    _statisticsFilesName = statisticsFilesName;
-    notifyListeners();
-  }
-
-  void setFoldersName(List<String> folderName) {
-    _folderNamesList = folderName;
     notifyListeners();
   }
 
@@ -119,16 +97,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   void setHomeThumbnailBytes(List<Uint8List> bytes) {
     _homeThumbnailBytesList = bytes;
-    notifyListeners();
-  }
-
-  void setOfflineFilesName(Set<String> offlineFilesName) {
-    _offlineFilesName = offlineFilesName;
-    notifyListeners();
-  }
-
-  void addOfflineFileName(String name) {
-    _offlineFilesName.add(name);
     notifyListeners();
   }
 

@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
@@ -41,9 +42,11 @@ class PasscodePageState extends State<PasscodePage> {
 
   final accountInformationRetriever = UserDataRetriever();
 
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
-  final tempData = GetIt.instance<TempDataProvider>();
 
   final crud = Crud();
 
@@ -94,10 +97,11 @@ class PasscodePageState extends State<PasscodePage> {
       final uniqueFolders = retrieveFolders.toList();
 
       storageData.setFilesName(uniqueFileNames);
-      storageData.setFoldersName(uniqueFolders);
       storageData.setImageBytes(uniqueBytes);
       storageData.setFilesDate(dates);
 
+      tempStorageData.setFoldersName(uniqueFolders);
+      
       tempData.setOrigin(OriginFile.home);
 
     } catch (err) {

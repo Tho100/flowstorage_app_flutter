@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/authentication/sign_up_page.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -21,9 +22,10 @@ void initializeLocators() {
   locator.registerLazySingleton<UserDataProvider>(() => UserDataProvider());
   locator.registerLazySingleton<StorageDataProvider>(() => StorageDataProvider());
   locator.registerLazySingleton<PsUploadDataProvider>(() => PsUploadDataProvider());
-  locator.registerLazySingleton<TempDataProvider>(() => TempDataProvider());
   locator.registerLazySingleton<PsStorageDataProvider>(() => PsStorageDataProvider());
+  locator.registerLazySingleton<TempDataProvider>(() => TempDataProvider());
   locator.registerLazySingleton<TempPaymentProvider>(() => TempPaymentProvider());
+  locator.registerLazySingleton<TempStorageProvider>(() => TempStorageProvider());
 }
 
 void main() {
@@ -35,9 +37,10 @@ void main() {
         ChangeNotifierProvider(create: (context) => GetIt.instance<UserDataProvider>()),
         ChangeNotifierProvider(create: (context) => GetIt.instance<StorageDataProvider>()),
         ChangeNotifierProvider(create: (context) => GetIt.instance<PsUploadDataProvider>()),
-        ChangeNotifierProvider(create: (context) => GetIt.instance<TempDataProvider>()),
         ChangeNotifierProvider(create: (context) => GetIt.instance<PsStorageDataProvider>()),
-        ChangeNotifierProvider(create: (context) => GetIt.instance<TempPaymentProvider>())
+        ChangeNotifierProvider(create: (context) => GetIt.instance<TempDataProvider>()),
+        ChangeNotifierProvider(create: (context) => GetIt.instance<TempPaymentProvider>()),
+        ChangeNotifierProvider(create: (context) => GetIt.instance<TempStorageProvider>())
       ],
       child: const MainRun(),
     ),

@@ -132,7 +132,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     return Align(
       alignment: Alignment.topRight,
       child: Padding(
-        padding: const EdgeInsets.only(right: 12.0, top: 92.0),
+        padding: const EdgeInsets.only(right: 12.0, top: 98.0),
         child: SizedBox(
           height: 38,
           width: 38,

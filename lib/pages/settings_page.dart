@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
@@ -48,10 +49,12 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   final dataCaller = DataCaller();
 
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
-
+  
   @override
   void initState() {
     super.initState();
@@ -69,11 +72,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   void _clearUserRecords() {
     storageData.fileNamesList.clear();
-    storageData.foldersNameList.clear();
     storageData.fileNamesFilteredList.clear();
     storageData.fileDateList.clear();
     storageData.imageBytesList.clear();
     storageData.imageBytesFilteredList.clear();
+    tempStorageData.folderNameList.clear();
   }
 
   void _clearAppCache() async {

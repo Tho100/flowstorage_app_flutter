@@ -13,14 +13,18 @@ import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:get_it/get_it.dart';
 
 class UpdateListView {
 
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+
   final userData = GetIt.instance<UserDataProvider>();
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
@@ -115,7 +119,7 @@ class UpdateListView {
       videoThumbnail: videoThumbnails,
     ).create();
 
-    storageData.foldersNameList.add(folderName);
+    tempStorageData.folderNameList.add(folderName);
     
   }
 

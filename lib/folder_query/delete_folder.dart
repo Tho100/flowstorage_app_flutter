@@ -1,6 +1,6 @@
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 
@@ -11,7 +11,7 @@ class DeleteFolder {
   DeleteFolder({required this.folderName});
 
   final userData = GetIt.instance<UserDataProvider>();
-  final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   
   final crud = Crud();
 
@@ -28,7 +28,7 @@ class DeleteFolder {
       params: params
     );
 
-    storageData.foldersNameList.remove(folderName);
+    tempStorageData.folderNameList.remove(folderName);
 
   }
 }

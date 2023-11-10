@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
@@ -26,6 +27,7 @@ class SignInUser {
 
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
   final encryption = EncryptionClass();
@@ -77,9 +79,10 @@ class SignInUser {
     final uniqueFolder = retrieveFolders.toList();
 
     storageData.setFilesName(uniqueFileNames);
-    storageData.setFoldersName(uniqueFolder);
     storageData.setImageBytes(uniqueBytes);
     storageData.setFilesDate(dates);
+    
+    tempStorageData.setFoldersName(uniqueFolder);
 
     if (isChecked) {
       await _setupAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);

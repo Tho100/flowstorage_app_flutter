@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/directory_query/directory_data.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/folder_query/folder_data_retriever.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -30,6 +31,7 @@ import 'package:flowstorage_fsc/models/offline_mode.dart';
 class DataCaller {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
@@ -157,7 +159,7 @@ class DataCaller {
     final uniqueBytes = bytes.toList();
 
     if(isFromStatistics!) {
-      storageData.setStatsFilesName(uniqueFileNames);
+      tempStorageData.setStatsFilesName(uniqueFileNames);
       return;
     }
 

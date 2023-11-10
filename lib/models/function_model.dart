@@ -21,6 +21,7 @@ import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
@@ -33,9 +34,12 @@ import 'package:logger/logger.dart';
 
 class FunctionModel {
 
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
-  final tempData = GetIt.instance<TempDataProvider>();
+
   final userData = GetIt.instance<UserDataProvider>();
 
   final logger = Logger();
@@ -52,9 +56,9 @@ class FunctionModel {
         oldFolderTitle: oldFolderName, 
         newFolderTitle: newFolderName).rename();
 
-      final indexOldFolder = storageData.foldersNameList.indexWhere((name) => name == oldFolderName);
+      final indexOldFolder = tempStorageData.folderNameList.indexWhere((name) => name == oldFolderName);
       if(indexOldFolder != -1) {
-        storageData.foldersNameList[indexOldFolder] = newFolderName;
+        tempStorageData.folderNameList[indexOldFolder] = newFolderName;
       }
 
       await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "$oldFolderName renamed to $newFolderName");
@@ -271,7 +275,7 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
       final tableName = Globals.fileTypesToTableNames[fileType]!;
 
-      if(storageData.offlineFilesName.contains(fileName)) {
+      if(tempStorageData.offlineFileNameList.contains(fileName)) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
         return;
       }

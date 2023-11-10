@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
 import 'package:flowstorage_fsc/models/quick_actions_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -41,10 +42,12 @@ class SplashScreenState extends State<SplashScreen> {
   final encryption = EncryptionClass();
   final accountInformationRetriever = UserDataRetriever();
   final quickActionsModel = QuickActionsModel();
-
+  
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+  
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
-  final tempData = GetIt.instance<TempDataProvider>();
 
   final crud = Crud();
   
@@ -249,10 +252,11 @@ class SplashScreenState extends State<SplashScreen> {
       final uniqueFolders = retrieveFolders.toList();
 
       storageData.setFilesName(uniqueFileNames);
-      storageData.setFoldersName(uniqueFolders);
       storageData.setImageBytes(uniqueBytes);
       storageData.setFilesDate(dates);
 
+      tempStorageData.setFoldersName(uniqueFolders);
+      
     } catch (err) {
       NavigatePage.replacePageMain(context);
       return;
