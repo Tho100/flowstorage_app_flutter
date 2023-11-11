@@ -152,7 +152,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                 if (isLandscapeMode) {
                   toLandscapeMode();
                   PreviewFileState.bottomBarVisibleNotifier.value = false;
-                  videoIsTappedNotifier.value = false;
+                  //videoIsTappedNotifier.value = false;
                 } else {
                   toPotraitMode();
                   PreviewFileState.bottomBarVisibleNotifier.value = true;
@@ -333,8 +333,10 @@ class PreviewVideoState extends State<PreviewVideo> {
         GestureDetector(
           onTap: () {
             videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
+            if(isLandscapeMode == false) {
             PreviewFileState.bottomBarVisibleNotifier.value =
                 !PreviewFileState.bottomBarVisibleNotifier.value;
+            }
           },
           child: Center(
             child: Padding(
