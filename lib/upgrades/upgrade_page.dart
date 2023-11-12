@@ -531,7 +531,7 @@ class UpgradePageState extends State<UpradePage> {
         break;
     }
 
-    if (timeSpent!.inSeconds > 6) {
+    if (timeSpent!.inSeconds > 8) {
       await _validatePayment();
     }
 

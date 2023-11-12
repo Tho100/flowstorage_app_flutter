@@ -152,7 +152,6 @@ class PreviewVideoState extends State<PreviewVideo> {
                 if (isLandscapeMode) {
                   toLandscapeMode();
                   PreviewFileState.bottomBarVisibleNotifier.value = false;
-                  //videoIsTappedNotifier.value = false;
                 } else {
                   toPotraitMode();
                   PreviewFileState.bottomBarVisibleNotifier.value = true;
@@ -440,7 +439,9 @@ class PreviewVideoState extends State<PreviewVideo> {
       iconPausePlayNotifier.value = Icons.replay;
       videoIsEnded = true;
       videoIsTappedNotifier.value = true;
-      PreviewFileState.bottomBarVisibleNotifier.value = true;
+      if(isLandscapeMode == false) {
+        PreviewFileState.bottomBarVisibleNotifier.value = true;
+      }
     }
   }
 
