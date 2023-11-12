@@ -925,6 +925,12 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   PreferredSize _buildCustomAppBar() {
+
+    const hideableAppBarFile = {
+      GlobalsTable.homeImage, GlobalsTable.psImage, 
+      GlobalsTable.homeVideo, GlobalsTable.psVideo
+    };
+
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
       child: GestureDetector(
@@ -933,7 +939,7 @@ class PreviewFileState extends State<PreviewFile> {
           valueListenable: bottomBarVisibleNotifier,
           builder: (context, value, child) {
             return Visibility(
-              visible: currentTable == GlobalsTable.homeImage || currentTable == GlobalsTable.psImage ? bottomBarVisibleNotifier.value : true,
+              visible: hideableAppBarFile.contains(currentTable) ? bottomBarVisibleNotifier.value : true,
               child: AppBar(
                 backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
                 actions: <Widget>[ 
