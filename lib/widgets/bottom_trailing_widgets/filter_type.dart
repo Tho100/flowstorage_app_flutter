@@ -51,17 +51,7 @@ class BottomTrailingFilter {
 
               const SizedBox(height: 12),
 
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 60,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: ThemeColor.thirdWhite,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
+              const BottomsheetBar(),
 
               const Align(
                 alignment: Alignment.center,
