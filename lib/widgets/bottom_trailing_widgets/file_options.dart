@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/report_options.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -171,6 +172,26 @@ class BottomTrailingOptions {
         Visibility(
           visible: fileName.split('.').last != fileName,
           child: const Divider(color: ThemeColor.lightGrey)
+        ),
+
+        if(tempData.origin == OriginFile.public)
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            BottomTrailingReport().buildReportType(
+              context: context
+            );
+          },
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.flag_outlined),
+              SizedBox(width: 15.0),
+              Text('Report',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
+          ),
         ),
 
         ElevatedButton(

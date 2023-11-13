@@ -92,8 +92,6 @@ class ProcessFileSharing {
     final shareToComment = commentInput!.isEmpty ? '' : EncryptionClass().encrypt(commentInput);
     final encryptedFileName = EncryptionClass().encrypt(fileName);
 
-    final userData = GetIt.instance<UserDataProvider>();
-
     if (username == userData.username) {
       CustomAlertDialog.alertDialogTitle('Sharing Failed',"You can't share to yourself.");
       return;
