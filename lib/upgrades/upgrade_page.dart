@@ -76,8 +76,27 @@ class UpgradePageState extends State<UpradePage> {
     );
   }
 
-  Widget _buildGetNowButton(VoidCallback getNowOnPressed) {
-    return SizedBox(
+  Widget _buildCurrentPlanText() {
+    return Text(
+      "YOUR CURRENT PLAN",
+      style: GoogleFonts.poppins(
+        textStyle: const TextStyle(
+          color: Color.fromARGB(255, 18, 18, 18),
+          fontWeight: FontWeight.w600,
+          fontSize: 18
+        ),
+      ),
+      textAlign: TextAlign.left,
+    );
+  }
+
+  Widget _buildGetNowButton(String plan, VoidCallback getNowOnPressed) {
+
+    final isCurrentPlan = plan == userData.accountType;
+
+    return isCurrentPlan 
+    ? _buildCurrentPlanText()
+    : SizedBox(
       width: MediaQuery.of(context).size.width-55,
       height: 65,
       child: ElevatedButton(
@@ -232,7 +251,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton(() {
+                  child: _buildGetNowButton("Max", () {
                     userChoosenPlan = "Max";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const MaxPage()))
@@ -247,7 +266,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
+                  child: _buildSubHeader(userData.accountType == "Max" ? "" : "Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -341,7 +360,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton(() {
+                  child: _buildGetNowButton("Supreme", () {
                     userChoosenPlan = "Supreme";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const SupremePage()))
@@ -355,7 +374,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
+                  child: _buildSubHeader(userData.accountType == "Supreme" ? "" : "Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -448,7 +467,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton(() {
+                  child: _buildGetNowButton("Express", () {
                     userChoosenPlan = "Express";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const ExpressPage()))
@@ -462,7 +481,7 @@ class UpgradePageState extends State<UpradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildSubHeader("Cancel anytime without extra charges", customFont: 13)
+                  child: _buildSubHeader(userData.accountType == "Express" ? "" : "Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),

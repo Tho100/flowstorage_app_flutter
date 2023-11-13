@@ -320,7 +320,7 @@ class MyPlanPageState extends State<MyPlanPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildSubHeader("CHARGED"),
-                        _buildPrice(2)
+                        _buildPrice(3)
                       ],
                     ),
                   ],
