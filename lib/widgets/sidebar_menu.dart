@@ -174,20 +174,21 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
               ),
   
-              if(tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) ... [ 
+              if(tempData.origin != OriginFile.offline && tempData.origin != OriginFile.sharedOther) ... [ 
                 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
                     child: Row(
                       children: [
-                        Icon(Icons.cloud_outlined, color: Color.fromARGB(255, 215, 215, 215), size: 19),
-                        SizedBox(width: 8),
+                        const Icon(Icons.cloud_outlined, color: Color.fromARGB(255, 215, 215, 215), size: 19),
+                        const SizedBox(width: 8),
                         Text(
-                          "Storage",
-                          style: TextStyle(
+                          tempData.origin == OriginFile.public 
+                          ? "Storage (Public)" : "Storage",
+                          style: const TextStyle(
                             color: Color.fromARGB(255, 216, 216, 216),
                             fontWeight: FontWeight.w500,
                           ),

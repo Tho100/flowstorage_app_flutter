@@ -730,7 +730,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     try {
 
       final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
-      final percentage = ((storageData.fileNamesList.length/maxValue) * 100).toInt();
+      final uploadCount = tempData.origin == OriginFile.public 
+        ? psStorageData.psUploaderList.where((uploader) => uploader == userData.username).length
+        : storageData.fileNamesList.length;
+
+      final percentage = ((uploadCount/maxValue) * 100).toInt();
 
       return percentage;
 
