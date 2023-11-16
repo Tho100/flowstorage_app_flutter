@@ -51,6 +51,13 @@ class SubmitReportPage extends StatelessWidget {
       "pv": "Whose privacy is being violated?",
     };
 
+    const reportTypeToDescription = {
+      "cv": "Content that violates a copyright you own or control.",
+      "tv": "Content that violates a trademark you own or control.",
+      "pv": "Content related to someone's personal space or revealing \nprivate information without permission.",
+      "sp": "Repeated content or unwanted actions."
+    };
+
     final fileType = fileName.split('.').last;
 
     return Column(
@@ -62,10 +69,24 @@ class SubmitReportPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 12.0),
           child: Align(
             alignment: Alignment.topLeft,
-            child: Text("${reportTypeToFull[reportType]}",
+            child: Text(reportTypeToFull[reportType]!,
               style: const TextStyle(
                 color: ThemeColor.secondaryWhite,
                 fontSize: 24,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 13.0, top: 6),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(reportTypeToDescription[reportType]!,
+              style: const TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontSize: 16,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -271,7 +292,7 @@ class SubmitReportPage extends StatelessWidget {
 
         ],
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 5),
 
         const Divider(color: ThemeColor.lightGrey)
 
