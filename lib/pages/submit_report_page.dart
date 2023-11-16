@@ -25,8 +25,6 @@ class SubmitReportPage extends StatelessWidget {
     Key? key
   }) : super(key: key);
 
-  final descriptionController = TextEditingController();
-
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -149,21 +147,6 @@ class SubmitReportPage extends StatelessWidget {
             ),
             
           ],
-        ),
-        const SizedBox(height: 5),
-
-        const Divider(color: ThemeColor.lightGrey, height: 2),
-         
-        Padding(
-          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 15),
-            child:TextFormField(
-              style: const TextStyle(color: ThemeColor.secondaryWhite),
-              enabled: true,
-              controller: descriptionController,
-              maxLines: 12,
-              maxLength: 100,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a description (Optional)"),
-          ),
         ),
         
         if(violationReport.contains(reportType)) ... [
