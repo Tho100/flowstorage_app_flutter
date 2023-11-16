@@ -8,12 +8,19 @@ import 'package:get_it/get_it.dart';
 
 class BottomTrailingReport {
 
+  final BuildContext context;
+  final String fileName;
+
+  BottomTrailingReport({
+    required this.context, 
+    required this.fileName
+  });
+
   final tempData = GetIt.instance<TempDataProvider>();
 
   Widget _buildReportTypeButtons(
     String reportName, 
     String reportType,
-    BuildContext context 
   ) {
     return ElevatedButton(
       onPressed: () { 
@@ -21,7 +28,7 @@ class BottomTrailingReport {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) 
-          => SubmitReportPage(reportType: reportType))
+          => SubmitReportPage(fileName: fileName, reportType: reportType))
         );
       },
       style: ElevatedButton.styleFrom(
@@ -36,9 +43,7 @@ class BottomTrailingReport {
     );
   }
 
-  Future buildReportType({
-    required BuildContext context
-  }) {
+  Future buildReportType() {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -83,7 +88,7 @@ class BottomTrailingReport {
               
                         const SizedBox(height: 5),
               
-                        _buildReportTypeButtons("Copyright violation", "cv", context),
+                        _buildReportTypeButtons("Copyright violation", "cv"),
               
                         const SizedBox(height: 3),
 
@@ -91,15 +96,15 @@ class BottomTrailingReport {
       
                           children: [
 
-                          _buildReportTypeButtons("Trademark violation", "tv", context),
+                          _buildReportTypeButtons("Trademark violation", "tv"),
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Prviacy violation", "pv", context),
+                          _buildReportTypeButtons("Prviacy violation", "pv"),
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Spam", "sp", context),
+                          _buildReportTypeButtons("Spam", "sp"),
               
                         ],
                       ),

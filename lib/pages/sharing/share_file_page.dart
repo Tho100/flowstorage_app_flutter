@@ -117,7 +117,7 @@ class ShareFilePage extends StatelessWidget {
          
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
-            child:TextFormField(
+            child: TextFormField(
               style: const TextStyle(color: ThemeColor.secondaryWhite),
               enabled: true,
               controller: commentController,

@@ -178,9 +178,8 @@ class BottomTrailingOptions {
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
-            BottomTrailingReport().buildReportType(
-              context: context
-            );
+            BottomTrailingReport(
+              fileName: fileName, context: context).buildReportType();
           },
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(

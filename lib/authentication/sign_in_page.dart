@@ -194,17 +194,17 @@ class CakeSignInPageState extends State<CakeSignInPage> {
           const SizedBox(height: 15),
 
           CheckboxTheme(
-              data: CheckboxThemeData(
-                fillColor: MaterialStateColor.resolveWith(
+            data: CheckboxThemeData(
+              fillColor: MaterialStateColor.resolveWith(
                   (states) => ThemeColor.darkGrey,
                 ),
-                checkColor: MaterialStateColor.resolveWith(
+              checkColor: MaterialStateColor.resolveWith(
                   (states) => ThemeColor.secondaryWhite,
                 ),
-                overlayColor: MaterialStateColor.resolveWith(
+              overlayColor: MaterialStateColor.resolveWith(
                   (states) => ThemeColor.secondaryWhite.withOpacity(0.1),
                 ),
-                side: const BorderSide(
+              side: const BorderSide(
                   color: ThemeColor.lightGrey,
                   width: 2.0,
                 ),
