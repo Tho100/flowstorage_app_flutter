@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/pages/submit_report_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -11,11 +12,17 @@ class BottomTrailingReport {
 
   Widget _buildReportTypeButtons(
     String reportName, 
+    String reportType,
     BuildContext context 
   ) {
     return ElevatedButton(
       onPressed: () { 
         Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) 
+          => SubmitReportPage(reportType: reportType))
+        );
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
@@ -76,7 +83,7 @@ class BottomTrailingReport {
               
                         const SizedBox(height: 5),
               
-                        _buildReportTypeButtons("Copyright violation", context),
+                        _buildReportTypeButtons("Copyright violation", "cv", context),
               
                         const SizedBox(height: 3),
 
@@ -84,15 +91,15 @@ class BottomTrailingReport {
       
                           children: [
 
-                          _buildReportTypeButtons("Trademark violation", context),
+                          _buildReportTypeButtons("Trademark violation", "tv", context),
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Prviacy violation", context),
+                          _buildReportTypeButtons("Prviacy violation", "pv", context),
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Spam", context),
+                          _buildReportTypeButtons("Spam", "sp", context),
               
                         ],
                       ),
