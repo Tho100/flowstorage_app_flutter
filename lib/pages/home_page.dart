@@ -1534,10 +1534,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _callBottomTrailingSorting(); 
       },
       filterTypePsOnPressed: () {
-        BottomTrailingFilter().buildFilterTypeAll(
-          filterTypeNormal: _itemSearchingImplementation, 
-          context: context
-        );
+        BottomTrailingFilter(
+          context: context, 
+          filterTypeFunctionality: _itemSearchingImplementation
+        ).buildFilterTypeAll();
       }
     );
   }
@@ -1559,10 +1559,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
 
       filterTypeOnPressed: () {
-        BottomTrailingFilter().buildFilterTypeAll(
-          filterTypeNormal: _itemSearchingImplementation, 
+        BottomTrailingFilter(          
+          filterTypeFunctionality: _itemSearchingImplementation, 
           context: context
-        );
+        ).buildFilterTypeAll();
       }
     );
   }
@@ -1661,11 +1661,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Widget _buildTunePhotosType() {
     return IconButton(
       onPressed: () {
-        final bottomTrailingFilter = BottomTrailingFilter();
-        bottomTrailingFilter.buildFilterTypePhotos(
-          filterTypeNormal: _itemSearchingImplementation, 
+        BottomTrailingFilter(          
+          filterTypeFunctionality: _itemSearchingImplementation, 
           context: context
-        );
+        ).buildFilterTypePhotos();
       },
       icon: const Icon(Icons.tune_outlined, 
         color: Colors.white, size: 26),

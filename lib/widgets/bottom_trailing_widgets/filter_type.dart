@@ -7,18 +7,24 @@ import 'package:get_it/get_it.dart';
 
 class BottomTrailingFilter {
 
+  final BuildContext context;
+  final Function filterTypeFunctionality;
+
+  BottomTrailingFilter({
+    required this.context,
+    required this.filterTypeFunctionality
+  });
+
   final tempData = GetIt.instance<TempDataProvider>();
 
   Widget _buildFilterTypeButtons(
     String filterName, 
     IconData icon, 
     String filterType,
-    Function filterTypeNormal,
-    BuildContext context 
   ) {
     return ElevatedButton.icon(
       onPressed: () { 
-        filterTypeNormal(filterType);  
+        filterTypeFunctionality(filterType);  
         Navigator.pop(context);
       },
       icon: Icon(icon),
@@ -35,10 +41,7 @@ class BottomTrailingFilter {
     );
   }
 
-  Future buildFilterTypeAll({
-    required Function filterTypeNormal,
-    required BuildContext context
-  }) {
+  Future buildFilterTypeAll() {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -83,7 +86,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypeNormal, context),
+                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
               
                         const SizedBox(height: 3),
 
@@ -91,15 +94,15 @@ class BottomTrailingFilter {
       
                           children: [
 
-                          _buildFilterTypeButtons("Text",Icons.text_snippet_rounded,'.txt,.html', filterTypeNormal, context),
+                          _buildFilterTypeButtons("Text", Icons.text_snippet_rounded, '.txt,.html'),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Audio",Icons.music_note_rounded,'.mp3,.wav', filterTypeNormal, context),
+                          _buildFilterTypeButtons("Audio", Icons.music_note_rounded, '.mp3,.wav'),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
+                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
               
                         ],
                       ),
@@ -120,9 +123,9 @@ class BottomTrailingFilter {
                         Row(
                           children: [
 
-                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf',  filterTypeNormal, context),
+                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf'),
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx', filterTypeNormal, context),
+                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx'),
 
                           ]
                         ),
@@ -133,15 +136,15 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc', filterTypeNormal, context),
+                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc'),
               
                             const SizedBox(width: 8),
               
-                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv', filterTypeNormal, context),
+                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv'),
                   
                             const SizedBox(width: 8),
 
-                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' ', filterTypeNormal, context),
+                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' '),
                                     
                           ],
                         ),
@@ -159,10 +162,7 @@ class BottomTrailingFilter {
     );
   }
 
-  Future buildFilterTypePhotos({
-    required Function filterTypeNormal,
-    required BuildContext context
-  }) {
+  Future buildFilterTypePhotos() {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -201,11 +201,11 @@ class BottomTrailingFilter {
           
                   children: [
                     
-                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg', filterTypeNormal, context),
+                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
+                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv', filterTypeNormal, context),
+                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
                   ],
                 ),

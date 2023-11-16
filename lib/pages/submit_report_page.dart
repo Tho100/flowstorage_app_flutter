@@ -181,14 +181,14 @@ class SubmitReportPage extends StatelessWidget {
             child: Text(violationToQuestion[reportType]!,
               style: const TextStyle(
                 color: ThemeColor.secondaryWhite,
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.bold
               ),
             ),
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
 
         Padding(
           padding: const EdgeInsets.only(left: 6.0),
