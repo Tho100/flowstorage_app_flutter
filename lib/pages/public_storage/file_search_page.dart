@@ -119,10 +119,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       focusNode: null, 
       hintText: "Enter a keyword", 
       onChanged: (String value) {
-        
+        //
       }, 
       filterTypeOnPressed: () {
-        
+        //
       }
     );
   }
