@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/pages/submit_report_page.dart';
+import 'package:flowstorage_fsc/pages/public_storage/submit_report_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';

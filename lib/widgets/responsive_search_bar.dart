@@ -5,17 +5,22 @@ import 'package:get_it/get_it.dart';
 
 class ResponsiveSearchBar extends StatelessWidget {
 
+  final double? customWidth;
+  final double? customHeight;
+
   final TextEditingController controller;
-  final ValueNotifier visibility;
-  final FocusNode focusNode;
+  final ValueNotifier? visibility;
+  final FocusNode? focusNode;
   final String hintText;
   final VoidCallback filterTypeOnPressed;
   final Function(String) onChanged;
 
   ResponsiveSearchBar({
+    this.visibility,
+    this.customWidth,
+    this.customHeight,
+    this.focusNode,
     required this.controller,
-    required this.visibility,
-    required this.focusNode,
     required this.hintText,
     required this.filterTypeOnPressed,
     required this.onChanged,
@@ -25,36 +30,37 @@ class ResponsiveSearchBar extends StatelessWidget {
   final tempData = GetIt.instance<TempDataProvider>();
 
   final borderRadius = 25.0;
-  final width = 0.94;
-  final height = 50.0;
+  
+  final double? defaultWidth = 0.94;
+  final double? defaultHeight = 50.0;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: visibility,
+      valueListenable: visibility ?? ValueNotifier(true),
       builder: (context, value, child) {
         return Visibility(
           visible: value,
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              focusNode.unfocus();
+              focusNode?.unfocus();
             },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),
                 color: ThemeColor.mediumGrey,
               ),
-              height: height,
+              height: customHeight ?? defaultHeight,
               child: FractionallySizedBox(
-                widthFactor: width, 
+                widthFactor: customWidth ?? defaultWidth, 
                 child: Row(
                   children: [
                     Expanded(
                       child: TextField(
                         onChanged: onChanged,
                         controller: controller,
-                        focusNode: focusNode,
+                        focusNode: focusNode ?? FocusNode(),
                         style: const TextStyle(
                           color: Color.fromARGB(230, 255, 255, 255)
                         ),

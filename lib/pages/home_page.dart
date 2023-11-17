@@ -15,7 +15,8 @@ import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
-import 'package:flowstorage_fsc/pages/upload_ps_page.dart';
+import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
+import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -1697,8 +1698,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             if(togglePhotosPressed)
             _buildTunePhotosType(),
 
-            if(tempData.origin == OriginFile.public) 
-            _buildMyPsFilesButton()
+            if(tempData.origin == OriginFile.public) ... [
+            _buildPsSearchButton(),
+            _buildMyPsFilesButton(),
+            ]
 
           ],
           leading: IconButton(
@@ -2198,6 +2201,23 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           ),
         ];
       },
+    );
+  }
+
+  Widget _buildPsSearchButton() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, right: 8.0),
+      child: IconButton(
+        icon: const Icon(Icons.search_rounded, size: 26),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FileSearchPagePs()
+            )
+          );
+        },
+      ),
     );
   }
 

@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mysql_client/mysql_client.dart';
@@ -6,7 +5,6 @@ import 'package:mysql_client/mysql_client.dart';
 class TitleGetterPs {
 
   final userData = GetIt.instance<UserDataProvider>();
-  final encryption = EncryptionClass();
   
   Future<List<String>> myGetTitleParams(MySQLConnectionPool conn, String tableName) async {
 
@@ -20,7 +18,7 @@ class TitleGetterPs {
       final titleValuesList = <String>[];
 
       for (final res in retrievedTitles.rows) {
-        final titleValue = encryption.decrypt(res.assoc()['CUST_TITLE']!);
+        final titleValue = res.assoc()['CUST_TITLE']!;
         titleValuesList.add(titleValue);
       }
 
@@ -42,7 +40,7 @@ class TitleGetterPs {
       final titleValuesList = <String>[];
 
       for (final res in retrievedTitles.rows) {
-        final titleValue = encryption.decrypt(res.assoc()['CUST_TITLE']!);
+        final titleValue = res.assoc()['CUST_TITLE']!;
         titleValuesList.add(titleValue);
       }
 

@@ -141,9 +141,10 @@ class InsertData {
     String encryptedFileVal,
   ) async {
 
-    final encryptedTitle = encryption.encrypt(psUploadData.psTitleValue);
-    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
+    final title = psUploadData.psTitleValue;
     final tag = psUploadData.psTagValue;
+
+    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
 
     const insertCommentQuery = 'INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)';
     final insertFileDataQuery = 'INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?)';
@@ -152,7 +153,7 @@ class InsertData {
         ..execute([encryptedFilePath, encryptedComment]);
 
     await conn.prepare(insertFileDataQuery)
-        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, tag, encryptedTitle]);
+        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, tag, title]);
   }
 
   Future<void> insertVideoInfoPs(
@@ -163,9 +164,10 @@ class InsertData {
     String? thumb,
   ) async {
 
-    final encryptedTitle = encryption.encrypt(psUploadData.psTitleValue);
-    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
+    final title = psUploadData.psTitleValue;
     final tag = psUploadData.psTagValue;
+
+    final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
 
     const insertCommentQuery = 'INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)';
     const insertFileDataQuery = 'INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?, ?)';
@@ -174,7 +176,7 @@ class InsertData {
         ..execute([encryptedFilePath, encryptedComment]);
 
     await conn.prepare(insertFileDataQuery)
-        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, thumb, tag, encryptedTitle]);
+        ..execute([encryptedFilePath, userName, dateNow, encryptedFileVal, thumb, tag, title]);
   }
 
 }

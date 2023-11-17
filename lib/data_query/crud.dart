@@ -61,6 +61,7 @@ class Crud {
     for(final row in results.rows) {
       return row.assoc()[returnedColumn]!;
     }
+    
   }
 
   Future<int> countUserTableRow(String tableName) async {
