@@ -11,6 +11,7 @@ import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class FileSearchPagePs extends StatefulWidget {
 
@@ -26,6 +27,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   bool shouldReloadListView = false; 
   bool isSearchingForFile = false; 
 
+  final encryption = EncryptionClass();
+
   final searchBarController = TextEditingController();
   final scrollListViewController = ScrollController();
 
@@ -33,13 +36,13 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final userData = GetIt.instance<UserDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
-  final fileNameList = [];
+  final titleList = [];
   final imageBytesList = [];
+  final uploaderNameList = [];
+  final uploadDateList = [];
+  final fileNameList = [];
 
   Widget buildBody() {
-
-    final mediaQuery = MediaQuery.of(context).size.height-180;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -61,21 +64,15 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
         const Divider(color: ThemeColor.lightGrey),
 
-        isSearchingForFile
-          ? const LoadingIndicator()
-          : shouldReloadListView && fileNameList.isNotEmpty && searchBarController.text.isNotEmpty
-            ? SizedBox(
-                height: mediaQuery,
-                child: buildListView(),
-              )
-            : buildOnEmpty()
+        buildResultWidget(),
+
       ],
     );
   }
 
   Future<List<Map<String, String>>> getSearchedFileNameData(String keywordInput) async {
 
-    final query = "SELECT CUST_TITLE, CUST_FILE FROM ps_info_image WHERE CUST_TITLE LIKE '$keywordInput%'";
+    final query = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE CUST_TITLE LIKE '$keywordInput%'";
     
     final conn = await SqlConnection.initializeConnection();
     
@@ -84,9 +81,33 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     List<Map<String, String>> fileDataList = [];
 
     for (final row in results.rows) {
-      final titleData = row.assoc()['CUST_TITLE']!;
-      final imageData = EncryptionClass().decrypt(row.assoc()['CUST_FILE']!);
-      fileDataList.add({'title': titleData, 'image': imageData});
+
+      final rowAssoc = row.assoc();
+
+      final titleData = rowAssoc['CUST_TITLE']!;
+      final usernameData = rowAssoc['CUST_USERNAME']!;
+      final uploadDateData = rowAssoc['UPLOAD_DATE']!;
+      final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
+      final imageData = encryption.decrypt(rowAssoc['CUST_FILE']!);
+
+      final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
+      final dateComponents = dateValueWithDashes.split('-');
+
+      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
+      final now = DateTime.now();
+      final difference = now.difference(date).inDays;
+
+      final formattedDate = DateFormat('MMM d yyyy').format(date);
+      final dateString = '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+
+      fileDataList.add({
+        'title': titleData, 
+        'image': imageData,
+        'file_name': fileNameData,
+        'upload_date': dateString,
+        'uploader_name': usernameData,
+      });
+
     }
 
     return fileDataList;
@@ -140,7 +161,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       child: ListView.builder(
         padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
         itemExtent: itemExtentValue,
-        itemCount: fileNameList.length,
+        itemCount: titleList.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onLongPress: () {
@@ -152,7 +173,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               color: ThemeColor.darkBlack,
               child: ListTile(
                 leading: Image.memory(base64.decode(imageBytesList[index]!),
-                  fit: BoxFit.cover, height: 35, width: 35
+                  fit: BoxFit.cover, height: 40, width: 40
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -165,15 +186,15 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   ),
                 ),
                 title: Text(
-                  fileNameList[index],
+                  titleList[index],
                   style: const TextStyle(
                     color: ThemeColor.justWhite,
                     overflow: TextOverflow.ellipsis,
                     fontSize: 16,
                   ),
                 ),
-                subtitle: const Text("2/2/2023",
-                  style: TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
+                subtitle: Text(uploadDateList[index],
+                  style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
                 ),
               ),
             ),
@@ -183,33 +204,65 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
+  Widget buildResultWidget() {
+
+    final mediaQuery = MediaQuery.of(context).size.height-180;
+
+    if (isSearchingForFile) {
+      return const LoadingIndicator();
+
+    } else if (titleList.isNotEmpty && searchBarController.text.isNotEmpty) {
+      return SizedBox(
+        height: mediaQuery,
+        child: buildListView(),
+      );
+
+    } else {
+      return buildOnEmpty();
+
+    }
+  }
+
   void _callBottomTrailing(int index) {
+
+  }
+
+  void clearData() {
+    titleList.clear();
+    fileNameList.clear();
+    uploadDateList.clear();
+    imageBytesList.clear();
+    uploaderNameList.clear();
+  }
+
+  void searchFileOnPressed() async {
+    
+    clearData();
+
+    setState(() {
+      isSearchingForFile = true;
+    });
+
+    final keywordInput = searchBarController.text;
+    final fileDataList = await getSearchedFileNameData(keywordInput);
+
+    for(final fileData in fileDataList) {
+      titleList.add(fileData['title']);
+      uploadDateList.add(fileData['upload_date']);
+      imageBytesList.add(fileData['image']);
+    }
+
+    setState(() {
+      shouldReloadListView = !shouldReloadListView;
+      isSearchingForFile = false;
+    });
 
   }
 
   Widget buildSearchButton() {
     return GestureDetector(
-      onTap: () async {
-
-        setState(() {
-          isSearchingForFile = true;
-        });
-
-        final keywordInput = searchBarController.text;
-        final fileDataList = await getSearchedFileNameData(keywordInput);
-
-        setState(() {
-          for(final fileData in fileDataList) {
-            fileNameList.add(fileData['title']);
-            imageBytesList.add(fileData['image']);
-          }
-          shouldReloadListView = !shouldReloadListView;
-        });
-
-        setState(() {
-          isSearchingForFile = false;
-        });
-
+      onTap: () {
+        searchFileOnPressed();
       },
       child: Container(
         width: 48.0,
