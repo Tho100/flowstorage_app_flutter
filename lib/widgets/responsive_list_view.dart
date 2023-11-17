@@ -67,18 +67,24 @@ class ResponsiveListView extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: childrens(index),
                     ),
-                    title: Text(
-                      fileTitleSearchedValue,
-                      style: const TextStyle(
-                        color: ThemeColor.justWhite,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 16,
+                    title: Transform.translate(
+                      offset: const Offset(0, -4),
+                      child: Text(
+                        fileTitleSearchedValue,
+                        style: const TextStyle(
+                          color: ThemeColor.justWhite,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                    subtitle: RichText(
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children: inlineSpanWidgets(index),
+                    subtitle: Transform.translate(
+                      offset: const Offset(0, -4),
+                      child: RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: inlineSpanWidgets(index),
+                        ),
                       ),
                     ),
                   ),

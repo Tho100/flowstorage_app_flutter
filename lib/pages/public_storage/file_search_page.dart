@@ -152,8 +152,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildListView() {
 
-    const itemExtentValue = 58.0;
-    const bottomExtraSpacesHeight = 89.0;
+    const itemExtentValue = 90.0;
+    const bottomExtraSpacesHeight = 95.0;
 
     return RawScrollbar(
       radius: const Radius.circular(38),
@@ -174,8 +174,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             child: Ink(
               color: ThemeColor.darkBlack,
               child: ListTile(
-                leading: Image.memory(base64.decode(imageBytesList[index]!),
-                  fit: BoxFit.cover, height: 40, width: 40
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.memory(base64.decode(imageBytesList[index]!),
+                    fit: BoxFit.cover, height: 65, width: 62
+                  ),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -187,16 +190,36 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                     ),
                   ),
                 ),
-                title: Text(
-                  titleList[index],
-                  style: const TextStyle(
-                    color: ThemeColor.justWhite,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 16,
+                title: Transform.translate(
+                  offset: const Offset(0, -6),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        titleList[index],
+                        style: const TextStyle(
+                          color: ThemeColor.justWhite,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      ),              
+                      const SizedBox(height: 3),      
+                      Text(
+                        "Uploaded by ${uploaderNameList[index]}",
+                        style: const TextStyle(
+                          color: ThemeColor.justWhite,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(uploadDateList[index],
+                        style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
+                      ),
+                    ],
                   ),
-                ),
-                subtitle: Text(uploadDateList[index],
-                  style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
                 ),
               ),
             ),
@@ -210,10 +233,13 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
     final mediaQuery = MediaQuery.of(context).size.height-180;
 
+    final verifySearching = titleList.isNotEmpty 
+      && searchBarController.text.isNotEmpty;
+
     if (isSearchingForFile) {
       return const LoadingIndicator();
 
-    } else if (titleList.isNotEmpty && searchBarController.text.isNotEmpty) {
+    } else if (verifySearching) {
       return SizedBox(
         height: mediaQuery,
         child: buildListView(),
@@ -222,7 +248,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     } else {
       return buildOnEmpty();
 
-    }
+    } 
+
   }
 
   void _callBottomTrailing(int index) {
@@ -251,6 +278,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     for(final fileData in fileDataList) {
       titleList.add(fileData['title']);
       uploadDateList.add(fileData['upload_date']);
+      uploaderNameList.add(fileData['uploader_name']);
       imageBytesList.add(fileData['image']);
     }
 
