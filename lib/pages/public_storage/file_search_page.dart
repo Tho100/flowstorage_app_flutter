@@ -30,6 +30,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final encryption = EncryptionClass();
 
   final searchBarController = TextEditingController();
+  final searchBarFocusNode = FocusNode();
+
   final scrollListViewController = ScrollController();
 
   final storageData = GetIt.instance<StorageDataProvider>();
@@ -135,9 +137,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildSearchBar() {
     return ResponsiveSearchBar(
       controller: searchBarController,
+      focusNode: searchBarFocusNode, 
       customWidth: 0.98,
       visibility: null, 
-      focusNode: null, 
       hintText: "Enter a keyword", 
       onChanged: (String value) {
         //
@@ -290,15 +292,19 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
-        title: const Text("Search in Public Storage",
-          style: GlobalsStyle.appBarTextStyle,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: searchBarFocusNode.unfocus,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: ThemeColor.darkBlack,
+          title: const Text("Search in Public Storage",
+            style: GlobalsStyle.appBarTextStyle,
+          ),
         ),
+        body: buildBody(),
       ),
-      body: buildBody(),
     );
   }
 
