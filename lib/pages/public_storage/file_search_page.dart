@@ -339,17 +339,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
-  void clearData() {
-    titleList.clear();
-    uploadDateList.clear();
-    uploaderNameList.clear();
-    psStorageData.psSearchImageBytesList.clear();
-    psStorageData.psSearchNameList.clear();
-  }
-
   void searchFileOnPressed() async {
     
-    clearData();
+    clearSearchingData();
 
     setState(() {
       isSearchingForFile = true;
@@ -395,9 +387,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
-  void onLeft() {
+  void clearSearchingData() {
+    titleList.clear();
+    uploadDateList.clear();
+    uploaderNameList.clear();
+    psStorageData.psSearchImageBytesList.clear();
+    psStorageData.psSearchNameList.clear();
+  }
+
+  void callOnExit() {
     tempData.setOrigin(OriginFile.public);
-    clearData();
+    clearSearchingData();
   }
 
   @override
@@ -417,7 +417,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        onLeft();
+        callOnExit();
         return true;
       },
       child: GestureDetector(
