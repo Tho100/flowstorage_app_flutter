@@ -77,7 +77,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Future<List<Map<String, String>>> getSearchedFileNameData(String keywordInput) async {
 
-    const tablesName = {
+    const generalFileTableName = {
       GlobalsTable.psText, 
       GlobalsTable.psPdf, 
       GlobalsTable.psAudio, 
@@ -87,45 +87,26 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       GlobalsTable.psApk
     };
 
-    final query = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE CUST_TITLE LIKE '$keywordInput%'";
-
-    final conn = await SqlConnection.initializeConnection();
-    
-    final results = await conn.execute(query);
-
     List<Map<String, String>> fileDataList = [];
 
-    for (final row in results.rows) {
+    final conn = await SqlConnection.initializeConnection();
 
-      final rowAssoc = row.assoc();
+    final queryImage = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE CUST_TITLE LIKE '$keywordInput%'";
+    final queryVideo = "SELECT CUST_TITLE, CUST_THUMB, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_video WHERE CUST_TITLE LIKE '$keywordInput%'";
 
-      final titleData = rowAssoc['CUST_TITLE']!;
-      final usernameData = rowAssoc['CUST_USERNAME']!;
-      final uploadDateData = rowAssoc['UPLOAD_DATE']!;
-      final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
-      final imageData = encryption.decrypt(rowAssoc['CUST_FILE']!);
+    final resultsImage = await conn.execute(queryImage);
+    final resultsVideo = await conn.execute(queryVideo);
 
-      final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
-      final dateComponents = dateValueWithDashes.split('-');
+    final dataImage = await processSearchingQueryVideosImages(
+      resultsImage, true);
 
-      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-      final now = DateTime.now();
-      final difference = now.difference(date).inDays;
+    final dataVideo = await processSearchingQueryVideosImages(
+      resultsVideo, false);
 
-      final formattedDate = DateFormat('MMM d yyyy').format(date);
-      final dateString = '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+    fileDataList.addAll(dataImage);
+    fileDataList.addAll(dataVideo);
 
-      fileDataList.add({
-        'title': titleData, 
-        'image': imageData,
-        'file_name': fileNameData,
-        'upload_date': dateString,
-        'uploader_name': usernameData,
-      });
-
-    }
-
-    for(var tables in tablesName) {
+    for(var tables in generalFileTableName) {
       final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TITLE LIKE '$keywordInput%'";
       final results = await conn.execute(query);
 
@@ -151,6 +132,46 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       final uploadDateData = rowAssoc['UPLOAD_DATE']!;
       final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
       final imageData = base64.encode(await GetAssets().loadAssetsData('txt0.jpg'));
+
+      final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
+      final dateComponents = dateValueWithDashes.split('-');
+
+      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
+      final now = DateTime.now();
+      final difference = now.difference(date).inDays;
+
+      final formattedDate = DateFormat('MMM d yyyy').format(date);
+      final dateString = '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+
+      fileDataList.add({
+        'title': titleData, 
+        'image': imageData,
+        'file_name': fileNameData,
+        'upload_date': dateString,
+        'uploader_name': usernameData,
+      });
+
+    }
+
+    return fileDataList;
+
+  }
+
+  Future<List<Map<String, String>>> processSearchingQueryVideosImages(IResultSet results, bool isFromImage) async {
+
+    List<Map<String, String>> fileDataList = [];
+
+    for (final row in results.rows) {
+
+      final rowAssoc = row.assoc();
+
+      final titleData = rowAssoc['CUST_TITLE']!;
+      final usernameData = rowAssoc['CUST_USERNAME']!;
+      final uploadDateData = rowAssoc['UPLOAD_DATE']!;
+      final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
+      final imageData = isFromImage 
+            ? encryption.decrypt(rowAssoc['CUST_FILE']!) 
+            : rowAssoc['CUST_THUMB']!;
 
       final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
       final dateComponents = dateValueWithDashes.split('-');
