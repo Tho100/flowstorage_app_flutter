@@ -88,7 +88,17 @@ class BottomTrailingReport {
               
                         const SizedBox(height: 5),
               
-                        _buildReportTypeButtons("Copyright violation", "cv"),
+                        Row(
+                          children: [
+
+                            _buildReportTypeButtons("Copyright violation", "cv"),
+
+                            const SizedBox(width: 8),
+
+                            _buildReportTypeButtons("Malware", "ma"),
+
+                          ],
+                        ),
               
                         const SizedBox(height: 3),
 

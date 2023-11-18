@@ -43,6 +43,7 @@ class SubmitReportPage extends StatelessWidget {
       "tv": "Trademark Violation",
       "pv": "Privacy Violation",
       "sp": "Spam",
+      "ma": "Malware"
     };
 
     const violationToQuestion = {
@@ -55,7 +56,8 @@ class SubmitReportPage extends StatelessWidget {
       "cv": "Content that violates a copyright you own or control.",
       "tv": "Content that violates a trademark you own or control.",
       "pv": "Content related to someone's personal space or revealing \nprivate information without permission.",
-      "sp": "Repeated content or unwanted actions."
+      "sp": "Repeated content or unwanted actions.",
+      "ma": "This content may contain potential malware."
     };
 
     final fileType = fileName.split('.').last;
