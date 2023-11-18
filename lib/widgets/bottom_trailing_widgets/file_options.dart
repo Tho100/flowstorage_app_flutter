@@ -96,7 +96,7 @@ class BottomTrailingOptions {
         const Divider(color: ThemeColor.lightGrey),
 
         Visibility(
-          visible: VisibilityChecker.setNotVisible(OriginFile.public),
+          visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]),
           child: ElevatedButton(
             onPressed: onRenamePressed,
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -207,7 +207,7 @@ class BottomTrailingOptions {
           ),
         ),
 
-        if((tempData.origin == OriginFile.public && tempData.appBarTitle != "Public Storage") || tempData.origin != OriginFile.public)
+        if((tempData.origin == OriginFile.public && tempData.appBarTitle != "Public Storage") || tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching)
         ElevatedButton(
           onPressed: onDeletePressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,

@@ -157,6 +157,9 @@ class UpdateTextData {
       case OriginFile.public:
         await _updatePublicData();
         break;
+        
+      case OriginFile.publicSearching:
+        break;
     }
 
   }

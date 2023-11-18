@@ -21,11 +21,11 @@ class CallPreviewData {
     required Set<dynamic> fileValues
   }) async {
 
-    final tableName = tempData.origin == OriginFile.public 
+    final tableName = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching
       ? tableNamePs 
       : tableNameHome;
 
-    final uploaderUsername = tempData.origin == OriginFile.public 
+    final uploaderUsername = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching
       ? await uploaderName.getUploaderName(tableName: tableNamePs, fileValues: fileValues)
       : userData.username;
 

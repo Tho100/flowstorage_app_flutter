@@ -147,6 +147,7 @@ class PreviewFileState extends State<PreviewFile> {
     fileResolutionNotifier.value = "";
 
     if (tempData.origin == OriginFile.public ||
+        tempData.origin == OriginFile.publicSearching || 
         tempData.origin == OriginFile.sharedMe ||
         tempData.origin == OriginFile.sharedOther) {
       _initializeUploaderName();
@@ -175,7 +176,7 @@ class PreviewFileState extends State<PreviewFile> {
         : await retrieveSharingName.sharerName();
       uploaderNameNotifer.value = uploaderName;
 
-    } else if (originFrom == OriginFile.public) {
+    } else if (originFrom == OriginFile.public || originFrom == OriginFile.publicSearching) {
       psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
       uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
       

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
@@ -45,10 +46,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final titleList = [];
-  final imageBytesList = [];
   final uploaderNameList = [];
   final uploadDateList = [];
-  final fileNameList = [];
 
   Widget buildBody() {
     return Column(
@@ -103,12 +102,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       customWidth: 0.98,
       visibility: null, 
       hintText: "Enter a keyword", 
-      onChanged: (String value) {
-        //
-      }, 
-      filterTypeOnPressed: () {
-        //
-      }
+      onChanged: (String value) { }, 
+      filterTypeOnPressed: () { }
     );
   }
 
@@ -128,11 +123,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         itemCount: titleList.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
-            onLongPress: () {
-              // Handle long press
-            },
             onTap: () {
-              final fileType = fileNameList[index].split('.').last;
+              final fileType = psStorageData.psSearchNameList[index].split('.').last;
               openSearchedFile(index, fileType);
             },
             child: Ink(
@@ -140,7 +132,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               child: ListTile(
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Image.memory(base64.decode(imageBytesList[index]!),
+                  child: Image.memory(base64.decode(psStorageData.psSearchImageBytesList[index]),
                     fit: BoxFit.cover, height: 65, width: 62
                   ),
                 ),
@@ -330,7 +322,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void openSearchedFile(int index, String fileType) {
 
-    final fileName = fileNameList[index];
+    final fileName = psStorageData.psSearchNameList[index];
 
     tempData.setCurrentFileName(fileName);
 
@@ -349,10 +341,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void clearData() {
     titleList.clear();
-    fileNameList.clear();
     uploadDateList.clear();
-    imageBytesList.clear();
     uploaderNameList.clear();
+    psStorageData.psSearchImageBytesList.clear();
+    psStorageData.psSearchNameList.clear();
   }
 
   void searchFileOnPressed() async {
@@ -370,8 +362,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       titleList.add(fileData['title']);
       uploadDateList.add(fileData['upload_date']);
       uploaderNameList.add(fileData['uploader_name']);
-      fileNameList.add(fileData['file_name']);
-      imageBytesList.add(fileData['image']);
+      psStorageData.psSearchNameList.add(fileData['file_name']!);
+      psStorageData.psSearchImageBytesList.add(fileData['image']!);
     }
 
     setState(() {
@@ -403,6 +395,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
+  void onLeft() {
+    tempData.setOrigin(OriginFile.public);
+    clearData();
+  }
+
   @override
   void dispose() {
     searchBarController.dispose();
@@ -411,19 +408,31 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    tempData.setOrigin(OriginFile.publicSearching);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: searchBarFocusNode.unfocus,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: ThemeColor.darkBlack,
-          title: const Text("Search in Public Storage",
-            style: GlobalsStyle.appBarTextStyle,
+    return WillPopScope(
+      onWillPop: () async {
+        onLeft();
+        return true;
+      },
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: searchBarFocusNode.unfocus,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: ThemeColor.darkBlack,
+            title: const Text("Search in Public Storage",
+              style: GlobalsStyle.appBarTextStyle,
+            ),
           ),
+          body: buildBody(),
         ),
-        body: buildBody(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -44,6 +45,7 @@ class PreviewImageState extends State<PreviewImage> {
 
     currentSelectedIndex = filteredNames.indexOf(tempData.selectedFileName);
     pageController = PageController(initialPage: currentSelectedIndex);
+    
   }
 
   void handlePageChange(int index) {
@@ -51,28 +53,46 @@ class PreviewImageState extends State<PreviewImage> {
     widget.onPageChanged(); 
   }
 
+  Widget buildImageWidget(int index) {
+
+    final fileTypes = filteredNames[index].split('.').last;
+
+    return InteractiveViewer(
+      scaleEnabled: true,
+      panEnabled: true,
+      child: Container(
+        constraints: const BoxConstraints.expand(),
+        child: Image.memory(
+          filteredImages[index]!,
+          fit: Globals.generalFileTypes.contains(fileTypes)
+              ? BoxFit.scaleDown
+              : BoxFit.fitWidth,
+        ),
+      ),
+    );
+
+  }
+
+  Widget buildImageOnCondition() {
+
+    if (tempData.origin == OriginFile.publicSearching) {
+      return buildImageWidget(currentSelectedIndex);
+
+    } else {
+      return PageView.builder(
+        physics: const ClampingScrollPhysics(),
+        controller: pageController,
+        itemCount: filteredNames.length,
+        onPageChanged: handlePageChange,
+        itemBuilder: (context, index) => buildImageWidget(index),
+      );
+
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      physics: const ClampingScrollPhysics(),
-      controller: pageController, 
-      itemCount: filteredNames.length,
-      onPageChanged: handlePageChange,
-      itemBuilder: (context, index) {
-        final fileTypes = filteredNames[index].split('.').last;
-        return InteractiveViewer(
-          scaleEnabled: true,
-          panEnabled: true,
-          child: Container(
-          constraints: const BoxConstraints.expand(),
-          child: Image.memory(
-            filteredImages[index]!,
-            fit: Globals.generalFileTypes.contains(fileTypes) 
-              ? BoxFit.scaleDown : BoxFit.fitWidth,
-          ),
-          ),
-        );
-      },
-    );
+    return buildImageOnCondition();
   }
 }

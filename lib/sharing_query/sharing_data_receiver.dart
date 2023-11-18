@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mysql_client/mysql_client.dart';
-import '../encryption/encryption_model.dart';
 
 class SharingDataReceiver {
 

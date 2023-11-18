@@ -73,6 +73,7 @@ class CommentPageState extends State<CommentPage> {
         break;
 
       case OriginFile.public:
+      case OriginFile.publicSearching:
         mainFileComment = await _psFileComment();
         break;
 

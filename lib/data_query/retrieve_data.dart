@@ -65,6 +65,7 @@ class RetrieveData {
         break;
 
       case OriginFile.public:
+      case OriginFile.publicSearching:
         final toPsFileName = GlobalsTable.tableNames.contains(tableName)
           ? GlobalsTable.publicToPsTables[tableName]!
           : tableName!;
@@ -78,6 +79,7 @@ class RetrieveData {
 
       case OriginFile.offline:
         break;
+
     }
 
     final row = (await fscDbCon.execute(query, queryParams)).rows.first;

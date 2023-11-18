@@ -5,7 +5,8 @@ enum OriginFile {
   folder,
   sharedMe,
   sharedOther,
-  public
+  public,
+  publicSearching,
 }
 
 const newDirectoryAction = "new_dir";

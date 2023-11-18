@@ -73,6 +73,9 @@ class RenameData {
       case OriginFile.public:
         break;
 
+      case OriginFile.publicSearching:
+        break;
+        
     }
 
     await crud.update(query: query, params: params);

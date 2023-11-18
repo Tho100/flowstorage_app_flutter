@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
@@ -263,6 +264,17 @@ class FunctionModel {
 
   }
 
+  Uint8List returnImageDataForPublic(int originalIndex) {
+
+    if(tempData.origin == OriginFile.publicSearching) {
+      final index = psStorageData.psSearchNameList.indexOf(tempData.selectedFileName);
+      return base64.decode(psStorageData.psSearchImageBytesList[index]);
+    } else {
+      return psStorageData.psImageBytesList[originalIndex];
+    }
+
+  }
+
   Future<void> makeAvailableOffline({
     required String fileName
   }) async {
@@ -291,9 +303,9 @@ class FunctionModel {
       singleLoading.startLoading(title: "Preparing...", context: navigatorKey.currentContext!);
 
       if(Globals.imageType.contains(fileType)) {
-        fileData = tempData.origin != OriginFile.public 
+        fileData = tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching
           ? storageData.imageBytesFilteredList[indexFile]! 
-          : psStorageData.psImageBytesList[indexFile];
+          : returnImageDataForPublic(indexFile);
         
       } else {
         fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
