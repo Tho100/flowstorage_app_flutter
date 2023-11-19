@@ -163,7 +163,9 @@ class PreviewFileState extends State<PreviewFile> {
     const sharingOriginFrom = {
       OriginFile.sharedMe, OriginFile.sharedOther};
   
-    final uploaderNameIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+    final uploaderNameIndex = tempData.origin == OriginFile.publicSearching 
+    ? psStorageData.psSearchNameList.indexOf(tempData.selectedFileName)
+    : storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
     if(localOriginFrom.contains(originFrom)) {
 
@@ -177,8 +179,15 @@ class PreviewFileState extends State<PreviewFile> {
       uploaderNameNotifer.value = uploaderName;
 
     } else if (originFrom == OriginFile.public || originFrom == OriginFile.publicSearching) {
-      psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
-      uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
+      if(tempData.origin == OriginFile.public) {
+        psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
+        uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
+
+      } else {
+        psStorageData.psSearchTitleList[widget.tappedIndex] = psStorageData.psSearchTitleList[uploaderNameIndex];
+        uploaderNameNotifer.value = psStorageData.psSearchUploaderList[uploaderNameIndex];
+        
+      }
       
     } else {
       uploaderNameNotifer.value = userData.username;
@@ -634,7 +643,7 @@ class PreviewFileState extends State<PreviewFile> {
     return ValueListenableBuilder<String>(
       valueListenable: appBarTitleNotifier,
       builder: (context, value, child) {
-        final isPublicOrigin = tempData.origin == OriginFile.public;
+        final isPublicOrigin = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching;
 
         return isPublicOrigin
           ? Column(
@@ -654,7 +663,9 @@ class PreviewFileState extends State<PreviewFile> {
                 const SizedBox(height: 2),
 
                 Text(
-                  psStorageData.psTitleList[widget.tappedIndex],
+                  tempData.origin == OriginFile.public 
+                  ? psStorageData.psTitleList[widget.tappedIndex]
+                  : psStorageData.psSearchTitleList[widget.tappedIndex],
                     style: const TextStyle(
                       color: Color.fromARGB(255,232,232,232),
                       fontWeight: FontWeight.w500,
@@ -676,7 +687,8 @@ class PreviewFileState extends State<PreviewFile> {
 
     const generalOrigin = {
       OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
-      OriginFile.directory, OriginFile.public, OriginFile.offline
+      OriginFile.directory, OriginFile.public, OriginFile.publicSearching,
+      OriginFile.offline, 
     };
 
     return Text(
@@ -876,11 +888,13 @@ class PreviewFileState extends State<PreviewFile> {
               )),
             ),
 
-            if(tempData.origin == OriginFile.public)
+            if(tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching)
             Padding(
               padding: const EdgeInsets.only(left: 12.0, right: 12.0),
               child: Text(
-               psStorageData.psTitleList[widget.tappedIndex],
+                tempData.origin == OriginFile.public 
+                ? psStorageData.psTitleList[widget.tappedIndex]
+                : psStorageData.psSearchTitleList[widget.tappedIndex],
                 style: const TextStyle(
                   color: ThemeColor.justWhite,
                   fontSize: 17,

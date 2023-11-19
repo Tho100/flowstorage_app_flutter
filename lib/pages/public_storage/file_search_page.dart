@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:mysql_client/mysql_client.dart';
+import 'package:provider/provider.dart';
 
 class FileSearchPagePs extends StatefulWidget {
 
@@ -45,8 +46,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final userData = GetIt.instance<UserDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
-  final titleList = [];
-  final uploaderNameList = [];
   final uploadDateList = [];
 
   Widget buildBody() {
@@ -114,66 +113,70 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     const itemExtentValue = 90.0;
     const bottomExtraSpacesHeight = 95.0;
 
-    return RawScrollbar(
-      radius: const Radius.circular(38),
-      thumbColor: ThemeColor.darkWhite,
-      minThumbLength: 2,
-      thickness: 2,
-      child: ListView.builder(
-        padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
-        itemExtent: itemExtentValue,
-        itemCount: titleList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              final fileType = psStorageData.psSearchNameList[index].split('.').last;
-              openSearchedFile(index, fileType);
+    return Consumer<PsStorageDataProvider>(
+      builder: (context, storageData, child) {
+        return RawScrollbar(
+          radius: const Radius.circular(38),
+          thumbColor: ThemeColor.darkWhite,
+          minThumbLength: 2,
+          thickness: 2,
+          child: ListView.builder(
+            padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
+            itemExtent: itemExtentValue,
+            itemCount: storageData.psSearchTitleList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () {
+                  final fileType = storageData.psSearchNameList[index].split('.').last;
+                  openSearchedFile(index, fileType);
+                },
+                child: Ink(
+                  color: ThemeColor.darkBlack,
+                  child: ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.memory(base64.decode(psStorageData.psSearchImageBytesList[index]),
+                        fit: BoxFit.cover, height: 65, width: 62
+                      ),
+                    ),
+                    title: Transform.translate(
+                      offset: const Offset(0, -6),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            storageData.psSearchTitleList[index],
+                            style: const TextStyle(
+                              color: ThemeColor.justWhite,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),              
+                          const SizedBox(height: 3),      
+                          Text(
+                            "Uploaded by ${storageData.psSearchUploaderList[index]}",
+                            style: const TextStyle(
+                              color: ThemeColor.justWhite,
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(uploadDateList[index],
+                            style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
             },
-            child: Ink(
-              color: ThemeColor.darkBlack,
-              child: ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.memory(base64.decode(psStorageData.psSearchImageBytesList[index]),
-                    fit: BoxFit.cover, height: 65, width: 62
-                  ),
-                ),
-                title: Transform.translate(
-                  offset: const Offset(0, -6),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        titleList[index],
-                        style: const TextStyle(
-                          color: ThemeColor.justWhite,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),              
-                      const SizedBox(height: 3),      
-                      Text(
-                        "Uploaded by ${uploaderNameList[index]}",
-                        style: const TextStyle(
-                          color: ThemeColor.justWhite,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(uploadDateList[index],
-                        style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -181,7 +184,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
     final mediaQuery = MediaQuery.of(context).size.height-180;
 
-    final verifySearching = titleList.isNotEmpty 
+    final verifySearching = psStorageData.psSearchTitleList.isNotEmpty 
       && searchBarController.text.isNotEmpty;
 
     if (isSearchingForFile) {
@@ -342,7 +345,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   void searchFileOnPressed() async {
-    
+
     clearSearchingData();
 
     setState(() {
@@ -353,11 +356,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     final fileDataList = await getSearchedFileNameData(keywordInput);
 
     for(final fileData in fileDataList) {
-      titleList.add(fileData['title']);
       uploadDateList.add(fileData['upload_date']);
-      uploaderNameList.add(fileData['uploader_name']);
+      psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
       psStorageData.psSearchNameList.add(fileData['file_name']!);
       psStorageData.psSearchImageBytesList.add(fileData['image']!);
+      psStorageData.setPsSearchTitle(fileData['title']!);
     }
 
     setState(() {
@@ -390,9 +393,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   void clearSearchingData() {
-    titleList.clear();
     uploadDateList.clear();
-    uploaderNameList.clear();
+    psStorageData.psSearchUploaderList.clear();
+    psStorageData.psSearchTitleList.clear();
     psStorageData.psSearchImageBytesList.clear();
     psStorageData.psSearchNameList.clear();
   }
@@ -405,6 +408,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   @override
   void dispose() {
     searchBarController.dispose();
+    searchBarController.clear();
     scrollListViewController.dispose();
     super.dispose();
   }

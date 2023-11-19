@@ -8,9 +8,11 @@ class PsStorageDataProvider extends ChangeNotifier {
   final List<String> _psTagsList = <String>[];
   final List<Color> _psTagsColorList = <Color>[];
   final List<String> _psTitleList = <String>[];
-  
-  List<String> _psSearchNameList = [];
-  List<String> _psSearchImageBytesList = [];
+
+  final List<String> _psSearchUploaderList= [];
+  final List<String> _psSearchTitleList = [];
+  final List<String> _psSearchNameList = [];
+  final List<String> _psSearchImageBytesList = [];
   
   List<Uint8List> _psImageBytesList = <Uint8List>[];
   List<Uint8List> _psThumbnailBytesList = <Uint8List>[];
@@ -31,14 +33,11 @@ class PsStorageDataProvider extends ChangeNotifier {
 
   List<String> get psSearchNameList => _psSearchNameList;
   List<String> get psSearchImageBytesList => _psSearchImageBytesList;
+  List<String> get psSearchTitleList => _psSearchTitleList;
+  List<String> get psSearchUploaderList => _psSearchUploaderList;
 
-  void setPsSearcName(List<String> name) {
-    _psSearchNameList = name;
-    notifyListeners();
-  }
-
-  void setPsSearchImageBytes(List<String> base64) {
-    _psSearchImageBytesList = base64;
+  void setPsSearchTitle(String titles) {
+    _psSearchTitleList.add(titles);
     notifyListeners();
   }
 
