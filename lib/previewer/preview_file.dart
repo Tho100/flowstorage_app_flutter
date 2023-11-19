@@ -125,6 +125,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _onSlidingUpdate() async {
 
     final selectedFileName = tempData.selectedFileName;
+    
     appBarTitleNotifier.value = selectedFileName;
 
     final fileType = selectedFileName.split('.').last;

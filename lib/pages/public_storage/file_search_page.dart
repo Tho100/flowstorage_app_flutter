@@ -215,6 +215,16 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       GlobalsTable.psApk
     };
 
+    const tableNameToAsset = {
+      GlobalsTable.psText: "txt0.jpg",
+      GlobalsTable.psPdf: "pdf0.jpg",
+      GlobalsTable.psAudio: "music0.jpg",
+      GlobalsTable.psExcel: "exl0.jpg",
+      GlobalsTable.psWord: "doc0.jpg",
+      GlobalsTable.psExe: "exe0.jpg",
+      GlobalsTable.psApk: "apk0.jpg",
+    };
+
     List<Map<String, String>> fileDataList = [];
 
     final conn = await SqlConnection.initializeConnection();
@@ -238,7 +248,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TITLE LIKE '%$keywordInput%'";
       final results = await conn.execute(query);
 
-      final data = await processSearchingQuery(results);
+      final imageData = base64.encode(await GetAssets().loadAssetsData(tableNameToAsset[tables]!));
+      final data = await processSearchingQuery(results, imageData);
       fileDataList.addAll(data);
 
     }
@@ -247,7 +258,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
-  Future<List<Map<String, String>>> processSearchingQuery(IResultSet results) async {
+  Future<List<Map<String, String>>> processSearchingQuery(IResultSet results, String assetImage) async {
 
     List<Map<String, String>> fileDataList = [];
 
@@ -259,7 +270,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       final usernameData = rowAssoc['CUST_USERNAME']!;
       final uploadDateData = rowAssoc['UPLOAD_DATE']!;
       final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
-      final imageData = base64.encode(await GetAssets().loadAssetsData('txt0.jpg'));
+      final imageData = assetImage;
 
       final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
       final dateComponents = dateValueWithDashes.split('-');
@@ -407,8 +418,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   @override
   void dispose() {
-    searchBarController.dispose();
     searchBarController.clear();
+    searchBarController.dispose();
     scrollListViewController.dispose();
     super.dispose();
   }
