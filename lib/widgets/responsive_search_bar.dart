@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ResponsiveSearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final String hintText;
   final VoidCallback filterTypeOnPressed;
+  final VoidCallback? cancelSearchOnPressed;
   final Function(String) onChanged;
 
   ResponsiveSearchBar({
@@ -20,6 +22,7 @@ class ResponsiveSearchBar extends StatelessWidget {
     this.customWidth,
     this.customHeight,
     this.focusNode,
+    this.cancelSearchOnPressed,
     required this.controller,
     required this.hintText,
     required this.filterTypeOnPressed,
@@ -87,7 +90,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 4.0),
                       child: ElevatedButton(
-                        onPressed: filterTypeOnPressed,
+                        onPressed: cancelSearchOnPressed ?? filterTypeOnPressed,
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           backgroundColor: Colors.transparent,
@@ -99,7 +102,9 @@ class ResponsiveSearchBar extends StatelessWidget {
                         ).copyWith(
                           fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
                         ),
-                        child: const Icon(Icons.filter_list_outlined, size: 25),
+                        child: tempData.origin == OriginFile.publicSearching 
+                          ? const Icon(Icons.cancel, size: 25)
+                          : const Icon(Icons.filter_list_outlined, size: 25),
                       ),
                     ),
                   ],

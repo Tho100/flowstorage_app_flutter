@@ -99,6 +99,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     return ResponsiveSearchBar(
       controller: searchBarController,
       focusNode: searchBarFocusNode, 
+      cancelSearchOnPressed: () {
+        searchBarController.clear();
+      },
       customWidth: 0.98,
       visibility: null, 
       hintText: "Enter a keyword", 
