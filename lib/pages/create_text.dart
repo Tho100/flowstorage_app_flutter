@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/interact_dialog/text_dialog/discard_changes_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/text_dialog/save_text_dialog.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -36,6 +37,7 @@ class CreateTextPageState extends State<CreateText> {
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
 
   final textEditingController = TextEditingController();
   final fileNameController = TextEditingController();
@@ -164,6 +166,8 @@ class CreateTextPageState extends State<CreateText> {
       saveVisibility = false;
       textFormEnabled = false;
     });
+
+    tempStorageData.addOfflineFileName(fileName);
 
     await CallNotify().customNotification(
       title: "Text File Saved",

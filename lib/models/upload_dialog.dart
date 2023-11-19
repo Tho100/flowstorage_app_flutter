@@ -249,6 +249,8 @@ class UploadDialog {
         storageData.imageBytesList.add(imageBytes);
         storageData.imageBytesFilteredList.add(imageBytes);
 
+        tempStorageData.addOfflineFileName(fileName);
+
         scaffoldMessenger.hideCurrentSnackBar();
 
         SnakeAlert.temporarySnake(
@@ -555,6 +557,7 @@ class UploadDialog {
 
         storageData.imageBytesFilteredList.add(decodeToBytes);
         storageData.imageBytesList.add(decodeToBytes);
+
 
       } else {
 

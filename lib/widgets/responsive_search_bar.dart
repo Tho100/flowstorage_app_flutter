@@ -13,7 +13,7 @@ class ResponsiveSearchBar extends StatelessWidget {
   final ValueNotifier? visibility;
   final FocusNode? focusNode;
   final String hintText;
-  final VoidCallback filterTypeOnPressed;
+  final VoidCallback? filterTypeOnPressed;
   final VoidCallback? cancelSearchOnPressed;
   final Function(String) onChanged;
 
@@ -23,9 +23,9 @@ class ResponsiveSearchBar extends StatelessWidget {
     this.customHeight,
     this.focusNode,
     this.cancelSearchOnPressed,
+    this.filterTypeOnPressed,
     required this.controller,
     required this.hintText,
-    required this.filterTypeOnPressed,
     required this.onChanged,
     Key? key
   }) : super(key: key);

@@ -106,7 +106,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       visibility: null, 
       hintText: "Enter a keyword", 
       onChanged: (String value) { }, 
-      filterTypeOnPressed: () { }
     );
   }
 
