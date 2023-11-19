@@ -174,7 +174,7 @@ class BottomTrailingOptions {
           child: const Divider(color: ThemeColor.lightGrey)
         ),
 
-        if(tempData.origin == OriginFile.public)
+        if(tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching)
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
