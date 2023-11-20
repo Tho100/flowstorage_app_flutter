@@ -96,10 +96,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildSearchBar() {
     return ResponsiveSearchBar(
+      autoFocus: true,
       controller: searchBarController,
       focusNode: searchBarFocusNode, 
       cancelSearchOnPressed: () {
-        searchBarController.clear();
+        searchBarController.clear();    
       },
       customWidth: 0.98,
       visibility: null, 
@@ -412,13 +413,12 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   void callOnExit() {
-    tempData.setOrigin(OriginFile.public);
     clearSearchingData();
+    tempData.setOrigin(OriginFile.public);
   }
 
   @override
   void dispose() {
-    searchBarController.clear();
     searchBarController.dispose();
     scrollListViewController.dispose();
     super.dispose();

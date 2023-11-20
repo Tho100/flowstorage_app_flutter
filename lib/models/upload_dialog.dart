@@ -558,6 +558,7 @@ class UploadDialog {
         storageData.imageBytesFilteredList.add(decodeToBytes);
         storageData.imageBytesList.add(decodeToBytes);
 
+        tempStorageData.addOfflineFileName(imageName);
 
       } else {
 

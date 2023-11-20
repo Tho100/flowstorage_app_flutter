@@ -13,6 +13,7 @@ class ResponsiveSearchBar extends StatelessWidget {
   final ValueNotifier? visibility;
   final FocusNode? focusNode;
   final String hintText;
+  final bool? autoFocus;
   final VoidCallback? filterTypeOnPressed;
   final VoidCallback? cancelSearchOnPressed;
   final Function(String) onChanged;
@@ -22,6 +23,7 @@ class ResponsiveSearchBar extends StatelessWidget {
     this.customWidth,
     this.customHeight,
     this.focusNode,
+    this.autoFocus,
     this.cancelSearchOnPressed,
     this.filterTypeOnPressed,
     required this.controller,
@@ -61,6 +63,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
+                        autofocus: autoFocus ?? false,
                         onChanged: onChanged,
                         controller: controller,
                         focusNode: focusNode ?? FocusNode(),
