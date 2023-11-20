@@ -88,7 +88,7 @@ class SubmitReportPage extends StatelessWidget {
             child: Text(reportTypeToDescription[reportType]!,
               style: const TextStyle(
                 color: ThemeColor.secondaryWhite,
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold
               ),
             ),

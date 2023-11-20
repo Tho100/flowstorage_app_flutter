@@ -1991,7 +1991,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
               const Divider(color: ThemeColor.whiteGrey),
             ],
             if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
-
               if (index == 7)
               Transform.translate(
                 offset: const Offset(0, -12),  
@@ -2083,7 +2082,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     int fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
     EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
-    ? const EdgeInsets.only(top: 2.0,left: 0.0, right: 0.0, bottom: 8.0) 
+    ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0, bottom: 8.0) 
     : const EdgeInsets.only(top: 12.0,left: 8.0, right: 8.0, bottom: 8.0);
 
     return Consumer<StorageDataProvider>(
@@ -2209,7 +2208,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       padding: const EdgeInsets.only(top: 16.0, right: 8.0),
       child: IconButton(
         icon: const Icon(Icons.search_rounded, size: 26),
-        onPressed: () {
+        onPressed: () async {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -2439,7 +2438,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: searchBarFocusNode.unfocus,
+      onTap: () {
+        searchBarFocusNode.unfocus();
+      },
       child: Scaffold(
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(

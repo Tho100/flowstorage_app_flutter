@@ -36,8 +36,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   final encryption = EncryptionClass();
 
-  final searchBarController = TextEditingController();
-  final searchBarFocusNode = FocusNode();
+  final psSearchBarController = TextEditingController();
+  final psSearchBarFocusNode = FocusNode();
 
   final scrollListViewController = ScrollController();
 
@@ -97,15 +97,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildSearchBar() {
     return ResponsiveSearchBar(
       autoFocus: true,
-      controller: searchBarController,
-      focusNode: searchBarFocusNode, 
+      controller: psSearchBarController,
+      focusNode: psSearchBarFocusNode, 
       cancelSearchOnPressed: () {
-        searchBarController.clear();    
+        psSearchBarController.clear();    
       },
       customWidth: 0.98,
       visibility: null, 
       hintText: "Enter a keyword", 
-      onChanged: (String value) { }, 
+      onChanged: (String value) {
+        tempData.setOrigin(OriginFile.publicSearching);
+      }, 
     );
   }
 
@@ -186,7 +188,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     final mediaQuery = MediaQuery.of(context).size.height-180;
 
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty 
-      && searchBarController.text.isNotEmpty;
+      && psSearchBarController.text.isNotEmpty;
 
     if (isSearchingForFile) {
       return const LoadingIndicator();
@@ -342,6 +344,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     final fileName = psStorageData.psSearchNameList[index];
 
     tempData.setCurrentFileName(fileName);
+    tempData.setOrigin(OriginFile.publicSearching);
 
     Navigator.push(
       context,
@@ -358,13 +361,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void searchFileOnPressed() async {
 
+    if(psSearchBarController.text.isEmpty) {
+      return;
+    }
+
     clearSearchingData();
 
     setState(() {
       isSearchingForFile = true;
     });
 
-    final keywordInput = searchBarController.text;
+    final keywordInput = psSearchBarController.text;
     final fileDataList = await getSearchedFileNameData(keywordInput);
 
     for(final fileData in fileDataList) {
@@ -419,8 +426,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   @override
   void dispose() {
-    searchBarController.dispose();
+    psSearchBarController.dispose();
     scrollListViewController.dispose();
+    psSearchBarFocusNode.dispose();
     super.dispose();
   }
 
@@ -439,7 +447,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       },
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: searchBarFocusNode.unfocus,
+        onTap: () async {
+          tempData.setOrigin(OriginFile.public);
+          psSearchBarFocusNode.unfocus(); 
+        },
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
