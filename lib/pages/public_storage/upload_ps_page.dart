@@ -202,9 +202,7 @@ class UploadPsPage extends StatelessWidget {
                     itemCount: tagsItems.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => Container(
-                      height: 45,
-                      width: 122,
-                      margin: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(6),
                       color: Colors.transparent,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -217,7 +215,13 @@ class UploadPsPage extends StatelessWidget {
                           psUploadData.setTagValue(tagsItems.elementAt(index));
                           selectedTagValue.value = psUploadData.psTagValue;
                         },
-                        child: Text(tagsItems.elementAt(index)),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.label_outline, color: ThemeColor.justWhite,),
+                            const SizedBox(width: 6), 
+                            Text(tagsItems.elementAt(index)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
