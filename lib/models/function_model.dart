@@ -102,16 +102,21 @@ class FunctionModel {
 
     try {
       
-      tempData.origin != OriginFile.offline 
+      tempData.origin != OriginFile.offline
         ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
-        : await OfflineMode().renameFile(oldFileName,newFileName);
+        : await OfflineMode().renameFile(oldFileName, newFileName);
 
       int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
       int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
       if (indexOldFileSearched != -1) {
         storageData.updateRenameFile(
-            newFileName, indexOldFile, indexOldFileSearched);
+            newFileName, indexOldFile, indexOldFileSearched);   
+        
+        if(tempData.origin == OriginFile.offline) {
+          tempStorageData.offlineFileNameList.remove(oldFileName);
+          tempStorageData.offlineFileNameList.add(newFileName);
+        }
 
         SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
       }

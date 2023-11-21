@@ -494,6 +494,8 @@ class UploadDialog {
       storageData.imageBytesFilteredList.add(imageBytes);
       storageData.imageBytesList.add(imageBytes);
 
+      tempStorageData.addOfflineFileName("$generateFileName.pdf");
+
     } else {
       
       await UpdateListView().processUpdateListView(
