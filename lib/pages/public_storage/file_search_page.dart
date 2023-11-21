@@ -49,6 +49,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final uploadDateList = [];
 
   Widget buildBody() {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -66,13 +67,93 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           ),
         ),
 
+        const SizedBox(height: 16),
+
+        const Divider(color: ThemeColor.lightGrey, height: 2),
+
         const SizedBox(height: 12),
+
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: EdgeInsets.only(left: 14.0, bottom: 6),
+            child: Text("Tags", 
+              style: TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Row(
+            children: [
+              buildTagsButton("Entertainment", "en"),
+              buildTagsButton("Data", "en"),
+              buildTagsButton("Creativity", "en"),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Row(
+            children: [
+              buildTagsButton("Software", "en"),
+              buildTagsButton("Education", "en"),
+              buildTagsButton("Gaming", "en"),
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Row(
+            children: [
+              buildTagsButton("Music", "en"),
+              buildTagsButton("Random", "en"),
+            ],
+          ),
+        ),
+                 
+        const SizedBox(height: 8),
 
         const Divider(color: ThemeColor.lightGrey),
 
         buildResultWidget(),
 
       ],
+    );
+  }
+
+  Widget buildTagsButton(
+    String tagName,  
+    String tagType,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: ElevatedButton(
+        onPressed: () { 
+          //
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: GlobalsStyle.psTagsToColor[tagName],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35.0),
+          ),
+        ),
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.label_outline, color: ThemeColor.justWhite), 
+            const SizedBox(width: 8),
+            Text(tagName),
+          ],
+        ),
+      ),
     );
   }
 
@@ -185,7 +266,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildResultWidget() {
 
-    final mediaQuery = MediaQuery.of(context).size.height-180;
+    final mediaQuery = MediaQuery.of(context).size.height-365;
 
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty 
       && psSearchBarController.text.isNotEmpty;
@@ -365,6 +446,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       return;
     }
 
+    psSearchBarFocusNode.unfocus();
+    tempData.setOrigin(OriginFile.public);
+
     clearSearchingData();
 
     setState(() {
@@ -421,7 +505,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void callOnExit() {
     clearSearchingData();
-    tempData.setOrigin(OriginFile.public);
+    setState(() {
+      tempData.setOrigin(OriginFile.public);
+    });
   }
 
   @override
