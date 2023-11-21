@@ -38,7 +38,9 @@ class PsStorageDataProvider extends ChangeNotifier {
 
   void setPsSearchTitle(String titles) {
     _psSearchTitleList.add(titles);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   void setPsImageBytes(List<Uint8List> bytes) {

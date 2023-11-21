@@ -122,6 +122,20 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
         const Divider(color: ThemeColor.lightGrey),
 
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: EdgeInsets.only(left: 14.0, top: 6),
+            child: Text("Discover", 
+              style: TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+
         buildResultWidget(),
 
       ],
@@ -177,7 +191,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildSearchBar() {
     return ResponsiveSearchBar(
-      autoFocus: true,
+      autoFocus: false,
       controller: psSearchBarController,
       focusNode: psSearchBarFocusNode, 
       cancelSearchOnPressed: () {
@@ -266,10 +280,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildResultWidget() {
 
-    final mediaQuery = MediaQuery.of(context).size.height-365;
+    final mediaQuery = MediaQuery.of(context).size.height-385;
 
-    final verifySearching = psStorageData.psSearchTitleList.isNotEmpty 
-      && psSearchBarController.text.isNotEmpty;
+    final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
 
     if (isSearchingForFile) {
       return const LoadingIndicator();
@@ -510,6 +523,68 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     });
   }
 
+  void callInitialData() {
+
+    final fileName = [
+      storageData.fileNamesFilteredList[0],
+      storageData.fileNamesFilteredList[1],
+      storageData.fileNamesFilteredList[2],
+      storageData.fileNamesFilteredList[3],
+      storageData.fileNamesFilteredList[4],
+      storageData.fileNamesFilteredList[5],
+    ];
+
+    final uploadDate = [
+      storageData.fileDateFilteredList[0],
+      storageData.fileDateFilteredList[1],
+      storageData.fileDateFilteredList[2],
+      storageData.fileDateFilteredList[3],
+      storageData.fileDateFilteredList[4],
+      storageData.fileDateFilteredList[5],
+    ];
+
+    final uploaderName = [
+      psStorageData.psUploaderList[0],
+      psStorageData.psUploaderList[1],
+      psStorageData.psUploaderList[2],
+      psStorageData.psUploaderList[3],
+      psStorageData.psUploaderList[4],
+      psStorageData.psUploaderList[5],
+    ];    
+
+    final imageBytes = [
+      base64.encode(storageData.imageBytesFilteredList[0]!),
+      base64.encode(storageData.imageBytesFilteredList[1]!),
+      base64.encode(storageData.imageBytesFilteredList[2]!),
+      base64.encode(storageData.imageBytesFilteredList[3]!),
+      base64.encode(storageData.imageBytesFilteredList[4]!),
+      base64.encode(storageData.imageBytesFilteredList[5]!),
+    ];
+
+    final titles = [
+      psStorageData.psTitleList[0],
+      psStorageData.psTitleList[1],
+      psStorageData.psTitleList[2],
+      psStorageData.psTitleList[3],
+      psStorageData.psTitleList[4],
+      psStorageData.psTitleList[5],
+    ];
+
+    uploadDateList.addAll(uploadDate);
+    psStorageData.psSearchNameList.addAll(fileName);
+    psStorageData.psSearchImageBytesList.addAll(imageBytes);
+    psStorageData.psSearchUploaderList.addAll(uploaderName);
+
+    for(var title in titles) {
+      psStorageData.setPsSearchTitle(title);
+    }
+
+    shouldReloadListView = !shouldReloadListView;
+    
+    tempData.setOrigin(OriginFile.publicSearching);
+
+  }
+
   @override
   void dispose() {
     psSearchBarController.dispose();
@@ -521,7 +596,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   @override
   void initState() {
     super.initState();
-    tempData.setOrigin(OriginFile.publicSearching);
+    callInitialData();
   }
 
   @override
