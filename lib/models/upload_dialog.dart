@@ -268,11 +268,20 @@ class UploadDialog {
 
         scaffoldMessenger.hideCurrentSnackBar();
 
+        if(countSelectedFiles < 2) {
+          SnakeAlert.temporarySnake(
+            snackState: scaffoldMessenger, 
+            message: "${shortenText.cutText(fileName)} Has been added"
+          );
+        }
+
+      }
+
+      if(countSelectedFiles > 2) {
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "${shortenText.cutText(fileName)} Has been added"
+          message: "${countSelectedFiles.toString()} Items has been added"
         );
-      
       }
 
       return;

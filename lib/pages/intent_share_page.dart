@@ -41,8 +41,6 @@ class IntentSharingPage extends StatelessWidget {
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
-  late Uint8List fileBytes = Uint8List(0);
-
   Widget buildBody(BuildContext context) {
 
     final fileType = fileName.split('.').last;
@@ -159,11 +157,21 @@ class IntentSharingPage extends StatelessWidget {
       return;
     }
 
-    final compressedFileData = CompressorApi.compressByte(base64.decode(fileData));
+    Uint8List fileBytes = Uint8List(0);
+
+    final fileType = fileName.split('.').last;
+
+    if(Globals.imageType.contains(fileType)) {
+      fileBytes = base64.decode(fileData);
+
+    } else {
+      fileBytes = CompressorApi.compressByte(base64.decode(fileData));
+
+    }
 
     await OfflineMode().processSaveOfflineFile(
       fileName: fileName, 
-      fileData: compressedFileData
+      fileData: fileBytes
     );
 
     tempStorageData.addOfflineFileName(fileName);

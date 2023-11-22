@@ -44,11 +44,11 @@ class QuickActionsModel {
 
   void newDirectory() {
 
-    final countDirectory = _storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
     final limitDirectoryUpload = AccountPlan.mapDirectoryUpload[_userData.accountType]!;
     final limitFilesUpload = AccountPlan.mapFilesUpload[_userData.accountType]!;
 
     if(_storageData.fileNamesList.length < limitFilesUpload) {
+      final countDirectory = _storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
       if(countDirectory != limitDirectoryUpload) {
         _openCreateDirectoryDialog();
 

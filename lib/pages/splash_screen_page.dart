@@ -80,8 +80,11 @@ class SplashScreenState extends State<SplashScreen> {
           quickActionsModel.newDirectory();          
 
         } else if (shortcutType == goOfflinePageAction) {
-          await quickActionsModel.offline();          
+          final dataCaller = DataCaller();
+          await dataCaller.offlineData();
           setState(() {});
+          //await quickActionsModel.offline();          
+          //setState(() {});
 
         } 
         
