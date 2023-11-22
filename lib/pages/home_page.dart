@@ -1183,6 +1183,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         tempData.setCurrentFolder(tempStorageData.folderNameList[index]);
 
         loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.folderName} files.",context: context);
+
+        _deactivatePhotosView();
+
+        if (tempData.origin == OriginFile.public) {
+          _clearPublicStorageData(clearImage: false);
+        }
+
         await _callFolderData(tempStorageData.folderNameList[index]);
 
         loadingDialog.stopLoading();
