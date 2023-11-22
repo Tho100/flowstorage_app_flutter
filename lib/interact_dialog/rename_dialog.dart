@@ -40,9 +40,9 @@ class RenameDialog {
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
                       width: Globals.generalFileTypes.contains(fileType) 
-                        ? 38 : 55,
+                        ? 36 : 55,
                       height: Globals.generalFileTypes.contains(fileType) 
-                        ? 38 : 55,
+                        ? 36 : 55,
                       fit: BoxFit.cover,
                       image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),

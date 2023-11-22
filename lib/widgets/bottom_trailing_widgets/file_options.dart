@@ -50,9 +50,9 @@ class BottomTrailingOptions {
                 borderRadius: BorderRadius.circular(6),
                 child: Image(
                   width: Globals.generalFileTypes.contains(fileType) 
-                    ? 38 : 60,
+                    ? 36 : 60,
                   height: Globals.generalFileTypes.contains(fileType) 
-                    ? 38 : 60,
+                    ? 36 : 60,
                   fit: BoxFit.cover,
                   image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                 ),
