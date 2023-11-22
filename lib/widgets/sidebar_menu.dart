@@ -175,7 +175,6 @@ class CustomSideBarMenu extends StatelessWidget {
               ),
   
               if(tempData.origin != OriginFile.offline && tempData.origin != OriginFile.sharedOther) ... [ 
-                
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -185,14 +184,45 @@ class CustomSideBarMenu extends StatelessWidget {
                       children: [
                         const Icon(Icons.cloud_outlined, color: Color.fromARGB(255, 215, 215, 215), size: 19),
                         const SizedBox(width: 8),
-                        Text(
-                          tempData.origin == OriginFile.public 
-                          ? "Storage (Public)" : "Storage",
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 216, 216, 216),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
+                        FutureBuilder<int>(
+                          future: usageProgress,
+                          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                            const textStyle = TextStyle(
+                              color: Color.fromARGB(255, 216, 216, 216),
+                              fontWeight: FontWeight.w500,
+                            );
+
+                            if(snapshot.connectionState == ConnectionState.waiting) {
+                              return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
+                            } else if (snapshot.hasError) {
+                              return const Text(
+                                "Failed to retrieve storage usage",
+                                style: textStyle,
+                                textAlign: TextAlign.center,
+                              );
+
+                            } else {
+                              final progressValue = snapshot.data! / 100.0;
+                              final isStorageFull = progressValue >= 1;
+                              final storageText = tempData.origin == OriginFile.public ? "Storage (Public)" : "Storage";
+
+                              return isStorageFull
+                              ? const Text(
+                                "Storage full",
+                                style: textStyle,
+                                textAlign: TextAlign.center,
+                              )
+                              : Text(
+                                storageText,
+                                style: textStyle,
+                                textAlign: TextAlign.center,
+                              );
+
+                            }
+
+                          }
+                        
                         ),
                       ],
                     ),
