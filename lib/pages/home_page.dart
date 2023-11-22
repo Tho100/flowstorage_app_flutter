@@ -1174,7 +1174,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
   }
 
-  Future _buildFoldersDialog() async {
+  Future _buildFolderBottomSheet() async {
     return FolderDialog().buildFoldersBottomSheet(
       folderOnPressed: (int index) async {
         
@@ -1182,7 +1182,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         tempData.setCurrentFolder(tempStorageData.folderNameList[index]);
 
-        loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.folderName} files.",context: context);
+        loadingDialog.startLoading(
+          title: "Please wait", 
+          subText: "Retrieving ${tempData.folderName} files.",
+          context: context
+        );
 
         _deactivatePhotosView();
 
@@ -2463,7 +2467,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           children: [_buildSearchBar(),_buildNavigationButtons(),_buildHomeBody()]),
 
         bottomNavigationBar: CustomNavigationBar(
-          openFolderDialog: _buildFoldersDialog, 
+          openFolderDialog: _buildFolderBottomSheet, 
           toggleHome: _toggleHome,
           togglePhotos: _togglePhotos,
           togglePublicStorage: _togglePublicStorage, 

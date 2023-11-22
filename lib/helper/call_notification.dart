@@ -23,7 +23,7 @@ class CallNotify {
   }) async {
 
     await NotificationApi.showOnfinishTaskNotification(
-      title: "Download Finished",
+      title: "Download Completed",
       body: "$fileName Has been downloaded",
       payload: 'h_collin01'
     );

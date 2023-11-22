@@ -1,23 +1,24 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
+import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class IntentSharingPage extends StatelessWidget {
@@ -37,6 +38,7 @@ class IntentSharingPage extends StatelessWidget {
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
   late Uint8List fileBytes = Uint8List(0);
@@ -143,17 +145,29 @@ class IntentSharingPage extends StatelessWidget {
 
       Navigator.pop(context);
 
-    } catch (err, st) {
-      callOnUploadFailed('Exception from processFileUpload {intent_share_page}', err, st);
-      SnakeAlert.errorSnake("Upload failed.");
+    } catch (err) {
+      NotificationApi.stopNotification(0);
+      saveFileAsOffline();
     }
 
   }
 
-  void callOnUploadFailed(String errMessage, dynamic error, StackTrace stackTrace) {
-    SnakeAlert.errorSnake("Upload failed.");
-    NotificationApi.stopNotification(0);
-    Logger().e(errMessage, error, stackTrace);      
+  void saveFileAsOffline() async {
+
+    if(tempStorageData.offlineFileNameList.contains(fileName)) {
+      CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
+      return;
+    }
+
+    final compressedFileData = CompressorApi.compressByte(base64.decode(fileData));
+
+    await OfflineMode().processSaveOfflineFile(
+      fileName: fileName, 
+      fileData: compressedFileData
+    );
+
+    tempStorageData.addOfflineFileName(fileName);
+
   }
 
   Future exceededUploadDialog() {
