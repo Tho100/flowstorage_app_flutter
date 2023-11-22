@@ -123,14 +123,14 @@ class UpgradePageState extends State<UpradePage> {
 
     return FutureBuilder<String>(
       future: _convertToLocalCurrency(value),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if(snapshot.connectionState == ConnectionState.waiting) {
+      builder: (context, priceSnapshot) {
+        if(priceSnapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
             width: 25,
             height: 25,
             child: CircularProgressIndicator(color: ThemeColor.darkBlack)
           );
-        } else if (snapshot.hasError) {
+        } else if (priceSnapshot.hasError) {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
               textStyle: const TextStyle(
@@ -141,8 +141,8 @@ class UpgradePageState extends State<UpradePage> {
             ),
             textAlign: TextAlign.left,
           );
-        } else if (snapshot.hasData) {
-          final price = snapshot.data!;
+        } else if (priceSnapshot.hasData) {
+          final price = priceSnapshot.data!;
           final indexOfDot = price.indexOf('.');
           final actualPrice = price.substring(0, indexOfDot);
           return Text("$actualPrice/mo.",

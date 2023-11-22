@@ -38,7 +38,7 @@ class ResponsiveListView extends StatelessWidget {
             padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, index) {
               
               final fileTitleSearchedValue = storageData.fileNamesFilteredList[index];
               final setLeadingImage = storageData.imageBytesFilteredList.isNotEmpty

@@ -114,7 +114,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   void _showSignOutDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)

@@ -171,7 +171,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     return StreamBuilder<double>(
       stream: sliderValueController.stream,
       initialData: 0.0,
-      builder: (context, AsyncSnapshot<double> snapshot) {
+      builder: (context, snapshot) {
         return ValueListenableBuilder<double>(
           valueListenable: audioPositionNotifier,
           builder: (context, audioPosition, _) {

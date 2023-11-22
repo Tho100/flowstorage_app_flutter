@@ -222,7 +222,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.psSearchTitleList.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
                   final fileType = storageData.psSearchNameList[index].split('.').last;

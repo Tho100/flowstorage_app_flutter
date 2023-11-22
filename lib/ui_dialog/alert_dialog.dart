@@ -8,7 +8,7 @@ class CustomAlertDialog {
     return showDialog(
       barrierDismissible: false,
       context: navigatorKey.currentContext!,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
@@ -37,7 +37,7 @@ class CustomAlertDialog {
   static Future alertDialogTitle(String title, String messages) {
     return showDialog(
       context: navigatorKey.currentContext!,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -76,7 +76,7 @@ class CustomAlertDialog {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14)

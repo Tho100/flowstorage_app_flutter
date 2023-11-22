@@ -6,7 +6,7 @@ class DiscardChangesDialog {
   Future<bool> buildConfirmationDialog(BuildContext context) async {
     return await showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

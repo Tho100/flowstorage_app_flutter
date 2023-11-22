@@ -8,7 +8,7 @@ class CustomFormDialog {
     return showDialog(
       barrierDismissible: false,
       context: navigatorKey.currentContext!,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)

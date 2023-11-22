@@ -186,16 +186,16 @@ class CustomSideBarMenu extends StatelessWidget {
                         const SizedBox(width: 8),
                         FutureBuilder<int>(
                           future: usageProgress,
-                          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                          builder: (context, storageUsageSnapshot) {
                             const textStyle = TextStyle(
                               color: Color.fromARGB(255, 216, 216, 216),
                               fontWeight: FontWeight.w500,
                             );
 
-                            if(snapshot.connectionState == ConnectionState.waiting) {
+                            if(storageUsageSnapshot.connectionState == ConnectionState.waiting) {
                               return const CircularProgressIndicator(color: ThemeColor.darkPurple);
 
-                            } else if (snapshot.hasError) {
+                            } else if (storageUsageSnapshot.hasError) {
                               return const Text(
                                 "Failed to retrieve storage usage",
                                 style: textStyle,
@@ -203,7 +203,7 @@ class CustomSideBarMenu extends StatelessWidget {
                               );
 
                             } else {
-                              final progressValue = snapshot.data! / 100.0;
+                              final progressValue = storageUsageSnapshot.data! / 100.0;
                               final isStorageFull = progressValue >= 1;
                               final storageText = tempData.origin == OriginFile.public ? "Storage (Public)" : "Storage";
 
@@ -232,9 +232,9 @@ class CustomSideBarMenu extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 25.0),
                     child: FutureBuilder<int>(
                       future: usageProgress,
-                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                      builder: (context, storageUsageSnapshot) {
                         return Text(
-                          "${snapshot.data.toString()}%",
+                          "${storageUsageSnapshot.data.toString()}%",
                           style: const TextStyle(
                             color: Color.fromARGB(255, 218, 218, 218),
                             fontWeight: FontWeight.w500,
@@ -261,13 +261,13 @@ class CustomSideBarMenu extends StatelessWidget {
                   ),
                   child: FutureBuilder<int>(
                     future: usageProgress,
-                    builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                    builder: (context, storageUsageSnapshot) {
+                      if (storageUsageSnapshot.connectionState == ConnectionState.waiting) {
                         return const LinearProgressIndicator(
                           backgroundColor: ThemeColor.lightGrey,
                         );
                       }
-                      final progressValue = snapshot.data! / 100.0;
+                      final progressValue = storageUsageSnapshot.data! / 100.0;
                       return LinearProgressIndicator(
                         backgroundColor: ThemeColor.lightGrey,
                         valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
