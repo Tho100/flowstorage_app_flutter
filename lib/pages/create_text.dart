@@ -154,6 +154,8 @@ class CreateTextPageState extends State<CreateText> {
       fileName: fileName,
     );
 
+    tempStorageData.addOfflineFileName(fileName);
+
     _updateUIAfterSave(fileName, true);
 
   }
@@ -166,8 +168,6 @@ class CreateTextPageState extends State<CreateText> {
       saveVisibility = false;
       textFormEnabled = false;
     });
-
-    tempStorageData.addOfflineFileName(fileName);
 
     await CallNotify().customNotification(
       title: "Text File Saved",
