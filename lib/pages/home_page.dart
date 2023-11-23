@@ -1255,6 +1255,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(context, fileName);
       }, 
+      onDetailsPressed: () {
+        Navigator.pop(context);
+        NavigatePage.goToPageFileDetails(context, fileName);
+      },
       onAOPressed: () {
         Navigator.pop(context);
         _makeAvailableOfflineOnPressed(fileName: fileName);

@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/pages/comment_page.dart';
+import 'package:flowstorage_fsc/pages/file_details.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
@@ -25,6 +26,13 @@ import '../upgrades/upgrade_page.dart';
 import '../pages/settings_page.dart';
 
 class NavigatePage {
+
+  static void goToPageFileDetails(BuildContext context, String fileName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FileDetailsPage(fileName: fileName,))
+    );
+  }
 
   static void goToPageSharing(BuildContext context, String fileName) {
      Navigator.push(

@@ -17,7 +17,7 @@ class EmptyBody extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Widget _homeEmpty(BuildContext context) {
+  Widget _buildOnEmpty(BuildContext context) {
 
     const originToHeaderMessage = {
       OriginFile.home: "Nothing to see here",
@@ -79,7 +79,7 @@ class EmptyBody extends StatelessWidget {
               children: [
                 Visibility(
                   visible: storageData.fileNamesList.isEmpty,
-                  child: _homeEmpty(context),
+                  child: _buildOnEmpty(context),
                 ),
               ],
             ),

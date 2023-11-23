@@ -23,6 +23,7 @@ class BottomTrailingOptions {
     required String fileName,
     required VoidCallback onRenamePressed,
     required VoidCallback onDownloadPressed,
+    required VoidCallback onDetailsPressed,
     required VoidCallback onDeletePressed,
     required VoidCallback onSharingPressed,
     required VoidCallback onAOPressed,
@@ -201,6 +202,20 @@ class BottomTrailingOptions {
               Icon(Icons.file_download_outlined),
               SizedBox(width: 15.0),
               Text('Download',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
+          ),
+        ),
+
+        ElevatedButton(
+          onPressed: onDetailsPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.info_outlined),
+              SizedBox(width: 15.0),
+              Text('Details',
                 style: GlobalsStyle.btnBottomDialogTextStyle
               ),
             ],

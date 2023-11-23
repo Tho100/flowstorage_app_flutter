@@ -34,6 +34,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   bool shouldReloadListView = false; 
   bool isSearchingForFile = false; 
 
+  final isTagsVisibleNotifier = ValueNotifier<bool>(false);
+
   final encryption = EncryptionClass();
 
   final psSearchBarController = TextEditingController();
@@ -574,6 +576,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     psSearchBarController.dispose();
     scrollListViewController.dispose();
     psSearchBarFocusNode.dispose();
+    isTagsVisibleNotifier.dispose();
     super.dispose();
   }
 

@@ -352,31 +352,29 @@ class PreviewFileState extends State<PreviewFile> {
       onRenamePressed: () {
         Navigator.pop(context);
         _openRenameDialog(fileName);
-
       }, 
       onDownloadPressed: () async {
         Navigator.pop(context);
         await functionModel.downloadFileData(fileName: fileName);
-
       }, 
       onDeletePressed: () {
         _openDeleteDialog(fileName);
-
       },
       onSharingPressed: () {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(
-            context, tempData.selectedFileName);
-
+          context, tempData.selectedFileName);
       }, 
+      onDetailsPressed: () {
+        Navigator.pop(context);
+        NavigatePage.goToPageFileDetails(context, fileName);
+      },
       onAOPressed: () async {
         Navigator.pop(context);
         _makeAvailableOfflineOnPressed(fileName);
-        
       }, 
       onOpenWithPressed: () {
         _openWithOnPressed();
-
       },
       context: context
     );
