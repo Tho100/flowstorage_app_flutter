@@ -90,7 +90,7 @@ class FileDetailsPage extends StatelessWidget {
 
     } else {
       final offlineDirPath = await OfflineMode().returnOfflinePath();
-      final filePath = '${offlineDirPath.path}/${tempData.selectedFileName}';
+      final filePath = '${offlineDirPath.path}/$fileName';
 
       fileBytes = await File(filePath).readAsBytes();
 
