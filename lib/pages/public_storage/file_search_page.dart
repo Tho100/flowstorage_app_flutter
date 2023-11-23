@@ -34,7 +34,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   bool shouldReloadListView = false; 
   bool isSearchingForFile = false; 
 
-  final isTagsVisibleNotifier = ValueNotifier<bool>(false);
+  final isTagsVisibleNotifier = ValueNotifier<bool>(true);
 
   final encryption = EncryptionClass();
 
@@ -69,55 +69,68 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           ),
         ),
 
-        const SizedBox(height: 16),
+        ValueListenableBuilder(
+          valueListenable: isTagsVisibleNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: value,
+              child: Column(
+                children: [
 
-        const Divider(color: ThemeColor.lightGrey, height: 2),
+                  const SizedBox(height: 16),
 
-        const SizedBox(height: 12),
+                  const Divider(color: ThemeColor.lightGrey, height: 2),
 
-        const Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: 14.0, bottom: 6),
-            child: Text("Tags", 
-              style: TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
+                  const SizedBox(height: 12),
+
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 14.0, bottom: 6),
+                      child: Text("Tags", 
+                        style: TextStyle(
+                          color: ThemeColor.secondaryWhite,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        buildTagsButton("Entertainment", "en"),
+                        buildTagsButton("Data", "en"),
+                        buildTagsButton("Creativity", "en"),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        buildTagsButton("Software", "en"),
+                        buildTagsButton("Education", "en"),
+                        buildTagsButton("Gaming", "en"),
+                      ],
+                    ),
+                  ),
+                      
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        buildTagsButton("Music", "en"),
+                        buildTagsButton("Random", "en"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: [
-              buildTagsButton("Entertainment", "en"),
-              buildTagsButton("Data", "en"),
-              buildTagsButton("Creativity", "en"),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: [
-              buildTagsButton("Software", "en"),
-              buildTagsButton("Education", "en"),
-              buildTagsButton("Gaming", "en"),
-            ],
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: [
-              buildTagsButton("Music", "en"),
-              buildTagsButton("Random", "en"),
-            ],
-          ),
+            );
+          }
         ),
                  
         const SizedBox(height: 8),
@@ -210,6 +223,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       controller: psSearchBarController,
       focusNode: psSearchBarFocusNode, 
       cancelSearchOnPressed: () {
+        isTagsVisibleNotifier.value = true;
         psSearchBarController.clear();    
       },
       customWidth: 0.98,
@@ -295,7 +309,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildResultWidget() {
 
-    final mediaQuery = MediaQuery.of(context).size.height-385;
+    final mediaQuery = isTagsVisibleNotifier.value == true 
+      ? MediaQuery.of(context).size.height-385
+      : MediaQuery.of(context).size.height-195;
 
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
 
@@ -482,6 +498,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = true;
     });
+
+    isTagsVisibleNotifier.value = false;
 
     final keywordInput = psSearchBarController.text;
     final fileDataList = await getSearchedFileNameData(keywordInput);
