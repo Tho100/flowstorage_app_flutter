@@ -92,7 +92,7 @@ class SnakeAlert {
     required String message
   }) {
     return snackState.showSnackBar(
-      SnackBar(
+      SnackBar(        
         content: Row(
           children: [
             const Icon(Icons.check, color: Colors.white, size: 16),

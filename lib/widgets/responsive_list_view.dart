@@ -22,7 +22,7 @@ class ResponsiveListView extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final double itemExtentValue = 58.0;
+  final double itemExtentValue = 60.0;
   final double bottomExtraSpacesHeight = 89.0;
 
   @override
@@ -63,18 +63,21 @@ class ResponsiveListView extends StatelessWidget {
                             width: 31,
                           )
                         : const SizedBox(),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: childrens(index),
+                    trailing: Transform.translate(
+                      offset: const Offset(0, -4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: childrens(index),
+                      ),
                     ),
                     title: Transform.translate(
-                      offset: const Offset(0, -4),
+                      offset: const Offset(0, -6),
                       child: Text(
                         fileTitleSearchedValue,
                         style: const TextStyle(
                           color: ThemeColor.justWhite,
                           overflow: TextOverflow.ellipsis,
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ),

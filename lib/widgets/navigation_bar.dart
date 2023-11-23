@@ -61,7 +61,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
           color: ThemeColor.whiteGrey,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: ThemeColor.mediumBlack,
+            backgroundColor: ThemeColor.darkBlack,
             unselectedItemColor: Colors.grey,
             fixedColor: Colors.grey,
             currentIndex: bottomNavigationBarIndex.value,

@@ -184,7 +184,7 @@ class ResetBackupState extends State<ResetBackup> {
                             custEmail: email)));
 
     } catch (exportBackupFailed) {
-      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to export your recovery key. Please try again later");
+      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to process your recovery key. Please try again later");
     }
   }
 

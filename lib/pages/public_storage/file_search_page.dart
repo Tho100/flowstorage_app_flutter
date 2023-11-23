@@ -174,16 +174,29 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildOnEmpty() {
     return const Expanded(
       child: Center(
-        child: Center(
-          child: Text(
-            "It's empty here...",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(248, 94, 93, 93),
-              fontSize: 26,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "No results found",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: ThemeColor.secondaryWhite,
+                fontSize: 22,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
+            SizedBox(height: 8),
+            Text(
+              "Try broadening your search or checking for typos",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: ThemeColor.thirdWhite,
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

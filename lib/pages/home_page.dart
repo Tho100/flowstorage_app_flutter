@@ -362,7 +362,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     SnakeAlert.temporarySnake(
       snackState: scaffoldMessenger, 
-      message: "${ShortenText().cutText(fileName)} Has been added"
+      message: "Added ${ShortenText().cutText(fileName)}."
     );
 
     await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
@@ -763,7 +763,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       if(!mounted) return;
       Navigator.pop(context);
 
-      SnakeAlert.okSnake(message: "$folderName Folder has been deleted.",icon: Icons.check);
+      SnakeAlert.okSnake(message: "Deleted $folderName folder.", icon: Icons.check);
 
     } catch (err) {
       SnakeAlert.errorSnake("Failed to delete this folder.");
@@ -965,7 +965,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       loadingDialog.stopLoading();
 
-      SnakeAlert.okSnake(message: "$count item(s) has been deleted.", icon: Icons.check);
+      SnakeAlert.okSnake(message: "Deleted $count item(s).", icon: Icons.check);
 
       _clearItemSelection();
 

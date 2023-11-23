@@ -78,7 +78,7 @@ class FunctionModel {
 
       if(tempData.origin == OriginFile.offline) {
         await OfflineMode().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
+        SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName)}", icon: Icons.check);
         return;
 
       } 
@@ -86,7 +86,7 @@ class FunctionModel {
       final encryptVals = EncryptionClass().encrypt(fileName);
       await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
       
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been deleted");
+      SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName)}.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from _deletionFile {function_model}',err,st);

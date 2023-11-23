@@ -159,7 +159,7 @@ class UploadDialog {
 
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "${shortenText.cutText(filesName)} Has been added."
+          message: "Added ${shortenText.cutText(filesName)}."
         );
 
         countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
@@ -174,7 +174,7 @@ class UploadDialog {
 
       SnakeAlert.temporarySnake(
         snackState: scaffoldMessenger, 
-        message: "${countSelectedFiles.toString()} Items has been added"
+        message: "Added ${countSelectedFiles.toString()} item(s)"
       );
 
       countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
@@ -271,7 +271,7 @@ class UploadDialog {
         if(countSelectedFiles < 2) {
           SnakeAlert.temporarySnake(
             snackState: scaffoldMessenger, 
-            message: "${shortenText.cutText(fileName)} Has been added"
+            message: "Added ${shortenText.cutText(fileName)}"
           );
         }
 
@@ -280,7 +280,7 @@ class UploadDialog {
       if(countSelectedFiles > 2) {
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "${countSelectedFiles.toString()} Items has been added"
+          message: "Added ${countSelectedFiles.toString()}"
         );
       }
 
@@ -406,7 +406,7 @@ class UploadDialog {
       if(countSelectedFiles < 2) {
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "${shortenText.cutText(selectedFileName)} Has been added"
+          message: "Added ${shortenText.cutText(selectedFileName)}."
         );
       }
 
@@ -415,14 +415,14 @@ class UploadDialog {
     if(countSelectedFiles > 2) {
       SnakeAlert.temporarySnake(
         snackState: scaffoldMessenger, 
-        message: "${countSelectedFiles.toString()} Items has been added"
+        message: "Added ${countSelectedFiles.toString()} item(s)."
       );
     }
 
     await NotificationApi.stopNotification(0);
 
     if(countSelectedFiles > 0) {
-      await CallNotify().uploadedNotification(title: "Upload Finished",count: countSelectedFiles);
+      await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles);
     }
 
   }
@@ -470,10 +470,10 @@ class UploadDialog {
 
     SnakeAlert.temporarySnake(
       snackState: scaffoldMessenger,
-      message: "Folder $folderName has been added"
+      message: "Added $folderName folder"
     );
 
-    await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "$folderName Has been added");
+    await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "Folder $folderName has been added");
 
   }
 
@@ -538,7 +538,7 @@ class UploadDialog {
 
     await NotificationApi.stopNotification(0);
 
-    SnakeAlert.okSnake(message: "$generateFileName.pdf Has been added",icon: Icons.check);
+    SnakeAlert.okSnake(message: "Added $generateFileName.pdf", icon: Icons.check);
 
     await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
@@ -603,7 +603,7 @@ class UploadDialog {
 
     }
 
-    SnakeAlert.okSnake(message: "1 photo has been added", icon: Icons.check);
+    SnakeAlert.okSnake(message: "Added 1 photo.", icon: Icons.check);
 
     await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
     
@@ -684,7 +684,7 @@ class UploadDialog {
 
     SnakeAlert.temporarySnake(
       snackState: scaffoldMessenger, 
-      message: "${ShortenText().cutText(fileName)} Has been added."
+      message: "Added ${ShortenText().cutText(fileName)}"
     );
 
     await CallNotify().

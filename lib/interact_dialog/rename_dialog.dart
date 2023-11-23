@@ -67,7 +67,7 @@ class RenameDialog {
 
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: Text(
                   ShortenText().cutText(fileName),
                   style: const TextStyle(
