@@ -1748,12 +1748,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final loadingDialog = MultipleTextLoading();
     
     loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
-    
-    await _callDirectoryData();
-    
+
     tempData.setCurrentDirectory(tempData.selectedFileName);
     tempData.setAppBarTitle(tempData.selectedFileName);
 
+    await _callDirectoryData();
+  
     loadingDialog.stopLoading();
 
   }

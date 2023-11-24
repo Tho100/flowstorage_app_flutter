@@ -80,11 +80,8 @@ class SplashScreenState extends State<SplashScreen> {
           quickActionsModel.newDirectory();          
 
         } else if (shortcutType == goOfflinePageAction) {
-          final dataCaller = DataCaller();
-          await dataCaller.offlineData();
+          await quickActionsModel.offline();          
           setState(() {});
-          //await quickActionsModel.offline();          
-          //setState(() {});
 
         } 
         
@@ -165,7 +162,9 @@ class SplashScreenState extends State<SplashScreen> {
           
           if(!mounted) return;
           
-          await _callFileData(
+          tempData.origin == OriginFile.offline 
+          ? await quickActionsModel.offline()
+          : await _callFileData(
             conn, getLocalUsername, getLocalEmail, 
             getLocalAccountType, context);
           

@@ -42,6 +42,9 @@ class FileDetailsPage extends StatelessWidget {
     "xls": "Spreadsheet",
     "xlsx": "Spreadsheet",
 
+    "pptx": "Presentation",
+    "ptx": "Presentation",
+
     "mp4": "Video",
     "wmv": "Video",
     "avi": "Video",
@@ -50,7 +53,21 @@ class FileDetailsPage extends StatelessWidget {
 
     "mp3": "Audio",
     "wav": "Audio",
+
     "txt": "Text",
+    "xml": "Text",
+    "js": "Text",
+    "css": "Text",
+    "py": "Text",
+    "sql": "Text",
+    "md": "Text",
+    "csv": "Text",
+    "html": "Text",
+
+    "exe": "Executable",
+    "apk": "Android Application",
+    "msi": "Installer",
+
   };
 
   Future<Size> getImageResolution(Uint8List imageBytes) async {

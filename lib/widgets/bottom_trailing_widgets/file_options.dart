@@ -208,6 +208,7 @@ class BottomTrailingOptions {
           ),
         ),
 
+        if(fileName.contains('.'))
         ElevatedButton(
           onPressed: onDetailsPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
