@@ -10,24 +10,36 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class FileDetailsPage extends StatelessWidget {
+class FileDetailsPage extends StatefulWidget {
 
   final String fileName;
 
-  FileDetailsPage({
+  const FileDetailsPage({
     required this.fileName,
     Key? key
   }) : super(key: key);
 
+  @override
+  State<FileDetailsPage> createState() => FileDetailsPageState();
+}
+
+class FileDetailsPageState extends State<FileDetailsPage> {
+
+  final uploaderNameNotifier = ValueNotifier<String>("(NULL)");
+
   final storageData = GetIt.instance<StorageDataProvider>();
+
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final tempData = GetIt.instance<TempDataProvider>();
+
   final userData = GetIt.instance<UserDataProvider>();
 
   final fileTypeMap = {
@@ -76,7 +88,7 @@ class FileDetailsPage extends StatelessWidget {
   }
 
   Future<String> returnImageSize() async {
-    final index = storageData.fileNamesFilteredList.indexOf(fileName);
+    final index = storageData.fileNamesFilteredList.indexOf(widget.fileName);
     final imageBytes = storageData.imageBytesFilteredList.elementAt(index);
 
     final imageSize = await getImageResolution(imageBytes!);
@@ -88,8 +100,8 @@ class FileDetailsPage extends StatelessWidget {
 
   Future<String> getFileSize() async {
 
-    final fileType = fileName.split('.').last;
-    final fileIndex = storageData.fileNamesFilteredList.indexOf(fileName);
+    final fileType = widget.fileName.split('.').last;
+    final fileIndex = storageData.fileNamesFilteredList.indexOf(widget.fileName);
     
     Uint8List? fileBytes = Uint8List(0);
 
@@ -103,13 +115,13 @@ class FileDetailsPage extends StatelessWidget {
 
         fileBytes = Globals.imageType.contains(fileType) 
           ? storageData.imageBytesFilteredList[fileIndex] 
-          : await RetrieveData().retrieveDataParams(userData.username, fileName, currentTable);
+          : await RetrieveData().retrieveDataParams(userData.username, widget.fileName, currentTable);
 
       }
 
     } else {
       final offlineDirPath = await OfflineMode().returnOfflinePath();
-      final filePath = '${offlineDirPath.path}/$fileName';
+      final filePath = '${offlineDirPath.path}/${widget.fileName}';
 
       fileBytes = await File(filePath).readAsBytes();
 
@@ -200,11 +212,11 @@ class FileDetailsPage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) {
     
-    final fileType = fileName.split('.').last;
+    final fileType = widget.fileName.split('.').last;
 
     final index = tempData.origin == OriginFile.publicSearching 
-      ? psStorageData.psSearchNameList.indexOf(fileName)
-      : storageData.fileNamesFilteredList.indexOf(fileName);
+      ? psStorageData.psSearchNameList.indexOf(widget.fileName)
+      : storageData.fileNamesFilteredList.indexOf(widget.fileName);
     
     final imageData = tempData.origin == OriginFile.publicSearching 
     ? base64.decode(psStorageData.psSearchImageBytesList.elementAt(index))
@@ -223,28 +235,6 @@ class FileDetailsPage extends StatelessWidget {
       OriginFile.publicSearching: "Public Storage (Search)",
       OriginFile.sharedMe: "Shared to Me",
       OriginFile.sharedOther: "Shared to Others",
-    };
-
-    final originToUploaderName = {
-      OriginFile.home: "${userData.username} (You)",
-      OriginFile.directory: "${userData.username} (You)",
-      OriginFile.folder: "${userData.username} (You)",
-      OriginFile.offline: "${userData.username} (You)",
-
-      OriginFile.publicSearching: (index < 0 || index >= psStorageData.psSearchUploaderList.length)
-      ? "(NULL)"
-      : (psStorageData.psSearchUploaderList[index] == userData.username
-          ? "${psStorageData.psSearchUploaderList[index]} (You)"
-          : psStorageData.psSearchUploaderList[index]),
-      
-      OriginFile.public: (index < 0 || index >= psStorageData.psUploaderList.length)
-      ? "(NULL)"
-      : (psStorageData.psUploaderList[index] == userData.username
-          ? "${psStorageData.psUploaderList[index]} (You)"
-          : psStorageData.psUploaderList[index]), 
-
-      OriginFile.sharedMe: "Shared to Me", // TODO: Load uploader name
-      OriginFile.sharedOther: "Shared to Others", // TODO: Load uploader name
     };
 
     return Column(
@@ -338,12 +328,60 @@ class FileDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20.0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: buildHeader("Uploaded By", originToUploaderName[tempData.origin]!),
+            child: ValueListenableBuilder(
+              valueListenable: uploaderNameNotifier,
+              builder: (context, value, child) {
+                return buildHeader(
+                  tempData.origin == OriginFile.sharedOther 
+                  ? "Shared To"
+                  : "Uploaded By", 
+                  value
+                );
+              },
+            ),
           ),
         ),
 
       ],
     );
+  }
+
+  Future<void> initializeUploaderName() async {
+
+    final index = tempData.origin == OriginFile.publicSearching 
+      ? psStorageData.psSearchNameList.indexOf(widget.fileName)
+      : storageData.fileNamesFilteredList.indexOf(widget.fileName);
+
+    final originToUploaderName = {
+      OriginFile.home: "${userData.username} (You)",
+      OriginFile.directory: "${userData.username} (You)",
+      OriginFile.folder: "${userData.username} (You)",
+      OriginFile.offline: "${userData.username} (You)",
+
+      OriginFile.publicSearching: (index < 0 || index >= psStorageData.psSearchUploaderList.length)
+      ? "(NULL)"
+      : (psStorageData.psSearchUploaderList[index] == userData.username
+          ? "${psStorageData.psSearchUploaderList[index]} (You)"
+          : psStorageData.psSearchUploaderList[index]),
+      
+      OriginFile.public: (index < 0 || index >= psStorageData.psUploaderList.length)
+      ? "(NULL)"
+      : (psStorageData.psUploaderList[index] == userData.username
+          ? "${psStorageData.psUploaderList[index]} (You)"
+          : psStorageData.psUploaderList[index]), 
+
+      OriginFile.sharedMe: await SharingName().sharerName(), 
+      OriginFile.sharedOther: await SharingName().shareToOtherName(), 
+    };
+
+    uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeUploaderName();
   }
 
   @override
@@ -353,12 +391,11 @@ class FileDetailsPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
         title: Text(
-          fileName,
+          widget.fileName,
           style: GlobalsStyle.appBarTextStyle,
         ),
       ),
       body: buildBody(context),
     );
   }
-
 }

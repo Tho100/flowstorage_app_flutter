@@ -469,9 +469,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
             _buildRowWithButtons(
               topText: "Rate us", 
               bottomText: "Rate your experience with Flowstorage", 
-              onPressed: () {
-                //
-              }
+              onPressed: () { }
             ),
 
             const SizedBox(height: 15),

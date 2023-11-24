@@ -9,19 +9,20 @@ class SharingName {
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<String> shareToOtherName({required int usernameIndex}) async {
+  Future<String> shareToOtherName() async {
 
     final conn = await SqlConnection.initializeConnection();
 
-    List<String> sharedToNameList = <String>[];
+    const query = "SELECT CUST_TO FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename";
+    final params = {
+      'from': userData.username,
+      'filename': EncryptionClass().encrypt(tempData.selectedFileName)
+    };
 
-    const query = "SELECT CUST_TO FROM cust_sharing WHERE CUST_FROM = :from";
-    final params = {'from': userData.username};
-    final results = await conn.execute(query,params);
+    final results = await conn.execute(query, params);
 
     for(final row in results.rows) {
-      sharedToNameList.add(row.assoc()['CUST_TO']!);
-      return sharedToNameList[usernameIndex];
+      return row.assoc()['CUST_TO']!;
     }
 
     return ""; 
@@ -33,8 +34,12 @@ class SharingName {
     final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_FROM FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await conn.execute(query,params);
+    final params = {
+      'from': userData.username, 
+      'filename': EncryptionClass().encrypt(tempData.selectedFileName)
+    };
+    
+    final results = await conn.execute(query, params);
 
     for(final row in results.rows) {
       return row.assoc()['CUST_FROM']!;

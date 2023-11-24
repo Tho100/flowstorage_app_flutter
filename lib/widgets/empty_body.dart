@@ -24,6 +24,8 @@ class EmptyBody extends StatelessWidget {
       OriginFile.directory: "This directory is empty",
       OriginFile.folder: "This folder is empty",
       OriginFile.offline: "No files on this device yet",
+      OriginFile.sharedMe: "No files shared by others yet",
+      OriginFile.sharedOther: "You haven't shared any files yet"
     };
 
     const originToSubMessage = {
@@ -31,6 +33,8 @@ class EmptyBody extends StatelessWidget {
       OriginFile.directory: "Add a new item",
       OriginFile.folder: "Add a new item",
       OriginFile.offline: "Tap 'Make available offline' on file's menu \nto acess them offline",
+      OriginFile.sharedMe: "Files shared by others will be shown here",
+      OriginFile.sharedOther: "Shared files will be shown here"
     };
 
     return Center(

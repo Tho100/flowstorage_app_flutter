@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/models/quick_actions_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -137,7 +138,9 @@ class PasscodePageState extends State<PasscodePage> {
         if(!mounted) return;
         justLoading.startLoading(context: context);
 
-        await callFileData(
+        tempData.origin == OriginFile.offline 
+        ? await QuickActionsModel().offline()
+        : await callFileData(
           conn, userData.username, userData.email, 
           userData.accountType, context);
 

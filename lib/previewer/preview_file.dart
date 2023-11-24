@@ -158,13 +158,12 @@ class PreviewFileState extends State<PreviewFile> {
     : storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
     if(localOriginFrom.contains(originFrom)) {
-
       uploaderNameNotifer.value = userData.username;
 
     } else if (sharingOriginFrom.contains(originFrom)) {
       await Future.delayed(const Duration(milliseconds: 450));
       final uploaderName = originFrom == OriginFile.sharedOther 
-        ? await retrieveSharingName.shareToOtherName(usernameIndex: uploaderNameIndex) 
+        ? await retrieveSharingName.shareToOtherName() 
         : await retrieveSharingName.sharerName();
       uploaderNameNotifer.value = uploaderName;
 

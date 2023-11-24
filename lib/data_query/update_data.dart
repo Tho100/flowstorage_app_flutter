@@ -86,7 +86,7 @@ class UpdateTextData {
 
   Future<void> _updateSharedOthersData() async {
     final encryptedFileText = returnEncryptedTextData();
-    final receiverUsername = await sharingName.shareToOtherName(usernameIndex: tappedIndex); 
+    final receiverUsername = await sharingName.shareToOtherName(); 
 
     const query = "UPDATE cust_sharing SET CUST_FILE = :newvalue WHERE CUST_TO = :receiver_username AND CUST_FROM = :username AND CUST_FILE_PATH = :filename";
     final params = {

@@ -46,11 +46,11 @@ class SharingDataReceiver {
       final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>[];
 
-      late Uint8List fileBytes = Uint8List(0);
+      Uint8List fileBytes = Uint8List(0);
 
-      late String encryptedFileNames;
-      late String decryptedFileNames;
-      late String fileType;
+      String encryptedFileNames;
+      String decryptedFileNames;
+      String fileType;
 
       for (final row in result.rows) {
 
@@ -90,6 +90,7 @@ class SharingDataReceiver {
 
         } else {
           fileBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
+
         }
 
         final dateValue = row.assoc()['UPLOAD_DATE']!;
@@ -109,12 +110,16 @@ class SharingDataReceiver {
           'date': '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate',
           'file_data': bufferedFileBytes,
         };
+        
         dataSet.add(data);
+
       }
 
       return dataSet;
+
     } catch (failedRetrieval) {
       return <Map<String, dynamic>>[];
     }
+
   }
 }

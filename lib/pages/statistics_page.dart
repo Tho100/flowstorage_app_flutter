@@ -331,9 +331,7 @@ class StatsPageState extends State<StatisticsPage> {
         width: MediaQuery.of(context).size.width-35,
         child: SfCartesianChart(
           primaryXAxis: CategoryAxis(),
-          // Chart title
           title: ChartTitle(text: 'File Upload Counter Chart'),
-          // Enable legend
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries<UploadCountValue, String>>[
@@ -343,7 +341,6 @@ class StatsPageState extends State<StatisticsPage> {
               xValueMapper: (UploadCountValue value, _) => value.category,
               yValueMapper: (UploadCountValue value, _) => value.totalUpload,
               name: 'Files',
-              // Enable data label
               dataLabelSettings: const DataLabelSettings(isVisible: true),
             )
           ],
