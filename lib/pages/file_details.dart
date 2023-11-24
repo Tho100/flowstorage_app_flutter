@@ -195,6 +195,7 @@ class FileDetailsPage extends StatelessWidget {
       OriginFile.folder: "${tempData.folderName} Folder",
       OriginFile.offline: "Offline",
       OriginFile.public: "Public Storage",
+      OriginFile.publicSearching: "Public Storage (Search)",
       OriginFile.sharedMe: "Shared to Me",
       OriginFile.sharedOther: "Shared to Others",
     };
@@ -205,6 +206,12 @@ class FileDetailsPage extends StatelessWidget {
       OriginFile.folder: "${userData.username} (You)",
       OriginFile.offline: "${userData.username} (You)",
 
+      OriginFile.publicSearching: (index < 0 || index >= psStorageData.psSearchUploaderList.length)
+      ? "(NULL)"
+      : (psStorageData.psSearchUploaderList[index] == userData.username
+          ? "${psStorageData.psSearchUploaderList[index]} (You)"
+          : psStorageData.psSearchUploaderList[index]),
+      
       OriginFile.public: (index < 0 || index >= psStorageData.psUploaderList.length)
       ? "(NULL)"
       : (psStorageData.psUploaderList[index] == userData.username
@@ -277,8 +284,7 @@ class FileDetailsPage extends StatelessWidget {
                 const SizedBox(width: 28),
                 buildHeader("Created", uploadDate),
                 const SizedBox(width: 28),
-                // TOOD: Load file size
-                buildHeader("Size","4Mb"),
+                buildHeader("Size","0Mb"),
               ],
             )
           ),

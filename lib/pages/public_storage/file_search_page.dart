@@ -174,6 +174,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             isSearchingForFile = true;
           });
 
+          psSearchBarController.text = "Tag: [$tagName]";
+
           isTagsVisibleNotifier.value = false;
 
           final fileDataList = await getSearchedFileByTags(tagName);
@@ -185,8 +187,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             psStorageData.psSearchImageBytesList.add(fileData['image']!);
             psStorageData.setPsSearchTitle(fileData['title']!);
           }
-
-          psSearchBarController.text = "Tag: [$tagName]";
 
           setState(() {
             shouldReloadListView = !shouldReloadListView;
