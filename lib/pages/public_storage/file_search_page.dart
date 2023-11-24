@@ -164,8 +164,35 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ElevatedButton(
-        onPressed: () { 
-          //
+        onPressed: () async { 
+
+          tempData.setOrigin(OriginFile.public);
+
+          clearSearchingData();
+
+          setState(() {
+            isSearchingForFile = true;
+          });
+
+          isTagsVisibleNotifier.value = false;
+
+          final fileDataList = await getSearchedFileByTags(tagName);
+
+          for(final fileData in fileDataList) {
+            uploadDateList.add(fileData['upload_date']);
+            psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
+            psStorageData.psSearchNameList.add(fileData['file_name']!);
+            psStorageData.psSearchImageBytesList.add(fileData['image']!);
+            psStorageData.setPsSearchTitle(fileData['title']!);
+          }
+
+          psSearchBarController.text = "Tag: [$tagName]";
+
+          setState(() {
+            shouldReloadListView = !shouldReloadListView;
+            isSearchingForFile = false;
+          });
+
         },
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -331,7 +358,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
-  Future<List<Map<String, String>>> getSearchedFileNameData(String keywordInput) async {
+  Future<List<Map<String, String>>> getSearchedFileData(String keywordInput) async {
 
     const generalFileTableName = {
       GlobalsTable.psText, 
@@ -375,6 +402,64 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     for(var tables in generalFileTableName) {
       final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TITLE LIKE '%$keywordInput%'";
       final results = await conn.execute(query);
+
+      final imageData = base64.encode(await GetAssets().loadAssetsData(tableNameToAsset[tables]!));
+      final data = await processSearchingQuery(results, imageData);
+      fileDataList.addAll(data);
+
+    }
+
+    return fileDataList;
+
+  }
+
+  Future<List<Map<String, String>>> getSearchedFileByTags(String selectedTag) async {
+
+    const generalFileTableName = {
+      GlobalsTable.psText, 
+      GlobalsTable.psPdf, 
+      GlobalsTable.psAudio, 
+      GlobalsTable.psExcel, 
+      GlobalsTable.psWord, 
+      GlobalsTable.psExe, 
+      GlobalsTable.psApk
+    };
+
+    const tableNameToAsset = {
+      GlobalsTable.psText: "txt0.jpg",
+      GlobalsTable.psPdf: "pdf0.jpg",
+      GlobalsTable.psAudio: "music0.jpg",
+      GlobalsTable.psExcel: "exl0.jpg",
+      GlobalsTable.psWord: "doc0.jpg",
+      GlobalsTable.psExe: "exe0.jpg",
+      GlobalsTable.psApk: "apk0.jpg",
+    };
+
+    List<Map<String, String>> fileDataList = [];
+
+    final conn = await SqlConnection.initializeConnection();
+
+    const queryImage = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE CUST_TAG = :tag";
+    const queryVideo = "SELECT CUST_TITLE, CUST_THUMB, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_video WHERE CUST_TAG = :tag";
+
+    final params = {"tag": selectedTag};
+
+    final resultsImage = await conn.execute(queryImage, params);
+    final resultsVideo = await conn.execute(queryVideo, params);
+
+    final dataImage = await processSearchingQueryVideosImages(
+      resultsImage, true);
+
+    final dataVideo = await processSearchingQueryVideosImages(
+      resultsVideo, false);
+
+    fileDataList.addAll(dataImage);
+    fileDataList.addAll(dataVideo);
+
+    for(var tables in generalFileTableName) {
+      final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TAG = :tag";
+      final params = {"tag": selectedTag};
+      final results = await conn.execute(query, params);
 
       final imageData = base64.encode(await GetAssets().loadAssetsData(tableNameToAsset[tables]!));
       final data = await processSearchingQuery(results, imageData);
@@ -502,7 +587,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     isTagsVisibleNotifier.value = false;
 
     final keywordInput = psSearchBarController.text;
-    final fileDataList = await getSearchedFileNameData(keywordInput);
+    final fileDataList = await getSearchedFileData(keywordInput);
 
     for(final fileData in fileDataList) {
       uploadDateList.add(fileData['upload_date']);
