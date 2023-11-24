@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -9,8 +8,6 @@ import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
@@ -83,9 +80,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   final uploaderNameNotifer = ValueNotifier<String>('');
 
-  final fileSizeNotifier = ValueNotifier<String>('');
-  final fileResolutionNotifier = ValueNotifier<String>('');
-
   final filesWithCustomHeader = {
     GlobalsTable.homeText, GlobalsTable.homeAudio, 
     GlobalsTable.psAudio, GlobalsTable.psText
@@ -110,8 +104,6 @@ class PreviewFileState extends State<PreviewFile> {
   void dispose() {
     appBarTitleNotifier.dispose();
     uploaderNameNotifer.dispose();
-    fileResolutionNotifier.dispose();
-    fileSizeNotifier.dispose();
     tempData.clearFileData();
     super.dispose();
   }
@@ -143,9 +135,6 @@ class PreviewFileState extends State<PreviewFile> {
       currentTable = Globals.fileTypesToTableNamesPs[fileType]!;
 
     }
-
-    fileSizeNotifier.value = "";
-    fileResolutionNotifier.value = "";
 
     if (tempData.origin == OriginFile.public ||
         tempData.origin == OriginFile.publicSearching || 
@@ -426,153 +415,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  Future<Size> _getImageResolution(Uint8List imageBytes) async {
-    final image = await decodeImageFromList(imageBytes);
-    return Size(image.width.toDouble(), image.height.toDouble());
-  }
-
-  Future<Uint8List> _getFileByteData() async {
-
-    if(tempData.origin != OriginFile.offline) {
-      if(tempData.fileByteData.isNotEmpty) {
-        return tempData.fileByteData;
-      } 
-      
-      return await retrieveData.retrieveDataParams(userData.username, tempData.selectedFileName, currentTable);
-
-    } else {
-      final offlineDirPath = await OfflineMode().returnOfflinePath();
-      final filePath = '${offlineDirPath.path}/${tempData.selectedFileName}';
-
-      final fileBytes = await File(filePath).readAsBytes();
-
-      return fileBytes;
-
-    }
-
-  }
-
-  Future<String> _getFileSize() async {
-
-    final fileType = tempData.selectedFileName.split('.').last;
-
-    final fileIndex = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-    final getFileByte = Globals.imageType.contains(fileType) 
-      ? storageData.imageBytesFilteredList[fileIndex] 
-      : await _getFileByteData();
-
-    double getSizeMB = getFileByte!.lengthInBytes/(1024*1024);
-    return getSizeMB.toDouble().toStringAsFixed(2);
-    
-  }
-
-  Future<String> _returnImageSize() async {
-
-    final indexImage = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-    final imageBytes = storageData.imageBytesFilteredList.elementAt(indexImage);
-
-    final imageSize = await _getImageResolution(imageBytes!);
-    final imageWidth = imageSize.width.toInt();
-    final imageHeight = imageSize.height.toInt();
-
-    final imageResolution = "${imageWidth}x$imageHeight";
-
-    return imageResolution;
-    
-  }
-
-  Widget _buildFileInfoHeader(String headerText, String subHeader) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 42.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          Text(headerText,
-            style: const TextStyle(
-              color: Colors.white38,
-              fontSize: 15,
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          Text(ShortenText().cutText(subHeader, customLength: 30),
-            style: const TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color: ThemeColor.secondaryWhite,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-
-        ]
-      ),
-    );
-  }
-
-  Future _buildBottomInfo() async {
-    
-    if(fileResolutionNotifier.value.isEmpty) {
-
-      final fileType = tempData.selectedFileName.split('.').last;
-
-      if (Globals.videoType.contains(fileType) || Globals.imageType.contains(fileType)) {
-        fileResolutionNotifier.value = await _returnImageSize();
-      } else {
-        fileResolutionNotifier.value = "N/A";
-      } 
-
-    } 
-
-    if(fileSizeNotifier.value.isEmpty) {
-      fileSizeNotifier.value = await _getFileSize();
-    }
-
-    if(!mounted) return;
-
-    return showModalBottomSheet(
-      backgroundColor: const Color.fromARGB(255, 25, 25, 25),
-      context: context,
-      shape: GlobalsStyle.bottomDialogBorderStyle,
-      builder: (context) {
-        return SizedBox(
-          height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 30),
-
-              _buildFileInfoHeader("File Name", tempData.selectedFileName),
-
-              const SizedBox(height: 8),
-
-              ValueListenableBuilder<String>(
-                valueListenable: fileResolutionNotifier,
-                builder: (context, value, child) {
-                  return _buildFileInfoHeader("File Resolution", value);
-                },
-              ),
-
-              const SizedBox(height: 8),
-
-              ValueListenableBuilder<String>(
-                valueListenable: fileSizeNotifier,
-                builder: (context, value, child) {
-                  return _buildFileInfoHeader("File Size", "$value Mb");
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-
-  }
-
   Widget _buildCopyTextIconButton() {
     return IconButton(
       onPressed: () {
@@ -621,7 +463,10 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildInfoIconButton() {
     return IconButton(
-      onPressed: _buildBottomInfo,
+      onPressed: () {
+        NavigatePage.goToPageFileDetails(
+          context, tempData.selectedFileName);
+      },
       icon: const Icon(Icons.info_outlined),
     );
   }

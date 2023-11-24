@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -78,15 +79,16 @@ class FileDetailsPage extends StatelessWidget {
     if(tempData.origin != OriginFile.offline) {
       if(tempData.fileByteData.isNotEmpty) {
         fileBytes = tempData.fileByteData;
-      } 
+      } else {
+        final currentTable = tempData.origin != OriginFile.home 
+        ? Globals.fileTypesToTableNamesPs[fileType]! 
+        : Globals.fileTypesToTableNames[fileType]!;
 
-      final currentTable = tempData.origin != OriginFile.home 
-      ? Globals.fileTypesToTableNamesPs[fileType]! 
-      : Globals.fileTypesToTableNames[fileType]!;
+        fileBytes = Globals.imageType.contains(fileType) 
+          ? storageData.imageBytesFilteredList[fileIndex] 
+          : await RetrieveData().retrieveDataParams(userData.username, fileName, currentTable);
 
-      fileBytes = Globals.imageType.contains(fileType) 
-        ? storageData.imageBytesFilteredList[fileIndex] 
-        : await RetrieveData().retrieveDataParams(userData.username, fileName, currentTable);
+      }
 
     } else {
       final offlineDirPath = await OfflineMode().returnOfflinePath();
@@ -182,9 +184,15 @@ class FileDetailsPage extends StatelessWidget {
   Widget buildBody(BuildContext context) {
     
     final fileType = fileName.split('.').last;
-    final index = storageData.fileNamesFilteredList.indexOf(fileName);
 
-    final imageData = storageData.imageBytesFilteredList.elementAt(index);
+    final index = tempData.origin == OriginFile.publicSearching 
+      ? psStorageData.psSearchNameList.indexOf(fileName)
+      : storageData.fileNamesFilteredList.indexOf(fileName);
+    
+    final imageData = tempData.origin == OriginFile.publicSearching 
+    ? base64.decode(psStorageData.psSearchImageBytesList.elementAt(index))
+    : storageData.imageBytesFilteredList.elementAt(index);
+
     final uploadDate = getProperDate(storageData.fileDateFilteredList.elementAt(index));
   
     final width = MediaQuery.of(context).size.width;
