@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -15,6 +16,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 class FileDetailsPage extends StatefulWidget {
@@ -378,6 +380,11 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
   }
 
+  void copyFileName() {
+    Clipboard.setData(ClipboardData(text: widget.fileName));
+    CallToast.call(message: "Copied to clipboard.");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -387,15 +394,22 @@ class FileDetailsPageState extends State<FileDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
-        title: Text(
-          widget.fileName,
-          style: GlobalsStyle.appBarTextStyle,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(55.0),
+        child: GestureDetector(
+          onTap: () { copyFileName(); },
+          child: AppBar( 
+            elevation: 0,
+            backgroundColor: ThemeColor.darkBlack,
+            title: Text(
+              widget.fileName,
+              style: GlobalsStyle.appBarTextStyle,
+            ),
+          ),
         ),
       ),
       body: buildBody(context),
     );
   }
+
 }

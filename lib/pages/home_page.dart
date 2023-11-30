@@ -1285,7 +1285,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Future _callBottomTrailingAddItem() {
+  Future _callBottomTrailingAddItem() async {
 
     late String headerText = "";
 
@@ -1299,8 +1299,26 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
     final limitUpload = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-    final bottomTrailingAddItem = BottomTrailingAddItem();
-    return bottomTrailingAddItem.buildTrailing(
+    if(tempData.origin == OriginFile.public) {
+
+      int count = psStorageData.psUploaderList
+      .where((uploader) => uploader == userData.username)
+      .length;
+
+      if (count < limitUpload) {
+        Navigator.pop(context);
+        await _openDialogUploadFile();
+
+      } else {
+        _showUpgradeLimitedDialog(limitUpload);
+
+      } 
+
+      return;
+      
+    }
+
+    return BottomTrailingAddItem().buildTrailing(
       headerText: headerText, 
       galleryOnPressed: () async {
 
@@ -1365,28 +1383,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }, 
       photoOnPressed: () async {
 
-        if (tempData.origin == OriginFile.public) {
-
-          int count = psStorageData.psUploaderList
-              .where((uploader) => uploader == userData.username)
-              .length;
-
-          if (count < limitUpload) {
-            Navigator.pop(context);
-            await _openDialogUploadFile();
-          } else {
-            _showUpgradeLimitedDialog(limitUpload);
-          }
-
+        if (storageData.fileNamesList.length < limitUpload) {
+          Navigator.pop(context);
+          await _initializePhotoCamera();
         } else {
-
-          if (storageData.fileNamesList.length < limitUpload) {
-            Navigator.pop(context);
-            await _initializePhotoCamera();
-          } else {
-            _showUpgradeLimitedDialog(limitUpload);
-          }
-
+          _showUpgradeLimitedDialog(limitUpload);
         }
 
       }, 
