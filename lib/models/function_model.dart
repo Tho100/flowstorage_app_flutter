@@ -151,7 +151,14 @@ class FunctionModel {
           getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
 
         } else {
-          getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i),tableName!));
+
+          if(tempData.origin == OriginFile.offline) {
+            getBytes = await OfflineMode().loadOfflineFileByte(checkedItemsName.elementAt(i));
+
+          } else {
+            getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName!));
+            
+          }
 
         }
 

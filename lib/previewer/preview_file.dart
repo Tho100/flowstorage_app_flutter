@@ -21,7 +21,6 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/data_query/update_data.dart';
-import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
@@ -65,7 +64,6 @@ class PreviewFileState extends State<PreviewFile> {
   late final ValueNotifier<String> appBarTitleNotifier = 
                                     ValueNotifier<String>('');
 
-  final retrieveData = RetrieveData();
   final retrieveSharingName = SharingName();
   final functionModel = FunctionModel();
   final logger = Logger();
