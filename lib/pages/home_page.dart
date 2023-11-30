@@ -567,7 +567,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Future<void> _sortDataDescendingPs() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 890));
     _sortUploadDate();
     _sortUploadDate();
   }

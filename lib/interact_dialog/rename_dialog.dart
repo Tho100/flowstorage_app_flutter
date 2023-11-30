@@ -13,9 +13,9 @@ import 'package:get_it/get_it.dart';
 class RenameDialog {
 
   final storageData = GetIt.instance<StorageDataProvider>();
-  
-  static final renameController = TextEditingController();
 
+  static final renameController = TextEditingController();
+  
   Future buildRenameFileDialog({
     required String fileName,
     required VoidCallback onRenamePressed,
@@ -23,6 +23,13 @@ class RenameDialog {
   }) async {
 
     final fileType = fileName.split('.').last;
+
+    final lastDotIndex = fileName.lastIndexOf('.');
+    final fileNameWithoutExtension = lastDotIndex != -1
+      ? fileName.substring(0, lastDotIndex)
+      : fileName;
+      
+    renameController.text = fileNameWithoutExtension;
 
     return InteractDialog().buildDialog(
       context: context, 
@@ -95,6 +102,7 @@ class RenameDialog {
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
+            autofocus: true,
             style: const TextStyle(color: ThemeColor.secondaryWhite),
             enabled: true,
             controller: renameController,
