@@ -23,8 +23,9 @@ class ResponsiveListView extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final double itemExtentValue = 60.0;
+  final double itemExtentValue = 65.0;
   final double bottomExtraSpacesHeight = 89.0;
+  final double topExtraSpacesHeight = 5.0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class ResponsiveListView extends StatelessWidget {
           minThumbLength: 2,
           thickness: 2,
           child: ListView.builder(
-            padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight),
+            padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight, top: topExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (context, index) {
@@ -57,13 +58,19 @@ class ResponsiveListView extends StatelessWidget {
                   color: ThemeColor.darkBlack,
                   child: ListTile(
                     leading: setLeadingImage != null
-                      ? ClipRRect(
-                        borderRadius: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? BorderRadius.circular(4) : BorderRadius.circular(6),
-                        child: Image(
-                          image: setLeadingImage.image,
-                          fit: BoxFit.cover,
-                          height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
-                          width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
+                      ? Transform.translate(
+                        offset: Offset(
+                          Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 2 : 0, 
+                          0
+                        ),
+                        child: ClipRRect(
+                          borderRadius: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? BorderRadius.circular(4) : BorderRadius.circular(6),
+                          child: Image(
+                            image: setLeadingImage.image,
+                            fit: BoxFit.cover,
+                            height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
+                            width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
+                          ),
                         ),
                       )
                       : const SizedBox(),

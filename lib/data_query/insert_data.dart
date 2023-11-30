@@ -123,7 +123,6 @@ class InsertData {
     String encryptedFilePath,
     String? thumb,
     String localFilePath,
-
   ) async {
 
     final fileExtension = localFilePath.substring(localFilePath.length - 4);

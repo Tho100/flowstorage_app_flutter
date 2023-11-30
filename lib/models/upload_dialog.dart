@@ -401,6 +401,10 @@ class UploadDialog {
 
       UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
 
+      if(tempData.origin == OriginFile.offline) {
+        tempStorageData.addOfflineFileName(selectedFileName);
+      }
+
       scaffoldMessenger.hideCurrentSnackBar();
 
       if(countSelectedFiles < 2) {

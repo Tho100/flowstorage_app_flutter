@@ -2141,7 +2141,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       mediaHeight = mediaQuery.height - 194;
 
     } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 310;
+      mediaHeight = mediaQuery.height - 315;
 
     } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
       mediaHeight = mediaQuery.height - 148;

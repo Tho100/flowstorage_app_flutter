@@ -10,7 +10,7 @@ class BottomsheetBar extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        width: 45,
+        width: 40,
         height: 6,
         decoration: BoxDecoration(
           color: ThemeColor.thirdWhite,
