@@ -1306,7 +1306,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       .length;
 
       if (count < limitUpload) {
-        Navigator.pop(context);
         await _openDialogUploadFile();
 
       } else {
