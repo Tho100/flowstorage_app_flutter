@@ -202,9 +202,22 @@ class PreviewFileState extends State<PreviewFile> {
 
   void _openWithOnPressed() async {
 
+    final fileType = tempData.selectedFileName.split('.').last;
+
+    late Uint8List fileByteData;
+
+    if(Globals.imageType.contains(fileType)) {
+      final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+      fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
+
+    } else {
+      fileByteData = tempData.fileByteData;
+
+    }
+
     final result = await ExternalApp(
       fileName: tempData.selectedFileName, 
-      bytes: tempData.fileByteData
+      bytes: fileByteData
     ).openFileInExternalApp();
 
     if(result.type != ResultType.done) {

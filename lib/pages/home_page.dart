@@ -1264,7 +1264,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _makeAvailableOfflineOnPressed(fileName: fileName);
       }, 
       onOpenWithPressed: () {
-        _openExternalFileOnSelect(fileName.split('.').last);
+        _openExternalFileOnSelect(
+          fileName.split('.').last, fileName);
       },
       context: context
     );
@@ -1773,23 +1774,31 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  void _openExternalFileOnSelect(String fileType) async {
+  void _openExternalFileOnSelect(String fileType, String fileName) async {
 
     late Uint8List fileData;
 
     final fileTable = Globals.fileTypesToTableNames[fileType]!;
 
     if(tempData.origin != OriginFile.offline) {
-      fileData = await _callFileByteData(tempData.selectedFileName, fileTable);
+
+      if(Globals.imageType.contains(fileType)) {
+        final index = storageData.fileNamesFilteredList.indexOf(fileName);
+        fileData = storageData.imageBytesFilteredList.elementAt(index)!;
+
+      } else {
+        fileData = await _callFileByteData(fileName, fileTable);
+
+      }
 
     } else {
-      fileData = await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
+      fileData = await OfflineMode().loadOfflineFileByte(fileName);
 
     }
 
     final result = await ExternalApp(
       bytes: fileData, 
-      fileName: tempData.selectedFileName
+      fileName: fileName
     ).openFileInExternalApp();
 
     if(result.type != ResultType.done) {
@@ -1805,7 +1814,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     const Set<String> externalFileTypes = 
     {
-      ...Globals.wordType, ...Globals.excelType, ...Globals.ptxType
+      ...Globals.wordType, ...Globals.excelType, ...Globals.ptxType, 
     };
 
     tempData.setCurrentFileName(storageData.fileNamesFilteredList[index]);
@@ -1821,7 +1830,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       return;
 
     } else if (externalFileTypes.contains(fileType)) {
-      _openExternalFileOnSelect(fileType);
+      _openExternalFileOnSelect(fileType, tempData.selectedFileName);
       return;
 
     } else {

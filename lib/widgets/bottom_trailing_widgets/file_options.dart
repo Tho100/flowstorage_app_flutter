@@ -114,7 +114,7 @@ class BottomTrailingOptions {
           ),
         ),
 
-        if(Globals.generalFileTypes.contains(fileType))
+        if(fileName.contains('.'))
         ElevatedButton(
           onPressed: onOpenWithPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -171,7 +171,7 @@ class BottomTrailingOptions {
         ),
 
         Visibility(
-          visible: fileName.split('.').last != fileName,
+          visible: fileName.contains('.'),
           child: const Divider(color: ThemeColor.lightGrey)
         ),
 
