@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -56,13 +57,16 @@ class ResponsiveListView extends StatelessWidget {
                   color: ThemeColor.darkBlack,
                   child: ListTile(
                     leading: setLeadingImage != null
-                        ? Image(
-                            image: setLeadingImage.image,
-                            fit: BoxFit.cover,
-                            height: 31,
-                            width: 31,
-                          )
-                        : const SizedBox(),
+                      ? ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image(
+                          image: setLeadingImage.image,
+                          fit: BoxFit.cover,
+                          height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 32 : 35,
+                          width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 32 : 35,
+                        ),
+                      )
+                      : const SizedBox(),
                     trailing: Transform.translate(
                       offset: const Offset(0, -4),
                       child: Row(
@@ -71,7 +75,7 @@ class ResponsiveListView extends StatelessWidget {
                       ),
                     ),
                     title: Transform.translate(
-                      offset: const Offset(0, -6),
+                      offset: const Offset(-2, -6),
                       child: Text(
                         fileTitleSearchedValue,
                         style: const TextStyle(
@@ -82,7 +86,7 @@ class ResponsiveListView extends StatelessWidget {
                       ),
                     ),
                     subtitle: Transform.translate(
-                      offset: const Offset(0, -4),
+                      offset: const Offset(-2, -4),
                       child: RichText(
                         text: TextSpan(
                           style: DefaultTextStyle.of(context).style,
