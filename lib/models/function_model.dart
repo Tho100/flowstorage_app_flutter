@@ -78,7 +78,7 @@ class FunctionModel {
 
       if(tempData.origin == OriginFile.offline) {
         await OfflineMode().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName)}", icon: Icons.check);
+        SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}", icon: Icons.check);
         return;
 
       } 
@@ -86,7 +86,7 @@ class FunctionModel {
       final encryptVals = EncryptionClass().encrypt(fileName);
       await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
       
-      SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName)}.", icon: Icons.check);
+      SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from _deletionFile {function_model}',err,st);
@@ -118,7 +118,7 @@ class FunctionModel {
           tempStorageData.offlineFileNameList.add(newFileName);
         }
 
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName)}` Renamed to `${ShortenText().cutText(newFileName)}`.");
+        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName, customLength: 35)}` Renamed to `${ShortenText().cutText(newFileName, customLength: 35)}`.");
       }
 
     } catch (err, st) {
@@ -218,11 +218,11 @@ class FunctionModel {
 
       await CallNotify().downloadedNotification(fileName: fileName);
 
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Has been downloaded.",icon: Icons.check);
+      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Has been downloaded.",icon: Icons.check);
 
     } catch (err) {
       await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName)}");
+      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName, customLength: 35)}");
     }
 
   }
@@ -320,6 +320,8 @@ class FunctionModel {
       await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
       singleLoading.stopLoading();
+
+      await CallNotify().customNotification(title: "Offline", subMesssage: "1 Item now available offline");
 
     } catch (err, st) {
       logger.e('Exception from _deletionDirectory {function_model}',err,st); 

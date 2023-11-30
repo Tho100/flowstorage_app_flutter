@@ -58,12 +58,12 @@ class ResponsiveListView extends StatelessWidget {
                   child: ListTile(
                     leading: setLeadingImage != null
                       ? ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? BorderRadius.circular(4) : BorderRadius.circular(6),
                         child: Image(
                           image: setLeadingImage.image,
                           fit: BoxFit.cover,
-                          height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 32 : 35,
-                          width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 32 : 35,
+                          height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
+                          width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
                         ),
                       )
                       : const SizedBox(),
@@ -75,7 +75,7 @@ class ResponsiveListView extends StatelessWidget {
                       ),
                     ),
                     title: Transform.translate(
-                      offset: const Offset(-2, -6),
+                      offset: const Offset(-3, -6),
                       child: Text(
                         fileTitleSearchedValue,
                         style: const TextStyle(

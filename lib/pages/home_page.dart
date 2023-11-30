@@ -1019,7 +1019,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
       singleLoading.stopLoading();
 
-      SnakeAlert.okSnake(message: "$count Item(s) now available offline.",icon: Icons.check);
+      SnakeAlert.okSnake(message: "$count Item(s) now available offline.", icon: Icons.check);
+
+      await CallNotify().customNotification(title: "Offline", subMesssage: "$count Item(s) now available offline");
 
       _clearItemSelection();
 
