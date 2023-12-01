@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,12 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   bool shouldReloadListView = false; 
   bool isSearchingForFile = false; 
 
+  String selectedFilterSearch = "title";
+
   final isTagsVisibleNotifier = ValueNotifier<bool>(true);
+
+  final searchBarHintTextNotifier = ValueNotifier<String>
+                                        ("Enter a keyword");
 
   final encryption = EncryptionClass();
 
@@ -63,8 +69,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               Flexible(
                 child: buildSearchBar(),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 6),
               buildSearchButton(),
+              const SizedBox(width: 6),
+              buildMoreOptionsButton(),
             ],
           ),
         ),
@@ -245,20 +253,25 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   Widget buildSearchBar() {
-    return ResponsiveSearchBar(
-      autoFocus: false,
-      controller: psSearchBarController,
-      focusNode: psSearchBarFocusNode, 
-      cancelSearchOnPressed: () {
-        isTagsVisibleNotifier.value = true;
-        psSearchBarController.clear();    
-      },
-      customWidth: 0.98,
-      visibility: null, 
-      hintText: "Enter a keyword", 
-      onChanged: (String value) {
-        tempData.setOrigin(OriginFile.publicSearching);
-      }, 
+    return ValueListenableBuilder(
+      valueListenable: searchBarHintTextNotifier,
+      builder: (context, value, child) {
+        return ResponsiveSearchBar(
+          autoFocus: false,
+          controller: psSearchBarController,
+          focusNode: psSearchBarFocusNode, 
+          cancelSearchOnPressed: () {
+            isTagsVisibleNotifier.value = true;
+            psSearchBarController.clear();    
+          },
+          customWidth: 0.98,
+          visibility: null, 
+          hintText: value, 
+          onChanged: (String value) {
+            tempData.setOrigin(OriginFile.publicSearching);
+          }, 
+        );
+      }
     );
   }
 
@@ -382,10 +395,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
     List<Map<String, String>> fileDataList = [];
 
+    final filterToQuery = {
+      "title": "CUST_TITLE",
+      "uploader_name": "CUST_USERNAME"
+    };
+
+    final filter = filterToQuery[selectedFilterSearch];
+
     final conn = await SqlConnection.initializeConnection();
 
-    final queryImage = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE CUST_TITLE LIKE '%$keywordInput%'";
-    final queryVideo = "SELECT CUST_TITLE, CUST_THUMB, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_video WHERE CUST_TITLE LIKE '%$keywordInput%'";
+    final queryImage = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE $filter LIKE '%$keywordInput%'";
+    final queryVideo = "SELECT CUST_TITLE, CUST_THUMB, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_video WHERE $filter LIKE '%$keywordInput%'";
 
     final resultsImage = await conn.execute(queryImage);
     final resultsVideo = await conn.execute(queryVideo);
@@ -400,7 +420,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     fileDataList.addAll(dataVideo);
 
     for(var tables in generalFileTableName) {
-      final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TITLE LIKE '%$keywordInput%'";
+      final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE $filter LIKE '%$keywordInput%'";
       final results = await conn.execute(query);
 
       final imageData = base64.encode(await GetAssets().loadAssetsData(tableNameToAsset[tables]!));
@@ -626,6 +646,38 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
+  Widget buildMoreOptionsButton() {
+    return GestureDetector(
+      onTap: () {
+        BottomTrailingPsSearchFilter().buildBottomTrailing(
+          context: context, 
+          onTitlePressed: () {
+            selectedFilterSearch = "title";
+            searchBarHintTextNotifier.value = "Search by title";
+          }, 
+          onUploaderNamePressed: () {
+            selectedFilterSearch = "uploader_name";
+            searchBarHintTextNotifier.value = "Search by uploader name";
+          }
+        );
+      },
+      child: Container(
+        width: 48.0,
+        height: 48.0,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: ThemeColor.mediumGrey, 
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.more_vert,
+            color: Colors.white, 
+          ),
+        ),
+      ),
+    );
+  }
+
   void clearSearchingData() {
     uploadDateList.clear();
     psStorageData.psSearchUploaderList.clear();
@@ -680,6 +732,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     scrollListViewController.dispose();
     psSearchBarFocusNode.dispose();
     isTagsVisibleNotifier.dispose();
+    searchBarHintTextNotifier.dispose();
     super.dispose();
   }
 
