@@ -31,16 +31,6 @@ class MyPlanPageState extends State<MyPlanPage> {
 
   final cardBorderRadius = 25.0;
 
-  Future<String> _getUserCountryCode() async {
-    final response = await http.get(Uri.parse('https://ipapi.co/json'));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return data['country'];
-    } else {
-      throw Exception('Failed to load user country');
-    }
-  }
-
   Future<String> _convertToLocalCurrency(double usdValue) async {
 
     final countryCodeToCurrency = {

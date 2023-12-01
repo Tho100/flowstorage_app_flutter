@@ -3,7 +3,7 @@ import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
+import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
 import 'package:flutter/material.dart';
@@ -84,12 +84,13 @@ class SharingPassword {
               text: "Share",
               onPressed: () async {
 
-                final loadingDialog = MultipleTextLoading();
+                final loadingDialog = SingleTextLoading();
                 final compare = AuthModel().computeAuth(sharingPasswordController.text);
 
                 if(compare == authInput) {
                   
-                  loadingDialog.startLoading(title: "Sharing...",subText: "Sharing to $sendTo",context: context);  
+                  loadingDialog.startLoading(
+                    title: "Sharing...", context: context);
 
                   shareFileData.insertValuesParams(
                     sendTo: sendTo, 
@@ -114,65 +115,9 @@ class SharingPassword {
             const SizedBox(width: 18),
           ],
         ),
-
-        /*Row(
-          children: [
-
-            const SizedBox(width: 5),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MainDialogButton(
-                  text: "Close",
-                  onPressed: () {
-                    sharingPasswordController.clear();
-                    Navigator.pop(context);
-                  },
-                  isButtonClose: true,
-                )
-              ),
-            ),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: MainDialogButton(
-                  text: "Share", 
-                  onPressed: () {
-
-                    final loadingDialog = MultipleTextLoading();
-                    final compare = AuthModel().computeAuth(sharingPasswordController.text);
         
-                    if(compare == authInput) {
-                      
-                      loadingDialog.startLoading(title: "Sharing...",subText: "Sharing to $sendTo",context: context);  
-
-                      shareFileData.insertValuesParams(
-                        sendTo: sendTo, 
-                        fileName: fileName, 
-                        comment: comment, 
-                        fileData: fileData, 
-                        fileType: fileType, 
-                        thumbnail: thumbnail
-                      );
-
-                    } else {
-                      CustomAlertDialog.alertDialogTitle("Sharing failed", "Entered password is incorrect.");
-                    }
-                    
-                    loadingDialog.stopLoading();
-
-                    Navigator.pop(context);
-                  }, 
-                  isButtonClose: false
-                )
-              ),
-            ),
-
-          ],
-        ),*/
         const SizedBox(height: 15),
+
       ],
     );  
   }

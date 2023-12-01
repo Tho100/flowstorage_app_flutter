@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';

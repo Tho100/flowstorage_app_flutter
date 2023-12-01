@@ -35,7 +35,6 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/add_item.dart';
@@ -1180,15 +1179,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     return FolderDialog().buildFoldersBottomSheet(
       folderOnPressed: (int index) async {
         
-        final loadingDialog = MultipleTextLoading();
+        final loading = SingleTextLoading();
 
         tempData.setCurrentFolder(tempStorageData.folderNameList[index]);
 
-        loadingDialog.startLoading(
-          title: "Please wait", 
-          subText: "Retrieving ${tempData.folderName} files.",
-          context: context
-        );
+        loading.startLoading(title: "Please wait...", context: context);
 
         _deactivatePhotosView();
 
@@ -1198,7 +1193,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         await _callFolderData(tempStorageData.folderNameList[index]);
 
-        loadingDialog.stopLoading();
+        loading.stopLoading();
  
         if(!mounted) return;
         Navigator.pop(context);
@@ -1747,17 +1742,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setOrigin(OriginFile.directory);
 
     _navDirectoryButtonVisibility(false);
-
-    final loadingDialog = MultipleTextLoading();
     
-    loadingDialog.startLoading(title: "Please wait",subText: "Retrieving ${tempData.directoryName} files.",context: context);
+    final loading = SingleTextLoading();
+
+    loading.startLoading(title: "Please wait...", context: context);
 
     tempData.setCurrentDirectory(tempData.selectedFileName);
     tempData.setAppBarTitle(tempData.selectedFileName);
 
     await _callDirectoryData();
   
-    loadingDialog.stopLoading();
+    loading.stopLoading();
 
   }
 

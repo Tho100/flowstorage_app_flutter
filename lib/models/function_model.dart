@@ -157,7 +157,7 @@ class FunctionModel {
 
           } else {
             getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName!));
-            
+
           }
 
         }
@@ -195,7 +195,7 @@ class FunctionModel {
 
       final loadingDialog = MultipleTextLoading();
       
-      loadingDialog.startLoading(title: "Downloading...", subText: "File name  $fileName", context: navigatorKey.currentContext!);
+      loadingDialog.startLoading(title: "Downloading...", fileName: fileName, context: navigatorKey.currentContext!);
 
       if(tempData.origin != OriginFile.offline) {
 
