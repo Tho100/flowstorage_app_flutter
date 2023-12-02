@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -57,24 +56,20 @@ class SimplifyDownload {
       const generalFilesTableName = {GlobalsTable.homeText,GlobalsTable.psText,GlobalsTable.homeVideo,GlobalsTable.psVideo};
 
       if(currentTableValue == GlobalsTable.homeImage || currentTableValue == GlobalsTable.psImage) {
-
         await ImageGallerySaver.saveImage(fileDataValue!);
 
       } else if (currentTableValue == GlobalsTable.homeText || currentTableValue == GlobalsTable.psText) {
+        final textFileContent = utf8.decode(fileDataValue!);
         
-        final decompressedFile = CompressorApi.decompressFile(fileDataValue!);
-        final textFileContent = utf8.decode(decompressedFile);
-        
-        await SaveApi().saveFile(fileName: fileNameValue!, fileData: textFileContent);
+        await SaveApi().saveFile(
+          fileName: fileNameValue!, fileData: textFileContent);
         
       } else if (currentTableValue == GlobalsTable.homeVideo || currentTableValue == GlobalsTable.psVideo) { 
-
         await _videoGallerySaver(fileDataValue!);
 
       } else if (!(generalFilesTableName.contains(currentTableValue))) {
-
-        final decompressedFile = CompressorApi.decompressFile(fileDataValue!);
-        await SaveApi().saveFile(fileName: fileNameValue!, fileData: decompressedFile);
+        await SaveApi().saveFile(
+          fileName: fileNameValue!, fileData: fileDataValue!);
 
       }
 

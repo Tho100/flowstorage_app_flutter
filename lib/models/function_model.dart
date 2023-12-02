@@ -156,13 +156,18 @@ class FunctionModel {
             getBytes = await OfflineMode().loadOfflineFileByte(checkedItemsName.elementAt(i));
 
           } else {
-            getBytes = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName!));
+            getBytes = await _callFileByteData(
+              checkedItemsName.elementAt(i), tableName!);
 
           }
 
         }
 
-        await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: checkedItemsName.elementAt(i), fileData: getBytes);
+        await SaveApi().saveMultipleFiles(
+          directoryPath: directoryPath, 
+          fileName: checkedItemsName.elementAt(i), 
+          fileData: getBytes
+        );
 
       }
 
@@ -181,6 +186,7 @@ class FunctionModel {
     try {
 
       final fileType = fileName.split('.').last;
+
       final tableName = tempData.origin != OriginFile.home 
                         ? Globals.fileTypesToTableNamesPs[fileType] 
                         : Globals.fileTypesToTableNames[fileType];
@@ -206,7 +212,7 @@ class FunctionModel {
           getBytes = storageData.imageBytesFilteredList[imageIndex]!;
 
         } else {
-          getBytes = CompressorApi.compressByte(await _callFileByteData(fileName, tableName!));
+          getBytes = await _callFileByteData(fileName, tableName!);
 
         }
 
@@ -332,6 +338,8 @@ class FunctionModel {
       }
       
       await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
+
+      tempStorageData.addOfflineFileName(fileName);
 
       singleLoading.stopLoading();
 

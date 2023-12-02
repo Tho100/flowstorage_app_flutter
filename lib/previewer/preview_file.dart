@@ -260,8 +260,6 @@ class PreviewFileState extends State<PreviewFile> {
 
       await functionModel.makeAvailableOffline(fileName: fileName);
 
-      tempStorageData.addOfflineFileName(fileName);
-
     } catch (err, st) {
       logger.e('Exception from _makeAvailableOfflineOnPressed {preview_file}', err, st);
     }

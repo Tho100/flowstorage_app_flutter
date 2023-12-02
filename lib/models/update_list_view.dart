@@ -74,7 +74,6 @@ class UpdateListView {
       final getExtension = getFileName.split('.').last;
 
       if (Globals.videoType.contains(getExtension)) {
-
         final generatedThumbnail = await GenerateThumbnail(
           fileName: getFileName, 
           filePath: folderFile.path
@@ -90,7 +89,6 @@ class UpdateListView {
         fileValues.add(base64encoded);
 
       } else if (Globals.imageType.contains(getExtension)) {
-
         final compressedImage = await CompressorApi.compressedByteImage(
           path: folderFile.path,
           quality: 85,
@@ -100,7 +98,6 @@ class UpdateListView {
         fileValues.add(base64Encoded);
 
       } else if (Globals.generalFileTypes.contains(getExtension)) {
-
         final compressedFileData = await CompressorApi.compressFile(folderFile.path.toString());
         final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
@@ -109,6 +106,7 @@ class UpdateListView {
 
       fileTypes.add(getExtension);
       fileNames.add(getFileName);
+      
     }
 
     await CreateFolder(

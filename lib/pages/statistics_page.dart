@@ -459,8 +459,8 @@ class StatsPageState extends State<StatisticsPage> {
     return Row(
       children: [
         Container(
-          width: 30,
-          height: 30,
+          width: 26,
+          height: 26,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: ThemeColor.darkPurple, 
@@ -470,7 +470,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 8),
         Text("$totalUpload Uploads",
           style: const TextStyle(
             color: ThemeColor.secondaryWhite,
@@ -492,8 +492,8 @@ class StatsPageState extends State<StatisticsPage> {
     return Row(
       children: [
         Container(
-          width: 30,
-          height: 30,
+          width: 26,
+          height: 26,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: ThemeColor.lightGrey, 
@@ -503,7 +503,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 8),
         Text("$numberOfUploadLeft Uploads left",
           style: const TextStyle(
             color: ThemeColor.secondaryWhite,
@@ -547,7 +547,7 @@ class StatsPageState extends State<StatisticsPage> {
                 child: Row(
                   children: [
                     _buildLegendUsage(),
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 25),
                     _buildLegendLimit(),
                   ],
                 ),

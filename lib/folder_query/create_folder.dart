@@ -44,13 +44,18 @@ class CreateFolder {
       final params = {
         'folder_name': encryptedFolderName, 
         'username': userData.username, 
-        'file_data': specialFile.ignoreEncryption(fileType) ? fileValues[i] : encryption.encrypt(fileValues[i]),
+
+        'file_data': specialFile.ignoreEncryption(fileType) 
+            ? fileValues[i] 
+            : encryption.encrypt(fileValues[i]),
+
         'file_name': encryption.encrypt(fileNames[i]),
         'file_type': fileTypes[i],
         'upload_date': formattedDate,
+
         'thumbnail': videoThumbnail != null && videoThumbnail!.length > i
-              ? videoThumbnail![i]
-              : null
+            ? videoThumbnail![i]
+            : null
       };
 
       await conn.execute(query, params);

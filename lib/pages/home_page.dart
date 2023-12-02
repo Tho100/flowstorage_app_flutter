@@ -1038,8 +1038,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     try {
 
       await functionModel.makeAvailableOffline(fileName: fileName);
-
-      tempStorageData.addOfflineFileName(fileName);
       
       _clearItemSelection();
 

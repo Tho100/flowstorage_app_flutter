@@ -104,20 +104,18 @@ class OfflineMode {
     final fileType = fileName.split('.').last;
 
     if(Globals.imageType.contains(fileType)) {
-
       await ImageGallerySaver.saveImage(fileDataValue);
 
     } else if (Globals.textType.contains(fileType)) {
-
       final decompressedFile = CompressorApi.decompressFile(fileDataValue);
       final textFileContent = utf8.decode(decompressedFile);
 
       SaveApi().saveFile(fileName: fileName, fileData: textFileContent);
 
     } else if (generalNonTextFileType.contains(fileType)) {
-      
       final decompressFileData = CompressorApi.decompressFile(fileDataValue);
-      SaveApi().saveFile(fileName: fileName, fileData: decompressFileData);
+      SaveApi().saveFile(
+        fileName: fileName, fileData: decompressFileData);
       
     } 
   }
