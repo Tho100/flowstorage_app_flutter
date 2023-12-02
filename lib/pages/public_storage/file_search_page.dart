@@ -653,11 +653,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           context: context, 
           onTitlePressed: () {
             selectedFilterSearch = "title";
-            searchBarHintTextNotifier.value = "Search by title";
+            searchBarHintTextNotifier.value = "Search title";
           }, 
           onUploaderNamePressed: () {
             selectedFilterSearch = "uploader_name";
-            searchBarHintTextNotifier.value = "Search by uploader name";
+            searchBarHintTextNotifier.value = "Search uploader name";
           }
         );
       },

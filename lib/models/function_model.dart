@@ -225,7 +225,14 @@ class FunctionModel {
 
       await CallNotify().downloadedNotification(fileName: fileName);
 
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Has been downloaded.",icon: Icons.check);
+      if(Globals.imageType.contains(fileType) || Globals.videoType.contains(fileType)) {
+        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Saved to gallery.",icon: Icons.check);
+
+      } else {
+        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Has been downloaded.",icon: Icons.check);
+
+      }
+
 
     } catch (err) {
       await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
