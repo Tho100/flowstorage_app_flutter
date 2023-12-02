@@ -369,7 +369,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildInfoUsage(String headerText, String subText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 28.0),
+      padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 28.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -377,9 +377,9 @@ class StatsPageState extends State<StatisticsPage> {
           Text(
             headerText,
             style: const TextStyle(
-              color: Color.fromARGB(225, 255, 255, 255),
-              fontSize: 19,
-              fontWeight: FontWeight.bold
+              color: ThemeColor.secondaryWhite,
+              fontSize: 17,
+              fontWeight: FontWeight.w600
             ),
             textAlign: TextAlign.left,
           ),
@@ -389,9 +389,9 @@ class StatsPageState extends State<StatisticsPage> {
           Text(
             subText,
             style: const TextStyle(
-              color: Color.fromARGB(200, 255, 255, 255),
-              fontSize: 19,
-              fontWeight: FontWeight.bold
+              color: ThemeColor.secondaryWhite,
+              fontSize: 17,
+              fontWeight: FontWeight.w600
             ),
             textAlign: TextAlign.left,
           ),
@@ -402,28 +402,33 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildUsageProgressBar(BuildContext context) {
     return Container(
-      height: 10,
-      width: MediaQuery.of(context).size.width - 65,
+      height: 55,
+      width: MediaQuery.of(context).size.width - 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: ThemeColor.darkGrey,
+          color: ThemeColor.darkBlack,
           width: 2.0,
         ),
       ),
-      child: LinearProgressIndicator(
-        backgroundColor: Colors.grey[200],
-        valueColor: const AlwaysStoppedAnimation<Color>(ThemeColor.darkPurple),
-        value: usageProgress,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: LinearProgressIndicator(
+          backgroundColor: ThemeColor.lightGrey,
+          valueColor: const AlwaysStoppedAnimation<Color>(ThemeColor.darkPurple),
+          value: usageProgress,
+        ),
       ),
     );
 
   }
 
   Widget _buildUpgradeButton(BuildContext context) {
-    return SizedBox(
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
         height: 65,
-        width: MediaQuery.of(context).size.width-145,
+        width: MediaQuery.of(context).size.width-50,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkPurple,
@@ -432,47 +437,125 @@ class StatsPageState extends State<StatisticsPage> {
             borderRadius: BorderRadius.circular(16),
           ),  
         ),
-
         onPressed: () {
           NavigatePage.goToPageUpgrade(context);
         },
-        
         child: const Text("Upgrade Account",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w500,
             fontSize: 16,
+            ),
+          ),
+        )
+      ),
+    );
+  }
+
+  Widget _buildLegendUsage() {
+
+    final totalUpload = storageData.fileNamesList.length;
+
+    return Row(
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: ThemeColor.darkPurple, 
+            border: Border.all(
+              color: ThemeColor.darkPurple,
+              width: 2.0,
+            ),
           ),
         ),
-      )
+        const SizedBox(width: 5),
+        Text("$totalUpload Uploads",
+          style: const TextStyle(
+            color: ThemeColor.secondaryWhite,
+            fontSize: 15,
+            fontWeight: FontWeight.w600
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildLegendLimit() {
+
+    final totalUpload = storageData.fileNamesList.length;
+    final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
+
+    final numberOfUploadLeft = (totalUpload-maxValue).abs();
+
+    return Row(
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: ThemeColor.lightGrey, 
+            border: Border.all(
+              color: ThemeColor.lightGrey,
+              width: 2.0,
+            ),
+          ),
+        ),
+        const SizedBox(width: 5),
+        Text("$numberOfUploadLeft Uploads left",
+          style: const TextStyle(
+            color: ThemeColor.secondaryWhite,
+            fontSize: 15,
+            fontWeight: FontWeight.w600
+          ),
+        )
+      ],
     );
   }
 
   Widget _buildUsageContainer(BuildContext context) {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
-    final percentage = ((storageData.fileNamesList.length/maxValue) * 100).toInt();
+    final totalUpload = storageData.fileNamesList.length;
+    final percentage = ((totalUpload/maxValue) * 100).toInt();
+
     usageProgress = percentage/100.0;
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        height: 255,
+        height: 625,
         width: MediaQuery.of(context).size.width-25,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ThemeColor.lightGrey, width: 1),
+            border: Border.all(color: ThemeColor.darkBlack, width: 1),
           ),
           child: Column(
             children: [
               
-              _buildInfoUsage("Limited to", "$maxValue Uploads"),
-              _buildInfoUsage("Usage", "$percentage%"),
+              _buildInfoUsage("$totalUpload/$maxValue Uploads", "$percentage%"),
               const SizedBox(height: 12),
+
               _buildUsageProgressBar(context),
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 14.0),
+                child: Row(
+                  children: [
+                    _buildLegendUsage(),
+                    const SizedBox(width: 20),
+                    _buildLegendLimit(),
+                  ],
+                ),
+              ),
+
+              const Spacer(),
               _buildUpgradeButton(context),
+
             ],
           ),
         ),
@@ -488,7 +571,6 @@ class StatsPageState extends State<StatisticsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 12),
             _buildUsageContainer(context),
           ],
         ),
