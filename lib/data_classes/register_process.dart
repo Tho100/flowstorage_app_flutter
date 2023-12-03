@@ -28,6 +28,17 @@ class RegisterUser {
     final conn = await SqlConnection.initializeConnection();
     final crud = Crud();
 
+    final createdAccounts = await readLocalAccountUsernames();
+    final countCreatedAccounts = createdAccounts.length;
+
+    if(countCreatedAccounts >= 2) {
+      if(context.mounted) {
+        Navigator.pop(context);
+        CustomAlertDialog.alertDialog("You have reached the maximum number of account registration.");
+      }
+      return;
+    }
+
     final verifyUsernameQue = await conn.execute(
       "SELECT CUST_USERNAME FROM information WHERE CUST_USERNAME = :username",
       {"username": userName},
@@ -124,7 +135,8 @@ class RegisterUser {
         {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov,"tok_acc": removeSpacesSetTokAcc},
       );
 
-      await setupAutoLogin(userName,email!);
+      await setupAutoLogin(userName, email!);
+      await setupAccountLocal(userName);
 
     } catch (dupeUsernameEx, st) {
       Logger().e(dupeUsernameEx, st);
@@ -139,6 +151,7 @@ class RegisterUser {
 
     final setupPath = '${getDirApplication.path}/FlowStorageInfos';
     final setupInfosDir = Directory(setupPath);
+
     if (custUsername.isNotEmpty && email.isNotEmpty) {
       if (setupInfosDir.existsSync()) {
         setupInfosDir.deleteSync(recursive: true);
@@ -159,6 +172,56 @@ class RegisterUser {
       } catch (e, st) {
         Logger().e(e, st);
       }
-    } 
+    }
+    
   }
+
+  Future<void> setupAccountLocal(String custUsername) async {
+        
+    final getDirApplication = await getApplicationDocumentsDirectory();
+
+    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
+    final setupInfosDir = Directory(setupPath);
+
+    if (custUsername.isNotEmpty) {
+      if (!setupInfosDir.existsSync()) {
+        setupInfosDir.createSync();
+      }
+
+      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+
+      try {
+
+        setupFiles.writeAsStringSync(
+          "$custUsername\n", mode: FileMode.append);
+
+      } catch (e, st) {
+        Logger().e(e, st);
+      }
+    }
+    
+  }
+
+  Future<List<String>> readLocalAccountUsernames() async {
+
+    List<String> usernames = [];
+
+    final getDirApplication = await getApplicationDocumentsDirectory();
+
+    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
+    final setupInfosDir = Directory(setupPath);
+
+    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+
+    final fileContent = await setupFiles.readAsLines();
+    
+    for(var item in fileContent) {
+      usernames.add(item);
+    }
+
+    return usernames;
+
+  }
+
+  
 }

@@ -208,7 +208,7 @@ class FunctionModel {
         late Uint8List getBytes;
 
         if(Globals.imageType.contains(fileType)) {
-          int imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
+          final imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
           getBytes = storageData.imageBytesFilteredList[imageIndex]!;
 
         } else {

@@ -16,6 +16,7 @@ import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -47,6 +48,8 @@ class StatsPageState extends State<StatisticsPage> {
 
   double usageProgress = 0.0;
   
+  List<String> localAccountUsernames = [];
+
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   
@@ -64,6 +67,27 @@ class StatsPageState extends State<StatisticsPage> {
     dataIsLoading.dispose();
     tempStorageData.statsFileNameList.clear();
     super.dispose();
+  }
+
+  Future<void> _readLocalAccountUsernames() async {
+
+    List<String> usernames = [];
+
+    final getDirApplication = await getApplicationDocumentsDirectory();
+
+    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
+    final setupInfosDir = Directory(setupPath);
+
+    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+
+    final fileContent = await setupFiles.readAsLines();
+    
+    for(var item in fileContent) {
+      usernames.add(item);
+    }
+
+    localAccountUsernames.addAll(usernames);
+
   }
 
   Future<void> _initData() async {
@@ -515,6 +539,47 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
+  Widget _buildLocalAccountListView() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: localAccountUsernames.length,
+      itemExtent: 70,
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: Container(
+            width: 45,
+            height: 45,
+            decoration: const BoxDecoration(
+              color: ThemeColor.justWhite,
+              shape: BoxShape.circle
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                localAccountUsernames[index][0],
+                style: const TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          title: Text(localAccountUsernames[index] == userData.username 
+              ? "${localAccountUsernames[index]} (Current)" 
+              : localAccountUsernames[index],
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontSize: 16,
+              fontWeight: FontWeight.w600
+            ),
+          ),
+        );
+      },      
+    );
+  }
+
   Widget _buildUsageContainer(BuildContext context) {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
@@ -526,38 +591,64 @@ class StatsPageState extends State<StatisticsPage> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
-        height: 625,
+        height: MediaQuery.of(context).size.height-235,
         width: MediaQuery.of(context).size.width-25,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ThemeColor.darkBlack, width: 1),
-          ),
-          child: Column(
-            children: [
-              
-              _buildInfoUsage("$totalUpload/$maxValue Uploads", "$percentage%"),
-              const SizedBox(height: 12),
+        child: Column(
+          children: [
+            
+            _buildInfoUsage("$totalUpload/$maxValue Uploads", "$percentage%"),
+            const SizedBox(height: 12),
 
-              _buildUsageProgressBar(context),
-              const SizedBox(height: 20),
+            _buildUsageProgressBar(context),
+            const SizedBox(height: 20),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 14.0),
-                child: Row(
-                  children: [
-                    _buildLegendUsage(),
-                    const SizedBox(width: 25),
-                    _buildLegendLimit(),
-                  ],
+            Padding(
+              padding: const EdgeInsets.only(left: 14.0),
+              child: Row(
+                children: [
+                  _buildLegendUsage(),
+                  const SizedBox(width: 25),
+                  _buildLegendLimit(),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            
+            const Padding(
+              padding: EdgeInsets.only(top: 24, left: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Accounts",
+                  style: TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600
+                  ),
                 ),
               ),
+            ),
 
-              const Spacer(),
-              _buildUpgradeButton(context),
+            const SizedBox(height: 16),
 
-            ],
-          ),
+            FutureBuilder<void>(
+              future: _readLocalAccountUsernames(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.done) {
+                  return _buildLocalAccountListView();
+
+                } else {
+                  return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
+                }
+              }
+            ),
+
+            //_buildUpgradeButton(context),
+
+            //const Spacer(),
+
+          ],
         ),
       ),
     );
@@ -566,14 +657,12 @@ class StatsPageState extends State<StatisticsPage> {
   Widget _buildUsagePage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            _buildUsageContainer(context),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          _buildUsageContainer(context),
+        ],
       ),
     );
   }
