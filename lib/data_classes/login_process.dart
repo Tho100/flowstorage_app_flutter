@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
@@ -8,6 +7,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -18,7 +18,6 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mysql_client/mysql_client.dart';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
@@ -85,43 +84,11 @@ class SignInUser {
     tempStorageData.setFoldersName(uniqueFolder);
 
     if (isChecked) {
-      await _setupAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);
+      await FunctionModel()
+        .setupLocalAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);
     }
 
     custUsernameList.clear();
-
-  }
-
-
-  Future<void> _setupAutoLogin(String custUsername,String custEmail, String accountType) async {
-
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageInfos';
-    final setupInfosDir = Directory(setupPath);
-    
-    if (custUsername.isNotEmpty) {
-
-      if (setupInfosDir.existsSync()) {
-        setupInfosDir.deleteSync(recursive: true);
-      }
-
-      setupInfosDir.createSync();
-
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-      try {
-        
-        if (setupFiles.existsSync()) {
-          setupFiles.deleteSync();
-        }
-
-        setupFiles.writeAsStringSync("${encryption.encrypt(custUsername)}\n${encryption.encrypt(custEmail)}\n$accountType");
-
-      } catch (e, st) {
-        Logger().e(e, st);
-      }
-    } 
 
   }
 
@@ -135,6 +102,12 @@ class SignInUser {
       final custUsername = await userDataRetriever.retrieveUsername(email: email);
 
       if (custUsername.isNotEmpty) {
+
+        final localUsernames = await FunctionModel().readLocalAccountUsernames();
+
+        if(localUsernames.isEmpty && isChecked) {
+          await FunctionModel().setupLocalAccountUsernames(custUsername);
+        }
 
         custEmailInit = email!;
 

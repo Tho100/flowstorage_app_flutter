@@ -4,9 +4,9 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -16,7 +16,6 @@ import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -48,7 +47,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   double usageProgress = 0.0;
   
-  List<String> localAccountUsernames = [];
+  List<String> localAccountUsernamesList = [];
 
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
@@ -56,7 +55,7 @@ class StatsPageState extends State<StatisticsPage> {
   final tempData = GetIt.instance<TempDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
-  @override 
+  @override
   void initState() {
     super.initState();
     _initData();
@@ -71,22 +70,9 @@ class StatsPageState extends State<StatisticsPage> {
 
   Future<void> _readLocalAccountUsernames() async {
 
-    List<String> usernames = [];
+    final usernames = await FunctionModel().readLocalAccountUsernames();
 
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
-    final setupInfosDir = Directory(setupPath);
-
-    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-    final fileContent = await setupFiles.readAsLines();
-    
-    for(var item in fileContent) {
-      usernames.add(item);
-    }
-
-    localAccountUsernames.addAll(usernames);
+    localAccountUsernamesList.addAll(usernames);
 
   }
 
@@ -447,35 +433,6 @@ class StatsPageState extends State<StatisticsPage> {
 
   }
 
-  Widget _buildUpgradeButton(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        height: 65,
-        width: MediaQuery.of(context).size.width-50,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkPurple,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),  
-        ),
-        onPressed: () {
-          NavigatePage.goToPageUpgrade(context);
-        },
-        child: const Text("Upgrade Account",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-            ),
-          ),
-        )
-      ),
-    );
-  }
-
   Widget _buildLegendUsage() {
 
     final totalUpload = storageData.fileNamesList.length;
@@ -542,7 +499,7 @@ class StatsPageState extends State<StatisticsPage> {
   Widget _buildLocalAccountListView() {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: localAccountUsernames.length,
+      itemCount: localAccountUsernamesList.length,
       itemExtent: 70,
       itemBuilder: (context, index) {
         return ListTile(
@@ -556,7 +513,7 @@ class StatsPageState extends State<StatisticsPage> {
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                localAccountUsernames[index][0],
+                localAccountUsernamesList[index][0],
                 style: const TextStyle(
                   color: ThemeColor.darkPurple,
                   fontSize: 20,
@@ -566,9 +523,9 @@ class StatsPageState extends State<StatisticsPage> {
               ),
             ),
           ),
-          title: Text(localAccountUsernames[index] == userData.username 
-              ? "${localAccountUsernames[index]} (Current)" 
-              : localAccountUsernames[index],
+          title: Text(localAccountUsernamesList[index] == userData.username 
+              ? "${localAccountUsernamesList[index]} (Current)" 
+              : localAccountUsernamesList[index],
             style: const TextStyle(
               color: ThemeColor.secondaryWhite,
               fontSize: 16,

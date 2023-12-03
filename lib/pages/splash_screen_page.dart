@@ -188,7 +188,7 @@ class SplashScreenState extends State<SplashScreen> {
     String accountType = '';
 
     final getDirApplication = await getApplicationDocumentsDirectory();
-    final setupPath = '${getDirApplication.path}/FlowStorageInfos';
+    final setupPath = '${getDirApplication.path}/$localAccountInformation';
     final setupInfosDir = Directory(setupPath);
 
     if (setupInfosDir.existsSync()) {

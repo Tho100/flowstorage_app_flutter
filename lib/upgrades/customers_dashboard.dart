@@ -1,13 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 
 class StripeCustomers {
 
@@ -146,7 +144,8 @@ class StripeCustomers {
         userData.setAccountType("Basic");
 
         await deleteEmailByEmail(userData.email);
-        await _updateLocallyStoredAccountType();
+        await FunctionModel().setupLocalAutoLogin(
+          userData.username, userData.email, "Basic");
 
       } else {
         return;
@@ -179,36 +178,6 @@ class StripeCustomers {
       Logger().i('Failed to delete email');
     }
 
-  }
-
-  static Future<void> _updateLocallyStoredAccountType() async {
-      
-    final userData = _locator<UserDataProvider>();
-
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageInfos';
-    final setupInfosDir = Directory(setupPath);
-    if (setupInfosDir.existsSync()) {
-      setupInfosDir.deleteSync(recursive: true);
-    }
-
-    setupInfosDir.createSync();
-
-    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-    try {
-      
-      if (setupFiles.existsSync()) {
-        setupFiles.deleteSync();
-      }
-
-      setupFiles.writeAsStringSync('${EncryptionClass().encrypt(userData.username)}\n${EncryptionClass().encrypt(userData.email)}\nBasic');
-
-    } catch (e, st) {
-      Logger().e(e, st);
-    }
-    
   }
 
 }

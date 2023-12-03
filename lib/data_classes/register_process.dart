@@ -5,12 +5,10 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class RegisterUser {
 
@@ -28,7 +26,7 @@ class RegisterUser {
     final conn = await SqlConnection.initializeConnection();
     final crud = Crud();
 
-    final createdAccounts = await readLocalAccountUsernames();
+    final createdAccounts = await FunctionModel().readLocalAccountUsernames();
     final countCreatedAccounts = createdAccounts.length;
 
     if(countCreatedAccounts >= 2) {
@@ -135,92 +133,12 @@ class RegisterUser {
         {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov,"tok_acc": removeSpacesSetTokAcc},
       );
 
-      await setupAutoLogin(userName, email!);
-      await setupAccountLocal(userName);
+      await FunctionModel().setupLocalAutoLogin(userName, email!, "Basic");
+      await FunctionModel().setupLocalAccountUsernames(userName);
 
     } catch (dupeUsernameEx, st) {
       Logger().e(dupeUsernameEx, st);
     } 
-  }
-
-  Future<void> setupAutoLogin(String custUsername, String email) async {
-    
-    const accountType = "Basic";
-    
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageInfos';
-    final setupInfosDir = Directory(setupPath);
-
-    if (custUsername.isNotEmpty && email.isNotEmpty) {
-      if (setupInfosDir.existsSync()) {
-        setupInfosDir.deleteSync(recursive: true);
-      }
-
-      setupInfosDir.createSync();
-
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-      try {
-
-        if (setupFiles.existsSync()) {
-          setupFiles.deleteSync();
-        }
-
-        setupFiles.writeAsStringSync('${encryption.encrypt(custUsername)}\n${encryption.encrypt(email)}\n$accountType');
-
-      } catch (e, st) {
-        Logger().e(e, st);
-      }
-    }
-    
-  }
-
-  Future<void> setupAccountLocal(String custUsername) async {
-        
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
-    final setupInfosDir = Directory(setupPath);
-
-    if (custUsername.isNotEmpty) {
-      if (!setupInfosDir.existsSync()) {
-        setupInfosDir.createSync();
-      }
-
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-      try {
-
-        setupFiles.writeAsStringSync(
-          "$custUsername\n", mode: FileMode.append);
-
-      } catch (e, st) {
-        Logger().e(e, st);
-      }
-    }
-    
-  }
-
-  Future<List<String>> readLocalAccountUsernames() async {
-
-    List<String> usernames = [];
-
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageAccountInfo';
-    final setupInfosDir = Directory(setupPath);
-
-    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-    final fileContent = await setupFiles.readAsLines();
-    
-    for(var item in fileContent) {
-      usernames.add(item);
-    }
-
-    return usernames;
-
   }
 
   

@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flowstorage_fsc/api/geographic_api.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
@@ -21,8 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 class UpradePage extends StatefulWidget {
@@ -636,39 +633,6 @@ class UpgradePageState extends State<UpradePage> {
 
   }
 
-  Future<void> updateLocallyStoredAccountType(String accountType) async {
-      
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/FlowStorageInfos';
-    final setupInfosDir = Directory(setupPath);
-
-    if (accountType.isNotEmpty) {
-      if (setupInfosDir.existsSync()) {
-        setupInfosDir.deleteSync(recursive: true);
-      }
-
-      setupInfosDir.createSync();
-
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-      try {
-        
-        if (setupFiles.existsSync()) {
-          setupFiles.deleteSync();
-        }
-
-        setupFiles.writeAsStringSync('${EncryptionClass().encrypt(userData.username)}\n${EncryptionClass().encrypt(userData.email)}\n$accountType');
-
-      } catch (st, e) { 
-        Logger().e(st, e);
-
-      }
-
-    } 
-    
-  }
-
   Future<void> _validatePayment() async {
 
     try {
@@ -690,7 +654,8 @@ class UpgradePageState extends State<UpradePage> {
 
         userData.setAccountType(userChoosenPlan);      
 
-        await updateLocallyStoredAccountType(userChoosenPlan);
+        await FunctionModel().setupLocalAutoLogin(
+          userData.username, userData.email, userChoosenPlan);
 
         singleLoading.stopLoading();
 
