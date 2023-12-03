@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -26,7 +26,9 @@ class RegisterUser {
     final conn = await SqlConnection.initializeConnection();
     final crud = Crud();
 
-    final createdAccounts = await FunctionModel().readLocalAccountUsernames();
+    final createdAccounts = await LocalStorageModel()
+                                        .readLocalAccountUsernames();
+
     final countCreatedAccounts = createdAccounts.length;
 
     if(countCreatedAccounts >= 2) {
@@ -133,8 +135,11 @@ class RegisterUser {
         {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov,"tok_acc": removeSpacesSetTokAcc},
       );
 
-      await FunctionModel().setupLocalAutoLogin(userName, email!, "Basic");
-      await FunctionModel().setupLocalAccountUsernames(userName);
+      await LocalStorageModel()
+        .setupLocalAutoLogin(userName, email!, "Basic");
+        
+      await LocalStorageModel()
+        .setupLocalAccountUsernames(userName);
 
     } catch (dupeUsernameEx, st) {
       Logger().e(dupeUsernameEx, st);

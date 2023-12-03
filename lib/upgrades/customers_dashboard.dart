@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -144,7 +144,8 @@ class StripeCustomers {
         userData.setAccountType("Basic");
 
         await deleteEmailByEmail(userData.email);
-        await FunctionModel().setupLocalAutoLogin(
+
+        await LocalStorageModel().setupLocalAutoLogin(
           userData.username, userData.email, "Basic");
 
       } else {

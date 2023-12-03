@@ -4,7 +4,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
@@ -70,7 +70,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Future<void> _readLocalAccountUsernames() async {
 
-    final usernames = await FunctionModel().readLocalAccountUsernames();
+    final usernames = await LocalStorageModel().readLocalAccountUsernames();
 
     localAccountUsernamesList.addAll(usernames);
 

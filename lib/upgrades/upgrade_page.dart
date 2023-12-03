@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
@@ -654,7 +654,7 @@ class UpgradePageState extends State<UpradePage> {
 
         userData.setAccountType(userChoosenPlan);      
 
-        await FunctionModel().setupLocalAutoLogin(
+        await LocalStorageModel().setupLocalAutoLogin(
           userData.username, userData.email, userChoosenPlan);
 
         singleLoading.stopLoading();

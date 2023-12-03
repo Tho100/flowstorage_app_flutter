@@ -7,7 +7,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -84,7 +84,7 @@ class SignInUser {
     tempStorageData.setFoldersName(uniqueFolder);
 
     if (isChecked) {
-      await FunctionModel()
+      await LocalStorageModel()
         .setupLocalAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);
     }
 
@@ -103,10 +103,10 @@ class SignInUser {
 
       if (custUsername.isNotEmpty) {
 
-        final localUsernames = await FunctionModel().readLocalAccountUsernames();
+        final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
 
         if(localUsernames.isEmpty && isChecked) {
-          await FunctionModel().setupLocalAccountUsernames(custUsername);
+          await LocalStorageModel().setupLocalAccountUsernames(custUsername);
         }
 
         custEmailInit = email!;
