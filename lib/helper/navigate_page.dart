@@ -28,46 +28,46 @@ import '../pages/settings_page.dart';
 
 class NavigatePage {
 
-  static void goToPageFileDetails(BuildContext context, String fileName) {
+  static void goToPageFileDetails(String fileName) {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => FileDetailsPage(fileName: fileName,))
     );
   }
 
-  static void goToPageSharing(BuildContext context, String fileName) {
+  static void goToPageSharing(String fileName) {
      Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => ShareFilePage(fileName: fileName)),
     );
   }
 
-  static void goToPageMoveFile(BuildContext context, List<String> fileNames, List<String> fileBase64) {
+  static void goToPageMoveFile(List<String> fileNames, List<String> fileBase64) {
      Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => MoveFilePage(
         fileNames: fileNames, fileBase64Data: fileBase64)
       ),
     );
   }
 
-  static void goToPageCongfigurePasscode(BuildContext context) {
+  static void goToPageCongfigurePasscode() {
     Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => const ConfigurePasscodePage()),
     );
   }
 
-  static void goToPageCongfigureSharingPassword(BuildContext context) {
+  static void goToPageCongfigureSharingPassword() {
     Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => const ConfigureSharingPasswordPage()),
     );
   }
 
-  static void goToPageFileComment(BuildContext context, String fileName) {
+  static void goToPageFileComment(String fileName) {
     Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => CommentPage(fileName: fileName)),
     );
   }
@@ -113,30 +113,30 @@ class NavigatePage {
     );
   }
   
-  static void goToPageStatistics(BuildContext context) {
+  static void goToPageStatistics() {
     Navigator.push(
-      context, 
+      navigatorKey.currentContext!, 
       MaterialPageRoute(
         builder: (_) => const StatisticsPage(),
       )
     );
   }
 
-  static void goToPageUpgrade(BuildContext context) {
+  static void goToPageUpgrade() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const UpradePage())
     );
   }
 
-  static void goToPageCreateText(BuildContext context) {
+  static void goToPageCreateText() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const CreateText())
     );
   }
 
-  static void goToPageSettings(BuildContext context) async {
+  static void goToPageSettings() async {
 
     final userData = GetIt.instance<UserDataProvider>();
 
@@ -196,23 +196,23 @@ class NavigatePage {
     );
   }
 
-  static void goToPageBackupRecovery(BuildContext context) {
+  static void goToPageBackupRecovery() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const BackupRecovery())
     );
   }
 
-  static void goToPageMyPlan(BuildContext context) {
+  static void goToPageMyPlan() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const MyPlanPage())
     );
   }
 
-  static void goToAddPasscodePage(BuildContext context) {
+  static void goToAddPasscodePage() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const AddPasscodePage())
     );
   }

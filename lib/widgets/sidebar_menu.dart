@@ -118,7 +118,7 @@ class CustomSideBarMenu extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: ElevatedButton(
                   onPressed: () {
-                    NavigatePage.goToPageUpgrade(context);
+                    NavigatePage.goToPageUpgrade();
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -157,7 +157,7 @@ class CustomSideBarMenu extends StatelessWidget {
                       icon: Icons.rocket_outlined,
                       onPressed: () async {
                         Navigator.pop(context);
-                        NavigatePage.goToPageUpgrade(context);
+                        NavigatePage.goToPageUpgrade();
                       }
                     ),
   
@@ -166,7 +166,7 @@ class CustomSideBarMenu extends StatelessWidget {
                       icon: Icons.settings_outlined,
                       onPressed: () async {
                         Navigator.pop(context);
-                        NavigatePage.goToPageSettings(context);
+                        NavigatePage.goToPageSettings();
                       }
                     ),
   

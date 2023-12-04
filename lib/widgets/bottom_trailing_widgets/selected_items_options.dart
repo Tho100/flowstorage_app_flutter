@@ -16,6 +16,7 @@ class BottomTrailingSelectedItems {
     required VoidCallback makeAoOnPressed,
     required VoidCallback saveOnPressed,
     required VoidCallback deleteOnPressed,
+    required VoidCallback moveOnPressed,
     required Set<String> itemsName
   }) {
 
@@ -87,6 +88,21 @@ class BottomTrailingSelectedItems {
             ),
           ),
         
+          if(tempData.origin == OriginFile.home)
+          ElevatedButton(
+            onPressed: moveOnPressed,
+            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+            child: const Row(
+              children: [
+                Icon(Icons.open_with_outlined),
+                SizedBox(width: 15.0),
+                Text('Move',
+                  style: GlobalsStyle.btnBottomDialogTextStyle
+                ),
+              ],
+            ),
+          ),
+
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);

@@ -69,7 +69,7 @@ class UpgradeDialog {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    NavigatePage.goToPageUpgrade(context);
+                    NavigatePage.goToPageUpgrade();
                   },
                   child: const Text(
                     'Upgrade',
@@ -154,7 +154,7 @@ class UpgradeDialog {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    NavigatePage.goToPageUpgrade(context);
+                    NavigatePage.goToPageUpgrade();
                   },
                   child: const Text(
                     'Upgrade',

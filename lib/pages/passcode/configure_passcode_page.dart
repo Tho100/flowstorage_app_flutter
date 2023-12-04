@@ -56,7 +56,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                           if (!isPassCodeExists) {
                             isPasscodeEnabled = false;
                             if (!mounted) return;
-                            NavigatePage.goToAddPasscodePage(context);
+                            NavigatePage.goToAddPasscodePage();
 
                           } else {
                             final isEnabled = isPasscodeEnabled ? "true" : "false";
@@ -84,7 +84,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        NavigatePage.goToAddPasscodePage(context);
+                        NavigatePage.goToAddPasscodePage();
                       },
                       child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

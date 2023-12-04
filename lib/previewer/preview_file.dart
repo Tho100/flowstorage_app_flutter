@@ -360,11 +360,11 @@ class PreviewFileState extends State<PreviewFile> {
       onSharingPressed: () {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(
-          context, tempData.selectedFileName);
+          tempData.selectedFileName);
       }, 
       onDetailsPressed: () {
         Navigator.pop(context);
-        NavigatePage.goToPageFileDetails(context, fileName);
+        NavigatePage.goToPageFileDetails(fileName);
       },
       onAOPressed: () async {
         Navigator.pop(context);
@@ -374,11 +374,14 @@ class PreviewFileState extends State<PreviewFile> {
         _openWithOnPressed();
       },
       onMovePressed: () {
-        Navigator.pop(context);
-        NavigatePage.goToPageMoveFile(context, ["gay"], ["dwadwa"]);
+        _openMoveFileOnPressed(fileName);
       },
       context: context
     );
+  }
+
+  void _openMoveFileOnPressed(String fileName) {
+    NavigatePage.goToPageMoveFile([fileName], [fileName]);
   }
 
   Widget _buildFileDataWidget() {
@@ -477,7 +480,7 @@ class PreviewFileState extends State<PreviewFile> {
     return IconButton(
       onPressed: () {
         NavigatePage.goToPageFileDetails(
-          context, tempData.selectedFileName);
+          tempData.selectedFileName);
       },
       icon: const Icon(Icons.info_outlined),
     );
@@ -581,11 +584,11 @@ class PreviewFileState extends State<PreviewFile> {
 
             } else if (buttonType == "comment") {
               NavigatePage.goToPageFileComment(
-                context, tempData.selectedFileName);
+                tempData.selectedFileName);
 
             } else if (buttonType == "share") {
               NavigatePage.goToPageSharing(
-                context, tempData.selectedFileName);
+                tempData.selectedFileName);
 
             } else if (buttonType == "save") {
               _saveTextChangesOnPressed();

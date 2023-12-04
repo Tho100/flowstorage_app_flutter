@@ -45,7 +45,9 @@ class SnakeAlert {
   }
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> upgradeSnake() {
+
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Row(
@@ -54,7 +56,7 @@ class SnakeAlert {
             const Spacer(),
             TextButton(
               onPressed: () {
-                NavigatePage.goToPageUpgrade(navigatorKey.currentContext!);
+                NavigatePage.goToPageUpgrade();
               },
               child: const Text('Upgrade'),
             ),
@@ -64,6 +66,7 @@ class SnakeAlert {
         backgroundColor: const Color.fromARGB(255, 216, 142, 46),
       ),
     );
+    
   } 
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> uploadingSnake({

@@ -1224,6 +1224,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       deleteOnPressed: () {
         _openDeleteSelectionDialog();
       },
+      moveOnPressed: () {
+        _openMoveMultipleFilePage(checkedItemsName.toList());
+      },
       itemsName: checkedItemsName
     );
 
@@ -1248,11 +1251,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       },
       onSharingPressed: () {
         Navigator.pop(context);
-        NavigatePage.goToPageSharing(context, fileName);
+        NavigatePage.goToPageSharing(fileName);
       }, 
       onDetailsPressed: () {
         Navigator.pop(context);
-        NavigatePage.goToPageFileDetails(context, fileName);
+        NavigatePage.goToPageFileDetails(fileName);
       },
       onAOPressed: () {
         Navigator.pop(context);
@@ -1263,8 +1266,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           fileName.split('.').last, fileName);
       },
       onMovePressed: () {
-        Navigator.pop(context);
-        NavigatePage.goToPageMoveFile(context, ["gay"], ["dwadwa"]);
+        _openMoveSingleFilePage(fileName);
       },
       context: context
     );
@@ -1404,7 +1406,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         if(storageData.fileNamesList.length < limitUpload) {
           Navigator.pop(context);
-          NavigatePage.goToPageCreateText(context);
+          NavigatePage.goToPageCreateText();
         } else {
           _showUpgradeLimitedDialog(limitUpload);
         }
@@ -1771,6 +1773,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       ),
     );
 
+  }
+
+  void _openMoveSingleFilePage(String fileName) {
+    NavigatePage.goToPageMoveFile(
+      [fileName], [fileName]
+    );
+  }
+
+  void _openMoveMultipleFilePage(List<String> fileNames) {
+    NavigatePage.goToPageMoveFile(
+      fileNames, fileNames
+    );
   }
 
   void _openExternalFileOnSelect(String fileType, String fileName) async {

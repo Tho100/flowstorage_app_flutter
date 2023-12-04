@@ -330,7 +330,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                   height: 46,
                   child: ElevatedButton(
                     onPressed: () {
-                      NavigatePage.goToPageUpgrade(context);
+                      NavigatePage.goToPageUpgrade();
                     },
                     style: GlobalsStyle.btnMainStyle,
                     child: const Text('Upgrade'),
@@ -403,7 +403,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               topText: "Configure password", 
               bottomText: "Require password for file sharing with you", 
               onPressed: () async {
-                NavigatePage.goToPageCongfigureSharingPassword(context);
+                NavigatePage.goToPageCongfigureSharingPassword();
               }
             ),
       
@@ -417,7 +417,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               topText: "Configure passcode", 
               bottomText: "Require to enter passcode before allowing to open Flowstorage", 
               onPressed: () async {
-                NavigatePage.goToPageCongfigurePasscode(context);
+                NavigatePage.goToPageCongfigurePasscode();
               }
             ),
 
@@ -427,7 +427,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               topText: "Backup recovery key", 
               bottomText: "Recovery key enables password reset in case of forgotten passwords", 
               onPressed: () async {
-                NavigatePage.goToPageBackupRecovery(context);
+                NavigatePage.goToPageBackupRecovery();
               }
             ),
 
@@ -447,7 +447,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                 }
 
                 if(!mounted) return;
-                NavigatePage.goToPageStatistics(context);
+                NavigatePage.goToPageStatistics();
 
               }
             ),
@@ -499,7 +499,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     topText: "My plan", 
                     bottomText: "See your subscription plan details", 
                     onPressed: () async {
-                      NavigatePage.goToPageMyPlan(context);
+                      NavigatePage.goToPageMyPlan();
                     }
                   ),
                 ],
