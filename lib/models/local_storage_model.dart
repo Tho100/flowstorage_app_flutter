@@ -8,22 +8,28 @@ class LocalStorageModel {
 
   Future<List<String>> readLocalAccountUsernames() async {
 
-    List<String> usernames = [];
+    try {
 
-    final getDirApplication = await getApplicationDocumentsDirectory();
+      List<String> usernames = [];
 
-    final setupPath = '${getDirApplication.path}/$localAccountUsernames';
-    final setupInfosDir = Directory(setupPath);
+      final getDirApplication = await getApplicationDocumentsDirectory();
 
-    final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+      final setupPath = '${getDirApplication.path}/$localAccountUsernames';
+      final setupInfosDir = Directory(setupPath);
 
-    final fileContent = await setupFiles.readAsLines();
-    
-    for(var item in fileContent) {
-      usernames.add(item);
+      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+
+      final fileContent = await setupFiles.readAsLines();
+      
+      for(var item in fileContent) {
+        usernames.add(item);
+      }
+
+      return usernames;
+      
+    } catch(err) {
+      return [];
     }
-
-    return usernames;
 
   }
 

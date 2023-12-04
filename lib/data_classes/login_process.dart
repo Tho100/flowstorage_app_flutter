@@ -103,12 +103,6 @@ class SignInUser {
 
       if (custUsername.isNotEmpty) {
 
-        final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
-
-        if(localUsernames.isEmpty && isChecked) {
-          await LocalStorageModel().setupLocalAccountUsernames(custUsername);
-        }
-
         custEmailInit = email!;
 
         final custPasOriginal = await getCustPassword(custUsername, conn);
@@ -118,7 +112,13 @@ class SignInUser {
         final case1 = AuthModel().computeAuth(auth1!) == custPinOriginal;
 
         if (case0 && case1) {
-          
+
+          final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
+
+          if(localUsernames.isEmpty && isChecked) {
+            await LocalStorageModel().setupLocalAccountUsernames(custUsername);
+          }
+
           final justLoading = JustLoading();
 
           if(context.mounted) {
@@ -159,6 +159,7 @@ class SignInUser {
     } finally {
       await conn.close();
     }
+
   }
 
   Future<String> getCustPassword(String custUsername, conn) async {
