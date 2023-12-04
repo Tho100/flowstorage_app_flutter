@@ -106,35 +106,38 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        buildTagsButton("Entertainment", "en"),
-                        buildTagsButton("Data", "en"),
-                        buildTagsButton("Creativity", "en"),
-                      ],
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            buildTagsButton("Entertainment", "en"),
+                            buildTagsButton("Data", "en"),
+                            buildTagsButton("Creativity", "en"),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
+
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        buildTagsButton("Software", "en"),
-                        buildTagsButton("Education", "en"),
-                        buildTagsButton("Gaming", "en"),
-                      ],
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          buildTagsButton("Software", "en"),
+                          buildTagsButton("Education", "en"),
+                          buildTagsButton("Gaming", "en"),
+                          buildTagsButton("Music", "en"),
+                          buildTagsButton("Random", "en"),
+                        ],
+                      ),
                     ),
                   ),
                       
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        buildTagsButton("Music", "en"),
-                        buildTagsButton("Random", "en"),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             );
@@ -350,7 +353,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildResultWidget() {
 
     final mediaQuery = isTagsVisibleNotifier.value == true 
-      ? MediaQuery.of(context).size.height-385
+      ? MediaQuery.of(context).size.height-340
       : MediaQuery.of(context).size.height-195;
 
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
