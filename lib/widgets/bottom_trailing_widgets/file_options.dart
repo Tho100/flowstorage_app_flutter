@@ -28,6 +28,7 @@ class BottomTrailingOptions {
     required VoidCallback onSharingPressed,
     required VoidCallback onAOPressed,
     required VoidCallback onOpenWithPressed,
+    required VoidCallback onMovePressed,
     required BuildContext context
   }) {
 
@@ -128,8 +129,7 @@ class BottomTrailingOptions {
               ),
             ],
           ),
-        ),
-        
+        ), 
 
         Visibility(
           visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,
@@ -202,6 +202,21 @@ class BottomTrailingOptions {
               Icon(Icons.file_download_outlined),
               SizedBox(width: 15.0),
               Text('Download',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
+          ),
+        ),
+
+        if(fileName.contains('.') && tempData.origin == OriginFile.home)
+        ElevatedButton(
+          onPressed: onMovePressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.open_with_outlined),
+              SizedBox(width: 15.0),
+              Text('Move',
                 style: GlobalsStyle.btnBottomDialogTextStyle
               ),
             ],

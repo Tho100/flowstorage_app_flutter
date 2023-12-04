@@ -1262,6 +1262,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _openExternalFileOnSelect(
           fileName.split('.').last, fileName);
       },
+      onMovePressed: () {
+        Navigator.pop(context);
+        NavigatePage.goToPageMoveFile(context, ["gay"], ["dwadwa"]);
+      },
       context: context
     );
     

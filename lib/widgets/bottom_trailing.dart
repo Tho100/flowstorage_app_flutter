@@ -12,6 +12,7 @@ class BottomTrailing {
       backgroundColor: ThemeColor.darkGrey,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
+      isScrollControlled: true,
       builder: (context) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -373,6 +373,10 @@ class PreviewFileState extends State<PreviewFile> {
       onOpenWithPressed: () {
         _openWithOnPressed();
       },
+      onMovePressed: () {
+        Navigator.pop(context);
+        NavigatePage.goToPageMoveFile(context, ["gay"], ["dwadwa"]);
+      },
       context: context
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
+import 'package:flowstorage_fsc/pages/move_file_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
@@ -38,6 +39,15 @@ class NavigatePage {
      Navigator.push(
       context, 
       MaterialPageRoute(builder: (context) => ShareFilePage(fileName: fileName)),
+    );
+  }
+
+  static void goToPageMoveFile(BuildContext context, List<String> fileNames, List<String> fileBase64) {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => MoveFilePage(
+        fileNames: fileNames, fileBase64Data: fileBase64)
+      ),
     );
   }
 
