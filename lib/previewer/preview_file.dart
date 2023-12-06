@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -200,18 +201,8 @@ class PreviewFileState extends State<PreviewFile> {
 
   void _openWithOnPressed() async {
 
-    final fileType = tempData.selectedFileName.split('.').last;
-
-    late Uint8List fileByteData;
-
-    if(Globals.imageType.contains(fileType)) {
-      final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-      fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
-
-    } else {
-      fileByteData = tempData.fileByteData;
-
-    }
+    final fileByteData = await functionModel
+          .returnFileDataPreviewer(isCompressed: false);
 
     final result = await ExternalApp(
       fileName: tempData.selectedFileName, 
@@ -374,14 +365,24 @@ class PreviewFileState extends State<PreviewFile> {
         _openWithOnPressed();
       },
       onMovePressed: () {
+        Navigator.pop(context);
         _openMoveFileOnPressed(fileName);
       },
       context: context
     );
   }
 
-  void _openMoveFileOnPressed(String fileName) {
-    NavigatePage.goToPageMoveFile([fileName], [fileName]);
+  void _openMoveFileOnPressed(String fileName) async {
+
+    final fileByteData = await functionModel
+        .returnFileDataPreviewer(isCompressed: true);
+
+    final base64Data = base64.encode(fileByteData);
+
+    NavigatePage.goToPageMoveFile(
+      [fileName], [base64Data]
+    );
+
   }
 
   Widget _buildFileDataWidget() {

@@ -384,4 +384,27 @@ class FunctionModel {
     
   }
 
+  Future<Uint8List> returnFileDataPreviewer({
+    required isCompressed
+  }) async {
+
+    final fileType = tempData.selectedFileName.split('.').last;
+
+    late Uint8List fileByteData;
+
+    if(Globals.imageType.contains(fileType)) {
+      final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+      fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
+
+    } else {
+      fileByteData = isCompressed 
+      ? CompressorApi.compressByte(tempData.fileByteData)
+      : tempData.fileByteData;
+
+    }
+
+    return fileByteData;
+
+  }
+
 }
