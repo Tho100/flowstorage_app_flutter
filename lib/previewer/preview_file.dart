@@ -30,7 +30,6 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dar
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';

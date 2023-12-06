@@ -1,5 +1,4 @@
 
-import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
@@ -126,13 +125,10 @@ class RegisterUser {
       final String setTokRecov = Generator.generateRandomString(16) + userName!;
       final String removeSpacesSetRecov = EncryptionClass().encrypt(setTokRecov.replaceAll(RegExp(r'\s'), ''));
 
-      final String setTokAcc = (Generator.generateRandomString(12) + userName).toLowerCase();
-      final String removeSpacesSetTokAcc = AuthModel().computeAuth(setTokAcc.replaceAll(RegExp(r'\s'), ''));
-
       await conn.execute(
-        "INSERT INTO information(CUST_USERNAME,CUST_PASSWORD,CREATED_DATE,CUST_EMAIL,CUST_PIN,RECOV_TOK,ACCESS_TOK) "
+        "INSERT INTO information(CUST_USERNAME, CUST_PASSWORD, CREATED_DATE, CUST_EMAIL, CUST_PIN, RECOV_TOK)"
         "VALUES (:username,:password,:date,:email,:pin,:tok,:tok_acc)",
-        {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov,"tok_acc": removeSpacesSetTokAcc},
+        {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov},
       );
 
       await LocalStorageModel()

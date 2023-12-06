@@ -9,7 +9,7 @@ class SqlConnection {
     userName: AuthConfig.auth02,
     password: AuthConfig.auth002,
     databaseName: AuthConfig.authLast,
-    maxConnections: 20,
+    maxConnections: 12,
   );
 
   static Future<MySQLConnectionPool> initializeConnection() async {

@@ -57,7 +57,7 @@ class PreviewAudioState extends State<PreviewAudio> {
   String audioDuration = "0:00";
 
   late String? audioContentType;
-  late Uint8List byteAudio;
+  late Uint8List? byteAudio = Uint8List(0);
 
   Future<Uint8List> callAudioDataAsync() async {
 
@@ -96,7 +96,7 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   void setupAudioDuration() async {
-    await audioPlayerController.setAudioSource(ProcessAudio(byteAudio, audioContentType!));
+    await audioPlayerController.setAudioSource(ProcessAudio(byteAudio!, audioContentType!));
     Duration duration = audioPlayerController.duration!;
     String formattedDuration = getDurationString(duration);
     audioDuration = formattedDuration;
@@ -104,7 +104,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Future<void> playOrPauseAudioAsync() async {
 
-    if (byteAudio.isEmpty) {
+    if (byteAudio!.isEmpty) {
       byteAudio = await callAudioDataAsync();
     }
 
@@ -478,7 +478,6 @@ class PreviewAudioState extends State<PreviewAudio> {
   @override
   void initState() {
     super.initState();
-    byteAudio = Uint8List(0);
     initializeAudioContentType();
     playOrPauseAudioAsync();
     initializeGradient();

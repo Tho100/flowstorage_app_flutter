@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/special_file.dart';
@@ -16,7 +17,6 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -173,17 +173,19 @@ class MoveFilePageState extends State<MoveFilePage> {
       if(!mounted) return;
       loading.startLoading(title: "Moving file(s)...", context: context);
 
-      await moveFileToDirectoryImage();
+      await moveFileToDirectory();
 
       loading.stopLoading();
 
       SnakeAlert.okSnake(message: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
 
+      await CallNotify().customNotification(title: "File Moved", subMesssage: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
+
     }
 
   }
 
-  Future<void> moveFileToDirectoryImage() async {
+  Future<void> moveFileToDirectory() async {
     
     final dateNow = DateFormat('dd/MM/yyyy').format(DateTime.now());
     

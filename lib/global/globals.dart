@@ -108,10 +108,9 @@ class Globals {
   };
 
   static const Set<String> supportedFileTypes = {
-    "png","jpeg","jpg",
-    "html","sql","md","txt","xml","py","js","css","pptx","ptx",
-    "pdf","doc","docx","mp4","wav","avi","wmv","mov","mp3",
-    "exe","xlsx","xls","csv","apk", "msi"
+    ...imageType,...textType, ...videoType, ...wordType,
+    ...ptxType, ...audioType, ...excelType,
+    "pdf","exe","apk", "msi"
   };
 
   static Map<OriginFile,String> get originToName {

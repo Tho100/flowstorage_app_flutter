@@ -66,9 +66,7 @@ class RetrieveData {
 
       case OriginFile.public:
       case OriginFile.publicSearching:
-        final toPsFileName = GlobalsTable.tableNames.contains(tableName)
-          ? GlobalsTable.publicToPsTables[tableName]!
-          : tableName!;
+        final toPsFileName = returnPsTable(tableName!);
 
         final indexUploaderName = storageData.fileNamesFilteredList.indexOf(fileName);
         final uploaderName = psStorageData.psUploaderList[indexUploaderName];
@@ -93,6 +91,14 @@ class RetrieveData {
 
     return decompressedData.buffer.asUint8List(decompressedData.offsetInBytes, decompressedData.lengthInBytes);
     
+  }
+
+  String returnPsTable(String tableName) {
+    final toPsTableName = GlobalsTable.tableNames.contains(tableName)
+      ? GlobalsTable.publicToPsTables[tableName]!
+      : tableName;
+
+    return toPsTableName;
   }
 
   Future<Uint8List> retrieveDataParams(
