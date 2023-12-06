@@ -1,7 +1,25 @@
+import 'dart:convert';
+
+import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/encryption/encryption_model.dart';
+import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/get_assets.dart';
+import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/helper/special_file.dart';
+import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
+import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class MoveFilePage extends StatefulWidget {
 
@@ -21,12 +39,246 @@ class MoveFilePage extends StatefulWidget {
 
 class MoveFilePageState extends State<MoveFilePage> {
 
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
+
+  final encryption = EncryptionClass();
+  final specialFile = SpecialFile();
+
+  List<String> directoriesList = [];
+
+  String selectedDirectory = "";
+
   Widget buildBody() {
     return Column(
       children: [
 
+        const SizedBox(height: 15),
+
+        directoriesList.isEmpty 
+        ? const SizedBox()
+        : const Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(left: 16.0),
+            child: Text("Select directory",
+              style: TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 16
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        directoriesList.isEmpty 
+        ? buildOnEmpty()
+        : SizedBox(
+          height: 300,
+          child: buildListView()
+        )
       ],
     );
+  }
+
+  Widget buildListView() {
+    return RawScrollbar(
+      child: ListView.builder(
+        itemCount: directoriesList.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () async {
+              selectedDirectory = directoriesList[index];
+              await onMoveFile();
+            },
+            child: Ink(
+              color: ThemeColor.darkBlack,
+              child: ListTile(
+                leading: FutureBuilder(
+                future: GetAssets().loadAssetsData('dir1.jpg'), 
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                    return Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                      height: 40,
+                      width: 40,
+                    );
+                  } else {
+                    return Container(
+                      width: 25,
+                      height: 25,
+                      color: Colors.grey,
+                    );
+                  }
+                },
+              ),
+                title: Text(
+                  directoriesList[index],
+                  style: const TextStyle(
+                    color: ThemeColor.justWhite,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),              
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildOnEmpty() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "No directory found",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: ThemeColor.secondaryWhite,
+              fontSize: 22,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 12),
+          Text(
+            "Add a new directory to move this file",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: ThemeColor.thirdWhite,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> onMoveFile() async {
+
+    final canMoveFile = await canMoveFileToDirectory();
+
+    if(canMoveFile) {
+      final loading = SingleTextLoading();
+
+      if(!mounted) return;
+      loading.startLoading(title: "Moving file(s)...", context: context);
+
+      await moveFileToDirectoryImage();
+
+      loading.stopLoading();
+
+      SnakeAlert.okSnake(message: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
+
+    }
+
+  }
+
+  Future<void> moveFileToDirectoryImage() async {
+    
+    final dateNow = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    
+    final conn = await SqlConnection.initializeConnection();
+
+    const query = "INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, FILE_EXT, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    final encryptedDirectoryName = encryption.encrypt(selectedDirectory);
+
+    for(int i=0; i<widget.fileNames.length; i++) {
+      
+      final fileTypeNew = widget.fileNames[i].split('.').last;
+      final fileType = ".${widget.fileNames[i].split('.').last}";
+
+      final encryptedData = specialFile.ignoreEncryption(fileTypeNew) 
+        ? widget.fileBase64Data[i] 
+        : encryption.encrypt(widget.fileBase64Data[i]);
+        
+      final encryptedFileName = encryption.encrypt(widget.fileNames[i]);
+
+      if(Globals.videoType.contains(fileTypeNew)) {
+        final thumbnailIndex = storageData.fileNamesFilteredList.indexOf(widget.fileNames[i]);
+        final thumbnailBytes = storageData.imageBytesFilteredList.elementAt(thumbnailIndex);
+        final thumbnail = base64.encode(thumbnailBytes!);
+        await conn.prepare(query)
+          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, fileType, thumbnail]);
+
+      } else {
+        await conn.prepare(query)
+          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, fileType, null]);
+
+      }
+
+    }
+
+  }
+
+  Future<bool> canMoveFileToDirectory() async {
+
+    const countFilesQuery = "SELECT COUNT(*) FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dir_name";
+    final params = {
+      'username': userData.username,
+      'dir_name': encryption.encrypt(selectedDirectory)
+    };
+
+    final totalFiles = await Crud().count(
+      query: countFilesQuery, params: params);
+
+    if(totalFiles < AccountPlan.mapFilesUpload[userData.accountType]!) {
+
+      bool hasDuplicatedFileName = false;
+
+      for(int i=0; i<widget.fileNames.length; i++) {
+        const verifyFileName = "SELECT COUNT(CUST_FILE_PATH) FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dir_name AND CUST_FILE_PATH = :file_name";
+        final params = {
+          'username': userData.username,
+          'dir_name': encryption.encrypt(selectedDirectory),
+          'file_name': encryption.encrypt(widget.fileNames[i])
+        };
+
+        final countDuplicatedFileName = await Crud().count(
+          query: verifyFileName, params: params);
+
+        if(countDuplicatedFileName >= 1) {
+          hasDuplicatedFileName = true;
+
+        }
+
+      }
+
+      if(hasDuplicatedFileName) {
+        CustomAlertDialog.alertDialogTitle("Failed to move this file", "Cannot move duplicated file");
+        return false;
+
+      } else {
+        return true;
+
+      }
+
+    }
+
+    return false;
+
+
+  }
+
+  void initializeDirectoriesName() {
+    final getDirectory = storageData.fileNamesFilteredList.where((name) => !name.contains('.'));
+    directoriesList.addAll(getDirectory);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDirectoriesName();
   }
 
   @override
@@ -36,7 +288,9 @@ class MoveFilePageState extends State<MoveFilePage> {
         backgroundColor: ThemeColor.darkBlack,
         elevation: 0,
         title: Text(
-          "Selected ${widget.fileNames.length} item(s)",
+          widget.fileNames.length == 1 
+          ? "Move ${ShortenText().cutText(widget.fileNames[0])}"
+          : "Move ${widget.fileNames.length} item(s)",
           style: GlobalsStyle.appBarTextStyle,
         ),
       ),

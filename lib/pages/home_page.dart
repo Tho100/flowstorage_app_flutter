@@ -1225,6 +1225,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         _openDeleteSelectionDialog();
       },
       moveOnPressed: () {
+        Navigator.pop(context);
         _openMoveMultipleFilePage(checkedItemsName.toList());
       },
       itemsName: checkedItemsName
@@ -1266,6 +1267,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           fileName.split('.').last, fileName);
       },
       onMovePressed: () {
+        Navigator.pop(context);
         _openMoveSingleFilePage(fileName);
       },
       context: context
@@ -1775,39 +1777,42 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  void _openMoveSingleFilePage(String fileName) {
+  void _openMoveSingleFilePage(String fileName) async {
+
+    final fileData = await functionModel.returnFileData(
+      fileName: fileName, isCompressed: true);
+
+    final base64Data = base64.encode(fileData);
+
     NavigatePage.goToPageMoveFile(
-      [fileName], [fileName]
+      [fileName], [base64Data]
     );
+
   }
 
-  void _openMoveMultipleFilePage(List<String> fileNames) {
+  void _openMoveMultipleFilePage(List<String> fileNames) async {
+
+    List<String> fileBase64 = [];
+
+    for(int i=0; i<fileNames.length; i++) {
+      final fileData = await functionModel.returnFileData(
+        fileName: fileNames[i], isCompressed: true);
+
+      final base64Data = base64.encode(fileData);
+      fileBase64.add(base64Data);
+
+    }
+
     NavigatePage.goToPageMoveFile(
-      fileNames, fileNames
+      fileNames, fileBase64
     );
+
   }
 
   void _openExternalFileOnSelect(String fileType, String fileName) async {
 
-    late Uint8List fileData;
-
-    final fileTable = Globals.fileTypesToTableNames[fileType]!;
-
-    if(tempData.origin != OriginFile.offline) {
-
-      if(Globals.imageType.contains(fileType)) {
-        final index = storageData.fileNamesFilteredList.indexOf(fileName);
-        fileData = storageData.imageBytesFilteredList.elementAt(index)!;
-
-      } else {
-        fileData = await _callFileByteData(fileName, fileTable);
-
-      }
-
-    } else {
-      fileData = await OfflineMode().loadOfflineFileByte(fileName);
-
-    }
+    final fileData = await functionModel.returnFileData(
+      fileName: fileName, isCompressed: false);
 
     final result = await ExternalApp(
       bytes: fileData, 

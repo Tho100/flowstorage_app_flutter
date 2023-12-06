@@ -351,4 +351,37 @@ class FunctionModel {
 
   }
 
+  Future<Uint8List> returnFileData({
+    required String fileName, 
+    required bool isCompressed
+  }) async {
+
+    final fileType = fileName.split('.').last;
+    final fileTable = Globals.fileTypesToTableNames[fileType]!;
+    
+    Uint8List fileData;
+
+    if(tempData.origin != OriginFile.offline) {
+
+      if(Globals.imageType.contains(fileType)) {
+        final index = storageData.fileNamesFilteredList.indexOf(fileName);
+        fileData = storageData.imageBytesFilteredList.elementAt(index)!;
+
+      } else {
+        fileData = isCompressed 
+        ? CompressorApi.compressByte(
+          await _callFileByteData(fileName, fileTable))
+        : await _callFileByteData(fileName, fileTable);
+
+      }
+
+    } else {
+      fileData = await OfflineMode().loadOfflineFileByte(fileName);
+
+    }
+
+    return fileData;
+    
+  }
+
 }
