@@ -865,6 +865,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     _clearGlobalData();
 
+    tempData.setCurrentFolder(folderTitle);
+
     await dataCaller.folderData(folderName: folderTitle);
     
     _itemSearchingImplementation('');
@@ -874,8 +876,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
     searchBarController.text = '';
     searchBarVisibileNotifier.value = true;
-    searchHintText.value = "Search in ${ShortenText().cutText(tempData.appBarTitle)} folder";
-
+    searchHintText.value = "Search in ${ShortenText().cutText(folderTitle)} folder";
+    
   }
 
   Future<void> _refreshListViewData() async {
@@ -1178,8 +1180,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       folderOnPressed: (int index) async {
         
         final loading = SingleTextLoading();
-
-        tempData.setCurrentFolder(tempStorageData.folderNameList[index]);
 
         loading.startLoading(title: "Please wait...", context: context);
 
