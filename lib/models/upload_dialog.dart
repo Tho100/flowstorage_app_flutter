@@ -87,7 +87,7 @@ class UploadDialog {
         message: "Uploading $countSelectedFiles item(s)...");
     }
 
-    for(var filesPath in details.selectedFiles) {
+    for(final filesPath in details.selectedFiles) {
 
       final pathToString = filesPath.selectedFile.toString().
                             split(" ").last.replaceAll("'", "");
@@ -229,7 +229,7 @@ class UploadDialog {
 
     if(tempData.origin == OriginFile.offline && fileTypes.any((type) => Globals.imageType.contains(type))) {
 
-      for(var item in resultPicker.files) {
+      for(final item in resultPicker.files) {
 
         final filePath = item.path.toString();
         final fileName = item.name;
@@ -495,7 +495,7 @@ class UploadDialog {
 
     await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
     
-    for(var images in imagePath) {
+    for(final images in imagePath) {
 
       File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
       await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
@@ -557,7 +557,7 @@ class UploadDialog {
       return;
     }
 
-    for(var photoTaken in details.selectedFiles) {
+    for(final photoTaken in details.selectedFiles) {
 
       final imagePath = photoTaken.selectedFile.toString()
                         .split(" ").last.replaceAll("'", "");

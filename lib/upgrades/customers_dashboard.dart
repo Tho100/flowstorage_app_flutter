@@ -27,7 +27,7 @@ class StripeCustomers {
       final jsonData = jsonDecode(response.body);
       final List<dynamic> data = jsonData['data'];
 
-      for (var customer in data) {
+      for (final customer in data) {
         if (customer['email'] == email) {
           return customer['id'];
         }

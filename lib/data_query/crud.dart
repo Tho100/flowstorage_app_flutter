@@ -41,7 +41,7 @@ class Crud {
     final conn = await SqlConnection.initializeConnection();
     final results = await conn.execute(query!,params!);
 
-    for(var row in results.rows) {
+    for(final row in results.rows) {
       return row.typedColAt<int>(0)!;
     }
 
@@ -75,7 +75,7 @@ class Crud {
 
     final results = await conn.execute(countRowQuery,params);
 
-    for(var row in results.rows) {
+    for(final row in results.rows) {
       return row.typedColAt<int>(0)!;
     }
 

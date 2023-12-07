@@ -61,8 +61,8 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
 
     try {
 
-      var valueCase0 = AuthModel().computeAuth(auth0);
-      var valueCase1 = AuthModel().computeAuth(auth1);
+      final valueCase0 = AuthModel().computeAuth(auth0);
+      final valueCase1 = AuthModel().computeAuth(auth1);
       
       final informationCon = RegisterUser();
       
@@ -87,10 +87,10 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
     final storageData = _locator<StorageDataProvider>();
     final tempData = _locator<TempDataProvider>();
 
-    var custUsernameInput = usernameController.text;
-    var custEmailInput = emailController.text;
-    var custAuth0Input = auth0Controller.text;
-    var custAuth1Input = auth1Controller.text;
+    final custUsernameInput = usernameController.text;
+    final custEmailInput = emailController.text;
+    final custAuth0Input = auth0Controller.text;
+    final custAuth1Input = auth1Controller.text;
 
     if(custEmailInput.isEmpty && custUsernameInput.isEmpty && custAuth0Input.isEmpty && custAuth1Input.isEmpty) {
       CustomAlertDialog.alertDialog("Please fill all the required forms.");

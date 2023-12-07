@@ -120,7 +120,7 @@ class PasscodePageState extends State<PasscodePage> {
       String? storedValue = await storage.read(key: 'key0015');
       String userInput = "";
 
-      for(var input in inputs) {
+      for(final input in inputs) {
         userInput += input;
       }
 
@@ -172,13 +172,13 @@ class PasscodePageState extends State<PasscodePage> {
 
     List<String> inputs = [];
 
-    for (var controller in controllers) {
+    for (final controller in controllers) {
       inputs.add(controller.text);
     }
 
     validatePassCode(inputs);
 
-    for (var controller in controllers) { 
+    for (final controller in controllers) { 
       controller.clear();
     }
 
@@ -410,11 +410,11 @@ class PasscodePageState extends State<PasscodePage> {
   @override 
   void dispose() {
 
-    for(var controller in controllers) {
+    for(final controller in controllers) {
       controller.dispose();
     }
 
-    for(var node in focusNodes) {
+    for(final node in focusNodes) {
       node.dispose();
     }
 

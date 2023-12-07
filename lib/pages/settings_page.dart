@@ -80,7 +80,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   }
 
   void _clearAppCache() async {
-    var cacheDir = await getTemporaryDirectory();
+    final cacheDir = await getTemporaryDirectory();
     await DefaultCacheManager().emptyCache();
     cacheDir.delete(recursive: true);
   }

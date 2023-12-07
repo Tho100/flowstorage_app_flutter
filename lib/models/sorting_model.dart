@@ -72,7 +72,7 @@ class SortingModel {
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();
 
-    for (var item in itemList) {
+    for (final item in itemList) {
 
       storageData.fileNamesFilteredList.add(item['file_name']);
       storageData.imageBytesFilteredList.add(item['image_byte']);
@@ -110,7 +110,7 @@ class SortingModel {
     storageData.imageBytesFilteredList.clear();
     storageData.fileDateFilteredList.clear();
 
-    for (var item in itemList) {
+    for (final item in itemList) {
       storageData.fileNamesFilteredList.add(item['file_name']);
       storageData.imageBytesFilteredList.add(item['image_byte']);
       storageData.fileDateFilteredList.add(item['upload_date']);

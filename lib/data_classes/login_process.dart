@@ -163,11 +163,11 @@ class SignInUser {
   }
 
   Future<String> getCustPassword(String custUsername, conn) async {
-    var getPassword = await conn.execute(
+    final getPassword = await conn.execute(
         "SELECT CUST_PASSWORD FROM information WHERE CUST_USERNAME = :username",
         {"username": custUsername});
 
-    for (var passIterates in getPassword.rows) {
+    for (final passIterates in getPassword.rows) {
       return passIterates.assoc()['CUST_PASSWORD']!;
     }
 
@@ -175,11 +175,11 @@ class SignInUser {
   }
 
   Future<String> getCustPin(String custUsername, conn) async {
-    var getPin = await conn.execute(
+    final getPin = await conn.execute(
         "SELECT CUST_PIN FROM information WHERE CUST_USERNAME = :username",
         {"username": custUsername});
 
-    for (var pinIterates in getPin.rows) {
+    for (final pinIterates in getPin.rows) {
       return pinIterates.assoc()['CUST_PIN']!;
     }
 

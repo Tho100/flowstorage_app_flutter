@@ -21,7 +21,7 @@ class LocalStorageModel {
 
       final fileContent = await setupFiles.readAsLines();
       
-      for(var item in fileContent) {
+      for(final item in fileContent) {
         usernames.add(item);
       }
 

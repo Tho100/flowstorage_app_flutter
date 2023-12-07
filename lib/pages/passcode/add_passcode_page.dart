@@ -33,7 +33,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
     List<String> inputs = [];
 
-    for (var controller in controllers) {
+    for (final controller in controllers) {
       inputs.add(controller.text);
     }
 
@@ -46,7 +46,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
     CallToast.call(message: "Passcode added.");
 
-    for (var controller in controllers) { 
+    for (final controller in controllers) { 
       controller.clear();
     }
 
@@ -56,7 +56,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
   }
 
   void cancelPassCode() {
-    for (var controller in controllers) { 
+    for (final controller in controllers) { 
       controller.clear();
     }
     NavigatePage.permanentPageMainboard(context);
@@ -286,11 +286,11 @@ class AddPasscodePageState extends State<AddPasscodePage> {
   @override 
   void dispose() {
 
-    for(var controller in controllers) {
+    for(final controller in controllers) {
       controller.dispose();
     }
 
-    for(var node in focusNodes) {
+    for(final node in focusNodes) {
       node.dispose();
     }
 

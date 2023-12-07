@@ -422,7 +422,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     fileDataList.addAll(dataImage);
     fileDataList.addAll(dataVideo);
 
-    for(var tables in generalFileTableName) {
+    for(final tables in generalFileTableName) {
       final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE $filter LIKE '%$keywordInput%'";
       final results = await conn.execute(query);
 
@@ -479,7 +479,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     fileDataList.addAll(dataImage);
     fileDataList.addAll(dataVideo);
 
-    for(var tables in generalFileTableName) {
+    for(final tables in generalFileTableName) {
       final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE CUST_TAG = :tag";
       final params = {"tag": selectedTag};
       final results = await conn.execute(query, params);
@@ -719,7 +719,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     psStorageData.psSearchImageBytesList.addAll(imageBytes);
     psStorageData.psSearchUploaderList.addAll(uploaderName);
 
-    for(var title in titles) {
+    for(final title in titles) {
       psStorageData.setPsSearchTitle(title);
     }
 

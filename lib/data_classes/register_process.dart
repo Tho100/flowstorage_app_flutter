@@ -96,7 +96,7 @@ class RegisterUser {
       {"username": userName, "disabled": "0", "pass": "DEF", "pass_disabled": "1"},
     ];
 
-    for (var i = 0; i < insertExtraInfoQuery.length; i++) {
+    for (int i = 0; i < insertExtraInfoQuery.length; i++) {
 
       final query = insertExtraInfoQuery[i];
       final param = params[i];

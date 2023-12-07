@@ -67,7 +67,7 @@ class DataCaller {
     List<Uint8List> imageByteValues = [];
     List<Uint8List> filteredSearchedBytes = [];
 
-    for (var file in files) {
+    for (final file in files) {
 
       final lastModified = file.lastModifiedSync();
       final formattedDate = DateFormat('MMM d yyyy')

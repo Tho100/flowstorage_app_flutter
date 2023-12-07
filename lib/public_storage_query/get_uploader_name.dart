@@ -34,7 +34,7 @@ class UploaderName {
 
     final getVideoFiles = GetIt.instance<StorageDataProvider>()
       .fileNamesList.where((file) {
-    for (var fileType in fileValues) {
+    for (final fileType in fileValues) {
       if (file.endsWith('.$fileType')) {
         return true;
       }

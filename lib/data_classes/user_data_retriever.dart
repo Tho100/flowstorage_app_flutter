@@ -32,7 +32,7 @@ class UserDataRetriever {
     
     final execute = await conn.execute(query,params);
 
-    for (var usernameRows in execute.rows) {
+    for (final usernameRows in execute.rows) {
       return usernameRows.assoc()['CUST_USERNAME']!;
     }
 
