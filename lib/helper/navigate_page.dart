@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/pages/acitivity_page.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
 import 'package:flowstorage_fsc/pages/move_file_page.dart';
@@ -47,6 +48,14 @@ class NavigatePage {
       navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => MoveFilePage(
         fileNames: fileNames, fileBase64Data: fileBase64)
+      ),
+    );
+  }
+
+  static void goToPageActivity() {
+     Navigator.push(
+      navigatorKey.currentContext!, 
+      MaterialPageRoute(builder: (context) => const ActivityPage()
       ),
     );
   }

@@ -157,7 +157,7 @@ class CustomSideBarMenu extends StatelessWidget {
                       icon: Icons.rocket_outlined,
                       onPressed: () async {
                         Navigator.pop(context);
-                        NavigatePage.goToPageUpgrade();
+                        NavigatePage.goToPageActivity();
                       }
                     ),
   
