@@ -32,7 +32,7 @@ class InsertData {
     final conn = await SqlConnection.initializeConnection();
 
     final encryptedFilePath = encryption.encrypt(fileName);
-    final encryptedFileVal = encryption.encrypt(fileValue);
+    final encryptedFileData = encryption.encrypt(fileValue);
 
     final fileType = fileName.split('.').last;
 
@@ -40,30 +40,25 @@ class InsertData {
         ? base64.encode(videoThumbnail) 
         : null;
 
+    final fileData = specialFile.ignoreEncryption(fileType) 
+        ? fileValue 
+        : encryptedFileData;
+
     switch (tableName) {
 
       case GlobalsTable.homeImage:
       case GlobalsTable.homeText:
       case GlobalsTable.homePdf:
       case GlobalsTable.homePtx:
+      case GlobalsTable.homeAudio:
       case GlobalsTable.homeExcel:
       case GlobalsTable.homeWord:
       case GlobalsTable.homeExe:
-        await insertFileInfo(conn, tableName, userName, encryptedFilePath, encryptedFileVal);
+        await _insertFileInfo(conn, tableName, userName, encryptedFilePath, fileData);
         break;
 
       case GlobalsTable.homeVideo:
-        await insertVideoInfo(conn, tableName, userName, encryptedFilePath, fileValue, thumbnail);
-        break;
-
-      case GlobalsTable.homeAudio:
-        await insertFileInfo(conn, tableName, userName, encryptedFilePath, fileValue);
-        break;
-
-      case GlobalsTable.directoryUploadTable:
-        final fileData = specialFile.ignoreEncryption(fileType) 
-                          ? fileValue : encryptedFileVal;
-        await insertDirectoryInfo(conn, tableName, userName, fileData, tempData.directoryName, encryptedFilePath, thumbnail, fileName);
+        await _insertVideoInfo(conn, tableName, userName, encryptedFilePath, fileData, thumbnail);
         break;
 
       case GlobalsTable.psText:
@@ -73,15 +68,16 @@ class InsertData {
       case GlobalsTable.psPdf:
       case GlobalsTable.psWord:
       case GlobalsTable.psApk:
-        await insertFileInfoPs(conn, tableName, userName, encryptedFilePath, encryptedFileVal);
+      case GlobalsTable.psAudio:
+        await _insertFileInfoPs(conn, tableName, userName, encryptedFilePath, fileData);
         break;
 
       case GlobalsTable.psVideo:
-        await insertVideoInfoPs(conn, userName, encryptedFilePath, fileValue, thumbnail);
+        await _insertVideoInfoPs(conn, userName, encryptedFilePath, fileData, thumbnail);
         break;
 
-      case GlobalsTable.psAudio:
-        await insertFileInfoPs(conn, tableName, userName, encryptedFilePath, fileValue);
+      case GlobalsTable.directoryUploadTable:
+        await _insertDirectoryInfo(conn, tableName, userName, tempData.directoryName, fileData, encryptedFilePath, thumbnail, fileName);
         break;
 
       default:
@@ -89,7 +85,7 @@ class InsertData {
     }
   }
 
-  Future<void> insertFileInfo(
+  Future<void> _insertFileInfo(
     MySQLConnectionPool conn,
     String tableName,
     String userName,
@@ -103,7 +99,7 @@ class InsertData {
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData]);
   }
 
-  Future<void> insertVideoInfo(
+  Future<void> _insertVideoInfo(
     MySQLConnectionPool conn,
     String tableName,
     String userName,
@@ -118,12 +114,12 @@ class InsertData {
         ..execute([encryptedFilePath, userName, encryptedFileData, dateNow, thumb]);
   }
 
-  Future<void> insertDirectoryInfo(
+  Future<void> _insertDirectoryInfo(
     MySQLConnectionPool conn,
     String tableName,
     String userName,
-    String encryptedFileData,
     String directoryName,
+    String encryptedFileData,
     String encryptedFilePath,
     String? thumb,
     String fileName,
@@ -138,7 +134,7 @@ class InsertData {
         ..execute([userName, encryptedFileData, encryptedDirName, encryptedFilePath, dateNow, fileExtension, thumb]);
   }
 
-  Future<void> insertFileInfoPs(
+  Future<void> _insertFileInfoPs(
     MySQLConnectionPool conn,
     String tableName,
     String userName,
@@ -161,7 +157,7 @@ class InsertData {
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData, tag, title]);
   }
 
-  Future<void> insertVideoInfoPs(
+  Future<void> _insertVideoInfoPs(
     MySQLConnectionPool conn,
     String userName,
     String encryptedFilePath,

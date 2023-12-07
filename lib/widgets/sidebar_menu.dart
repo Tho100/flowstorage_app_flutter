@@ -153,7 +153,7 @@ class CustomSideBarMenu extends StatelessWidget {
                     ),
   
                     _buildSidebarButtons(
-                      title: "Upgrade plan",
+                      title: "Activity",
                       icon: Icons.rocket_outlined,
                       onPressed: () async {
                         Navigator.pop(context);

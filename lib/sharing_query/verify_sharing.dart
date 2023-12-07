@@ -4,7 +4,7 @@ class VerifySharing {
   
   final crud = Crud();
 
-  Future<bool> isAlreadyUploaded(String fileName, String receiverName,String fromName) async {
+  Future<bool> isAlreadyUploaded(String fileName, String receiverName, String fromName) async {
 
     const selectFileName = 'SELECT COUNT(*) FROM cust_sharing WHERE CUST_TO = :receiver AND CUST_FILE_PATH = :filename AND CUST_FROM = :from LIMIT 1';
     final params = {'receiver': receiverName,'filename': fileName,'from': fromName};    

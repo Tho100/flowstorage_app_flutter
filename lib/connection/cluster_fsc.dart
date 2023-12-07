@@ -3,7 +3,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 class SqlConnection {
 
-  static final dbClusterFsc = MySQLConnectionPool(
+  static final _dbClusterFsc = MySQLConnectionPool(
     host: AuthConfig.auth0,
     port: AuthConfig.auth01,
     userName: AuthConfig.auth02,
@@ -13,7 +13,7 @@ class SqlConnection {
   );
 
   static Future<MySQLConnectionPool> initializeConnection() async {
-    return dbClusterFsc;
+    return _dbClusterFsc;
   }
   
 }

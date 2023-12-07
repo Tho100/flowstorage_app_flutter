@@ -65,7 +65,8 @@ class PasscodePageState extends State<PasscodePage> {
       userData.setUsername(savedCustUsername);
       userData.setEmail(savedCustEmail);
 
-      final accountType = await accountInformationRetriever.retrieveAccountType(email: savedCustEmail);
+      final accountType = await accountInformationRetriever
+        .retrieveAccountType(email: savedCustEmail, conn: conn);
       
       userData.setAccountType(accountType);
 

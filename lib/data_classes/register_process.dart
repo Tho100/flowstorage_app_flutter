@@ -12,6 +12,7 @@ import 'package:logger/logger.dart';
 class RegisterUser {
 
   final encryption = EncryptionClass();
+  final crud = Crud();
 
   Future<void> insertParams({
     required String? userName,
@@ -23,7 +24,6 @@ class RegisterUser {
   }) async {
     
     final conn = await SqlConnection.initializeConnection();
-    final crud = Crud();
 
     final createdAccounts = await LocalStorageModel()
                                         .readLocalAccountUsernames();
@@ -122,14 +122,20 @@ class RegisterUser {
       
       final conn = await SqlConnection.initializeConnection();
 
-      final String setTokRecov = Generator.generateRandomString(16) + userName!;
-      final String removeSpacesSetRecov = EncryptionClass().encrypt(setTokRecov.replaceAll(RegExp(r'\s'), ''));
+      final generateRecoveryToken = Generator.generateRandomString(16) + userName!;
+      final encryptedRecoveryToken = encryption.encrypt(generateRecoveryToken.replaceAll(RegExp(r'\s'), ''));
 
-      await conn.execute(
-        "INSERT INTO information(CUST_USERNAME, CUST_PASSWORD, CREATED_DATE, CUST_EMAIL, CUST_PIN, RECOV_TOK)"
-        "VALUES (:username,:password,:date,:email,:pin,:tok,:tok_acc)",
-        {"username": userName, "password": passWord, "date": createdDate, "email": email, "pin": pin, "tok": removeSpacesSetRecov},
-      );
+      const query = "INSERT INTO information(CUST_USERNAME, CUST_PASSWORD, CREATED_DATE, CUST_EMAIL, CUST_PIN, RECOV_TOK) VALUES (:username, :password, :date, :email, :pin, :recov_tok)";
+      final params = {
+        "username": userName, 
+        "password": passWord, 
+        "date": createdDate, 
+        "email": email, 
+        "pin": pin, 
+        "recov_tok": encryptedRecoveryToken
+      };
+
+      await conn.execute(query, params);
 
       await LocalStorageModel()
         .setupLocalAutoLogin(userName, email!, "Basic");
@@ -137,10 +143,9 @@ class RegisterUser {
       await LocalStorageModel()
         .setupLocalAccountUsernames(userName);
 
-    } catch (dupeUsernameEx, st) {
-      Logger().e(dupeUsernameEx, st);
+    } catch (dupeUsernameErr, st) {
+      Logger().e(dupeUsernameErr, st);
     } 
   }
 
-  
 }

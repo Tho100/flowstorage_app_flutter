@@ -4,7 +4,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 class DateGetter {
 
-  Future<List<String>> getDateParams(MySQLConnectionPool conn, String? username, String? tableName) async {
+  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String username, String tableName) async {
     
     final selectUploadDate =
         "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
@@ -28,7 +28,6 @@ class DateGetter {
       storeDateValues.add('$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate');
 
     }
-
     
     return storeDateValues;
 

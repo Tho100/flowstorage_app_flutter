@@ -32,7 +32,7 @@ class DataRetriever {
     GlobalsTable.homeApk: "apk0.jpg"
   };
 
-  Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String? username, String tableName) async {
+  Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String username, String tableName) async {
 
     if (tableName == GlobalsTable.homeImage) {
 
@@ -48,7 +48,7 @@ class DataRetriever {
 
   }
 
-  Future<List<Uint8List>> getFileInfoParams(MySQLConnectionPool conn, String? username) async {
+  Future<List<Uint8List>> getFileInfoParams(MySQLConnectionPool conn, String username) async {
 
     const query = 'SELECT CUST_FILE FROM ${GlobalsTable.homeImage} WHERE CUST_USERNAME = :username';
     final params = {'username': username};
@@ -72,14 +72,14 @@ class DataRetriever {
     return getByteValue;
   }
 
-  Future<List<Uint8List>> getOtherTableParams(MySQLConnectionPool conn, String? username, String tableName) async {
+  Future<List<Uint8List>> getOtherTableParams(MySQLConnectionPool conn, String username, String tableName) async {
 
     final getByteValue = <Uint8List>{};
 
     Future<void> retrieveValue(String iconName) async {
 
       final retrieveCountQuery = 'SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username';
-      final params = {'username': username!};
+      final params = {'username': username};
       final countTotalRows = await crud.count(query: retrieveCountQuery, params: params);
 
       final loadAssetImage = await Future.wait(List.generate(countTotalRows, (_) => GetAssets().loadAssetsData(iconName)));
@@ -91,7 +91,7 @@ class DataRetriever {
 
       if(storageData.homeThumbnailBytesList.isEmpty) {
         
-        final thumbnailBytes = await thumbnailGetter.retrieveParams(fileName: '');
+        final thumbnailBytes = await thumbnailGetter.retrieveParams(conn);
 
         storageData.setHomeThumbnailBytes(thumbnailBytes);
         getByteValue.addAll(thumbnailBytes);

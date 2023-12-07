@@ -327,7 +327,7 @@ class DataCaller {
       final bytes = await _dataGetterHome.getLeadingParams(conn, username, table);
       final dates = table == GlobalsTable.directoryInfoTable
           ? ["Directory"]
-          : await _dateGetterHome.getDateParams(conn, username, table);
+          : await _dateGetterHome.retrieveParams(conn, username, table);
       return [fileNames, bytes, dates];
     }).toList();
     

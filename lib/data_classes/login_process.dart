@@ -39,7 +39,9 @@ class SignInUser {
 
   Future<void> _callFileData(MySQLConnectionPool conn, bool isChecked, BuildContext context) async {
 
-    final custUsernameList = await userDataRetriever.retrieveAccountTypeAndUsername(email: custEmailInit);
+    final custUsernameList = await userDataRetriever
+      .retrieveAccountTypeAndUsername(email: custEmailInit, conn: conn);
+      
     final custUsernameGetter = custUsernameList[0]!;
     final custTypeGetter = custUsernameList[1]!;
 
@@ -99,17 +101,18 @@ class SignInUser {
 
     try {
 
-      final custUsername = await userDataRetriever.retrieveUsername(email: email);
+      final custUsername = await userDataRetriever
+                            .retrieveUsername(email: email, conn: conn);
 
       if (custUsername.isNotEmpty) {
 
         custEmailInit = email!;
 
-        final custPasOriginal = await getCustPassword(custUsername, conn);
-        final custPinOriginal = await getCustPin(custUsername, conn);
-
-        final case0 = AuthModel().computeAuth(auth0!) == custPasOriginal;
-        final case1 = AuthModel().computeAuth(auth1!) == custPinOriginal;
+        final authenticationInformation = await userDataRetriever
+          .retrieveAccountAuthentication(username: custUsername, conn: conn);
+          
+        final case0 = AuthModel().computeAuth(auth0!) == authenticationInformation['password'];
+        final case1 = AuthModel().computeAuth(auth1!) == authenticationInformation['pin'];
 
         if (case0 && case1) {
 
@@ -162,27 +165,4 @@ class SignInUser {
 
   }
 
-  Future<String> getCustPassword(String custUsername, conn) async {
-    final getPassword = await conn.execute(
-        "SELECT CUST_PASSWORD FROM information WHERE CUST_USERNAME = :username",
-        {"username": custUsername});
-
-    for (final passIterates in getPassword.rows) {
-      return passIterates.assoc()['CUST_PASSWORD']!;
-    }
-
-    return '';
-  }
-
-  Future<String> getCustPin(String custUsername, conn) async {
-    final getPin = await conn.execute(
-        "SELECT CUST_PIN FROM information WHERE CUST_USERNAME = :username",
-        {"username": custUsername});
-
-    for (final pinIterates in getPin.rows) {
-      return pinIterates.assoc()['CUST_PIN']!;
-    }
-
-    return '';
-  }
 }

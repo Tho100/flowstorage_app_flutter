@@ -25,14 +25,14 @@ class RetrieveData {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<Uint8List> retrieveDataModules(
-    MySQLConnectionPool fscDbCon,
-    String? username,
-    String? fileName,
-    String? tableName,
+  Future<Uint8List> _retrieveDataModules(
+    MySQLConnectionPool conn,
+    String username,
+    String fileName,
+    String tableName,
   ) async {
 
-    final fileType = fileName!.split('.').last;
+    final fileType = fileName.split('.').last;
     final encryptedFileName = encryption.encrypt(fileName);
 
     late final String query;
@@ -41,32 +41,32 @@ class RetrieveData {
     switch (tempData.origin) {
       case OriginFile.home:
         query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username!, "filename": encryptedFileName};
+        queryParams = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.folder:
         query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username!, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
+        queryParams = {"username": username, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
         break;
 
       case OriginFile.directory:
         query = "SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username!, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
+        queryParams = {"username": username, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
         break;
 
       case OriginFile.sharedMe:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username!, "filename": encryptedFileName};
+        queryParams = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.sharedOther:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username!, "filename": encryptedFileName};
+        queryParams = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.public:
       case OriginFile.publicSearching:
-        final toPsFileName = returnPsTable(tableName!);
+        final toPsFileName = _returnPsTable(tableName);
 
         final indexUploaderName = storageData.fileNamesFilteredList.indexOf(fileName);
         final uploaderName = psStorageData.psUploaderList[indexUploaderName];
@@ -80,7 +80,7 @@ class RetrieveData {
 
     }
 
-    final row = (await fscDbCon.execute(query, queryParams)).rows.first;
+    final row = (await conn.execute(query, queryParams)).rows.first;
     
     final decryptedData = specialFile.ignoreEncryption(fileType)
       ? row.assoc()['CUST_FILE']! 
@@ -93,7 +93,7 @@ class RetrieveData {
     
   }
 
-  String returnPsTable(String tableName) {
+  String _returnPsTable(String tableName) {
     final toPsTableName = GlobalsTable.tableNames.contains(tableName)
       ? GlobalsTable.publicToPsTables[tableName]!
       : tableName;
@@ -102,19 +102,20 @@ class RetrieveData {
   }
 
   Future<Uint8List> retrieveDataParams(
-    String? username,
-    String? fileName,
-    String? tableName
+    String username,
+    String fileName,
+    String tableName
   ) async {
 
-    final initializedConn = await SqlConnection.initializeConnection();
+    final conn = await SqlConnection.initializeConnection();
 
-    return await retrieveDataModules(
-      initializedConn,
+    return await _retrieveDataModules(
+      conn,
       username,
       fileName,
       tableName
     );
+
   }
 
 }

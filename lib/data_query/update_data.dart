@@ -38,7 +38,7 @@ class UpdateTextData {
 
   late final MySQLConnectionPool conn;
 
-  String returnEncryptedTextData() {
+  String _returnEncryptedTextData() {
     final List<int> getUnits = newValue.codeUnits;
     final base64StringTextData = base64.encode(getUnits);
     
@@ -60,7 +60,7 @@ class UpdateTextData {
   }
 
   Future<void> _updateDatabase(String updateQuery, Map<String, dynamic> params) async {
-    final encryptedFileText = returnEncryptedTextData();
+    final encryptedFileText = _returnEncryptedTextData();
     await conn.execute(updateQuery, params..addAll({"newvalue": encryptedFileText, "filename": encryptedFileName}));
   }
 
@@ -85,7 +85,7 @@ class UpdateTextData {
   }
 
   Future<void> _updateSharedOthersData() async {
-    final encryptedFileText = returnEncryptedTextData();
+    final encryptedFileText = _returnEncryptedTextData();
     final receiverUsername = await sharingName.shareToOtherName(); 
 
     const query = "UPDATE cust_sharing SET CUST_FILE = :newvalue WHERE CUST_TO = :receiver_username AND CUST_FROM = :username AND CUST_FILE_PATH = :filename";
@@ -100,7 +100,7 @@ class UpdateTextData {
   }
 
   Future<void> _updateSharedMeData() async {
-    final encryptedFileText = returnEncryptedTextData();
+    final encryptedFileText = _returnEncryptedTextData();
     final sharerUsername = await sharingName.sharerName();
 
     const query = "UPDATE cust_sharing SET CUST_FILE = :newvalue WHERE CUST_TO = :username AND CUST_FROM = :sender_username AND CUST_FILE_PATH = :filename";

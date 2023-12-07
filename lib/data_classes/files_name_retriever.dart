@@ -6,7 +6,7 @@ class NameGetter {
 
   final encryption = EncryptionClass();
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String custUsername, String tableName) async {
+  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String username, String tableName) async {
 
     try {
       
@@ -14,7 +14,7 @@ class NameGetter {
         ? 'SELECT CUST_FILE_PATH FROM $tableName WHERE CUST_USERNAME = :username'
         : 'SELECT DIR_NAME FROM file_info_directory WHERE CUST_USERNAME = :username';
 
-      final params = {'username': custUsername};
+      final params = {'username': username};
 
       final retrieveNames = await conn.execute(query, params);
       final nameSet = <String>{};
@@ -26,8 +26,9 @@ class NameGetter {
 
       return nameSet.toList();
 
-    } catch (failedLoadNames) {
+    } catch (err) {
       return <String>[];
     } 
+
   }
 }

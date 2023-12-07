@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
@@ -99,7 +100,6 @@ class ResetBackupState extends State<ResetBackup> {
             await executeChanges(
               email: emailController.text, 
               recoveryToken: recoveryController.text, 
-              context: context
             );
           }
         ),
@@ -156,7 +156,6 @@ class ResetBackupState extends State<ResetBackup> {
   Future<void> executeChanges({
     required String email, 
     required String recoveryToken, 
-    required BuildContext context
   }) async {
 
     try {
@@ -165,7 +164,10 @@ class ResetBackupState extends State<ResetBackup> {
         return;
       }
 
-      final username = await UserDataRetriever().retrieveUsername(email: email);
+      final conn = await SqlConnection.initializeConnection();
+
+      final username = await UserDataRetriever()
+        .retrieveUsername(email: email, conn: conn);
 
       if(await retrieveRecovery(username) != recoveryToken) {
         if(!mounted) return;

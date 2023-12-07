@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mysql_client/mysql_client.dart';
 
 class ThumbnailGetter {
   
@@ -14,38 +15,32 @@ class ThumbnailGetter {
   final tempData = GetIt.instance<TempDataProvider>();
   final encryption = EncryptionClass();
 
-  Future<List<Uint8List>> retrieveParams({required String? fileName}) async {
+  Future<List<Uint8List>> retrieveParams(MySQLConnectionPool conn) async {
     
     final conn = await SqlConnection.initializeConnection();
 
     String query;
     Map<String, dynamic> params;
   
-    if (fileName != null) {
+    query = "SELECT CUST_THUMB FROM ";
 
-      query = "SELECT CUST_THUMB FROM ";
-      if (tempData.origin == OriginFile.home) {
-        query += "${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";
-
-      } else {
-        query += "cust_sharing WHERE CUST_FROM = :username";
-
-        if (tempData.origin == OriginFile.sharedOther) {
-          query += " AND CUST_TO = :username";
-
-        } else if (tempData.origin == OriginFile.sharedMe) {
-          query += " AND CUST_FILE_PATH = :filename";
-          params = {'username': userData.username, 'filename': encryption.encrypt(fileName)};
-
-        }
-      }
-      params = {'username': userData.username, 'filename': encryption.encrypt(fileName)};
+    if (tempData.origin == OriginFile.home) {
+      query += "${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";
 
     } else {
-      query = "SELECT CUST_THUMB FROM ${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";
-      params = {'username': userData.username};
+      query += "cust_sharing WHERE CUST_FROM = :username";
 
+      if (tempData.origin == OriginFile.sharedOther) {
+        query += " AND CUST_TO = :username";
+
+      } else if (tempData.origin == OriginFile.sharedMe) {
+        query += " AND CUST_FILE_PATH = :filename";
+        params = {'username': userData.username};
+
+      }
     }
+
+    params = {'username': userData.username};
 
     final getThumbBytesQue = await conn.execute(query, params);
     final thumbnailBytesList = <Uint8List>[];
