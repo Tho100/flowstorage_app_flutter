@@ -54,7 +54,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          height: 0.8,
+          height: 0.6,
           color: ThemeColor.whiteGrey,
         ),
         Container(
@@ -143,6 +143,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
             },
           ),
         ),
+        const SizedBox(height: 1.5),
       ],
     );
   }

@@ -2125,7 +2125,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
     ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0, bottom: 8.0) 
-    : const EdgeInsets.only(top: 12.0,left: 8.0, right: 8.0, bottom: 8.0);
+    : const EdgeInsets.only(top: 12.0, left: 8.0, right: 8.0, bottom: 8.0);
 
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
@@ -2140,7 +2140,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             crossAxisCount: togglePhotosPressed ? 2 : 4,
             mainAxisSpacing: togglePhotosPressed ? 8 : 6.5,
             crossAxisSpacing: togglePhotosPressed ? 8 : 6.5,
-          
           ),
         );
       }
@@ -2154,10 +2153,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final mediaQuery = MediaQuery.of(context).size;
 
     if(tempData.origin == OriginFile.public) {
-      mediaHeight = mediaQuery.height - 194;
+      mediaHeight = mediaQuery.height - 196;
 
     } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 315;
+      mediaHeight = mediaQuery.height - 312;
 
     } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
       mediaHeight = mediaQuery.height - 148;
