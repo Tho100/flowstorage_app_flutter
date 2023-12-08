@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -84,11 +85,80 @@ class AcitivtyPageState extends State<ActivityPage> {
       ),
     );
   }
+
+  Widget buildMostUploadedWidgets(int index, double width, double height) {
+
+    final fileType = mostUploadedFilesName[index].split('.').last;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            final fileName = mostUploadedFilesName[index];
+            final imageBytes = mostUploadedImageBytes[index];
+            ActivityImagePreviewer.showPreviewer(fileName, imageBytes);
+          },
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: ThemeColor.mediumGrey,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.memory(mostUploadedImageBytes[index]!,
+                fit: Globals.generalFileTypes.contains(fileType) 
+                ? BoxFit.scaleDown : BoxFit.cover,
+              ),
+            )
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: SizedBox(
+              width: 145,
+              child: Text(mostUploadedFilesName[index],
+                style: const TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+                maxLines: 1,
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 2),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(mostUploadedDate[index],
+              style: const TextStyle(
+                color: ThemeColor.thirdWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+              maxLines: 1,
+            ),
+          ),
+        ),
+      ],
+    );
+
+  }
   
   Widget buildMostUploaded(double width) {
-
-    final fileTypeFirst = mostUploadedFilesName[0].split('.').last;
-    final fileTypeSecond = mostUploadedFilesName[1].split('.').last;
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
@@ -97,64 +167,7 @@ class AcitivtyPageState extends State<ActivityPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
     
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 165,
-                height: 265,
-                decoration: BoxDecoration(
-                  color: ThemeColor.mediumGrey,
-                  borderRadius: BorderRadius.circular(12)
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.memory(mostUploadedImageBytes[0]!,
-                    fit: Globals.generalFileTypes.contains(fileTypeFirst) 
-                    ? BoxFit.scaleDown : BoxFit.cover,
-                  ),
-                )
-              ),
-
-              const SizedBox(height: 12),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: SizedBox(
-                    width: 145,
-                    child: Text(mostUploadedFilesName[0],
-                      style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: ThemeColor.secondaryWhite,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 2),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 4.0),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(mostUploadedDate[0],
-                    style: const TextStyle(
-                      color: ThemeColor.thirdWhite,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                    maxLines: 1,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          buildMostUploadedWidgets(0, 165, 265),
     
           const SizedBox(width: 10),
     
@@ -181,67 +194,10 @@ class AcitivtyPageState extends State<ActivityPage> {
 
               const SizedBox(height: 14),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: width-205,
-                    height: 155,
-                    decoration: BoxDecoration(
-                      color: ThemeColor.mediumGrey,
-                      borderRadius: BorderRadius.circular(12)
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.memory(mostUploadedImageBytes[1]!,
-                        fit: Globals.generalFileTypes.contains(fileTypeSecond) 
-                        ? BoxFit.scaleDown : BoxFit.cover,
-                      ),
-                    )
-                  ),
+              buildMostUploadedWidgets(1, width-205, 155),
 
-                  const SizedBox(height: 12),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: SizedBox(
-                        width: 175,
-                        child: Text(mostUploadedFilesName[1],
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            color: ThemeColor.secondaryWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 2),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(mostUploadedDate[1],
-                        style: const TextStyle(
-                          color: ThemeColor.thirdWhite,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
-                        maxLines: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
-    
         ],
       ),
     );
@@ -256,72 +212,79 @@ class AcitivtyPageState extends State<ActivityPage> {
 
         final fileType = recentFilesName[index].split('.').last;
 
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          width: 145,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.memory(recentImageBytes[index]!,
-                      fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover, 
-                      height: 225, width: 145
-                    ),
-                  ),
-
-                  if(Globals.videoType.contains(fileType))
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12, top: 12),
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: ThemeColor.mediumGrey.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(16),
+        return GestureDetector(
+          onTap: () {
+            final fileName = recentFilesName[index];
+            final imageBytes = recentImageBytes[index];
+            ActivityImagePreviewer.showPreviewer(fileName, imageBytes);
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            width: 145,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+        
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(recentImageBytes[index]!,
+                        fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover, 
+                        height: 225, width: 145
                       ),
-                      child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
+                    ),
+        
+                    if(Globals.videoType.contains(fileType))
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, top: 12),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: ThemeColor.mediumGrey.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
+                      ),
+                    ),
+                    
+                  ],
+                ),
+                
+                const SizedBox(height: 12),
+        
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                    width: 145,
+                    child: Text(recentFilesName[index],
+                      style: const TextStyle(
+                        color: ThemeColor.secondaryWhite,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                      maxLines: 1,
                     ),
                   ),
-                  
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: SizedBox(
-                  width: 145,
-                  child: Text(recentFilesName[index],
+                ),
+        
+                const SizedBox(height: 2),
+        
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(recentDate[index],
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
+                      color: ThemeColor.thirdWhite,
                       fontWeight: FontWeight.w600,
-                      fontSize: 13,
+                      fontSize: 12,
                     ),
                     maxLines: 1,
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 2),
-
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(recentDate[index],
-                  style: const TextStyle(
-                    color: ThemeColor.thirdWhite,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
-                  maxLines: 1,
-                ),
-              ),
-
-            ],
+        
+              ],
+            ),
           ),
         );
       },
