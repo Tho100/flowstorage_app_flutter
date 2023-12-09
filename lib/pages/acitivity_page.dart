@@ -45,7 +45,11 @@ class AcitivtyPageState extends State<ActivityPage> {
           const Divider(color: ThemeColor.lightGrey),
     
           const SizedBox(height: 8),
-    
+
+          if(recentFilesName.isEmpty)
+          buildOnEmpty(),
+
+          if(recentFilesName.isNotEmpty) ... [
           const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -73,7 +77,8 @@ class AcitivtyPageState extends State<ActivityPage> {
             width: width-18,
             child: buildRecentListView()
           ),
-    
+          ],
+        
           const SizedBox(height: 18),
     
           if(mostUploadedImageBytes.length >= 2)
@@ -83,6 +88,18 @@ class AcitivtyPageState extends State<ActivityPage> {
 
         ],
       ),
+    );
+  }
+
+  Widget buildOnEmpty() {
+    return const Center(
+      child: Text("No activity to see here",
+        style: TextStyle(
+          color: ThemeColor.secondaryWhite,
+          fontWeight: FontWeight.w600,
+          fontSize: 16
+        ),
+      )
     );
   }
 
@@ -328,10 +345,10 @@ class AcitivtyPageState extends State<ActivityPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                Text("Open community for cloud storage",  
+                Text("Open community for file sharing",  
                   style: GoogleFonts.poppins(
                     color: ThemeColor.thirdWhite,
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600
                   ),
                   textAlign: TextAlign.left,
@@ -440,15 +457,19 @@ class AcitivtyPageState extends State<ActivityPage> {
       'wav': "Audio"
     };
 
-    final fileNames = storageData.fileNamesFilteredList.toList();
-    final fileTypes = fileNames.map((fileName) => fileName.split('.').last).toList();
-    final modeFileType = findMode(fileTypes);
+    if(storageData.fileNamesFilteredList.isNotEmpty) {
 
-    mostUploadTag = mostUploadMap[modeFileType]!;
-    
-    mostUploadedImageBytes = filterImagesByType(modeFileType, 2);
-    mostUploadedFilesName = filterNamesByType(modeFileType, 2);
-    mostUploadedDate = filterDatesByType(modeFileType, 2);
+      final fileNames = storageData.fileNamesFilteredList.toList();
+      final fileTypes = fileNames.map((fileName) => fileName.split('.').last).toList();
+      final modeFileType = findMode(fileTypes);
+
+      mostUploadTag = mostUploadMap[modeFileType]!;
+      
+      mostUploadedImageBytes = filterImagesByType(modeFileType, 2);
+      mostUploadedFilesName = filterNamesByType(modeFileType, 2);
+      mostUploadedDate = filterDatesByType(modeFileType, 2);
+      
+    }
 
   }
 
