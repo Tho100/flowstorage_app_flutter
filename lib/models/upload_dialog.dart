@@ -56,7 +56,7 @@ class UploadDialog {
     final shortenText = ShortenText();
 
     final details = await PickerModel()
-                      .galleryPicker(source: ImageSource.both);
+      .galleryPicker(source: ImageSource.both);
     
     if(details == null) {
       return;
@@ -89,14 +89,16 @@ class UploadDialog {
 
     for(final filesPath in details.selectedFiles) {
 
-      final pathToString = filesPath.selectedFile.toString().
-                            split(" ").last.replaceAll("'", "");
+      final pathToString = filesPath.selectedFile.toString()
+        .split(" ").last.replaceAll("'", "");
       
-      final filesName = pathToString.split("/").last.replaceAll("'", "");
+      final filesName = pathToString.split("/")
+        .last.replaceAll("'", "");
+
       final fileExtension = filesName.split('.').last;
 
       if (!Globals.supportedFileTypes.contains(fileExtension)) {
-        CustomFormDialog.startDialog("Couldn't upload $filesName","File type is not supported.");
+        CustomFormDialog.startDialog("Couldn't upload $filesName", "File type is not supported.");
         await NotificationApi.stopNotification(0);
         continue;
       }
@@ -116,17 +118,22 @@ class UploadDialog {
       if (!(Globals.imageType.contains(fileExtension))) {
         final compressedFileByte = await CompressorApi.compressFile(pathToString);
         fileBase64Encoded = base64.encode(compressedFileByte);
+        
       } else {
         final filesBytes = await File(pathToString).readAsBytes();
         fileBase64Encoded = base64.encode(filesBytes);
+
       }
 
       if (Globals.imageType.contains(fileExtension)) {
 
-        List<int> bytes = await CompressorApi.compressedByteImage(path: pathToString, quality: 80);
-        String compressedImageBase64Encoded = base64.encode(bytes);
+        final compressedImageBytes = await CompressorApi
+          .compressedByteImage(path: pathToString, quality: 80);
 
-        await UpdateListView().processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+        final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
+
+        await UpdateListView()
+          .processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
 
       } else if (Globals.videoType.contains(fileExtension)) {
 
@@ -236,7 +243,7 @@ class UploadDialog {
         final fileType = fileName.split('.').last;
 
         if (!Globals.supportedFileTypes.contains(fileType)) {
-          CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+          CustomFormDialog.startDialog("Couldn't upload $fileName", "File type is not supported.");
           await NotificationApi.stopNotification(0);
           continue;
     
@@ -252,11 +259,14 @@ class UploadDialog {
         final compressQuality = tempData.origin 
             == OriginFile.public ? 71 : 80;
 
-        List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
-        String compressedImageBase64Encoded = base64.encode(bytes);
+        final compressedImageBytes = await CompressorApi
+          .compressedByteImage(path: filePath, quality: compressQuality);
+
+        final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
         final decodeToBytes = base64.decode(compressedImageBase64Encoded);
         final imageBytes = Uint8List.fromList(decodeToBytes);
+
         await OfflineMode().saveOfflineFile(fileName: fileName, fileData: imageBytes);
 
         UpdateListView().addItemDetailsToListView(fileName: fileName);
@@ -331,8 +341,10 @@ class UploadDialog {
         final compressQuality = tempData.origin 
             == OriginFile.public ? 71 : 80;
 
-        List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: compressQuality);
-        String compressedImageBase64Encoded = base64.encode(bytes);
+        final compressedImageBytes = await CompressorApi
+          .compressedByteImage(path: filePath, quality: compressQuality);
+
+        final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
         if(tempData.origin == OriginFile.public) {
           publicStorageUploadPage(filePath: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
@@ -395,7 +407,8 @@ class UploadDialog {
           return;
         }
 
-        await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+        await UpdateListView()
+          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
 
       }
 
@@ -497,7 +510,9 @@ class UploadDialog {
     
     for(final images in imagePath) {
 
-      File compressedDocImage = await CompressorApi.processImageCompression(path: images,quality: 65); 
+      File compressedDocImage = await CompressorApi
+        .processImageCompression(path: images,quality: 65); 
+
       await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
       
     }
@@ -508,12 +523,15 @@ class UploadDialog {
     final file = File('${tempDir.path}/$generateFileName.pdf');
 
     final compressedBytes = await CompressorApi.compressFile(file.path.toString());
+
     final toBase64Encoded = base64.encode(compressedBytes);
+
     final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
 
     if (tempData.origin == OriginFile.offline) {
 
       final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
+
       final imageBytes = Uint8List.fromList(decodeToBytes);
       final decodedBase64String = base64.decode(toBase64Encoded);
 
@@ -551,7 +569,7 @@ class UploadDialog {
   Future<void> photoUpload() async {
 
     final details = await PickerModel()
-                        .galleryPicker(source: ImageSource.camera);
+      .galleryPicker(source: ImageSource.camera);
 
     if (details!.selectedFiles.isEmpty) {
       return;
@@ -560,9 +578,11 @@ class UploadDialog {
     for(final photoTaken in details.selectedFiles) {
 
       final imagePath = photoTaken.selectedFile.toString()
-                        .split(" ").last.replaceAll("'", "");
+        .split(" ").last.replaceAll("'", "");
 
-      final imageName = imagePath.split("/").last.replaceAll("'", "");
+      final imageName = imagePath.split("/")
+        .last.replaceAll("'", "");
+
       final fileExtension = imageName.split('.').last;
 
       if(!(Globals.imageType.contains(fileExtension))) {
@@ -570,9 +590,10 @@ class UploadDialog {
         return;
       }
 
-      List<int> bytes = await CompressorApi.compressedByteImage(path: imagePath, quality: 78);
+      final compressedImageBytes = await CompressorApi
+        .compressedByteImage(path: imagePath, quality: 78);
     
-      final imageBase64Encoded = base64.encode(bytes); 
+      final imageBase64Encoded = base64.encode(compressedImageBytes); 
 
       if(storageData.fileNamesList.contains(imageName)) {
         CustomFormDialog.startDialog("Upload Failed", "$imageName already exists.");
@@ -583,6 +604,7 @@ class UploadDialog {
 
         final decodeToBytes = base64.decode(imageBase64Encoded);
         final imageBytes = Uint8List.fromList(decodeToBytes);
+        
         await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
 
         storageData.imageBytesFilteredList.add(decodeToBytes);
@@ -643,10 +665,13 @@ class UploadDialog {
 
     if (Globals.imageType.contains(fileType)) {
 
-      List<int> bytes = await CompressorApi.compressedByteImage(path: filePath, quality: 80);
-      String compressedImageBase64Encoded = base64.encode(bytes);
+      final compressedImageBytes = await CompressorApi
+        .compressedByteImage(path: filePath, quality: 80);
 
-      await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+      final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
+
+      await UpdateListView()
+        .processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
 
     } else if (Globals.videoType.contains(fileType)) {
 
@@ -674,9 +699,10 @@ class UploadDialog {
       final getFileTable = Globals.fileTypesToTableNames[fileType]!;
 
       final imagePreview = await GetAssets()
-            .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
+        .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
 
-      await UpdateListView().processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
+      await UpdateListView()
+        .processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
       
     }
 

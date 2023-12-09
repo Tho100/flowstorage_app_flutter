@@ -1779,7 +1779,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _openMoveSingleFilePage(String fileName) async {
 
-    final fileData = await functionModel.returnFileData(
+    final fileData = await functionModel.retrieveFileData(
       fileName: fileName, isCompressed: true);
 
     final base64Data = base64.encode(fileData);
@@ -1795,7 +1795,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     List<String> fileBase64 = [];
 
     for(int i=0; i<fileNames.length; i++) {
-      final fileData = await functionModel.returnFileData(
+      final fileData = await functionModel.retrieveFileData(
         fileName: fileNames[i], isCompressed: true);
 
       final base64Data = base64.encode(fileData);
@@ -1811,7 +1811,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _openExternalFileOnSelect(String fileType, String fileName) async {
 
-    final fileData = await functionModel.returnFileData(
+    final fileData = await functionModel.retrieveFileData(
       fileName: fileName, isCompressed: false);
 
     final result = await ExternalApp(

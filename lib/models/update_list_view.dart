@@ -86,13 +86,12 @@ class UpdateListView {
 
         final compressedFileData = await CompressorApi.compressFile(folderFile.path);
         final base64encoded = base64.encode(compressedFileData);
+        
         fileValues.add(base64encoded);
 
       } else if (Globals.imageType.contains(getExtension)) {
-        final compressedImage = await CompressorApi.compressedByteImage(
-          path: folderFile.path,
-          quality: 85,
-        );
+        final compressedImage = await CompressorApi
+          .compressedByteImage(path: folderFile.path, quality: 85);
 
         final base64Encoded = base64.encode(compressedImage);
         fileValues.add(base64Encoded);
@@ -130,8 +129,8 @@ class UpdateListView {
     dynamic thumbnailBytes,
   }) async {
 
-    final List<Uint8List> newImageByteValues = [];
-    final List<Uint8List> newFilteredSearchedBytes = [];
+    List<Uint8List> newImageByteValues = [];
+    List<Uint8List> newFilteredSearchedBytes = [];
 
     final verifyTableName = tempData.origin == OriginFile.directory ? GlobalsTable.directoryUploadTable : tableName;
 

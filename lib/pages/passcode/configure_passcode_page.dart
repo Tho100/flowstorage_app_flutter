@@ -14,6 +14,7 @@ class ConfigurePasscodePage extends StatefulWidget {
 class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
 
   final storage = const FlutterSecureStorage();
+  
   bool isPasscodeEnabled = false;
 
   void togglePasscode(String value) async {

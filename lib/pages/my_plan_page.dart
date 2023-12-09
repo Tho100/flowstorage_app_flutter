@@ -26,8 +26,8 @@ class MyPlanPageState extends State<MyPlanPage> {
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final double containerWidth = 35.0;
-  final double containerheight = 305.0;
+  final containerWidth = 35.0;
+  final containerheight = 305.0;
 
   final cardBorderRadius = 25.0;
 

@@ -6,6 +6,10 @@ import 'dart:io';
 
 class LocalStorageModel {
 
+  final logger = Logger();
+
+  final universalFileName = "CUST_DATAS.txt";
+
   Future<List<String>> readLocalAccountUsernames() async {
 
     try {
@@ -17,7 +21,7 @@ class LocalStorageModel {
       final setupPath = '${getDirApplication.path}/$localAccountUsernames';
       final setupInfosDir = Directory(setupPath);
 
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
 
       final fileContent = await setupFiles.readAsLines();
       
@@ -27,7 +31,8 @@ class LocalStorageModel {
 
       return usernames;
       
-    } catch(err) {
+    } catch(err, st) {
+      logger.e('Exception from readLocalAccountUsernames {local_storage_model}', err, st); 
       return [];
     }
 
@@ -45,15 +50,15 @@ class LocalStorageModel {
         setupInfosDir.createSync();
       }
 
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
 
       try {
 
         setupFiles.writeAsStringSync(
           "$username\n", mode: FileMode.append);
 
-      } catch (e, st) {
-        Logger().e(e, st);
+      } catch (err, st) {
+        logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
       }
 
     }
@@ -75,7 +80,7 @@ class LocalStorageModel {
 
       setupInfosDir.createSync();
 
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
+      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
 
       try {
         
@@ -86,8 +91,8 @@ class LocalStorageModel {
         setupFiles.writeAsStringSync(
           "${EncryptionClass().encrypt(custUsername)}\n${EncryptionClass().encrypt(custEmail)}\n$accountType");
 
-      } catch (e, st) {
-        Logger().e(e, st);
+      } catch (err, st) {
+        logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
       }
 
     } 

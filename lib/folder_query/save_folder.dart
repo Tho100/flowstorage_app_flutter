@@ -67,9 +67,10 @@ class SaveFolder {
 
       return dataSet.toList();
 
-    } catch (failedRetrieval) {
+    } catch (err) {
       return <Map<String, dynamic>>[];
     }
+
   }
 
   Future<void> selectDirectoryUserFolder({
@@ -84,6 +85,7 @@ class SaveFolder {
     } else {
       return;
     }
+    
   }
 
   Future<void> downloadDirectoryFiles({

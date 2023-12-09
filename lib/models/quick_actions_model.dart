@@ -11,15 +11,15 @@ import 'package:get_it/get_it.dart';
 
 class QuickActionsModel {
 
-  final _storageData = GetIt.instance<StorageDataProvider>();
-  final _userData = GetIt.instance<UserDataProvider>();
-  final _dataCaller = DataCaller();
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final userData = GetIt.instance<UserDataProvider>();
+  final dataCaller = DataCaller();
 
-  final _context = navigatorKey.currentContext!;
+  final context = navigatorKey.currentContext!;
 
   void _openCreateDirectoryDialog() {
     CreateDirectoryDialog().buildCreateDirectoryDialog(
-      context: _context, 
+      context: context, 
       createOnPressed: () async {
         
         final getDirectoryTitle = CreateDirectoryDialog.directoryNameController.text.trim();
@@ -28,7 +28,7 @@ class QuickActionsModel {
           return;
         }
 
-        if(_storageData.fileNamesList.contains(getDirectoryTitle)) {
+        if(storageData.fileNamesList.contains(getDirectoryTitle)) {
           CallToast.call(message: "Directory with this name already exists.");
           return;
         }
@@ -44,18 +44,18 @@ class QuickActionsModel {
 
   void newDirectory() {
 
-    final limitDirectoryUpload = AccountPlan.mapDirectoryUpload[_userData.accountType]!;
-    final limitFilesUpload = AccountPlan.mapFilesUpload[_userData.accountType]!;
+    final limitDirectoryUpload = AccountPlan.mapDirectoryUpload[userData.accountType]!;
+    final limitFilesUpload = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-    if(_storageData.fileNamesList.length < limitFilesUpload) {
-      final countDirectory = _storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
+    if(storageData.fileNamesList.length < limitFilesUpload) {
+      final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
       if(countDirectory != limitDirectoryUpload) {
         _openCreateDirectoryDialog();
 
       } else {
         UpgradeDialog.buildUpgradeBottomSheet(
           message: "You're currently limited to $limitDirectoryUpload directory uploads. Upgrade your account to upload more directory.",
-          context: _context
+          context: context
         );
 
       }
@@ -63,7 +63,7 @@ class QuickActionsModel {
     } else {
       UpgradeDialog.buildUpgradeBottomSheet(
         message: "You're currently limited to $limitFilesUpload uploads. Upgrade your account to upload more.",
-        context: _context
+        context: context
       );
       
     }
@@ -71,7 +71,7 @@ class QuickActionsModel {
   }
 
   Future<void> offline() async {
-    await _dataCaller.offlineData();
+    await dataCaller.offlineData();
   }
 
 }

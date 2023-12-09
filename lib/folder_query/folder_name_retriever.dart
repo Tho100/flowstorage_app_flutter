@@ -24,8 +24,9 @@ class FolderRetriever {
 
       return fileNameList.toList();
 
-    } catch (failedLoadNames) {
+    } catch (err) {
       return <String>[];
     } 
+    
   }
 }

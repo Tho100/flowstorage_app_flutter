@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
+import 'package:flowstorage_fsc/interact_dialog/signout_dialog.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -55,22 +56,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
   
-  @override
-  void initState() {
-    super.initState();
-    custUsername = widget.custUsername;
-    custEmail = widget.custEmail;
-    accountType = widget.accType;
-    uploadLimit = widget.uploadLimit;
-    sharingEnabledButton = widget.sharingEnabledButton == '0' ? 'Disable' : 'Enable';
-  }
-
-  @override 
-  void dispose() {
-    super.dispose();
-  }
-
-  void _clearUserRecords() {
+  void _clearUserStorageData() {
     storageData.fileNamesList.clear();
     storageData.fileNamesFilteredList.clear();
     storageData.fileDateList.clear();
@@ -111,60 +97,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   }
 
-  void _showSignOutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
-          ),
-          backgroundColor: ThemeColor.darkGrey,
-          content: const Text(
-            'Logout from your Flowstorage account? Your offline files will be deleted.',
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
-                elevation: 0,
-              ),
-              onPressed: () async { 
-                _clearUserRecords();
-                await _deleteAutoLoginAndOfflineFiles();
-
-                if(!mounted) return;
-                NavigatePage.replacePageMain(context);
-              },
-              child: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: _buildTabs(context),
-    );
-  }
-
   Widget _buildRow(String leftText,String rightText) {
     return Row(
       children: [
@@ -196,7 +128,16 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
           elevation: 0,
         ),
         onPressed: () {
-          _showSignOutDialog(context);
+          SignOutDialog().buildSignOutDialog(
+            context: context, 
+            signOutOnPressed: () async {
+              _clearUserStorageData();
+              await _deleteAutoLoginAndOfflineFiles();
+
+              if(!mounted) return;
+              NavigatePage.replacePageMain(context);
+            }
+          );
         },
         child: const Text("Logout from my account",
           style: TextStyle(
@@ -536,4 +477,28 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       body: _buildBody(context),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    custUsername = widget.custUsername;
+    custEmail = widget.custEmail;
+    accountType = widget.accType;
+    uploadLimit = widget.uploadLimit;
+    sharingEnabledButton = widget.sharingEnabledButton == '0' ? 'Disable' : 'Enable';
+  }
+
+  @override 
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: _buildTabs(context),
+    );
+  }
+
 }

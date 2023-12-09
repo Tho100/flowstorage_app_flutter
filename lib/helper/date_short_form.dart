@@ -5,6 +5,7 @@ class DateShortForm {
   DateShortForm({required this.input});
 
   String convert() {
+
     final Map<String, String> unitConversions = {
       'days': 'd',
       'weeks': 'w',
@@ -48,5 +49,7 @@ class DateShortForm {
     }
 
     return input;
+
   }
+  
 }

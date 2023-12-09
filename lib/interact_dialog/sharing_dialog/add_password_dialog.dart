@@ -12,6 +12,7 @@ import 'package:logger/logger.dart';
 class AddSharingPassword {
 
   final userData = GetIt.instance<UserDataProvider>();
+  
   final addPasswordController = TextEditingController();
 
   Future buildAddPasswordDialog(BuildContext context) {

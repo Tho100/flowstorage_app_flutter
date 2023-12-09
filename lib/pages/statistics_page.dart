@@ -19,6 +19,15 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
+class ChartUploadCountValue {
+
+  ChartUploadCountValue(this.category, this.totalUpload);
+
+  final String category;
+  final int totalUpload;
+
+}
+
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
@@ -33,14 +42,15 @@ class StatsPageState extends State<StatisticsPage> {
 
   final categoryNamesHomeFiles = {'Image', 'Audio', 'Document', 'Video', 'Text'};
 
-  late List<UploadCountValue> data;
+  late List<ChartUploadCountValue> data;
 
   final dataIsLoading = ValueNotifier<bool>(true);
 
-  int totalUpload = 0;
+  int totalFilesUpload = 0;
+  int totalOfflineFilesUpload = 0;
+
   int directoryCount = 0;
   int folderCount = 0;
-  int offlineCount = 0;
 
   String categoryWithMostUpload = "";
   String categoryWithLeastUpload = "";
@@ -58,7 +68,7 @@ class StatsPageState extends State<StatisticsPage> {
   @override
   void initState() {
     super.initState();
-    _initData();
+    _initializeStatsData();
   }
 
   @override
@@ -69,30 +79,29 @@ class StatsPageState extends State<StatisticsPage> {
   }
 
   Future<void> _readLocalAccountUsernames() async {
-
     final usernames = await LocalStorageModel().readLocalAccountUsernames();
-
     localAccountUsernamesList.addAll(usernames);
-
   }
 
-  Future<void> _initData() async {
+  Future<void> _initializeStatsData() async {
 
     try {
 
       dataIsLoading.value = true;
 
       final futuresFile = [
-        _countUpload(GlobalsTable.homeImage),
-        _countUpload(GlobalsTable.homeAudio),
-        _countUpload(GlobalsTable.homePdf),
-        _countUpload(GlobalsTable.homeVideo),
-        _countUpload(GlobalsTable.homeText),
-        _countUpload(GlobalsTable.homePtx),
+        _countFileUpload(GlobalsTable.homeImage),
+        _countFileUpload(GlobalsTable.homeAudio),
+        _countFileUpload(GlobalsTable.homePdf),
+        _countFileUpload(GlobalsTable.homeVideo),
+        _countFileUpload(GlobalsTable.homeText),
+        _countFileUpload(GlobalsTable.homePtx),
       ];
 
       final uploadCategoryList = await Future.wait(futuresFile);
-      totalUpload = uploadCategoryList.reduce((sum, uploadCount) => sum + uploadCount);
+
+      totalFilesUpload = uploadCategoryList
+        .reduce((sum, uploadCount) => sum + uploadCount);
 
       int maxUploadCount = 0;
       int maxCategoryIndex = 0;
@@ -117,23 +126,26 @@ class StatsPageState extends State<StatisticsPage> {
       categoryWithMostUpload = uploadCategoryList[maxCategoryIndex] == 0 ? "None" : categoryNamesHomeFiles.elementAt(maxCategoryIndex);
       categoryWithLeastUpload = categoryNamesHomeFiles.elementAt(minCategoryIndex) == "Image" ? "None" : categoryNamesHomeFiles.elementAt(minCategoryIndex);
 
-      final countDirectories = await _countUploadFoldAndDir(GlobalsTable.directoryInfoTable, "DIR_NAME");
+      final countDirectories = _countDirectory();
 
       folderCount = tempStorageData.folderNameList.length;
       directoryCount = countDirectories;
-      offlineCount = await _countUploadOffline();
 
-      final document0 = await _countUpload(GlobalsTable.homePdf);
-      final document1 = await _countUpload(GlobalsTable.homeExcel);
-      final document2 = await _countUpload(GlobalsTable.homeWord);
+      totalOfflineFilesUpload = await _countOfflineFileUpload();
+
+      final document0 = await _countFileUpload(GlobalsTable.homePdf);
+      final document1 = await _countFileUpload(GlobalsTable.homeExcel);
+      final document2 = await _countFileUpload(GlobalsTable.homeWord);
+
+      final sumDocument = document0+document1+document2;
 
       setState(() {
         data = [
-          UploadCountValue('Image', uploadCategoryList[0]),
-          UploadCountValue('Audio',uploadCategoryList[1]),
-          UploadCountValue('Document', document0+document1+document2),
-          UploadCountValue('Video', uploadCategoryList[3]),
-          UploadCountValue('Text', uploadCategoryList[4])
+          ChartUploadCountValue('Image', uploadCategoryList[0]),
+          ChartUploadCountValue('Audio',uploadCategoryList[1]),
+          ChartUploadCountValue('Document', sumDocument),
+          ChartUploadCountValue('Video', uploadCategoryList[3]),
+          ChartUploadCountValue('Text', uploadCategoryList[4])
         ];
       });
       
@@ -146,46 +158,39 @@ class StatsPageState extends State<StatisticsPage> {
 
   }
 
-  Future<int> _countUpload(String tableName) async {
+  Future<int> _countFileUpload(String tableName) async {
 
-    final dataOrigin = tempData.origin != OriginFile.home
-    ? tempStorageData.statsFileNameList
-    : storageData.fileNamesFilteredList;
+    try {
 
-    final fileTypeList = <String>[];
+      final dataOrigin = tempData.origin != OriginFile.home
+        ? tempStorageData.statsFileNameList
+        : storageData.fileNamesFilteredList;
 
-    for(int i=0; i<dataOrigin.length; i++) {
-      final fileType = dataOrigin.elementAt(i).split('.').last;
-      fileTypeList.add(fileType);
-    }
-    
-    int uploadCount = 0;
+      final fileTypeList = <String>[];
 
-    for (String fileType in fileTypeList) {
-      if (Globals.fileTypesToTableNames.containsKey(fileType) &&
-          Globals.fileTypesToTableNames[fileType] == tableName) {
-        uploadCount++;
+      for(int i=0; i<dataOrigin.length; i++) {
+        final fileType = dataOrigin.elementAt(i).split('.').last;
+        fileTypeList.add(fileType);
       }
+      
+      int uploadCount = 0;
+
+      for (String fileType in fileTypeList) {
+        if (Globals.fileTypesToTableNames.containsKey(fileType) &&
+            Globals.fileTypesToTableNames[fileType] == tableName) {
+          uploadCount++;
+        }
+      }
+
+      return uploadCount;
+
+    } catch (err) {
+      return 0;
     }
 
-    return uploadCount;
-
   }
 
-  Future<int> _countUploadFoldAndDir(String tableName,String columnName) async {
-
-    int countDirectory = storageData.fileNamesFilteredList
-      .where((dir) => !dir.contains('.')).length;
-
-    int countFolderOrDirectory = tableName == GlobalsTable.folderUploadTable 
-    ? tempStorageData.folderNameList.length
-    : countDirectory;
-
-    return countFolderOrDirectory;
-
-  }
-
-  Future<int> _countUploadOffline() async {
+  Future<int> _countOfflineFileUpload() async {
 
     try {
 
@@ -193,11 +198,21 @@ class StatsPageState extends State<StatisticsPage> {
     
       List<FileSystemEntity> files = offlineDir.listSync();
       int fileCount = files.whereType().length;
+
       return fileCount;
 
     } catch (err) {
       return 0;
     }
+
+  }
+
+  int _countDirectory() {
+
+    int countDirectory = storageData.fileNamesFilteredList
+      .where((dir) => !dir.contains('.')).length;
+
+    return countDirectory;
 
   }
 
@@ -293,14 +308,18 @@ class StatsPageState extends State<StatisticsPage> {
 
         Row(
           children: [
-            _buildInfoUploadedWidget(mediaQuery, "Most Uploaded", categoryWithMostUpload),
-            _buildInfoTotalUploadWidget(mediaQuery, "Total Upload", totalUpload.toString()),
+            _buildInfoUploadedWidget(
+              mediaQuery, "Most Uploaded", categoryWithMostUpload),
+            _buildInfoTotalUploadWidget(
+              mediaQuery, "Total Upload", totalFilesUpload.toString()),
           ],
         ),
         Row(
           children: [
-            _buildInfoUploadedWidget(mediaQuery, "Least Uploaded", categoryWithLeastUpload),
-            _buildInfoTotalUploadWidget(mediaQuery, "Offline Upload", offlineCount.toString()),
+            _buildInfoUploadedWidget(
+              mediaQuery, "Least Uploaded", categoryWithLeastUpload),
+            _buildInfoTotalUploadWidget(
+              mediaQuery, "Offline Upload", totalOfflineFilesUpload.toString()),
           ],
         ),
 
@@ -308,62 +327,14 @@ class StatsPageState extends State<StatisticsPage> {
 
         Row(
           children: [
-            _buildInfoTotalUploadWidget(mediaQuery, "Directory Count", directoryCount.toString()),
-            _buildInfoTotalUploadWidget(mediaQuery, "Folder Count", folderCount.toString()),
+            _buildInfoTotalUploadWidget(
+              mediaQuery, "Directory Count", directoryCount.toString()),
+            _buildInfoTotalUploadWidget(
+              mediaQuery, "Folder Count", folderCount.toString()),
           ],
-        )
-
-        /*const SizedBox(height: 5),
-
-        _buildHeaderInfo("General"),
-
-        const SizedBox(height: 5),
-
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ThemeColor.lightGrey, width: 1),
-          ),
-          height: 125,
-          width: mediaQuery.width-35,
-          child: Column(
-            children: [
-              _buildInfo("Most Uploaded", categoryWithMostUpload),
-              _buildInfo("Least Uploaded", categoryWithLeastUpload),
-              _buildInfo("Total Upload", totalUpload.toString()),
-            ],
-          )
         ),
-
-        const SizedBox(height: 18),
-
-        _buildHeaderInfo("Others"),
-
-        const SizedBox(height: 5),
-
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ThemeColor.lightGrey, width: 1),
-          ),
-          height: 125,
-          width: mediaQuery.width-35,
-          child: Column(
-            children: [
-              _buildInfo("Folder Count", folderCount.toString()),
-              _buildInfo("Directory Count", directoryCount.toString()),
-              _buildInfo("Offline Total Uploaded", offlineCount.toString()),
-            ],
-          )
-        ),
-
-        const SizedBox(height: 15),
-
-        Container(),*/
-
       ],
     );
-
   }
 
   Widget _buildChart(context) {
@@ -388,12 +359,12 @@ class StatsPageState extends State<StatisticsPage> {
           ),
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
-          series: <ChartSeries<UploadCountValue, String>>[
-            ColumnSeries<UploadCountValue, String>(
+          series: <ChartSeries<ChartUploadCountValue, String>>[
+            ColumnSeries<ChartUploadCountValue, String>(
               color: ThemeColor.darkPurple,
               dataSource: data,
-              xValueMapper: (UploadCountValue value, _) => value.category,
-              yValueMapper: (UploadCountValue value, _) => value.totalUpload,
+              xValueMapper: (ChartUploadCountValue value, _) => value.category,
+              yValueMapper: (ChartUploadCountValue value, _) => value.totalUpload,
               name: 'Files',
               dataLabelSettings: const DataLabelSettings(isVisible: true),
             )
@@ -403,7 +374,7 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildPage(BuildContext context) {
+  Widget _buildStatsDetailsPage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: SingleChildScrollView(
@@ -436,9 +407,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
             textAlign: TextAlign.left,
           ),
-
           const Spacer(),
-
           Text(
             subText,
             style: const TextStyle(
@@ -689,20 +658,11 @@ class StatsPageState extends State<StatisticsPage> {
         ),
         body: TabBarView(
           children: [
-            dataIsLoading.value ? _buildLoading() : _buildPage(context),
+            dataIsLoading.value ? _buildLoading() : _buildStatsDetailsPage(context),
             dataIsLoading.value ? _buildLoading() : _buildUsagePage(context),
           ],
         ),
       ),
     );
   }
-}
-
-class UploadCountValue {
-
-  UploadCountValue(this.category, this.totalUpload);
-
-  final String category;
-  final int totalUpload;
-
 }

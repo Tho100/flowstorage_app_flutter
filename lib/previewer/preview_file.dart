@@ -201,7 +201,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openWithOnPressed() async {
 
     final fileByteData = await functionModel
-          .returnFileDataPreviewer(isCompressed: false);
+      .retrieveFileDataPreviewer(isCompressed: false);
 
     final result = await ExternalApp(
       fileName: tempData.selectedFileName, 
@@ -264,8 +264,7 @@ class PreviewFileState extends State<PreviewFile> {
       final newRenameValue = "$newFileName.${fileName.split('.').last}";
 
       if (storageData.fileNamesList.contains(newRenameValue)) {
-        CustomAlertDialog.alertDialogTitle(
-          newRenameValue, "Item with this name already exists.");
+        CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
         return;
       } 
     
@@ -374,7 +373,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openMoveFileOnPressed(String fileName) async {
 
     final fileByteData = await functionModel
-        .returnFileDataPreviewer(isCompressed: true);
+        .retrieveFileDataPreviewer(isCompressed: true);
 
     final base64Data = base64.encode(fileByteData);
 

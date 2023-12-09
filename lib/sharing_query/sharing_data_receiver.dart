@@ -117,7 +117,7 @@ class SharingDataReceiver {
 
       return dataSet;
 
-    } catch (failedRetrieval) {
+    } catch (err) {
       return <Map<String, dynamic>>[];
     }
 

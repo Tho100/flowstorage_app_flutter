@@ -18,7 +18,7 @@ class UploaderGetterPs {
 
       return nameSet.toList();  
 
-    } catch (failedLoadNames) {
+    } catch (err) {
       return <String>[];
     } 
   }

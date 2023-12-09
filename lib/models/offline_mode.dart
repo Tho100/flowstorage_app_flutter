@@ -34,16 +34,23 @@ class OfflineMode {
   }
 
   Future<void> deleteFile(String fileName) async {
+    
     await init();
+
     final file = File('${offlineDirs.path}/$fileName');
     file.deleteSync();
+
   }
 
   Future<void> renameFile(String fileName, String newFileName) async {
+
     await init();
+
     final file = File('${offlineDirs.path}/$fileName');
-    String newPath = '${offlineDirs.path}/$newFileName';
+    final newPath = '${offlineDirs.path}/$newFileName';
+
     await file.rename(newPath);
+
   }
 
   Future<void> saveOfflineFile({
@@ -135,8 +142,8 @@ class OfflineMode {
 
     } else {
       throw Exception('File not found');
-      
     }
+    
   }
 
   Future<void> processSaveOfflineFile({
@@ -154,6 +161,7 @@ class OfflineMode {
     } catch (err) {
       SnakeAlert.errorSnake("An error occurred.");
     }
+
   }
 
 }

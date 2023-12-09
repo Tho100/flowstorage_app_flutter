@@ -26,9 +26,10 @@ class NameGetterPs {
 
       return nameSet.toList();  
 
-    } catch (failedLoadNames) {
+    } catch (err) {
       return <String>[];
     } 
+
   }
 
   Future<List<String>> retrieveParams(MySQLConnectionPool conn, String tableName) async {
@@ -47,9 +48,10 @@ class NameGetterPs {
 
       return nameSet.toList();  
 
-    } catch (failedLoadNames) {
+    } catch (err) {
       return <String>[];
     } 
+
   }
 
 }

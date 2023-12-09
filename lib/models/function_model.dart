@@ -66,7 +66,8 @@ class FunctionModel {
 
       SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
 
-    } catch (err) {
+    } catch (err, st) {
+      logger.e('Exception from renameFolderData {function_model}', err, st);
       SnakeAlert.errorSnake("Failed to rename this folder.");
     }
 
@@ -89,7 +90,7 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}.", icon: Icons.check);
 
     } catch (err, st) {
-      logger.e('Exception from _deletionFile {function_model}',err,st);
+      logger.e('Exception from deleteFileData {function_model}',err,st);
       SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
     }
 
@@ -122,7 +123,7 @@ class FunctionModel {
       }
 
     } catch (err, st) {
-      logger.e('Exception from _renameFile {function_model}', err, st);
+      logger.e('Exception from renameFileData {function_model}', err, st);
       SnakeAlert.errorSnake("Failed to rename this file.");
     }
 
@@ -175,7 +176,8 @@ class FunctionModel {
 
       SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check);
 
-    } catch (err) {
+    } catch (err, st) {
+      logger.e('Exception from multipleFilesDownload {function_model}', err, st);
       SnakeAlert.errorSnake("Failed to save files.");
     }
 
@@ -240,7 +242,8 @@ class FunctionModel {
       }
 
 
-    } catch (err) {
+    } catch (err, st) {
+      logger.e('Exception from downloadFileData {function_model}', err, st);
       await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
       SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName, customLength: 35)}");
     }
@@ -267,7 +270,7 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
     } catch (err, st) {
-      logger.e('Exception from _buildDirectory {function_model}',err,st);
+      logger.e('Exception from createDirectoryData {function_model}',err,st);
       CustomAlertDialog.alertDialog('Failed to create directory.');
     }
   }
@@ -283,7 +286,7 @@ class FunctionModel {
       SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {
-      logger.e('Exception from _deletionDirectory {function_model}',err,st);
+      logger.e('Exception from deleteDirectoryData {function_model}',err,st);
       SnakeAlert.errorSnake("Failed to delete $directoryName");
     }
 
@@ -346,64 +349,78 @@ class FunctionModel {
       await CallNotify().customNotification(title: "Offline", subMesssage: "1 Item now available offline");
 
     } catch (err, st) {
-      logger.e('Exception from _deletionDirectory {function_model}',err,st); 
+      logger.e('Exception from makeAvailableOffline {function_model}', err, st); 
     }
 
   }
 
-  Future<Uint8List> returnFileData({
+  Future<Uint8List> retrieveFileData({
     required String fileName, 
     required bool isCompressed
   }) async {
 
-    final fileType = fileName.split('.').last;
-    final fileTable = Globals.fileTypesToTableNames[fileType]!;
-    
-    Uint8List fileData;
+    try {
 
-    if(tempData.origin != OriginFile.offline) {
+      final fileType = fileName.split('.').last;
+      final fileTable = Globals.fileTypesToTableNames[fileType]!;
+      
+      Uint8List fileData;
 
-      if(Globals.imageType.contains(fileType)) {
-        final index = storageData.fileNamesFilteredList.indexOf(fileName);
-        fileData = storageData.imageBytesFilteredList.elementAt(index)!;
+      if(tempData.origin != OriginFile.offline) {
+
+        if(Globals.imageType.contains(fileType)) {
+          final index = storageData.fileNamesFilteredList.indexOf(fileName);
+          fileData = storageData.imageBytesFilteredList.elementAt(index)!;
+
+        } else {
+          fileData = isCompressed 
+          ? CompressorApi.compressByte(
+            await _callFileByteData(fileName, fileTable))
+          : await _callFileByteData(fileName, fileTable);
+
+        }
 
       } else {
-        fileData = isCompressed 
-        ? CompressorApi.compressByte(
-          await _callFileByteData(fileName, fileTable))
-        : await _callFileByteData(fileName, fileTable);
+        fileData = await OfflineMode().loadOfflineFileByte(fileName);
 
       }
 
-    } else {
-      fileData = await OfflineMode().loadOfflineFileByte(fileName);
+      return fileData;
 
+    } catch (err, st) {
+      logger.e('Exception from retrieveFileData {function_model}', err, st); 
+      return Uint8List(0);
     }
-
-    return fileData;
     
   }
 
-  Future<Uint8List> returnFileDataPreviewer({
+  Future<Uint8List> retrieveFileDataPreviewer({
     required isCompressed
   }) async {
 
-    final fileType = tempData.selectedFileName.split('.').last;
+    try {
 
-    late Uint8List fileByteData;
+      final fileType = tempData.selectedFileName.split('.').last;
 
-    if(Globals.imageType.contains(fileType)) {
-      final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-      fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
+      late Uint8List fileByteData;
 
-    } else {
-      fileByteData = isCompressed 
-      ? CompressorApi.compressByte(tempData.fileByteData)
-      : tempData.fileByteData;
+      if(Globals.imageType.contains(fileType)) {
+        final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+        fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
 
+      } else {
+        fileByteData = isCompressed 
+        ? CompressorApi.compressByte(tempData.fileByteData)
+        : tempData.fileByteData;
+
+      }
+
+      return fileByteData;
+      
+    } catch (err, st) {
+      logger.e('Exception from retreiveFileDataPreviewer {function_model}', err, st); 
+      return Uint8List(0);
     }
-
-    return fileByteData;
 
   }
 

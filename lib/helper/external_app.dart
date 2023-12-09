@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-
-import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -28,12 +26,12 @@ class ExternalApp {
       await tempFile.writeAsBytes(bytes, flush: true);
 
       String filePath = tempFile.path;
+      
       final result = await OpenFile.open(filePath);
 
       return result;
       
-    } catch (err, st) {
-      Logger().e(err, st);
+    } catch (err) {
       return OpenResult(
         type: ResultType.error,
         message: 'An error occurred while opening the file.',

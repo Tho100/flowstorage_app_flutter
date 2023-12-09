@@ -179,15 +179,15 @@ class ResetBackupState extends State<ResetBackup> {
       recoveryController.clear();      
 
       if(!mounted) return;
-      Navigator.push(
-        context, 
+      Navigator.push(context, 
         MaterialPageRoute(builder: (context) => 
-        ResetAuthentication(custUsername: widget.username, 
-                            custEmail: email)));
+        ResetAuthentication(
+          custUsername: widget.username, custEmail: email)));
 
     } catch (exportBackupFailed) {
       CustomAlertDialog.alertDialogTitle("An error occurred","Failed to process your recovery key. Please try again later");
     }
+
   }
 
 }

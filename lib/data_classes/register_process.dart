@@ -146,6 +146,7 @@ class RegisterUser {
     } catch (dupeUsernameErr, st) {
       Logger().e(dupeUsernameErr, st);
     } 
+    
   }
 
 }
