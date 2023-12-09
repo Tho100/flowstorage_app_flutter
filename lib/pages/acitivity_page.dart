@@ -244,11 +244,19 @@ class AcitivtyPageState extends State<ActivityPage> {
                 Stack(
                   children: [
         
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.memory(recentImageBytes[index]!,
-                        fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover, 
-                        height: 225, width: 145
+                    Container(
+                      width: 145,
+                      height: 225,
+                      decoration: BoxDecoration(
+                        color: ThemeColor.mediumGrey,
+                        borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.memory(recentImageBytes[index]!,
+                          fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover, 
+                          height: 225, width: 145
+                        ),
                       ),
                     ),
         
@@ -468,7 +476,7 @@ class AcitivtyPageState extends State<ActivityPage> {
       mostUploadedImageBytes = filterImagesByType(modeFileType, 2);
       mostUploadedFilesName = filterNamesByType(modeFileType, 2);
       mostUploadedDate = filterDatesByType(modeFileType, 2);
-      
+
     }
 
   }
