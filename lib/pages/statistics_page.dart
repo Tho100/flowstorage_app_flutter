@@ -201,53 +201,83 @@ class StatsPageState extends State<StatisticsPage> {
 
   }
 
-  Widget _buildInfo(String headerText, String subText) {
+  Widget _buildInfoUploadedWidget(Size size, String title, String subTitle) {
     return Padding(
-      padding: const EdgeInsets.only(top: 14.0),
-      child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(
-                headerText,
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: size.width-205,
+        height: 75,
+        decoration: BoxDecoration(
+          color: ThemeColor.darkGrey,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: ThemeColor.darkGrey),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14.0, top: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
                 style: const TextStyle(
-                  color: Color.fromARGB(225, 255, 255, 255),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold
+                  color: ThemeColor.thirdWhite,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.left,
               ),
-            ),
-    
-            const Spacer(),
-    
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                subText,
+              const SizedBox(height: 6),
+              Text(subTitle,
                 style: const TextStyle(
-                  color: Color.fromARGB(200, 255, 255, 255),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold
+                  color: ThemeColor.justWhite,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildHeaderInfo(String text) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(text,
-            style: GlobalsStyle.settingsInfoTextStyle
+  Widget _buildInfoTotalUploadWidget(Size size, String title, String numberOfUploads) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: size.width-325,
+        height: 75,
+        decoration: BoxDecoration(
+          color: ThemeColor.darkGrey,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: ThemeColor.darkGrey),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14, top: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title,
+                style: const TextStyle(
+                  color: ThemeColor.thirdWhite,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              const SizedBox(height: 6),
+              Text(numberOfUploads,
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -255,61 +285,83 @@ class StatsPageState extends State<StatisticsPage> {
     
     final mediaQuery = MediaQuery.of(context).size;
 
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
 
-          const SizedBox(height: 5),
+        const SizedBox(height: 5),
 
-          _buildHeaderInfo("General"),
+        Row(
+          children: [
+            _buildInfoUploadedWidget(mediaQuery, "Most Uploaded", categoryWithMostUpload),
+            _buildInfoTotalUploadWidget(mediaQuery, "Total Upload", totalUpload.toString()),
+          ],
+        ),
+        Row(
+          children: [
+            _buildInfoUploadedWidget(mediaQuery, "Least Uploaded", categoryWithLeastUpload),
+            _buildInfoTotalUploadWidget(mediaQuery, "Offline Upload", offlineCount.toString()),
+          ],
+        ),
 
-          const SizedBox(height: 5),
+        const SizedBox(height: 8),
 
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: ThemeColor.lightGrey, width: 1),
-            ),
-            height: 125,
-            width: mediaQuery.width-35,
-            child: Column(
-              children: [
-                _buildInfo("Most Uploaded", categoryWithMostUpload),
-                _buildInfo("Least Uploaded", categoryWithLeastUpload),
-                _buildInfo("Total Upload", totalUpload.toString()),
-              ],
-            )
+        Row(
+          children: [
+            _buildInfoTotalUploadWidget(mediaQuery, "Directory Count", directoryCount.toString()),
+            _buildInfoTotalUploadWidget(mediaQuery, "Folder Count", folderCount.toString()),
+          ],
+        )
+
+        /*const SizedBox(height: 5),
+
+        _buildHeaderInfo("General"),
+
+        const SizedBox(height: 5),
+
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: ThemeColor.lightGrey, width: 1),
           ),
+          height: 125,
+          width: mediaQuery.width-35,
+          child: Column(
+            children: [
+              _buildInfo("Most Uploaded", categoryWithMostUpload),
+              _buildInfo("Least Uploaded", categoryWithLeastUpload),
+              _buildInfo("Total Upload", totalUpload.toString()),
+            ],
+          )
+        ),
 
-          const SizedBox(height: 18),
+        const SizedBox(height: 18),
 
-          _buildHeaderInfo("Others"),
+        _buildHeaderInfo("Others"),
 
-          const SizedBox(height: 5),
+        const SizedBox(height: 5),
 
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: ThemeColor.lightGrey, width: 1),
-            ),
-            height: 125,
-            width: mediaQuery.width-35,
-            child: Column(
-              children: [
-                _buildInfo("Folder Count", folderCount.toString()),
-                _buildInfo("Directory Count", directoryCount.toString()),
-                _buildInfo("Offline Total Uploaded", offlineCount.toString()),
-              ],
-            )
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: ThemeColor.lightGrey, width: 1),
           ),
+          height: 125,
+          width: mediaQuery.width-35,
+          child: Column(
+            children: [
+              _buildInfo("Folder Count", folderCount.toString()),
+              _buildInfo("Directory Count", directoryCount.toString()),
+              _buildInfo("Offline Total Uploaded", offlineCount.toString()),
+            ],
+          )
+        ),
 
-          const SizedBox(height: 15),
+        const SizedBox(height: 15),
 
-          Container(),
+        Container(),*/
 
-        ],
-      ),
+      ],
     );
 
   }
@@ -327,7 +379,13 @@ class StatsPageState extends State<StatisticsPage> {
         width: MediaQuery.of(context).size.width-35,
         child: SfCartesianChart(
           primaryXAxis: CategoryAxis(),
-          title: ChartTitle(text: 'File Upload Counter Chart'),
+          title: ChartTitle(text: 'File Upload By Type',
+            textStyle: const TextStyle(
+              color: ThemeColor.whiteGrey,
+              fontSize: 14,
+              fontWeight: FontWeight.w500
+            ),
+          ),
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries<UploadCountValue, String>>[

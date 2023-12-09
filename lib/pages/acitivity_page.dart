@@ -49,7 +49,7 @@ class AcitivtyPageState extends State<ActivityPage> {
     
           const Divider(color: ThemeColor.lightGrey),
     
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
 
           if(recentFilesName.isEmpty || tempData.origin == OriginFile.public || tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe)
           buildOnEmpty(),
