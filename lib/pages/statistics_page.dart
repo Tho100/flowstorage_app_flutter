@@ -201,20 +201,6 @@ class StatsPageState extends State<StatisticsPage> {
 
   }
 
-  Widget _buildHeader() {
-    return const Padding(
-      padding: EdgeInsets.all(14.0),
-      child: Text(
-        'Statistics',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 28,
-        ),
-      ),
-    );
-  }
-
   Widget _buildInfo(String headerText, String subText) {
     return Padding(
       padding: const EdgeInsets.only(top: 14.0),
@@ -366,8 +352,7 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
-            const SizedBox(height: 5),
+            const SizedBox(height: 15),
             _buildChart(context),
             const SizedBox(height: 12),
             _buildInfoContainer(),
@@ -601,10 +586,6 @@ class StatsPageState extends State<StatisticsPage> {
               }
             ),
 
-            //_buildUpgradeButton(context),
-
-            //const Spacer(),
-
           ],
         ),
       ),
@@ -613,11 +594,10 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildUsagePage(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
           _buildUsageContainer(context),
         ],
       ),
@@ -635,8 +615,10 @@ class StatsPageState extends State<StatisticsPage> {
      return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: ThemeColor.darkBlack,
         appBar: AppBar(
+          title: const Text("Statistics",
+            style: GlobalsStyle.appBarTextStyle,
+          ),
           backgroundColor: ThemeColor.darkBlack,
           elevation: 0,
           bottom: const TabBar(

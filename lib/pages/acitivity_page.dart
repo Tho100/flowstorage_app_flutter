@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class ActivityPage extends StatefulWidget {
 class AcitivtyPageState extends State<ActivityPage> {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   List<String> recentFilesName = [];
   List<String> recentDate = [];
@@ -34,6 +37,8 @@ class AcitivtyPageState extends State<ActivityPage> {
 
     final width = MediaQuery.of(context).size.width;
 
+    final isCanShowData = tempData.origin != OriginFile.public && tempData.origin != OriginFile.sharedOther && tempData.origin != OriginFile.sharedMe;
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -46,10 +51,10 @@ class AcitivtyPageState extends State<ActivityPage> {
     
           const SizedBox(height: 8),
 
-          if(recentFilesName.isEmpty)
+          if(recentFilesName.isEmpty || tempData.origin == OriginFile.public || tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe)
           buildOnEmpty(),
 
-          if(recentFilesName.isNotEmpty) ... [
+          if(recentFilesName.isNotEmpty && isCanShowData) ... [
           const Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -81,10 +86,10 @@ class AcitivtyPageState extends State<ActivityPage> {
         
           const SizedBox(height: 18),
     
-          if(mostUploadedImageBytes.length >= 2)
+          if(mostUploadedImageBytes.length >= 2 && isCanShowData)
           buildMostUploaded(width),
     
-          const SizedBox(height: 25),
+          const SizedBox(height: 30),
 
         ],
       ),
@@ -332,14 +337,14 @@ class AcitivtyPageState extends State<ActivityPage> {
           children: [
     
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: const EdgeInsets.only(left: 18.0),
               child: Transform.scale(
-                scale: 1.2,
+                scale: 1.0,
                 child: Image.asset('assets/images/public_icon.jpg')
               ),
             ),
     
-            const SizedBox(width: 25),
+            const SizedBox(width: 20),
     
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
