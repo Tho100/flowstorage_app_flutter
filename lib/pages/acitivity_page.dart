@@ -2,9 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class ActivityPage extends StatefulWidget {
 class AcitivtyPageState extends State<ActivityPage> {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
   List<String> recentFilesName = [];
@@ -30,6 +33,12 @@ class AcitivtyPageState extends State<ActivityPage> {
   List<String> mostUploadedFilesName = [];
   List<String> mostUploadedDate = [];
   List<Uint8List?> mostUploadedImageBytes = [];
+
+  List<String> directoriesList = [];
+  List<String> foldersList = [];
+
+  Uint8List photoOfTheDayImageBytes = Uint8List(0);
+  String photoOfTheDayFileName = "";
 
   String mostUploadTag = "";
 
@@ -55,25 +64,7 @@ class AcitivtyPageState extends State<ActivityPage> {
           buildOnEmpty(),
 
           if(recentFilesName.isNotEmpty && isCanShowData) ... [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 18.0),
-              child: Row(
-                children: [
-                  Icon(Icons.schedule_outlined, color: ThemeColor.justWhite, size: 25),
-                  SizedBox(width: 8),
-                  Text("Recent", 
-                    style: TextStyle(
-                      color: ThemeColor.justWhite,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          buildHeader("Recent", Icons.schedule_outlined),
     
           const SizedBox(height: 16),
     
@@ -88,10 +79,63 @@ class AcitivtyPageState extends State<ActivityPage> {
     
           if(mostUploadedImageBytes.length >= 2 && isCanShowData)
           buildMostUploaded(width),
-    
+
+          const SizedBox(height: 18),
+
+          if(directoriesList.isNotEmpty || foldersList.isNotEmpty)
+          buildHeader("Directories", Icons.folder_outlined),
+
+          const SizedBox(height: 16),
+
+          if(directoriesList.isNotEmpty)
+          SizedBox(
+            height: 70,
+            width: width-18,
+            child: buildDirectoriesDirectory("directory")
+          ),
+
+          if(foldersList.isNotEmpty)
+          SizedBox(
+            height: 70,
+            width: width-18,
+            child: buildDirectoriesDirectory("folder")
+          ),
+
+          if(photoOfTheDayFileName.isNotEmpty) ... [
+          const SizedBox(height: 18),
+
+          buildHeader("Photo of The Day", Icons.star_outline),
+
+          const SizedBox(height: 18),
+
+          buildPhotoOfTheDay(width),
+          ],
+
           const SizedBox(height: 30),
 
         ],
+      ),
+    );
+  }
+
+  Widget buildHeader(String headerMessage, IconData icon) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, left: 18.0),
+        child: Row(
+          children: [
+            Icon(icon, color: ThemeColor.justWhite, size: 25),
+            const SizedBox(width: 8),
+            Text(headerMessage, 
+              style: const TextStyle(
+                color: ThemeColor.justWhite,
+                fontWeight: FontWeight.w500,
+                fontSize: 18
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -321,6 +365,87 @@ class AcitivtyPageState extends State<ActivityPage> {
     );
   }
 
+  Widget buildDirectoryWidget(String name, String type) {
+    return SizedBox(
+      width: 155,
+      height: 70,
+      child: Row(
+        children: [
+          Image.asset(
+            'assets/images/dir1.jpg',
+            width: 70,
+            height: 70,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(name,
+                style: const TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600
+                ),
+                textAlign: TextAlign.left,
+              ),
+              Text(type,
+                style: const TextStyle(
+                  color: ThemeColor.thirdWhite,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600
+                ),
+                textAlign: TextAlign.left
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDirectoriesDirectory(String type) {
+    return ListView.builder(
+      itemCount: type == "directory" 
+        ? directoriesList.length : foldersList.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              type == "directory" 
+              ? buildDirectoryWidget(directoriesList[index], "Directory") 
+              : buildDirectoryWidget(foldersList[index], "Folder"),
+              
+              const SizedBox(width: 12),
+              
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildPhotoOfTheDay(double width) {
+    return GestureDetector(
+      onTap: () {
+        ActivityImagePreviewer.showPreviewer(photoOfTheDayFileName, photoOfTheDayImageBytes);
+      },
+      child: SizedBox(
+        width: width-45,
+        height: 315,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.memory(photoOfTheDayImageBytes,
+            fit: BoxFit.cover, width: width-45, height: 315,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildPublicStorageBanner(double width) {
     return GestureDetector(
       onTap: () {
@@ -494,11 +619,41 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   }
 
+  void initializeDirectoriesData() {
+
+    final getDirectory = storageData.fileNamesFilteredList
+      .where((name) => !name.contains('.'));
+
+    final getFolder = tempStorageData.folderNameList;
+
+    directoriesList.addAll(getDirectory);
+    foldersList.addAll(getFolder);
+
+  }
+
+  void initializePhotoOfTheDayData() {
+
+    final filesName = storageData.fileNamesFilteredList
+      .where((fileName) => Globals.imageType.any((type) => fileName.toLowerCase().endsWith(type)))
+      .toList();
+    
+    if(filesName.isNotEmpty) {
+      final generateRandomNumber = Generator.generateRandomInt(0, filesName.length - 1);
+      photoOfTheDayFileName = filesName[generateRandomNumber];
+
+      photoOfTheDayImageBytes = filterImagesByType(photoOfTheDayFileName, 1)[0]!;
+
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
     initializeRecentData();
     initializeMostUploadData();
+    initializeDirectoriesData();
+    initializePhotoOfTheDayData();
   }
 
   @override
