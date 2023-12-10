@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key});
@@ -33,6 +34,10 @@ class AcitivtyPageState extends State<ActivityPage> {
   List<String> mostUploadedFilesName = [];
   List<String> mostUploadedDate = [];
   List<Uint8List?> mostUploadedImageBytes = [];
+
+  List<String> legacyFilesName = [];
+  List<String> legacyDate = [];
+  List<Uint8List?> legacyImageBytes = [];
 
   List<String> directoriesList = [];
   List<String> foldersList = [];
@@ -73,33 +78,12 @@ class AcitivtyPageState extends State<ActivityPage> {
             width: width-18,
             child: buildRecentListView()
           ),
-          ],
+          
         
           const SizedBox(height: 18),
     
           if(mostUploadedImageBytes.length >= 2 && isCanShowData)
           buildMostUploaded(width),
-
-          const SizedBox(height: 18),
-
-          if(directoriesList.isNotEmpty || foldersList.isNotEmpty)
-          buildHeader("Directories", Icons.folder_outlined),
-
-          const SizedBox(height: 16),
-
-          if(directoriesList.isNotEmpty)
-          SizedBox(
-            height: 70,
-            width: width-18,
-            child: buildDirectoriesDirectory("directory")
-          ),
-
-          if(foldersList.isNotEmpty)
-          SizedBox(
-            height: 70,
-            width: width-18,
-            child: buildDirectoriesDirectory("folder")
-          ),
 
           if(photoOfTheDayFileName.isNotEmpty) ... [
           const SizedBox(height: 18),
@@ -109,9 +93,61 @@ class AcitivtyPageState extends State<ActivityPage> {
           const SizedBox(height: 18),
 
           buildPhotoOfTheDay(width),
+
           ],
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 25),
+
+          if(directoriesList.isNotEmpty || foldersList.isNotEmpty) ... [
+            buildHeader("Directories", Icons.folder_outlined),
+            const SizedBox(height: 18),
+          ],
+
+          if(directoriesList.isNotEmpty)
+          SizedBox(
+            height: 70,
+            width: width-18,
+            child: buildDirectories("directory")
+          ),
+
+          if(foldersList.isNotEmpty)
+          SizedBox(
+            height: 70,
+            width: width-18,
+            child: buildDirectories("folder")
+          ),
+
+          if(legacyFilesName.isNotEmpty) ... [
+          const SizedBox(height: 28),
+
+          Row(
+            children: [
+              buildHeader("Legacy", Icons.hourglass_bottom_outlined),
+              const Spacer(),
+              const Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Text("Files older than 30 days",
+                  style: TextStyle(
+                    color: ThemeColor.thirdWhite,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 18),
+
+          SizedBox(
+            height: 90,
+            width: width-18,
+            child: buildLegacy()
+          ),
+          ],
+          ],
+
+          const SizedBox(height: 40),
 
         ],
       ),
@@ -366,65 +402,77 @@ class AcitivtyPageState extends State<ActivityPage> {
   }
 
   Widget buildDirectoryWidget(String name, String type) {
-    return SizedBox(
-      width: 155,
-      height: 70,
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/dir1.jpg',
-            width: 70,
-            height: 70,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(name,
-                style: const TextStyle(
-                  color: ThemeColor.secondaryWhite,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600
+    return Container(
+      height: 62,
+      decoration: BoxDecoration(
+        color: ThemeColor.darkGrey,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      constraints: const BoxConstraints(
+        minWidth: 165,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 18.0),
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/images/dir1.jpg',
+              width: 70,
+              height: 70,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name,
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
-              ),
-              Text(type,
-                style: const TextStyle(
-                  color: ThemeColor.thirdWhite,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600
-                ),
-                textAlign: TextAlign.left
-              )
-            ],
-          ),
-        ],
+                Text(type,
+                  style: const TextStyle(
+                    color: ThemeColor.thirdWhite,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600
+                  ),
+                  textAlign: TextAlign.left
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget buildDirectoriesDirectory(String type) {
-    return ListView.builder(
-      itemCount: type == "directory" 
-        ? directoriesList.length : foldersList.length,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              type == "directory" 
-              ? buildDirectoryWidget(directoriesList[index], "Directory") 
-              : buildDirectoryWidget(foldersList[index], "Folder"),
-              
-              const SizedBox(width: 12),
-              
-            ],
-          ),
-        );
-      },
+  Widget buildDirectories(String type) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: ListView.builder(
+        itemCount: type == "directory" 
+          ? directoriesList.length : foldersList.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+    
+                type == "directory" 
+                ? buildDirectoryWidget(directoriesList[index], "Directory") 
+                : buildDirectoryWidget(foldersList[index], "Folder"),
+                
+                const SizedBox(width: 12),
+                
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -442,6 +490,85 @@ class AcitivtyPageState extends State<ActivityPage> {
             fit: BoxFit.cover, width: width-45, height: 315,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildLegacyWidget(Uint8List imageBytes, String fileName, String date) {
+    return Container(
+      height: 90,
+      decoration: BoxDecoration(
+        color: ThemeColor.darkGrey,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      constraints: const BoxConstraints(
+        minWidth: 205,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 18.0),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.memory(
+                  imageBytes,
+                  width: 55,
+                  height: 55,
+                  fit: BoxFit.cover
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(fileName,
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                Text(date,
+                  style: const TextStyle(
+                    color: ThemeColor.thirdWhite,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600
+                  ),
+                  textAlign: TextAlign.left
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildLegacy() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: ListView.builder(
+        itemCount: legacyFilesName.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+    
+                buildLegacyWidget(legacyImageBytes[index]!, legacyFilesName[index], legacyDate[index]),
+                
+                const SizedBox(width: 12),
+                
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -647,6 +774,51 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   }
 
+  void initializeLegacyData() {
+
+    final currentDate = DateTime.now();
+
+    final olderThan30DaysFiles = storageData.fileDateFilteredList
+      .asMap()
+      .entries
+      .where((entry) => storageData.fileNamesFilteredList[entry.key].contains('.'))
+      .where((entry) {
+        final fullDate = entry.value;
+        final match = RegExp(r'(\d+) days ago\s+•\s+(\w+ \d+ \d+)').firstMatch(fullDate);
+
+        if (match != null) {
+          final dateString = match.group(2)!;
+
+          final dateTimeFormat = DateFormat('MMM dd yyyy');
+          final fileDate = dateTimeFormat.parse(dateString);
+
+          final differenceInDays = currentDate.difference(fileDate).inDays;
+
+          return differenceInDays > 30;
+        }
+
+        return false;
+      })
+      .toList();
+
+    final filesNames = olderThan30DaysFiles
+      .map((entry) => storageData.fileNamesFilteredList[entry.key])
+      .toList();
+
+    final imagesBytes = olderThan30DaysFiles
+      .map((entry) => storageData.imageBytesFilteredList[entry.key])
+      .toList();
+
+    final filesDate = olderThan30DaysFiles
+      .map((entry) => storageData.fileDateFilteredList[entry.key])
+      .toList();
+
+    legacyFilesName.addAll(filesNames);
+    legacyDate.addAll(filesDate);
+    legacyImageBytes.addAll(imagesBytes);
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -654,6 +826,7 @@ class AcitivtyPageState extends State<ActivityPage> {
     initializeMostUploadData();
     initializeDirectoriesData();
     initializePhotoOfTheDayData();
+    initializeLegacyData();
   }
 
   @override
