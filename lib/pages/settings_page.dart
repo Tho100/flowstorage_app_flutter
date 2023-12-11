@@ -101,7 +101,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8),
           child: Text(leftText,
             style: GlobalsStyle.settingsLeftTextStyle
           ),
@@ -110,7 +110,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
         const Spacer(),
 
         Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(right: 16.0, top: 8, bottom: 8),
           child: Text(rightText,
             style: GlobalsStyle.settingsRightTextStyle
           ),
@@ -155,7 +155,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     required VoidCallback onPressed
   }) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
+      padding: const EdgeInsets.only(left: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -165,6 +165,9 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  const SizedBox(height: 5),
+
                   Text(
                     topText,
                     style: GlobalsStyle.settingsLeftTextStyle,
@@ -173,8 +176,15 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                   const SizedBox(height: 5),
                   Text(
                     bottomText,
-                    style: const TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: ThemeColor.thirdWhite),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: ThemeColor.thirdWhite
+                    ),
                   ),
+
+                  const SizedBox(height: 5),
+
                 ],
               ),
             ),
@@ -188,7 +198,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 14),
           child: Text(text,
             style: GlobalsStyle.settingsInfoTextStyle
           ),
@@ -291,11 +301,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
             _buildRow("Account Type",accountType),
             _buildRow("Upload Limit",uploadLimit.toString()),
             
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
       
             _buildInfoText("Update Information"),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
       
             _buildRowWithButtons(
               topText: "Change my password", 
@@ -305,11 +315,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               }
             ),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
       
             _buildInfoText("Sharing"),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
       
             _buildRowWithButtons(
               topText: "File sharing", 
@@ -338,7 +348,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               }
             ),
       
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
       
             _buildRowWithButtons(
               topText: "Configure password", 
@@ -348,11 +358,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               }
             ),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
       
             _buildInfoText("Security"),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
       
             _buildRowWithButtons(
               topText: "Configure passcode", 
@@ -372,11 +382,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               }
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
       
             _buildInfoText("Insight"),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
       
             _buildRowWithButtons(
               topText: "Statistics", 
@@ -393,11 +403,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               }
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
       
             _buildInfoText("Flowstorage"),
       
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
       
             _buildRowWithButtons(
               topText: "App version", 

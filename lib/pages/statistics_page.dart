@@ -239,7 +239,7 @@ class StatsPageState extends State<StatisticsPage> {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 2.0),
+          padding: const EdgeInsets.only(left: 2.0, top: 2.0),
           child: Text(subHeader,
             style: GoogleFonts.poppins(
               textStyle: const TextStyle(

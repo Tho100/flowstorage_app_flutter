@@ -16,6 +16,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
   final storage = const FlutterSecureStorage();
   
   bool isPasscodeEnabled = false;
+  bool isTapped = false;
 
   void togglePasscode(String value) async {
     await storage.write(key: "isEnabled", value: value);
@@ -43,31 +44,35 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      Switch(
-                        inactiveThumbColor: ThemeColor.darkPurple,
-                        activeColor: ThemeColor.darkPurple,
-                        value: isPasscodeEnabled,
-                        onChanged: (value) async {
-                          setState(() {
-                            isPasscodeEnabled = value;
-                          });
-
-                          bool isPassCodeExists = await storage.containsKey(key: 'key0015');
-
-                          if (!isPassCodeExists) {
-                            isPasscodeEnabled = false;
-                            if (!mounted) return;
-                            NavigatePage.goToAddPasscodePage();
-
-                          } else {
-                            final isEnabled = isPasscodeEnabled ? "true" : "false";
-                            togglePasscode(isEnabled);
-
-                          }
-
-                        },
+                      Transform.scale(
+                        scale: 1.1,
+                        child: Switch(
+                          inactiveThumbColor: ThemeColor.darkPurple,
+                          activeColor: ThemeColor.darkPurple,
+                          inactiveTrackColor: ThemeColor.darkGrey,
+                          value: isPasscodeEnabled,
+                          onChanged: (value) async {
+                            setState(() {
+                              isPasscodeEnabled = value;
+                            });
+                                    
+                            bool isPassCodeExists = await storage.containsKey(key: 'key0015');
+                                    
+                            if (!isPassCodeExists) {
+                              isPasscodeEnabled = false;
+                              if (!mounted) return;
+                              NavigatePage.goToAddPasscodePage();
+                                    
+                            } else {
+                              final isEnabled = isPasscodeEnabled ? "true" : "false";
+                              togglePasscode(isEnabled);
+                                    
+                            }
+                                    
+                          },
+                        ),
                       ),
-
+              
                     ],
                   ),
                 ),

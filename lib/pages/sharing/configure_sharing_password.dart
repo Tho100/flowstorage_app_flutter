@@ -52,28 +52,32 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      Switch(
-                        inactiveThumbColor: ThemeColor.darkPurple,
-                        activeColor: ThemeColor.darkPurple,
-                        value: isPasswordEnabled,
-                        onChanged: (value) async {
-                          setState(() {
-                            isPasswordEnabled = value;
-                          });
-
-                          final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
-
-                          if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
-                            if(!mounted) return;
-                            AddSharingPassword().buildAddPasswordDialog(context);
-
-                          } else {
-                            final isEnabled = isPasswordEnabled ? "0" : "1";
-                            togglePasscode(isEnabled);
-
-                          }
-
-                        },
+                      Transform.scale(
+                        scale: 1.1,
+                        child: Switch(
+                          inactiveThumbColor: ThemeColor.darkPurple,
+                          activeColor: ThemeColor.darkPurple,
+                          inactiveTrackColor: ThemeColor.darkGrey,
+                          value: isPasswordEnabled,
+                          onChanged: (value) async {
+                            setState(() {
+                              isPasswordEnabled = value;
+                            });
+                      
+                            final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
+                      
+                            if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
+                              if(!mounted) return;
+                              AddSharingPassword().buildAddPasswordDialog(context);
+                      
+                            } else {
+                              final isEnabled = isPasswordEnabled ? "0" : "1";
+                              togglePasscode(isEnabled);
+                      
+                            }
+                      
+                          },
+                        ),
                       ),
 
                     ],
