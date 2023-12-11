@@ -217,30 +217,39 @@ class StatsPageState extends State<StatisticsPage> {
 
   }
 
-  Widget _buildInfoWidget(String header, String subHeader) {
+  Widget _buildInfoWidget(String header, String subHeader, IconData icon) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          header,
-          style: GoogleFonts.poppins(
-            textStyle: const TextStyle(
-              color: Color.fromARGB(255, 18, 18, 18),
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
+        Row(
+          children: [
+            Icon(icon, size: 21),
+            const SizedBox(width: 5),
+            Text(
+              header,
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(
+                  color: Color.fromARGB(255, 18, 18, 18),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              textAlign: TextAlign.left,
             ),
-          ),
-          textAlign: TextAlign.left,
+          ],
         ),
-        Text(subHeader,
-          style: GoogleFonts.poppins(
-            textStyle: const TextStyle(
-              color: ThemeColor.darkGrey,
-              fontWeight: FontWeight.w600,
-              fontSize: 22
+        Padding(
+          padding: const EdgeInsets.only(left: 2.0),
+          child: Text(subHeader,
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                color: ThemeColor.darkGrey,
+                fontWeight: FontWeight.w600,
+                fontSize: 22
+              ),
             ),
+            textAlign: TextAlign.left,
           ),
-          textAlign: TextAlign.left,
         ),
       ],
     );
@@ -260,7 +269,7 @@ class StatsPageState extends State<StatisticsPage> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
             width: mediaQuery.width-35,
-            height: 285,
+            height: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: ThemeColor.justWhite,
@@ -272,15 +281,15 @@ class StatsPageState extends State<StatisticsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 16),
+                      padding: const EdgeInsets.only(left: 18.0, top: 18),
                       child: _buildInfoWidget(
-                        "MOST UPLOADED", categoryWithMostUpload),
+                        "MOST UPLOADED", categoryWithMostUpload, Icons.arrow_upward_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 18, top: 16),
+                      padding: const EdgeInsets.only(left: 18, top: 18),
                       child: _buildInfoWidget(
-                        "LEAST UPLOADED", categoryWithLeastUpload),
+                        "LEAST UPLOADED", categoryWithLeastUpload, Icons.arrow_downward_outlined),
                     ),
                   ],
                 ),
@@ -288,15 +297,15 @@ class StatsPageState extends State<StatisticsPage> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 12),
+                      padding: const EdgeInsets.only(left: 18.0, top: 16),
                       child: _buildInfoWidget(
-                        "TOTAL UPLOAD", totalFilesUpload.toString()),
+                        "TOTAL UPLOAD", totalFilesUpload.toString(), Icons.stacked_line_chart_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 32, top: 12),
+                      padding: const EdgeInsets.only(left: 34, top: 14),
                       child: _buildInfoWidget(
-                        "OFFLINE UPLOAD", totalOfflineFilesUpload.toString()),
+                        "OFFLINE UPLOAD", totalOfflineFilesUpload.toString(), Icons.offline_bolt_outlined),
                     ),
                   ],
                 ),
@@ -304,15 +313,15 @@ class StatsPageState extends State<StatisticsPage> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 12),
+                      padding: const EdgeInsets.only(left: 18.0, top: 14),
                       child: _buildInfoWidget(
-                        "DIRECTORY COUNT", directoryCount.toString()),
+                        "DIRECTORY COUNT", directoryCount.toString(), Icons.folder_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 4, top: 12),
+                      padding: const EdgeInsets.only(left: 6, top: 14),
                       child: _buildInfoWidget(
-                        "FOLDER COUNT", folderCount.toString()),
+                        "FOLDER COUNT", folderCount.toString(), Icons.folder_outlined),
                     ),
                   ],
                 ),
@@ -329,22 +338,22 @@ class StatsPageState extends State<StatisticsPage> {
       alignment: Alignment.center,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ThemeColor.justWhite,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.transparent, width: 2),
         ),
         height: 370,
         width: MediaQuery.of(context).size.width-35,
         child: SfCartesianChart(
+          plotAreaBorderColor: ThemeColor.justWhite,
           primaryXAxis: CategoryAxis(
             majorGridLines: const MajorGridLines(width: 0),
             majorTickLines: const MajorTickLines(size: 0),
             axisLine: const AxisLine(width: 0),
             minorGridLines: const MinorGridLines(width: 0),
             minorTickLines: const MinorTickLines(size: 0),
-            labelStyle: const TextStyle(
+            labelStyle: GoogleFonts.poppins(
               color: ThemeColor.mediumGrey,
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: FontWeight.w500
             ),
           ),
@@ -382,7 +391,7 @@ class StatsPageState extends State<StatisticsPage> {
           children: [
             const SizedBox(height: 15),
             _buildChart(context),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             _buildInfoContainer(),
           ],
         ),
@@ -427,10 +436,6 @@ class StatsPageState extends State<StatisticsPage> {
       width: MediaQuery.of(context).size.width - 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: ThemeColor.darkBlack,
-          width: 2.0,
-        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -651,7 +656,7 @@ class StatsPageState extends State<StatisticsPage> {
             indicatorColor: ThemeColor.darkPurple,
             tabs: [
               Tab(text: 'Details'),
-              Tab(text: 'Usage'),
+              Tab(text: 'Storage'),
             ],
           ),
         ),

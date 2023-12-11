@@ -27,7 +27,7 @@ class PhotosStaggeredListView extends StatelessWidget {
               Container(
                 width: 335,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.lightGrey,
                     width: isPhotosSelected ? 2.8 : 1.6,
@@ -53,7 +53,7 @@ class PhotosStaggeredListView extends StatelessWidget {
             
               if(isPhotosSelected)
               Padding(
-                padding: const EdgeInsets.only(left: 12, top: 12),
+                padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Container(
                   width: 26,
                   height: 26,
