@@ -84,10 +84,14 @@ class SaveDirectory {
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
     if (directoryPath != null) {
-      await downloadDirectoryFiles(directoryName: directoryName, directoryPath: directoryPath,context: context);
+      await downloadDirectoryFiles(
+        directoryName: directoryName, directoryPath: directoryPath, context: context);
+
     } else {
       return;
+
     }
+    
   }
 
   Future<void> downloadDirectoryFiles({

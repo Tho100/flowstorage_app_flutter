@@ -58,7 +58,7 @@ class PasscodePageState extends State<PasscodePage> {
     isButtonsEnabledNotifier.value = false;
   }
 
-  Future<void> callFileData(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType ,BuildContext context) async {
+  Future<void> callFileData(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType) async {
 
     try {
       
@@ -142,8 +142,7 @@ class PasscodePageState extends State<PasscodePage> {
         tempData.origin == OriginFile.offline 
         ? await QuickActionsModel().offline()
         : await callFileData(
-          conn, userData.username, userData.email, 
-          userData.accountType, context);
+          conn, userData.username, userData.email, userData.accountType);
 
         justLoading.stopLoading();
         

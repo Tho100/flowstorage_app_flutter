@@ -8,22 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
-class ResetAuthentication extends StatefulWidget {
+class ResetPasswordPage extends StatefulWidget {
 
   final String custUsername;
   final String custEmail;
 
-  const ResetAuthentication({
+  const ResetPasswordPage({
     Key? key,
     required this.custUsername,
     required this.custEmail,
   }) : super (key: key);
 
   @override
-  State<ResetAuthentication> createState() => ResetAuthenticationState();
+  State<ResetPasswordPage> createState() => ResetAuthenticationState();
 }
 
-class ResetAuthenticationState extends State<ResetAuthentication> {
+class ResetAuthenticationState extends State<ResetPasswordPage> {
 
   final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
   final curPassController = TextEditingController();

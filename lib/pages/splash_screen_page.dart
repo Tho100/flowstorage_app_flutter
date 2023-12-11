@@ -165,8 +165,7 @@ class SplashScreenState extends State<SplashScreen> {
           tempData.origin == OriginFile.offline 
           ? await quickActionsModel.offline()
           : await _callFileData(
-            conn, getLocalUsername, getLocalEmail, 
-            getLocalAccountType, context);
+            conn, getLocalUsername, getLocalEmail, getLocalAccountType);
           
           if(!mounted) return;
           NavigatePage.permanentPageMainboard(context);
@@ -214,7 +213,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   }
 
-  Future<void> _callFileData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType,BuildContext context) async {
+  Future<void> _callFileData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType) async {
 
     try {
 

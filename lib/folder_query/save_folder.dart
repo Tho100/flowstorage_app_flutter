@@ -81,9 +81,12 @@ class SaveFolder {
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
     if (directoryPath != null) {
-      await downloadDirectoryFiles(folderName: folderName, directoryPath: directoryPath,context: context);
+      await downloadDirectoryFiles(
+        folderName: folderName, directoryPath: directoryPath,context: context);
+
     } else {
       return;
+      
     }
     
   }

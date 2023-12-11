@@ -10,21 +10,21 @@ import 'package:flowstorage_fsc/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
-class ResetBackup extends StatefulWidget {
+class PasswordRecoveryPage extends StatefulWidget {
 
   final String username; 
 
-  const ResetBackup({
+  const PasswordRecoveryPage({
     Key? key,
     required this.username,
   }) : super(key: key);
 
   @override
-  State<ResetBackup> createState() => ResetBackupState();
+  State<PasswordRecoveryPage> createState() => PasswordRecoveryPageState();
 }
 
 
-class ResetBackupState extends State<ResetBackup> {
+class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
   final emailController = TextEditingController();
   final recoveryController = TextEditingController();
@@ -181,7 +181,7 @@ class ResetBackupState extends State<ResetBackup> {
       if(!mounted) return;
       Navigator.push(context, 
         MaterialPageRoute(builder: (context) => 
-        ResetAuthentication(
+        ResetPasswordPage(
           custUsername: widget.username, custEmail: email)));
 
     } catch (exportBackupFailed) {

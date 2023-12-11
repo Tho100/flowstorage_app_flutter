@@ -107,7 +107,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
         automaticallyImplyLeading: false,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          )
+        )
       ),
       body: Padding (
         padding: EdgeInsets.symmetric(
@@ -247,7 +247,6 @@ class CakeSignInPageState extends State<CakeSignInPage> {
             const Spacer(),
 
             Center(
-
               child: Column(
                 children: [
                   Text('Forgot your password?',
@@ -262,7 +261,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
                     onPressed: () {
                       Navigator.push(
                         context, 
-                        MaterialPageRoute(builder: (context) => ResetBackup(username: userData.username)));
+                        MaterialPageRoute(builder: (context) => PasswordRecoveryPage(username: userData.username)));
                     },
                     child: const Text('Reset with Recovery Key',  
                       style: TextStyle(

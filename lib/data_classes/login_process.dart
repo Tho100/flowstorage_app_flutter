@@ -37,7 +37,7 @@ class SignInUser {
 
   String custEmailInit = '';
 
-  Future<void> _callFileData(MySQLConnectionPool conn, bool isChecked, BuildContext context) async {
+  Future<void> _callFileData(MySQLConnectionPool conn, bool isRememberMeChecked) async {
 
     final custUsernameList = await userDataRetriever
       .retrieveAccountTypeAndUsername(email: custEmailInit, conn: conn);
@@ -85,7 +85,7 @@ class SignInUser {
     
     tempStorageData.setFoldersName(uniqueFolder);
 
-    if (isChecked) {
+    if (isRememberMeChecked) {
       await LocalStorageModel()
         .setupLocalAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);
     }
@@ -95,7 +95,7 @@ class SignInUser {
   }
 
   Future<void> logParams(
-    String? email, String? auth0, String? auth1, bool isChecked, BuildContext context) async {
+    String? email, String? auth0, String? auth1, bool isRememberMeChecked, BuildContext context) async {
 
     final conn = await SqlConnection.initializeConnection();
 
@@ -118,7 +118,7 @@ class SignInUser {
 
           final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
 
-          if(localUsernames.isEmpty && isChecked) {
+          if(localUsernames.isEmpty && isRememberMeChecked) {
             await LocalStorageModel().setupLocalAccountUsernames(custUsername);
           }
 
@@ -128,7 +128,7 @@ class SignInUser {
             justLoading.startLoading(context: context);
           }
 
-          await _callFileData(conn, isChecked, context);
+          await _callFileData(conn, isRememberMeChecked);
 
           justLoading.stopLoading();
           

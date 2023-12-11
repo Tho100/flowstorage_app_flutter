@@ -10,15 +10,15 @@ import 'package:flowstorage_fsc/encryption/verify_auth.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:get_it/get_it.dart';
 
-class ChangePassword extends StatefulWidget {
+class UpdatePasswordPage extends StatefulWidget {
 
-  const ChangePassword({Key? key}) : super(key: key);
+  const UpdatePasswordPage({Key? key}) : super(key: key);
 
   @override
-  ChangePasswordState createState() => ChangePasswordState();
+  UpdatePasswordPageState createState() => UpdatePasswordPageState();
 }
 
-class ChangePasswordState extends State<ChangePassword> {
+class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
   final newPassController = TextEditingController();
   final curPassController = TextEditingController();

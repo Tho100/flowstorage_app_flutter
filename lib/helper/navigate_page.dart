@@ -229,7 +229,7 @@ class NavigatePage {
   static void goToPageChangePass(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ChangePassword())
+      MaterialPageRoute(builder: (context) => const UpdatePasswordPage())
     );
   }
 
