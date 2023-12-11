@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -296,6 +297,35 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
+  Widget _buildInfoWidget(String header, String subHeader) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          header,
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              color: Color.fromARGB(255, 18, 18, 18),
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+          textAlign: TextAlign.left,
+        ),
+        Text(subHeader,
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              color: ThemeColor.darkGrey,
+              fontWeight: FontWeight.w600,
+              fontSize: 22
+            ),
+          ),
+          textAlign: TextAlign.left,
+        ),
+      ],
+    );
+  }
+
   Widget _buildInfoContainer() {
     
     final mediaQuery = MediaQuery.of(context).size;
@@ -306,32 +336,69 @@ class StatsPageState extends State<StatisticsPage> {
 
         const SizedBox(height: 5),
 
-        Row(
-          children: [
-            _buildInfoUploadedWidget(
-              mediaQuery, "Most Uploaded", categoryWithMostUpload),
-            _buildInfoTotalUploadWidget(
-              mediaQuery, "Total Upload", totalFilesUpload.toString()),
-          ],
-        ),
-        Row(
-          children: [
-            _buildInfoUploadedWidget(
-              mediaQuery, "Least Uploaded", categoryWithLeastUpload),
-            _buildInfoTotalUploadWidget(
-              mediaQuery, "Offline Upload", totalOfflineFilesUpload.toString()),
-          ],
-        ),
-
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            _buildInfoTotalUploadWidget(
-              mediaQuery, "Directory Count", directoryCount.toString()),
-            _buildInfoTotalUploadWidget(
-              mediaQuery, "Folder Count", folderCount.toString()),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+            width: mediaQuery.width-35,
+            height: 285,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: ThemeColor.justWhite,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 16),
+                      child: _buildInfoWidget(
+                        "MOST UPLOADED", categoryWithMostUpload),
+                    ),
+                    const SizedBox(width: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, top: 16),
+                      child: _buildInfoWidget(
+                        "LEAST UPLOADED", categoryWithLeastUpload),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 12),
+                      child: _buildInfoWidget(
+                        "TOTAL UPLOAD", totalFilesUpload.toString()),
+                    ),
+                    const SizedBox(width: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 32, top: 12),
+                      child: _buildInfoWidget(
+                        "OFFLINE UPLOAD", totalOfflineFilesUpload.toString()),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 12),
+                      child: _buildInfoWidget(
+                        "DIRECTORY COUNT", directoryCount.toString()),
+                    ),
+                    const SizedBox(width: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4, top: 12),
+                      child: _buildInfoWidget(
+                        "FOLDER COUNT", folderCount.toString()),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -344,24 +411,36 @@ class StatsPageState extends State<StatisticsPage> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white, width: 2),
+          border: Border.all(color: Colors.transparent, width: 2),
         ),
-        height: 380,
+        height: 370,
         width: MediaQuery.of(context).size.width-35,
         child: SfCartesianChart(
-          primaryXAxis: CategoryAxis(),
-          title: ChartTitle(text: 'File Upload By Type',
-            textStyle: const TextStyle(
-              color: ThemeColor.whiteGrey,
+          primaryXAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0),
+            majorTickLines: const MajorTickLines(size: 0),
+            axisLine: const AxisLine(width: 0),
+            minorGridLines: const MinorGridLines(width: 0),
+            minorTickLines: const MinorTickLines(size: 0),
+            labelStyle: const TextStyle(
+              color: ThemeColor.mediumGrey,
               fontSize: 14,
               fontWeight: FontWeight.w500
             ),
+          ),
+          primaryYAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0), 
+            majorTickLines: const MajorTickLines(size: 0), 
+            axisLine: const AxisLine(width: 0), 
+            minorGridLines: const MinorGridLines(width: 0),
+            minorTickLines: const MinorTickLines(size: 0),
           ),
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries<ChartUploadCountValue, String>>[
             ColumnSeries<ChartUploadCountValue, String>(
               color: ThemeColor.darkPurple,
+              borderRadius: BorderRadius.circular(12),
               dataSource: data,
               xValueMapper: (ChartUploadCountValue value, _) => value.category,
               yValueMapper: (ChartUploadCountValue value, _) => value.totalUpload,

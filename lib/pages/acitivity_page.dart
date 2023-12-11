@@ -85,18 +85,7 @@ class AcitivtyPageState extends State<ActivityPage> {
           if(mostUploadedImageBytes.length >= 2 && isCanShowData)
           buildMostUploaded(width),
 
-          if(photoOfTheDayFileName.isNotEmpty) ... [
           const SizedBox(height: 18),
-
-          buildHeader("Photo of The Day", Icons.star_outline),
-
-          const SizedBox(height: 18),
-
-          buildPhotoOfTheDay(width),
-
-          ],
-
-          const SizedBox(height: 25),
 
           if(directoriesList.isNotEmpty || foldersList.isNotEmpty) ... [
             buildHeader("Directories", Icons.folder_outlined),
@@ -116,6 +105,17 @@ class AcitivtyPageState extends State<ActivityPage> {
             width: width-18,
             child: buildDirectories("folder")
           ),
+
+          if(photoOfTheDayFileName.isNotEmpty) ... [
+          const SizedBox(height: 18),
+
+          buildHeader("Photo of The Day", Icons.star_outline),
+
+          const SizedBox(height: 18),
+
+          buildPhotoOfTheDay(width),
+
+          ],
 
           if(legacyFilesName.isNotEmpty) ... [
           const SizedBox(height: 28),
@@ -487,7 +487,7 @@ class AcitivtyPageState extends State<ActivityPage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Image.memory(photoOfTheDayImageBytes,
-            fit: BoxFit.cover, width: width-45, height: 315,
+            fit: BoxFit.cover, width: width-40, height: 315,
           ),
         ),
       ),
