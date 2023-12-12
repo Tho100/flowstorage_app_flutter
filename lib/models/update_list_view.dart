@@ -135,11 +135,13 @@ class UpdateListView {
     final verifyTableName = tempData.origin == OriginFile.directory ? GlobalsTable.directoryUploadTable : tableName;
 
     if (tempData.origin != OriginFile.offline) {
-      await _insertFileData(table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
+      await _insertFileData(
+        table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
 
     } else {
       final fileByteData = base64.decode(fileBase64Encoded);
-      await OfflineMode().processSaveOfflineFile(fileName: selectedFileName, fileData: fileByteData);
+      await OfflineMode().processSaveOfflineFile(
+        fileName: selectedFileName, fileData: fileByteData);
 
     }
 

@@ -78,7 +78,8 @@ class IntentSharingPage extends StatelessWidget {
                 ),
 
                 if(Globals.videoType.contains(fileType))
-                Center(
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 16.0),
                   child: Container(
                     width: 32,
                     height: 32,
@@ -88,7 +89,7 @@ class IntentSharingPage extends StatelessWidget {
                       ),
                       child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 20)
                     ),
-                  ),
+                ), 
                 ],
               ),
 
@@ -198,14 +199,19 @@ class IntentSharingPage extends StatelessWidget {
 
   void saveFileAsOffline() async {
 
+    final fileType = fileName.split('.').last;
+
     if(tempStorageData.offlineFileNameList.contains(fileName)) {
       CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
       return;
     }
 
-    Uint8List fileBytes = Uint8List(0);
+    if(Globals.videoType.contains(fileType)) {
+      CustomFormDialog.startDialog("Upload Failed", "Video is not available for offline.");
+      return;
+    }
 
-    final fileType = fileName.split('.').last;
+    Uint8List fileBytes = Uint8List(0);
 
     if(Globals.imageType.contains(fileType)) {
       fileBytes = base64.decode(fileData);
