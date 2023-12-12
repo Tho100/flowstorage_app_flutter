@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -43,14 +44,9 @@ class IntentSharingPage extends StatelessWidget {
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
-  Widget askToUploadOrView() {
-    return Container();
-  }
+  String fileType = "";
 
   Widget buildBody(BuildContext context) {
-
-    final fileType = fileName.split('.').last;
-
     return Column(
       children: [
 
@@ -184,6 +180,11 @@ class IntentSharingPage extends StatelessWidget {
 
     try {
 
+      if(tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType)) {
+        CustomFormDialog.startDialog("Upload Failed", "Video is not available for offline.");
+        return;
+      }
+
       await UploadDialog(
         upgradeExceededDialog: exceededUploadDialog
       ).intentShareUpload(fileName: fileName, filePath: filePath);
@@ -198,8 +199,6 @@ class IntentSharingPage extends StatelessWidget {
   }
 
   void saveFileAsOffline() async {
-
-    final fileType = fileName.split('.').last;
 
     if(tempStorageData.offlineFileNameList.contains(fileName)) {
       CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
@@ -259,7 +258,7 @@ class IntentSharingPage extends StatelessWidget {
               ),
               onPressed: () async {
           
-                final fileType = fileName.split('.').last;
+                fileType = fileName.split('.').last;
           
                 if (storageData.fileNamesList.contains(fileName)) {
                   CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
