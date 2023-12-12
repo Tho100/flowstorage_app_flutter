@@ -122,6 +122,31 @@ class IntentSharingPage extends StatelessWidget {
           ),
         ),  
 
+        if(fileType == "pdf")
+        Padding(
+          padding: const EdgeInsets.only(right: 15.0, bottom: 8.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: 138,
+              height: 45,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(52),
+                    side: const BorderSide(color: ThemeColor.lightGrey)
+                  ),
+                  backgroundColor: ThemeColor.darkBlack,
+                ),
+                onPressed: () {
+                  previewPdfOnPressed(context);
+                },
+                child: const Text("Preview"),
+              ),
+            ),
+          ),
+        ),
+
         const SizedBox(height: 8),
         const Divider(color: ThemeColor.lightGrey, height: 2),
 
@@ -136,6 +161,21 @@ class IntentSharingPage extends StatelessWidget {
     
     return getSizeMB.toDouble().toStringAsFixed(2);
     
+  }
+
+  void previewPdfOnPressed(BuildContext context) {
+
+    Navigator.pop(context);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PreviewPdf(
+        isFromIntentSharing: true, 
+        customFileDataBase64: fileData
+        )
+      )
+    );
+
   }
 
   Future<void> processFileUpload(BuildContext context) async {
@@ -192,43 +232,12 @@ class IntentSharingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final fileType = fileName.split('.').last;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
         automaticallyImplyLeading: true,
         actions: [
-          if(fileType == "pdf")
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: TextButton(
-              child: const Text("Preview",
-                  style: TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              onPressed: () async {
-
-                Navigator.pop(context);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PreviewPdf(
-                    isFromIntentSharing: true, 
-                    customFileDataBase64: fileData
-                    )
-                  )
-                );
-
-              }
-            ),
-          ),
-
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: TextButton(

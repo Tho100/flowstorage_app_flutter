@@ -101,7 +101,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 8, bottom: 8),
+          padding: const EdgeInsets.only(left: 15.0, top: 8, bottom: 8),
           child: Text(leftText,
             style: GlobalsStyle.settingsLeftTextStyle
           ),
@@ -110,7 +110,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
         const Spacer(),
 
         Padding(
-          padding: const EdgeInsets.only(right: 16.0, top: 8, bottom: 8),
+          padding: const EdgeInsets.only(right: 15.0, top: 8, bottom: 8),
           child: Text(rightText,
             style: GlobalsStyle.settingsRightTextStyle
           ),
@@ -366,7 +366,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       
             _buildRowWithButtons(
               topText: "Configure passcode", 
-              bottomText: "Require to enter passcode before allowing to open Flowstorage", 
+              bottomText: "Require to enter passcode before allowing to \nopen Flowstorage", 
               onPressed: () async {
                 NavigatePage.goToPageCongfigurePasscode();
               }
