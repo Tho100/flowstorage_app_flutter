@@ -21,7 +21,7 @@ class PreviewPdf extends StatelessWidget {
   final String? customFileDataBase64;
 
   const PreviewPdf({
-    this.isFromIntentSharing,
+    this.isFromIntentSharing = false,
     this.customFileDataBase64,
     Key? key
   }) : super(key: key);

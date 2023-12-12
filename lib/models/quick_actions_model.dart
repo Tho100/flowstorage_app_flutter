@@ -48,7 +48,8 @@ class QuickActionsModel {
     final limitFilesUpload = AccountPlan.mapFilesUpload[userData.accountType]!;
 
     if(storageData.fileNamesList.length < limitFilesUpload) {
-      final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
+      // TODO: Use built-in storage on tempStorage provider for directory name
+      final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length; 
       if(countDirectory != limitDirectoryUpload) {
         _openCreateDirectoryDialog();
 

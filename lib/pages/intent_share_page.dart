@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
@@ -220,6 +221,8 @@ class IntentSharingPage extends StatelessWidget {
     );
 
     tempStorageData.addOfflineFileName(fileName);
+
+    await CallNotify().customNotification(title: "Offline", subMesssage: "1 Item now available offline");
 
   }
 

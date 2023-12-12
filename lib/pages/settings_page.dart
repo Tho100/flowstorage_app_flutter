@@ -174,12 +174,15 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    bottomText,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: ThemeColor.thirdWhite
+                  SizedBox(
+                    width: 305,
+                    child: Text(
+                      bottomText,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColor.thirdWhite
+                      ),
                     ),
                   ),
 
@@ -366,7 +369,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       
             _buildRowWithButtons(
               topText: "Configure passcode", 
-              bottomText: "Require to enter passcode before allowing to \nopen Flowstorage", 
+              bottomText: "Require to enter passcode before allowing to open Flowstorage", 
               onPressed: () async {
                 NavigatePage.goToPageCongfigurePasscode();
               }
