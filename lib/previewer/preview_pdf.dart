@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
@@ -16,7 +17,14 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PreviewPdf extends StatelessWidget {
 
-  const PreviewPdf({Key? key}) : super(key: key);
+  final bool? isFromIntentSharing;
+  final String? customFileDataBase64;
+
+  const PreviewPdf({
+    this.isFromIntentSharing,
+    this.customFileDataBase64,
+    Key? key
+  }) : super(key: key);
 
   Future<Uint8List> callPDFDataAsync() async {
 
@@ -24,8 +32,13 @@ class PreviewPdf extends StatelessWidget {
 
     try {
 
-      if(tempData.origin != OriginFile.offline) {
+      if(isFromIntentSharing!) {
+        final decodeData = base64.decode(customFileDataBase64!);
+        return decodeData;
 
+      }
+
+      if(tempData.origin != OriginFile.offline) {
         final fileData = await CallPreviewData().callDataAsync(
           tableNamePs: GlobalsTable.psPdf, 
           tableNameHome: GlobalsTable.homePdf, 

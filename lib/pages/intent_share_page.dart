@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.d
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
+import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -40,6 +41,10 @@ class IntentSharingPage extends StatelessWidget {
   final tempData = GetIt.instance<TempDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
+
+  Widget askToUploadOrView() {
+    return Container();
+  }
 
   Widget buildBody(BuildContext context) {
 
@@ -187,46 +192,80 @@ class IntentSharingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final fileType = fileName.split('.').last;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
         automaticallyImplyLeading: true,
         actions: [
-          TextButton(
-            child: const Text("Upload",
-                style: TextStyle(
-                color: ThemeColor.darkPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+          if(fileType == "pdf")
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: TextButton(
+              child: const Text("Preview",
+                  style: TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+              onPressed: () async {
+
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PreviewPdf(
+                    isFromIntentSharing: true, 
+                    customFileDataBase64: fileData
+                    )
+                  )
+                );
+
+              }
             ),
-            onPressed: () async {
+          ),
 
-              final fileType = fileName.split('.').last;
-
-              if (storageData.fileNamesList.contains(fileName)) {
-                CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
-                return;
-
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              child: const Text("Upload",
+                  style: TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              onPressed: () async {
+          
+                final fileType = fileName.split('.').last;
+          
+                if (storageData.fileNamesList.contains(fileName)) {
+                  CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
+                  return;
+          
+                }
+          
+                if(!Globals.supportedFileTypes.contains(fileType)) {
+                  CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+                  return;
+          
+                }
+          
+                final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+          
+                if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
+                  return exceededUploadDialog();
+                  
+                }
+          
+                await processFileUpload(context);
+          
               }
-
-              if(!Globals.supportedFileTypes.contains(fileType)) {
-                CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
-                return;
-
-              }
-
-              final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-
-              if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
-                return exceededUploadDialog();
-                
-              }
-
-              await processFileUpload(context);
-
-            }
+            ),
           ),
         ],
         title: const Text("Upload to Flowstorage", 

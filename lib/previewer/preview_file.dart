@@ -46,7 +46,7 @@ class PreviewFile extends StatefulWidget {
     Key? key,
     required this.selectedFilename,
     required this.fileType,
-    required this.tappedIndex
+    required this.tappedIndex,
   }) : super(key: key);
 
   @override
@@ -191,7 +191,7 @@ class PreviewFileState extends State<PreviewFile> {
         pageBuilder: (_, __, ___) => PreviewFile(
           selectedFilename: selectedFileName,
           fileType: fileType,
-          tappedIndex: fileIndex,
+          tappedIndex: fileIndex
         ),
         transitionDuration: const Duration(microseconds: 0), 
       ),
