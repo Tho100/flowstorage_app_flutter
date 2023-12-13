@@ -47,6 +47,9 @@ class IntentSharingPage extends StatelessWidget {
   String fileType = "";
 
   Widget buildBody(BuildContext context) {
+
+    fileType = fileName.split('.').last;
+
     return Column(
       children: [
 
@@ -257,9 +260,7 @@ class IntentSharingPage extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
-          
-                fileType = fileName.split('.').last;
-          
+                    
                 if (storageData.fileNamesList.contains(fileName)) {
                   CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
                   return;

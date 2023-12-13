@@ -596,14 +596,14 @@ class AcitivtyPageState extends State<ActivityPage> {
           children: [
     
             Padding(
-              padding: const EdgeInsets.only(left: 16.0),
+              padding: const EdgeInsets.only(left: 18.0),
               child: Transform.scale(
                 scale: 1.0,
                 child: Image.asset('assets/images/public_icon.jpg')
               ),
             ),
     
-            const SizedBox(width: 18),
+            const SizedBox(width: 20),
     
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -630,11 +630,6 @@ class AcitivtyPageState extends State<ActivityPage> {
 
             const Spacer(),
 
-            const Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Icon(Icons.arrow_right_alt_rounded, size: 28),
-            ),
-          
           ],
         ),
       ),
