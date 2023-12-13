@@ -27,14 +27,14 @@ class PhotosStaggeredListView extends StatelessWidget {
               Container(
                 width: 335,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.lightGrey,
                     width: isPhotosSelected ? 2.8 : 1.6,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                   child: Image.memory(imageBytes, fit: BoxFit.cover),
                 ),
               ),
