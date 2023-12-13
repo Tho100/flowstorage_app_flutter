@@ -15,7 +15,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ActivityPage extends StatefulWidget {
-  const ActivityPage({super.key});
+
+  final VoidCallback publicStorageFunction;
+
+  const ActivityPage({
+    required this.publicStorageFunction,
+    Key? key
+  }) : super(key: key);
 
   @override
   State<ActivityPage> createState() => AcitivtyPageState();
@@ -576,7 +582,8 @@ class AcitivtyPageState extends State<ActivityPage> {
   Widget buildPublicStorageBanner(double width) {
     return GestureDetector(
       onTap: () {
-        //TODO: Bring user to public page
+        widget.publicStorageFunction();
+        Navigator.pop(context);
       },
       child: Container(
         width: width-32,
@@ -589,14 +596,14 @@ class AcitivtyPageState extends State<ActivityPage> {
           children: [
     
             Padding(
-              padding: const EdgeInsets.only(left: 18.0),
+              padding: const EdgeInsets.only(left: 16.0),
               child: Transform.scale(
                 scale: 1.0,
                 child: Image.asset('assets/images/public_icon.jpg')
               ),
             ),
     
-            const SizedBox(width: 20),
+            const SizedBox(width: 18),
     
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -620,7 +627,14 @@ class AcitivtyPageState extends State<ActivityPage> {
                 ),
               ],
             ),
-    
+
+            const Spacer(),
+
+            const Padding(
+              padding: EdgeInsets.all(18.0),
+              child: Icon(Icons.arrow_right_alt_rounded, size: 28),
+            ),
+          
           ],
         ),
       ),

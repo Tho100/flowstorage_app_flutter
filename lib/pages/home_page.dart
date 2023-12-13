@@ -2486,7 +2486,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(
           usageProgress: _getStorageUsagePercentage(),
-          offlinePageOnPressed: () async { _callOfflineData(); }
+          offlinePageOnPressed: () async { await _callOfflineData(); },
+          publicStorageFunction: () async { await _callPublicStorageData(); },
         ),
         appBar: _buildCustomAppBar(),
         body: storageData.fileNamesList.isEmpty 

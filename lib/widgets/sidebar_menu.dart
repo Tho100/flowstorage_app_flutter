@@ -11,10 +11,12 @@ class CustomSideBarMenu extends StatelessWidget {
 
   final Future<int> usageProgress;
   final VoidCallback offlinePageOnPressed;
+  final VoidCallback publicStorageFunction;
 
   CustomSideBarMenu({
     required this.usageProgress,
     required this.offlinePageOnPressed,
+    required this.publicStorageFunction,
     Key? key
   }) : super(key: key);
 
@@ -157,7 +159,7 @@ class CustomSideBarMenu extends StatelessWidget {
                       icon: Icons.rocket_outlined,
                       onPressed: () async {
                         Navigator.pop(context);
-                        NavigatePage.goToPageActivity();
+                        NavigatePage.goToPageActivity(publicStorageFunction);
                       }
                     ),
   

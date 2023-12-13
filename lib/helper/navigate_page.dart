@@ -52,10 +52,10 @@ class NavigatePage {
     );
   }
 
-  static void goToPageActivity() {
+  static void goToPageActivity(VoidCallback publicStorageFunction) {
      Navigator.push(
       navigatorKey.currentContext!, 
-      MaterialPageRoute(builder: (context) => const ActivityPage()
+      MaterialPageRoute(builder: (context) => ActivityPage(publicStorageFunction: publicStorageFunction)
       ),
     );
   }
