@@ -306,7 +306,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
                       child: Image.memory(base64.decode(psStorageData.psSearchImageBytesList[index]),
-                        fit: BoxFit.cover, height: 65, width: 62
+                        fit: BoxFit.cover, height: 70, width: 62
                       ),
                     ),
                     title: Transform.translate(

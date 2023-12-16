@@ -38,7 +38,7 @@ class SubPsListView extends StatelessWidget {
     final fileType = fileName.split('.').last;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(16),
       onTap: fileOnPressed,
       onLongPress: fileOnLongPressed,
       child: Row(
@@ -54,15 +54,18 @@ class SubPsListView extends StatelessWidget {
                     width: 185,
                     height: 158,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: ThemeColor.lightGrey,
-                        width: 2,
+                        width: 1,
                       ),
                     ),
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(14)),
-                      child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover),
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
+                      child: Image.memory(imageBytes, 
+                      fit: Globals.generalFileTypes.contains(fileType) 
+                          ? BoxFit.scaleDown : BoxFit.cover
+                      ),
                     ),
                   ),
 

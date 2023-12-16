@@ -47,20 +47,23 @@ class RecentPsListView extends StatelessWidget {
           Stack(
             children: [
               Container(
-                width: 65,
-                height: 65,
+                width: 75,
+                height: 75,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: ThemeColor.lightGrey,
-                    width: 2,
+                    width: 1,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) 
-                            ? BoxFit.scaleDown 
-                            : BoxFit.cover),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12)
+                  ),
+                  child: Image.memory(imageBytes, 
+                    fit: Globals.generalFileTypes.contains(fileType) 
+                        ? BoxFit.scaleDown : BoxFit.cover
+                    ),
                 ),
               ),
 
