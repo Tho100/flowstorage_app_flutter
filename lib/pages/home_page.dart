@@ -493,6 +493,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   void _activatePhotosView() {
 
     tempData.setAppBarTitle("Photos");
+
     searchBarVisibileNotifier.value = false;
     staggeredListViewSelected.value = true;
 
@@ -1511,8 +1512,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   Widget _buildNavigationButtons() {
+
+    final isVisibleCondition = 
+      togglePhotosPressed || tempData.origin == OriginFile.public;
+
     return NavigationButtons(
-      isVisible: togglePhotosPressed, 
+      isVisible: isVisibleCondition, 
       isCreateDirectoryVisible: navDirectoryButtonVisible, 
       isStaggeredListViewSelected: staggeredListViewSelected, 
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
@@ -2153,7 +2158,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     final mediaQuery = MediaQuery.of(context).size;
 
     if(tempData.origin == OriginFile.public) {
-      mediaHeight = mediaQuery.height - 196;
+      mediaHeight = mediaQuery.height - 148;
 
     } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
       mediaHeight = mediaQuery.height - 312;

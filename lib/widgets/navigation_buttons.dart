@@ -162,26 +162,6 @@ class NavigationButtons extends StatelessWidget {
     
               const Spacer(),
     
-              /*if(tempData.origin == OriginFile.public)
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: ElevatedButton(
-                  onPressed: filterTypePsOnPressed,
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    minimumSize: Size.zero,
-                    padding: const EdgeInsets.only(left: 6, right: 25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
-                    ),
-                  ).copyWith(
-                    fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
-                  ),
-                  child: const Icon(Icons.filter_list_outlined, size: 27),
-                ),
-              ),*/
-    
               if(tempData.origin != OriginFile.public)
               ElevatedButton(
                 onPressed: () {
