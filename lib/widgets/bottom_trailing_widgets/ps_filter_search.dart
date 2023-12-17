@@ -34,7 +34,7 @@ class BottomTrailingPsSearchFilter {
         ),
         
         const Divider(color: ThemeColor.lightGrey),
-          
+
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
@@ -46,6 +46,23 @@ class BottomTrailingPsSearchFilter {
               SizedBox(width: 15.0),
               Text(
                 'File title',
+                style: GlobalsStyle.btnBottomDialogTextStyle,
+              ),
+            ],
+          ),
+        ),
+
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            onTitlePressed();
+          },
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              SizedBox(width: 15.0),
+              Text(
+                'Upload date',
                 style: GlobalsStyle.btnBottomDialogTextStyle,
               ),
             ],

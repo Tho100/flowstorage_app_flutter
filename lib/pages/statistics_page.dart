@@ -41,7 +41,7 @@ class StatsPageState extends State<StatisticsPage> {
   final logger = Logger();
   final crud = Crud();
 
-  final categoryNamesHomeFiles = {'Image', 'Audio', 'Document', 'Video', 'Text'};
+  final categoryNamesHomeFiles = {'Image', 'Video', 'Document', 'Audio'};
 
   late List<ChartUploadCountValue> data;
 
@@ -92,11 +92,8 @@ class StatsPageState extends State<StatisticsPage> {
 
       final futuresFile = [
         _countFileUpload(GlobalsTable.homeImage),
-        _countFileUpload(GlobalsTable.homeAudio),
-        _countFileUpload(GlobalsTable.homePdf),
         _countFileUpload(GlobalsTable.homeVideo),
-        _countFileUpload(GlobalsTable.homeText),
-        _countFileUpload(GlobalsTable.homePtx),
+        _countFileUpload(GlobalsTable.homeAudio),
       ];
 
       final uploadCategoryList = await Future.wait(futuresFile);
@@ -134,19 +131,18 @@ class StatsPageState extends State<StatisticsPage> {
 
       totalOfflineFilesUpload = await _countOfflineFileUpload();
 
-      final document0 = await _countFileUpload(GlobalsTable.homePdf);
-      final document1 = await _countFileUpload(GlobalsTable.homeExcel);
-      final document2 = await _countFileUpload(GlobalsTable.homeWord);
+      final pdfDocument = await _countFileUpload(GlobalsTable.homePdf);
+      final excelDocument = await _countFileUpload(GlobalsTable.homeExcel);
+      final wordDocument = await _countFileUpload(GlobalsTable.homeWord);
 
-      final sumDocument = document0+document1+document2;
+      final sumDocument = pdfDocument+excelDocument+wordDocument;
 
       setState(() {
         data = [
           ChartUploadCountValue('Image', uploadCategoryList[0]),
-          ChartUploadCountValue('Audio',uploadCategoryList[1]),
+          ChartUploadCountValue('Video', uploadCategoryList[1]),
           ChartUploadCountValue('Document', sumDocument),
-          ChartUploadCountValue('Video', uploadCategoryList[3]),
-          ChartUploadCountValue('Text', uploadCategoryList[4])
+          ChartUploadCountValue('Audio', uploadCategoryList[2]),
         ];
       });
       
@@ -358,11 +354,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
           primaryYAxis: CategoryAxis(
-            majorGridLines: const MajorGridLines(width: 0), 
-            majorTickLines: const MajorTickLines(size: 0), 
-            axisLine: const AxisLine(width: 0), 
-            minorGridLines: const MinorGridLines(width: 0),
-            minorTickLines: const MinorTickLines(size: 0),
+            isVisible: false,
           ),
           legend: Legend(isVisible: false),
           tooltipBehavior: TooltipBehavior(enable: true),
