@@ -37,6 +37,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   String selectedFilterSearch = "title";
 
+  DateTime now = DateTime.now();
+
   final isTagsVisibleNotifier = ValueNotifier<bool>(true);
 
   final searchBarHintTextNotifier = ValueNotifier<String>
@@ -55,6 +57,26 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final uploadDateList = [];
+
+  final generalFileTableName = {
+    GlobalsTable.psText, 
+    GlobalsTable.psPdf, 
+    GlobalsTable.psAudio, 
+    GlobalsTable.psExcel, 
+    GlobalsTable.psWord, 
+    GlobalsTable.psExe, 
+    GlobalsTable.psApk
+  };
+
+  final tableNameToAsset = {
+    GlobalsTable.psText: "txt0.jpg",
+    GlobalsTable.psPdf: "pdf0.jpg",
+    GlobalsTable.psAudio: "music0.jpg",
+    GlobalsTable.psExcel: "exl0.jpg",
+    GlobalsTable.psWord: "doc0.jpg",
+    GlobalsTable.psExe: "exe0.jpg",
+    GlobalsTable.psApk: "apk0.jpg",
+  };
 
   Widget buildBody() {
 
@@ -176,34 +198,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       padding: const EdgeInsets.only(right: 8.0),
       child: ElevatedButton(
         onPressed: () async { 
-
-          tempData.setOrigin(OriginFile.public);
-
-          clearSearchingData();
-
-          setState(() {
-            isSearchingForFile = true;
-          });
-
-          psSearchBarController.text = "Tag: [$tagName]";
-
-          isTagsVisibleNotifier.value = false;
-
-          final fileDataList = await getSearchedFileByTags(tagName);
-
-          for(final fileData in fileDataList) {
-            uploadDateList.add(fileData['upload_date']);
-            psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
-            psStorageData.psSearchNameList.add(fileData['file_name']!);
-            psStorageData.psSearchImageBytesList.add(fileData['image']!);
-            psStorageData.setPsSearchTitle(fileData['title']!);
-          }
-
-          setState(() {
-            shouldReloadListView = !shouldReloadListView;
-            isSearchingForFile = false;
-          });
-
+          await searchByTagsOnPressed(tagName);
         },
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -376,26 +371,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Future<List<Map<String, String>>> getSearchedFileData(String keywordInput) async {
 
-    const generalFileTableName = {
-      GlobalsTable.psText, 
-      GlobalsTable.psPdf, 
-      GlobalsTable.psAudio, 
-      GlobalsTable.psExcel, 
-      GlobalsTable.psWord, 
-      GlobalsTable.psExe, 
-      GlobalsTable.psApk
-    };
-
-    const tableNameToAsset = {
-      GlobalsTable.psText: "txt0.jpg",
-      GlobalsTable.psPdf: "pdf0.jpg",
-      GlobalsTable.psAudio: "music0.jpg",
-      GlobalsTable.psExcel: "exl0.jpg",
-      GlobalsTable.psWord: "doc0.jpg",
-      GlobalsTable.psExe: "exe0.jpg",
-      GlobalsTable.psApk: "apk0.jpg",
-    };
-
     List<Map<String, String>> fileDataList = [];
 
     final filterToQuery = {
@@ -436,27 +411,114 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
+  Future<List<Map<String, String>>> getSearchedFileByDate(
+    String startDate, 
+    String endDate,
+    String filter
+  ) async {
+
+    List<Map<String, String>> fileDataList = [];
+
+    final conn = await SqlConnection.initializeConnection();
+
+    final filterQuery = filter == "week" || filter == "month" 
+    ? "STR_TO_DATE(UPLOAD_DATE, '%d/%m/%Y') BETWEEN STR_TO_DATE(:startDate, '%d/%m/%Y') AND STR_TO_DATE(:endDate, '%d/%m/%Y')"
+    : "UPLOAD_DATE = :date";
+
+    final filterParams = filter == "week" || filter == "month"
+    ? {"startDate": startDate, "endDate": endDate}
+    : {"date": startDate};
+
+    final queryImage = "SELECT CUST_TITLE, CUST_FILE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_image WHERE $filterQuery";
+    final queryVideo =  "SELECT CUST_TITLE, CUST_THUMB, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM ps_info_video WHERE $filterQuery";
+
+    final resultsImage = await conn.execute(queryImage, filterParams);
+    final resultsVideo = await conn.execute(queryVideo, filterParams);
+
+    final dataImage = await processSearchingQueryVideosImages(
+      resultsImage, true);
+
+    final dataVideo = await processSearchingQueryVideosImages(
+      resultsVideo, false);
+
+    fileDataList.addAll(dataImage);
+    fileDataList.addAll(dataVideo);
+
+    for(final tables in generalFileTableName) {
+      final query = "SELECT CUST_TITLE, CUST_USERNAME, UPLOAD_DATE, CUST_FILE_PATH FROM $tables WHERE $filterQuery";
+      final results = await conn.execute(query, filterParams);
+
+      final imageData = base64.encode(await GetAssets().loadAssetsData(tableNameToAsset[tables]!));
+      final data = await processSearchingQuery(results, imageData);
+      fileDataList.addAll(data);
+
+    }
+
+    return fileDataList;
+
+  }
+  
+  Future<void> searchByDateOnPressed(String startDate, String endDate, String filter) async {
+
+    psSearchBarFocusNode.unfocus();
+
+    tempData.setOrigin(OriginFile.public);
+
+    clearSearchingData();
+
+    setState(() {
+      isSearchingForFile = true;
+    });
+
+    final fileDataList = await getSearchedFileByDate(
+      startDate, endDate, filter);
+
+    for(final fileData in fileDataList) {
+      uploadDateList.add(fileData['upload_date']);
+      psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
+      psStorageData.psSearchNameList.add(fileData['file_name']!);
+      psStorageData.psSearchImageBytesList.add(fileData['image']!);
+      psStorageData.setPsSearchTitle(fileData['title']!);
+    }
+
+    setState(() {
+      shouldReloadListView = !shouldReloadListView;
+      isSearchingForFile = false;
+    });
+
+  }
+
+  Future<void> searchByTagsOnPressed(String tagName) async {
+
+    tempData.setOrigin(OriginFile.public);
+
+    clearSearchingData();
+
+    setState(() {
+      isSearchingForFile = true;
+    });
+
+    psSearchBarController.text = "Tag: [$tagName]";
+
+    isTagsVisibleNotifier.value = false;
+
+    final fileDataList = await getSearchedFileByTags(tagName);
+
+    for(final fileData in fileDataList) {
+      uploadDateList.add(fileData['upload_date']);
+      psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
+      psStorageData.psSearchNameList.add(fileData['file_name']!);
+      psStorageData.psSearchImageBytesList.add(fileData['image']!);
+      psStorageData.setPsSearchTitle(fileData['title']!);
+    }
+
+    setState(() {
+      shouldReloadListView = !shouldReloadListView;
+      isSearchingForFile = false;
+    });
+  }
+
   Future<List<Map<String, String>>> getSearchedFileByTags(String selectedTag) async {
-
-    const generalFileTableName = {
-      GlobalsTable.psText, 
-      GlobalsTable.psPdf, 
-      GlobalsTable.psAudio, 
-      GlobalsTable.psExcel, 
-      GlobalsTable.psWord, 
-      GlobalsTable.psExe, 
-      GlobalsTable.psApk
-    };
-
-    const tableNameToAsset = {
-      GlobalsTable.psText: "txt0.jpg",
-      GlobalsTable.psPdf: "pdf0.jpg",
-      GlobalsTable.psAudio: "music0.jpg",
-      GlobalsTable.psExcel: "exl0.jpg",
-      GlobalsTable.psWord: "doc0.jpg",
-      GlobalsTable.psExe: "exe0.jpg",
-      GlobalsTable.psApk: "apk0.jpg",
-    };
 
     List<Map<String, String>> fileDataList = [];
 
@@ -649,6 +711,35 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
+  void onPastWeekPressed() async {
+
+    DateTime oneWeekAgo = now.subtract(const Duration(days: 7));
+
+    String startDate = DateFormat('dd/MM/yyyy').format(oneWeekAgo);
+    String endDate = DateFormat('dd/MM/yyyy').format(now);
+
+    await searchByDateOnPressed(startDate, endDate, "week");
+
+  }
+
+  void onPastMonthPressed() async {
+
+    DateTime oneMonthAgo = DateTime(now.year, now.month - 1, now.day);
+
+    String startDate = DateFormat('dd/MM/yyyy').format(oneMonthAgo);
+    String endDate = DateFormat('dd/MM/yyyy').format(now);
+
+    await searchByDateOnPressed(startDate, endDate, "month");
+
+  }
+
+  void onPast24HoursPressed() async {
+
+    String todayDate = DateFormat('dd/MM/yyyy').format(now);
+    await searchByDateOnPressed(todayDate, "none", "24_hours");
+
+  }
+
   Widget buildMoreOptionsButton() {
     return GestureDetector(
       onTap: () {
@@ -661,7 +752,16 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           onUploaderNamePressed: () {
             selectedFilterSearch = "uploader_name";
             searchBarHintTextNotifier.value = "Search uploader name";
-          }
+          },
+          onPast24HoursPressed: () {
+            onPast24HoursPressed();
+          },
+          onPastWeekPressed: () {
+            onPastWeekPressed();
+          },
+          onPastMonthPressed: () {
+            onPastMonthPressed();
+          },          
         );
       },
       child: Container(

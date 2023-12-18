@@ -1,19 +1,16 @@
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_date_search_filter.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
-class BottomTrailingPsSearchFilter {
+class PsDateSearchFilterBottomTrailing {
 
   Future buildBottomTrailing({
     required BuildContext context,
-    required VoidCallback onTitlePressed,
-    required VoidCallback onUploaderNamePressed,
     required VoidCallback onPast24HoursPressed,
     required VoidCallback onPastWeekPressed,
-    required VoidCallback onPastMonthPressed,
+    required VoidCallback onPastMonthPressed
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
@@ -28,7 +25,7 @@ class BottomTrailingPsSearchFilter {
           child: Padding(
             padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
             child: Text(
-              "Filter Search",
+              "Filter Upload Date",
               style: TextStyle(
                 color: ThemeColor.secondaryWhite,
                 fontSize: 16,
@@ -42,14 +39,14 @@ class BottomTrailingPsSearchFilter {
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
-            onTitlePressed();
+            onPast24HoursPressed();
           },
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
               SizedBox(width: 15.0),
               Text(
-                'File title',
+                'Past 24 hours',
                 style: GlobalsStyle.btnBottomDialogTextStyle,
               ),
             ],
@@ -59,19 +56,14 @@ class BottomTrailingPsSearchFilter {
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
-            PsDateSearchFilterBottomTrailing().buildBottomTrailing(
-              context: context,
-              onPast24HoursPressed: onPast24HoursPressed,
-              onPastWeekPressed: onPastWeekPressed,
-              onPastMonthPressed: onPastMonthPressed
-            );
+            onPastWeekPressed();
           },
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
               SizedBox(width: 15.0),
               Text(
-                'Upload date',
+                'Past week',
                 style: GlobalsStyle.btnBottomDialogTextStyle,
               ),
             ],
@@ -81,13 +73,13 @@ class BottomTrailingPsSearchFilter {
         ElevatedButton(
           onPressed: () { 
             Navigator.pop(context);
-            onUploaderNamePressed(); 
+            onPastMonthPressed();
           },
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
               SizedBox(width: 15.0),
-              Text('Uploader name',
+              Text('Past month',
                 style: GlobalsStyle.btnBottomDialogTextStyle
               ),
             ],
