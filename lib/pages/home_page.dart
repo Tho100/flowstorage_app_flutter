@@ -1674,7 +1674,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  Widget _buildMoreOptionsOnSelect() {
+  Widget _buildMoreOptionsOnSelectButton() {
     return IconButton(
       icon: const Icon(Icons.more_vert),
       onPressed: () {
@@ -1683,7 +1683,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildTunePhotosType() {
+  Widget _buildFilterPhotosTypeButton() {
     return IconButton(
       onPressed: () {
         BottomTrailingFilter(          
@@ -1692,6 +1692,20 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         ).buildFilterTypePhotos();
       },
       icon: const Icon(Icons.tune_outlined, 
+        color: Colors.white, size: 26),
+    );
+  }
+
+  Widget _buildDeselectAllPhotos() {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          checkedItemsName.clear();
+          selectedPhotosIndex.clear();
+        });
+        tempData.setAppBarTitle("Photos");
+      },
+      icon: const Icon(Icons.check, 
         color: Colors.white, size: 26),
     );
   }
@@ -1713,14 +1727,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           ),
           actions: [
 
+            if(selectedPhotosIndex.isNotEmpty)
+            _buildDeselectAllPhotos(),
+
             if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
             _buildSelectAll(),  
 
             if(selectedItemIsChecked)
-            _buildMoreOptionsOnSelect(),
+            _buildMoreOptionsOnSelectButton(),
 
             if(togglePhotosPressed)
-            _buildTunePhotosType(),
+            _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
             _buildPsSearchButton(),
