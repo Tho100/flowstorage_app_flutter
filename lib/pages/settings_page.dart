@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/interact_dialog/signout_dialog.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -75,12 +76,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
     final getDirApplication = await getApplicationDocumentsDirectory();
 
-    final setupPath = '${getDirApplication.path}/$localAccountInformation';
-    final setupInfosDir = Directory(setupPath);
-
-    if (setupInfosDir.existsSync()) {
-      setupInfosDir.deleteSync(recursive: true);
-    }
+    await LocalStorageModel().deleteLocalAccountData();
 
     final offlineDirs = Directory('${getDirApplication.path}/offline_files');
     

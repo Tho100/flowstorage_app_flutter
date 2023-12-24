@@ -1696,7 +1696,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildDeselectAllPhotos() {
+  Widget _buildDeselectAllPhotosButton() {
     return IconButton(
       onPressed: () {
         setState(() {
@@ -1728,7 +1728,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           actions: [
 
             if(selectedPhotosIndex.isNotEmpty)
-            _buildDeselectAllPhotos(),
+            _buildDeselectAllPhotosButton(),
 
             if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
             _buildSelectAll(),  

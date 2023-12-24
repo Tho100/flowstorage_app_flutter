@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/folder_query/folder_name_retriever.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/models/quick_actions_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -15,7 +16,6 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -23,7 +23,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mysql_client/mysql_client.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -38,6 +37,7 @@ class SplashScreenState extends State<SplashScreen> {
   final selectedActionNotifier = ValueNotifier<String>('');
 
   final logger = Logger();
+  final localModel = LocalStorageModel();
 
   final encryption = EncryptionClass();
   final accountInformationRetriever = UserDataRetriever();
@@ -71,7 +71,7 @@ class SplashScreenState extends State<SplashScreen> {
 
       selectedActionNotifier.value = shortcutType;
 
-      final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
+      final getLocalUsername = (await localModel.readLocalAccountInformation())[0];
 
       if(getLocalUsername.isNotEmpty) {
 
@@ -109,7 +109,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   void _startTimer() async {
     
-    if ((await _retrieveLocallyStoredInformation())[0] != '') {
+    if ((await localModel.readLocalAccountInformation())[0] != '') {
       splashScreenTimer = Timer(const Duration(milliseconds: 0), () {
         _navigateToNextScreen();
       });
@@ -125,9 +125,11 @@ class SplashScreenState extends State<SplashScreen> {
 
     try {
 
-      final getLocalUsername = (await _retrieveLocallyStoredInformation())[0];
-      final getLocalEmail = (await _retrieveLocallyStoredInformation())[1];
-      final getLocalAccountType = (await _retrieveLocallyStoredInformation())[2];
+      final readLocalData = await localModel.readLocalAccountInformation();
+
+      final getLocalUsername = readLocalData[0];
+      final getLocalEmail = readLocalData[1];
+      final getLocalAccountType = readLocalData[2];
 
       if(getLocalUsername == '') {
 
@@ -177,39 +179,6 @@ class SplashScreenState extends State<SplashScreen> {
       logger.e("Exception from _navigateToNextScreen {SplashScreen}",err, st);
       NavigatePage.replacePageMain(context);
     }
-
-  }
-
-  Future<List<String>> _retrieveLocallyStoredInformation() async {
-    
-    String username = '';
-    String email = '';
-    String accountType = '';
-
-    final getDirApplication = await getApplicationDocumentsDirectory();
-    final setupPath = '${getDirApplication.path}/$localAccountInformation';
-    final setupInfosDir = Directory(setupPath);
-
-    if (setupInfosDir.existsSync()) {
-      final setupFiles = File('${setupInfosDir.path}/CUST_DATAS.txt');
-
-      if (setupFiles.existsSync()) {
-        final lines = await setupFiles.readAsLines();
-
-        if (lines.length >= 2) {
-          username = lines[0];
-          email = lines[1];
-          accountType = lines[2];
-        }
-      }
-    }
-
-    List<String> accountInfo = [];
-    accountInfo.add(encryption.decrypt(username));
-    accountInfo.add(encryption.decrypt(email));
-    accountInfo.add(accountType);
-
-    return accountInfo;
 
   }
 

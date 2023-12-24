@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,8 +6,12 @@ import 'dart:io';
 class LocalStorageModel {
 
   final logger = Logger();
+  final encryption = EncryptionClass();
 
-  final universalFileName = "CUST_DATAS.txt";
+  final _fileName = "CUST_DATAS.txt";
+  final _folderName = "FlowStorageInfos";
+
+  final _accountUsernamesFolderName = "FlowStorageAccountInfo";
 
   Future<List<String>> readLocalAccountUsernames() async {
 
@@ -16,12 +19,10 @@ class LocalStorageModel {
 
       List<String> usernames = [];
 
-      final getDirApplication = await getApplicationDocumentsDirectory();
+      final localDir = await _retrieveLocalDirectory(
+        customFolder: _accountUsernamesFolderName);
 
-      final setupPath = '${getDirApplication.path}/$localAccountUsernames';
-      final setupInfosDir = Directory(setupPath);
-
-      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
+      final setupFiles = File('${localDir.path}/$_fileName');
 
       final fileContent = await setupFiles.readAsLines();
       
@@ -40,17 +41,14 @@ class LocalStorageModel {
 
   Future<void> setupLocalAccountUsernames(String username) async {
         
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    final setupPath = '${getDirApplication.path}/$localAccountUsernames';
-    final setupInfosDir = Directory(setupPath);
+    final localDir = await _retrieveLocalDirectory();
 
     if (username.isNotEmpty) {
-      if (!setupInfosDir.existsSync()) {
-        setupInfosDir.createSync();
+      if (!localDir.existsSync()) {
+        localDir.createSync();
       }
 
-      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
+      final setupFiles = File('${localDir.path}/$_fileName');
 
       try {
 
@@ -67,20 +65,17 @@ class LocalStorageModel {
 
   Future<void> setupLocalAutoLogin(String custUsername, String custEmail, String accountType) async {
 
-    final getDirApplication = await getApplicationDocumentsDirectory();
+    final localDir = await _retrieveLocalDirectory();
 
-    final setupPath = '${getDirApplication.path}/$localAccountInformation';
-    final setupInfosDir = Directory(setupPath);
-    
     if (custUsername.isNotEmpty && custEmail.isNotEmpty) {
 
-      if (setupInfosDir.existsSync()) {
-        setupInfosDir.deleteSync(recursive: true);
+      if (localDir.existsSync()) {
+        localDir.deleteSync(recursive: true);
       }
 
-      setupInfosDir.createSync();
+      localDir.createSync();
 
-      final setupFiles = File('${setupInfosDir.path}/$universalFileName');
+      final setupFiles = File('${localDir.path}/$_fileName');
 
       try {
         
@@ -96,6 +91,57 @@ class LocalStorageModel {
       }
 
     } 
+
+  }
+
+  Future<List<String>> readLocalAccountInformation() async {
+    
+    String username = '';
+    String email = '';
+    String accountType = '';
+
+    final localDir = await _retrieveLocalDirectory();
+
+    if (localDir.existsSync()) {
+      final setupFiles = File('${localDir.path}/$_fileName');
+
+      if (setupFiles.existsSync()) {
+        final lines = await setupFiles.readAsLines();
+
+        if (lines.length >= 2) {
+          username = lines[0];
+          email = lines[1];
+          accountType = lines[2];
+        }
+      }
+    }
+
+    List<String> accountInfo = [];
+    accountInfo.add(encryption.decrypt(username));
+    accountInfo.add(encryption.decrypt(email));
+    accountInfo.add(accountType);
+
+    return accountInfo;
+
+  }
+
+  Future<void> deleteLocalAccountData() async {
+
+    final localDir = await _retrieveLocalDirectory();
+
+    if (localDir.existsSync()) {
+      localDir.deleteSync(recursive: true);
+    }
+
+  }
+
+  Future<Directory> _retrieveLocalDirectory({String? customFolder}) async {
+
+    final folderName = customFolder ?? _folderName;
+
+    final getDirApplication = await getApplicationDocumentsDirectory();
+    final setupPath = '${getDirApplication.path}/$folderName';
+    return Directory(setupPath);
 
   }
 
