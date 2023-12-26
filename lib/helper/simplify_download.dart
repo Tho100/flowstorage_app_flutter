@@ -53,7 +53,7 @@ class SimplifyDownload {
 
     try {
 
-      const generalFilesTableName = {GlobalsTable.homeText,GlobalsTable.psText,GlobalsTable.homeVideo,GlobalsTable.psVideo};
+      const generalFilesTableName = {GlobalsTable.homeText, GlobalsTable.psText, GlobalsTable.homeVideo, GlobalsTable.psVideo};
 
       if(currentTableValue == GlobalsTable.homeImage || currentTableValue == GlobalsTable.psImage) {
         await ImageGallerySaver.saveImage(fileDataValue!);
