@@ -19,16 +19,16 @@ class EmptyBody extends StatelessWidget {
 
   Widget _buildOnEmpty(BuildContext context) {
 
-    const originToHeaderMessage = {
+    final originToHeaderMessage = {
       OriginFile.home: "Nothing to see here",
       OriginFile.directory: "This directory is empty",
       OriginFile.folder: "This folder is empty",
       OriginFile.offline: "No files on this device yet",
       OriginFile.sharedMe: "No files shared by others yet",
-      OriginFile.sharedOther: "You haven't shared any files yet"
+      OriginFile.sharedOther: "You haven't shared any files yet",
     };
 
-    const originToSubMessage = {
+    final originToSubMessage = {
       OriginFile.home: "Add a new item",
       OriginFile.directory: "Add a new item",
       OriginFile.folder: "Add a new item",
@@ -82,7 +82,7 @@ class EmptyBody extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 Visibility(
-                  visible: storageData.fileNamesList.isEmpty,
+                  visible: storageData.fileNamesFilteredList.isEmpty,
                   child: _buildOnEmpty(context),
                 ),
               ],
