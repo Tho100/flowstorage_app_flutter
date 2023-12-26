@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -44,35 +45,32 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      Transform.scale(
-                        scale: 1.1,
-                        child: Switch(
-                          inactiveThumbColor: ThemeColor.darkPurple,
-                          activeColor: ThemeColor.darkPurple,
-                          inactiveTrackColor: ThemeColor.darkGrey,
-                          value: isPasscodeEnabled,
-                          onChanged: (value) async {
-                            setState(() {
-                              isPasscodeEnabled = value;
-                            });
-                                    
-                            bool isPassCodeExists = await storage.containsKey(key: 'key0015');
-                                    
-                            if (!isPassCodeExists) {
-                              isPasscodeEnabled = false;
-                              if (!mounted) return;
-                              NavigatePage.goToAddPasscodePage();
-                                    
-                            } else {
-                              final isEnabled = isPasscodeEnabled ? "true" : "false";
-                              togglePasscode(isEnabled);
-                                    
-                            }
-                                    
-                          },
-                        ),
+                      CupertinoSwitch(
+                        thumbColor: ThemeColor.justWhite, 
+                        activeColor: ThemeColor.darkPurple,
+                        trackColor: ThemeColor.darkGrey, 
+                        value: isPasscodeEnabled,
+                        onChanged: (value) async {
+                          setState(() {
+                            isPasscodeEnabled = value;
+                          });
+                                  
+                          bool isPassCodeExists = await storage.containsKey(key: 'key0015');
+                                  
+                          if (!isPassCodeExists) {
+                            isPasscodeEnabled = false;
+                            if (!mounted) return;
+                            NavigatePage.goToAddPasscodePage();
+                                  
+                          } else {
+                            final isEnabled = isPasscodeEnabled ? "true" : "false";
+                            togglePasscode(isEnabled);
+                                  
+                          }
+                                  
+                        },
                       ),
-              
+                      
                     ],
                   ),
                 ),

@@ -1580,7 +1580,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if (value.isEmpty) {
           searchBarFocusNode.unfocus();
         }
+
         _itemSearchingImplementation(value);
+
       }, 
 
       filterTypeOnPressed: () {
@@ -2229,14 +2231,14 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       childrens: (int index) {
         final isOffline = tempStorageData.offlineFileNameList
                       .contains(fileNamesFilteredList[index]);
-
+  
         return [
-
+  
           if (isOffline) ... [
             const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
             const SizedBox(width: 8),
           ],
-
+  
           GestureDetector(
             onTap: () => _callBottomTrailling(index),
             child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: Colors.white),
@@ -2246,7 +2248,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       inlineSpanWidgets: (int index) {
         final originalDateValues = fileDateFilteredList[index];
         final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
-
+  
         return [
           TextSpan(
             text: tempData.origin == OriginFile.public ? psFilesCategoryTags : originalDateValues,
@@ -2264,6 +2266,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         ];
       },
     );
+
   }
 
   Widget _buildPsSearchButton() {
@@ -2515,9 +2518,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         body: storageData.fileNamesList.isEmpty 
 
         ? Column(
-          children: [_buildSearchBar(),_buildNavigationButtons(),_buildEmptyBody()]) 
+          children: [_buildSearchBar(), _buildNavigationButtons(), _buildEmptyBody()]) 
         : Column(
-          children: [_buildSearchBar(),_buildNavigationButtons(),_buildHomeBody()]),
+          children: [_buildSearchBar(), _buildNavigationButtons(), _buildHomeBody()]),
 
         bottomNavigationBar: CustomNavigationBar(
           openFolderDialog: _buildFolderBottomSheet, 

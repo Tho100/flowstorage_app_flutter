@@ -326,6 +326,7 @@ class FunctionModel {
       } 
 
       late final Uint8List fileData;
+      
       final indexFile = storageData.fileNamesList.indexOf(fileName);
 
       singleLoading.startLoading(title: "Preparing...", context: navigatorKey.currentContext!);
