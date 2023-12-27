@@ -2347,12 +2347,15 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           (entity) => entity.path.split('/').last,
         ));
         tempStorageData.setOfflineFilesName(offlineFiles);
+
       } else {
         tempStorageData.setOfflineFilesName({});
+
       }
       
     } catch (err) {
       tempStorageData.setOfflineFilesName({});
+      
     }
     
   }
