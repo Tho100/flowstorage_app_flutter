@@ -26,7 +26,7 @@ class RegisterUser {
     final conn = await SqlConnection.initializeConnection();
 
     final createdAccounts = await LocalStorageModel()
-                                        .readLocalAccountUsernames();
+                                    .readLocalAccountUsernames();
 
     final countCreatedAccounts = createdAccounts.length;
 
@@ -86,13 +86,11 @@ class RegisterUser {
 
     const List<String> insertExtraInfoQuery = [
       "INSERT INTO cust_type(CUST_USERNAME,CUST_EMAIL,ACC_TYPE) VALUES (:username,:email,:type)",
-      "INSERT INTO lang_info(CUST_USERNAME,CUST_LANG) VALUES (:username,:lang)",
       "INSERT INTO sharing_info(CUST_USERNAME,DISABLED,SET_PASS,PASSWORD_DISABLED) VALUES (:username,:disabled,:pass,:pass_disabled)"
     ];
 
     final params = [
       {"username": userName, "email": email, "type": "Basic"},
-      {"username": userName, "lang": "US"},
       {"username": userName, "disabled": "0", "pass": "DEF", "pass_disabled": "1"},
     ];
 

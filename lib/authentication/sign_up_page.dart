@@ -76,7 +76,9 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
       );
 
     } catch (err) {
-      CustomAlertDialog.alertDialogTitle("Something is wrong...", "No internet connection.");
+      CustomAlertDialog.alertDialogTitle(
+        "Something is wrong...", "No internet connection.");
+
     }
     
   }
