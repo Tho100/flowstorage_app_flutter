@@ -29,13 +29,11 @@ class CallPreviewData {
       ? await uploaderName.getUploaderName(tableName: tableNamePs, fileValues: fileValues)
       : userData.username;
 
-    final fileBytesData = await retrieveData.retrieveDataParams(
+    return await retrieveData.retrieveDataParams(
       uploaderUsername,
       tempData.selectedFileName,
       tableName
     );
-
-    return fileBytesData;
     
   }
   

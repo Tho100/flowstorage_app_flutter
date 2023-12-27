@@ -322,7 +322,7 @@ class DataCaller {
       GlobalsTable.homeExe, GlobalsTable.homeApk
     ];
 
-    final futures = tablesToCheck.map((table) async {
+    return tablesToCheck.map((table) async {
       final fileNames = await _fileNameGetterHome.retrieveParams(conn, username, table);
       final bytes = await _dataGetterHome.getLeadingParams(conn, username, table);
       final dates = table == GlobalsTable.directoryInfoTable
@@ -330,8 +330,6 @@ class DataCaller {
           : await _dateGetterHome.retrieveParams(conn, username, table);
       return [fileNames, bytes, dates];
     }).toList();
-    
-    return futures;
 
   }
 

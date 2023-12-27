@@ -37,14 +37,14 @@ class UploaderName {
     for (final fileType in fileValues) {
       if (file.endsWith('.$fileType')) {
         return true;
+
       }
     }
     return false;
     }).toList();
 
-    final usernameIndex = getVideoFiles.indexOf(tempData.selectedFileName);
+    return getVideoFiles.indexOf(tempData.selectedFileName);
 
-    return usernameIndex;
   }
 
 }

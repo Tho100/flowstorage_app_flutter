@@ -135,10 +135,8 @@ class OfflineMode {
 
     if (await file.exists()) {
       final fileContent = await file.readAsBytes();
-      final decompressedContent = CompressorApi.
+      return CompressorApi.
             decompressFile(fileContent);
-
-      return decompressedContent;
 
     } else {
       throw Exception('File not found');

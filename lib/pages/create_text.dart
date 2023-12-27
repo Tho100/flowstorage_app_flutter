@@ -230,11 +230,15 @@ class CreateTextPageState extends State<CreateText> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(saveVisibility == true && textEditingController.text.isNotEmpty) {
+
+        if(saveVisibility && textEditingController.text.isNotEmpty) {
           return await discardChangesConfirmation();
+
         } else {
           return true;
+          
         }
+
       },
       child: Scaffold(
         appBar: AppBar(

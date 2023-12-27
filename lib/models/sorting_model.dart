@@ -24,9 +24,11 @@ class SortingModel {
 
     if (adjustedDifference == 0) {
       return '0 days ago ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
+
     } else {
       final daysAgoText = '$adjustedDifference days ago';
       return '$daysAgoText ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
+      
     }
 
   }

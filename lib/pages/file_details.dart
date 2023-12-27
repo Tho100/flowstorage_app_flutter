@@ -137,8 +137,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
     return FutureBuilder<String>(
       future: returnImageSize(), 
       builder: (context, snapshot) {
+
         if(snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
         } else {
           return Text(snapshot.data!,
             style: const TextStyle(
@@ -148,7 +150,9 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             ),
             textAlign: TextAlign.start,
           );
+
         }
+
       }
     );
   }
@@ -157,8 +161,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
     return FutureBuilder<String>(
       future: getFileSize(), 
       builder: (context, snapshot) {
+
         if(snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
         } else {
           return Text("${snapshot.data!}Mb",
             style: const TextStyle(
@@ -168,7 +174,9 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             ),
             textAlign: TextAlign.start,
           );
+
         }
+
       }
     );
   }
@@ -204,11 +212,9 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
   String getProperDate(String date) {
     final dotIndex = date.indexOf(GlobalsStyle.dotSeperator);
-    final formattedDate = dotIndex != -1 
+    return dotIndex != -1 
       ? date.substring(dotIndex + 4) 
       : date;
-
-    return formattedDate;
   }
 
   Widget buildBody(BuildContext context) {

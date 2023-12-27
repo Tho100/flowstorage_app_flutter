@@ -460,10 +460,15 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   String getDurationString(Duration duration) {
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+    String twoDigitMinutes = twoDigits(
+      duration.inMinutes.remainder(60));
+
+    String twoDigitSeconds = twoDigits(
+      duration.inSeconds.remainder(60));
 
     return "$twoDigitMinutes:$twoDigitSeconds";
+
   }
 
   void videoPlayerListener() {

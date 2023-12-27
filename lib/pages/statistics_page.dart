@@ -194,9 +194,8 @@ class StatsPageState extends State<StatisticsPage> {
       final offlineDir = await OfflineMode().returnOfflinePath();
     
       List<FileSystemEntity> files = offlineDir.listSync();
-      int fileCount = files.whereType().length;
 
-      return fileCount;
+      return files.whereType().length;
 
     } catch (err) {
       return 0;
@@ -205,12 +204,8 @@ class StatsPageState extends State<StatisticsPage> {
   }
 
   int _countDirectory() {
-
-    int countDirectory = storageData.fileNamesFilteredList
+    return storageData.fileNamesFilteredList
       .where((dir) => !dir.contains('.')).length;
-
-    return countDirectory;
-
   }
 
   Widget _buildInfoWidget(String header, String subHeader, IconData icon) {

@@ -25,7 +25,8 @@ class PickerModel {
       final maximumSelections = maxUpload!-currentUpload;
 
       ImagePickerPlus picker = ImagePickerPlus(navigatorKey.currentContext!);
-      SelectedImagesDetails? details = await picker.pickBoth(
+      
+      return await picker.pickBoth(
         source: source,
         multiSelection: true,
         galleryDisplaySettings: GalleryDisplaySettings(
@@ -44,8 +45,6 @@ class PickerModel {
         ),
       );
 
-      return details!;
-
     } catch (err) {
       return null;
     }
@@ -61,15 +60,13 @@ class PickerModel {
       const List<String> nonOfflineFileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
       const List<String> offlineFileTypes = [...Globals.imageType,...Globals.audioType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf","apk","exe"];
 
-      final picker = await FilePicker.platform.pickFiles(
+      return await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: tempData.origin == OriginFile.offline 
           ? offlineFileTypes : nonOfflineFileTypes,
         allowMultiple: tempData.origin == OriginFile.public 
           ? false : true
       );
-
-      return picker;
 
     } catch (err) {
       return null;
