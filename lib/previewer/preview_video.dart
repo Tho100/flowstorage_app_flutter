@@ -250,7 +250,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                           
                           buttonPlayPausePressed = !buttonPlayPausePressed;
       
-                          if(videoIsEnded == true) {
+                          if(videoIsEnded) {
                             iconPausePlayNotifier.value = Icons.pause;
                             videoPlayerController.play();
                             videoIsEnded = false;
@@ -414,10 +414,15 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   String getDurationString(Duration duration) {
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+    String twoDigitMinutes = twoDigits(
+      duration.inMinutes.remainder(60));
+
+    String twoDigitSeconds = twoDigits(
+      duration.inSeconds.remainder(60));
 
     return "$twoDigitMinutes:$twoDigitSeconds";
+
   }
 
   void videoPlayerListener() {

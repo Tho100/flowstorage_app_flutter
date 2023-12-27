@@ -27,9 +27,7 @@ class ExternalApp {
 
       String filePath = tempFile.path;
       
-      final result = await OpenFile.open(filePath);
-
-      return result;
+      return await OpenFile.open(filePath);
       
     } catch (err) {
       return OpenResult(

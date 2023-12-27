@@ -94,11 +94,9 @@ class RetrieveData {
   }
 
   String _returnPsTable(String tableName) {
-    final toPsTableName = GlobalsTable.tableNames.contains(tableName)
+    return GlobalsTable.tableNames.contains(tableName)
       ? GlobalsTable.publicToPsTables[tableName]!
       : tableName;
-
-    return toPsTableName;
   }
 
   Future<Uint8List> retrieveDataParams(

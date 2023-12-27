@@ -46,7 +46,8 @@ class FunctionModel {
   final logger = Logger();
 
   Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
-    return await RetrieveData().retrieveDataParams(userData.username, selectedFilename, tableName);
+    return await RetrieveData()
+      .retrieveDataParams(userData.username, selectedFilename, tableName);
   }
 
   Future<void> renameFolderData(String oldFolderName, String newFolderName) async {
@@ -297,8 +298,10 @@ class FunctionModel {
     if(tempData.origin == OriginFile.publicSearching) {
       final index = psStorageData.psSearchNameList.indexOf(tempData.selectedFileName);
       return base64.decode(psStorageData.psSearchImageBytesList[index]);
+
     } else {
       return psStorageData.psImageBytesList[originalIndex];
+
     }
 
   }

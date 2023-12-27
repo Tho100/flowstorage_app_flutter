@@ -34,11 +34,12 @@ class SharingOptions {
     final results = await conn.execute(query,params);
     
     String? disabledStatus = "";
+
     for(final row in results.rows) {
-      disabledStatus = row.assoc()['DISABLED'];
+      return row.assoc()['DISABLED']!;
     }
 
-    return disabledStatus!;
+    return disabledStatus;
     
   } 
 

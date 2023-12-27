@@ -663,7 +663,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       editAllIsPressed = !editAllIsPressed;
     });
 
-    if(editAllIsPressed == true) {
+    if(editAllIsPressed) {
       selectedItemsCheckedList.clear();
       selectedItemsCheckedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
     }
@@ -735,9 +735,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         ? psStorageData.psUploaderList.where((uploader) => uploader == userData.username).length
         : storageData.fileNamesList.length;
 
-      final percentage = ((uploadCount/maxValue) * 100).toInt();
-
-      return percentage;
+      return ((uploadCount/maxValue) * 100).toInt();
 
     } catch (err, st) {
       userData.setAccountType("Basic");

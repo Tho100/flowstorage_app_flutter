@@ -141,7 +141,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       if (state.processingState == ProcessingState.completed) {
         iconPausePlayNotifier.value = Icons.replay_rounded;
 
-        if(isKeepPlayingEnabledNotifier.value == true) {
+        if(isKeepPlayingEnabledNotifier.value) {
           audioPlayerController.seek(Duration.zero);
           audioPlayerController.play();
           iconPausePlayNotifier.value = Icons.pause;
@@ -154,17 +154,21 @@ class PreviewAudioState extends State<PreviewAudio> {
     });
   }
 
+  String toTwoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
   String getDurationString(Duration duration) {
 
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
+    String twoDigitMinutes = toTwoDigits(
+        duration.inMinutes.remainder(60));
 
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    String twoDigitSeconds = toTwoDigits(
+        duration.inSeconds.remainder(60));
 
     return "$twoDigitMinutes:$twoDigitSeconds";
+    
   }
 
   StreamBuilder buildSlider() {

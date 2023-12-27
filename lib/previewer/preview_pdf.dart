@@ -33,8 +33,7 @@ class PreviewPdf extends StatelessWidget {
     try {
 
       if(isFromIntentSharing!) {
-        final decodeData = base64.decode(customFileDataBase64!);
-        return decodeData;
+        return base64.decode(customFileDataBase64!);
 
       }
 

@@ -38,12 +38,15 @@ class ByteGetterPs {
 
       if(psStorageData.psImageBytesList.isEmpty) {
         return getFileInfoParams(conn, false);
+
       } else {
         return psStorageData.psImageBytesList;
+
       }
 
     } else {
       return getOtherTableParams(conn, tableName, isFromMyPs: false);
+
     }
 
   }
@@ -54,12 +57,15 @@ class ByteGetterPs {
 
       if(psStorageData.myPsImageBytesList.isEmpty) {
         return getFileInfoParams(conn, true);
+
       } else {
         return psStorageData.myPsImageBytesList;
+
       }
 
     } else {
       return getOtherTableParams(conn, tableName, isFromMyPs: true);
+      
     }
 
   }

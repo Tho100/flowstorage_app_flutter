@@ -269,11 +269,15 @@ class CommentPageState extends State<CommentPage> {
     body: FutureBuilder(
       future: _buildComment(),
       builder: (context, snapshot) {
+
         if (snapshot.hasData) {
             return snapshot.data!;
+
           } else {
             return _buildNoComment();
+
           }
+          
         },
       ),
     );

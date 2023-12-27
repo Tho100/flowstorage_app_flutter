@@ -59,8 +59,7 @@ class StripeCustomers {
       final List emails = data.map((customer) => customer['email']).toList();
 
       if(customEmail != "") {
-        final filteredEmails = emails.where((email) => email == customEmail).toList();
-        return filteredEmails;
+        return emails.where((email) => email == customEmail).toList();
       }
 
       return emails;
