@@ -41,7 +41,8 @@ class LocalStorageModel {
 
   Future<void> setupLocalAccountUsernames(String username) async {
         
-    final localDir = await _retrieveLocalDirectory();
+    final localDir = await _retrieveLocalDirectory(
+      customFolder: _accountUsernamesFolderName);
 
     if (username.isNotEmpty) {
       if (!localDir.existsSync()) {

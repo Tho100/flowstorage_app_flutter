@@ -102,6 +102,8 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   Widget buildDurationText(ValueNotifier<String> notifier) {
     return Container(
+      width: 65,
+      height: 30,
       decoration: BoxDecoration(
         color: ThemeColor.lightGrey.withOpacity(0.5),
         border: Border.all(
@@ -118,7 +120,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             style: const TextStyle(
               color: ThemeColor.secondaryWhite,
               fontWeight: FontWeight.w600,
-              fontSize: 16
+              fontSize: 14
             ),
             textAlign: TextAlign.center,
           );
@@ -127,37 +129,51 @@ class PreviewVideoState extends State<PreviewVideo> {
     );
   }
 
-  Widget buildPotraitModeButton() {
+  Widget buildPortraitModeButton() {
     return Align(
       alignment: Alignment.topRight,
       child: Padding(
-        padding: const EdgeInsets.only(right: 12.0, top: 98.0),
-        child: SizedBox(
-          height: 38,
-          width: 38,
-          child: Container(
-            decoration: BoxDecoration(
-              color: ThemeColor.lightGrey.withOpacity(0.5),
-              border: Border.all(
-                color: Colors.transparent,
-                width: 2.0,
+        padding: const EdgeInsets.only(right: 12.0, top: 95.0),
+        child: ClipOval(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              child: Ink(
+                color: ThemeColor.darkBlack,
+                child: SizedBox(
+                  height: 38,
+                  width: 38,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ThemeColor.lightGrey.withOpacity(0.5),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(65),
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        setState(() {
+                          isLandscapeMode = !isLandscapeMode;
+                        });
+                        if (isLandscapeMode) {
+                          toLandscapeMode();
+                          PreviewFileState.bottomBarVisibleNotifier.value = false;
+                        } else {
+                          toPortraitMode();
+                          PreviewFileState.bottomBarVisibleNotifier.value = true;
+                          videoIsTappedNotifier.value = true;
+                        }
+                      },
+                      icon: isLandscapeMode
+                          ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
+                          : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
+                    ),
+                  ),
+                ),
               ),
-              borderRadius: BorderRadius.circular(65),
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                isLandscapeMode = !isLandscapeMode;
-                if (isLandscapeMode) {
-                  toLandscapeMode();
-                  PreviewFileState.bottomBarVisibleNotifier.value = false;
-                } else {
-                  toPotraitMode();
-                  PreviewFileState.bottomBarVisibleNotifier.value = true;
-                  videoIsTappedNotifier.value = true;
-                }
-              },
-              icon: const Icon(Icons.stay_current_landscape_rounded, color: ThemeColor.secondaryWhite, size: 22),
             ),
           ),
         ),
@@ -166,48 +182,68 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   Widget buildSkipForward() {
-    return SizedBox(
-      height: 45,
-      width: 45,
-      child: Container(
-        decoration: BoxDecoration(
-          color: ThemeColor.lightGrey.withOpacity(0.5),
-          border: Border.all(
-            color: Colors.transparent,
-            width: 2.0,
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Ink(
+            color: ThemeColor.darkBlack,
+            child: SizedBox(
+              height: 45,
+              width: 45,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ThemeColor.lightGrey.withOpacity(0.5),
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(65),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    forwardingImplementation("positive");
+                  },
+                  icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
+                ),
+              ),
+            ),
           ),
-          borderRadius: BorderRadius.circular(65),
-        ),
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            forwardingImplementation("positive");
-          },
-          icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
         ),
       ),
     );
   }
 
   Widget buildSkipPrevious() {
-    return SizedBox(
-      height: 45,
-      width: 45,
-      child: Container(
-        decoration: BoxDecoration(
-          color: ThemeColor.lightGrey.withOpacity(0.5),
-          border: Border.all(
-            color: Colors.transparent,
-            width: 2.0,
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Ink(
+            color: ThemeColor.darkBlack,
+            child: SizedBox(
+              height: 45,
+              width: 45,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ThemeColor.lightGrey.withOpacity(0.5),
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(65),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    forwardingImplementation("negative");
+                  },
+                  icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
+                ),
+              ),
+            ),
           ),
-          borderRadius: BorderRadius.circular(65),
-        ),
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            forwardingImplementation("negative");
-          },
-          icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
         ),
       ),
     );
@@ -232,53 +268,63 @@ class PreviewVideoState extends State<PreviewVideo> {
                   const SizedBox(width: 35),
                   buildSkipPrevious(),
                   const SizedBox(width: 18),
-                  SizedBox(
-                    height: 63,
-                    width: 63,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: ThemeColor.lightGrey.withOpacity(0.5),
-                        border: Border.all(
-                          color: Colors.transparent,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(65),
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          
-                          buttonPlayPausePressed = !buttonPlayPausePressed;
-      
-                          if(videoIsEnded) {
-                            iconPausePlayNotifier.value = Icons.pause;
-                            videoPlayerController.play();
-                            videoIsEnded = false;
-                          } else {
-                            iconPausePlayNotifier.value = buttonPlayPausePressed 
-                            ? Icons.play_arrow
-                            : Icons.pause;
-                          }
-                          
-                          if (buttonPlayPausePressed) {
-                            videoPlayerController.pause();
-                          } else {                
-                            iconPausePlayNotifier.value = Icons.pause;
-                            videoPlayerController.play();
-                          }
-      
-                          Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
-                      
-                        },
-                        icon: ValueListenableBuilder(
-                          valueListenable: iconPausePlayNotifier,
-                          builder: (context, value, child) {
-                            return Icon(
-                              value,
-                              size: 40,
-                              color: ThemeColor.secondaryWhite,
-                            );
-                          }
+                  ClipOval(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        child: Ink(
+                          color: ThemeColor.darkBlack,
+                          child: SizedBox(
+                            height: 63,
+                            width: 63,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ThemeColor.lightGrey.withOpacity(0.5),
+                                border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 2.0,
+                                ),
+                                borderRadius: BorderRadius.circular(65),
+                              ),
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  
+                                  buttonPlayPausePressed = !buttonPlayPausePressed;
+                              
+                                  if(videoIsEnded == true) {
+                                    iconPausePlayNotifier.value = Icons.pause;
+                                    videoPlayerController.play();
+                                    videoIsEnded = false;
+                                  } else {
+                                    iconPausePlayNotifier.value = buttonPlayPausePressed 
+                                    ? Icons.play_arrow
+                                    : Icons.pause;
+                                  }
+                                  
+                                  if (buttonPlayPausePressed) {
+                                    videoPlayerController.pause();
+                                  } else {                
+                                    iconPausePlayNotifier.value = Icons.pause;
+                                    videoPlayerController.play();
+                                  }
+                              
+                                  Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
+                              
+                                },
+                                icon: ValueListenableBuilder(
+                                  valueListenable: iconPausePlayNotifier,
+                                  builder: (context, value, child) {
+                                    return Icon(
+                                      value,
+                                      size: 40,
+                                      color: ThemeColor.secondaryWhite,
+                                    );
+                                  }
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -355,7 +401,7 @@ class PreviewVideoState extends State<PreviewVideo> {
           builder: (context, value, child) {
             return Visibility(
               visible: value,
-              child: buildPotraitModeButton()
+              child: buildPortraitModeButton()
             );
           },
         ),
@@ -459,7 +505,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     videoPlayerController = VideoPlayerController.networkUrl(Uri());
   }
 
-  void toPotraitMode() {
+  void toPortraitMode() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -482,7 +528,7 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   @override
   void dispose() {
-    toPotraitMode();
+    toPortraitMode();
     videoPlayerController.removeListener(videoPlayerListener);
     videoPlayerController.dispose();
     videoDurationNotifier.dispose();
