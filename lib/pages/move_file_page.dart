@@ -107,6 +107,7 @@ class MoveFilePageState extends State<MoveFilePage> {
             onPressed: () async {
               if(selectedDirectory.isNotEmpty && !checkedDirectory.every((element) => false)) {
                 await onMoveFile();
+                
               } else {
                 CustomAlertDialog.
                   alertDialog("Please select a directory.");
