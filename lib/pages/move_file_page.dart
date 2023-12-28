@@ -17,6 +17,8 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
+import 'package:flowstorage_fsc/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -47,6 +49,7 @@ class MoveFilePageState extends State<MoveFilePage> {
   final specialFile = SpecialFile();
 
   List<String> directoriesList = [];
+  List<bool> checkedDirectory = [];
 
   String selectedDirectory = "";
 
@@ -54,32 +57,64 @@ class MoveFilePageState extends State<MoveFilePage> {
     return Column(
       children: [
 
-        const SizedBox(height: 15),
-
         directoriesList.isEmpty 
         ? const SizedBox()
-        : const Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: 16.0),
-            child: Text("Select directory",
+        : const Padding(
+          padding: EdgeInsets.only(left: 12.0),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text("",
               style: TextStyle(
                 color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 16
+                fontSize: 24,
+                fontWeight: FontWeight.bold
               ),
             ),
           ),
         ),
 
-        const SizedBox(height: 20),
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 15.0, left: 16.0),
+            child: Text("Select Directory",
+              style: TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ),
 
         directoriesList.isEmpty 
         ? buildOnEmpty()
         : SizedBox(
-          height: 300,
+          height: 200,
           child: buildListView()
-        )
+        ),
+
+        const Spacer(),
+
+        const Divider(color: ThemeColor.lightGrey),
+
+        const SizedBox(height: 8),
+
+        Padding(
+          padding: const EdgeInsets.only(bottom: 25.0),
+          child: MainButton(
+            text: "Move", 
+            onPressed: () async {
+              if(selectedDirectory.isNotEmpty && !checkedDirectory.every((element) => false)) {
+                await onMoveFile();
+              } else {
+                CustomAlertDialog.
+                  alertDialog("Please select a directory.");
+              }
+            }
+          ),
+        ),
+
       ],
     );
   }
@@ -92,7 +127,7 @@ class MoveFilePageState extends State<MoveFilePage> {
           return InkWell(
             onTap: () async {
               selectedDirectory = directoriesList[index];
-              await onMoveFile();
+              _updateCheckboxState(index, true);
             },
             child: Ink(
               color: ThemeColor.darkBlack,
@@ -116,14 +151,19 @@ class MoveFilePageState extends State<MoveFilePage> {
                   }
                 },
               ),
-                title: Text(
-                  directoriesList[index],
-                  style: const TextStyle(
-                    color: ThemeColor.justWhite,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
+              title: Text(
+                directoriesList[index],
+                style: const TextStyle(
+                  color: ThemeColor.justWhite,
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
+              ),
+              trailing: CheckBoxItems(
+                index: index, 
+                updateCheckboxState: _updateCheckboxState,
+                checkedList: checkedDirectory
                 ),              
               ),
             ),
@@ -131,6 +171,27 @@ class MoveFilePageState extends State<MoveFilePage> {
         },
       ),
     );
+  }
+
+  void _updateCheckboxState(int index, bool value) {
+    setState(() {
+      checkedDirectory[index] = !checkedDirectory[index];
+      if (checkedDirectory[index]) {
+        for (int i = 0; i < checkedDirectory.length; i++) {
+          if (i != index) {
+            checkedDirectory[i] = false;
+            selectedDirectory = directoriesList[index];
+          }
+        }
+
+      } else {
+        if (checkedDirectory.every((element) => !element)) {
+          checkedDirectory = List.generate(checkedDirectory.length, (index) => false);
+          selectedDirectory = "";
+        }
+
+      }
+    });
   }
 
   Widget buildOnEmpty() {
@@ -277,10 +338,17 @@ class MoveFilePageState extends State<MoveFilePage> {
     directoriesList.addAll(getDirectory);
   }
 
+  void initializeDirectoriesCheckbox() {
+    final getDirectoryLength = storageData.fileNamesFilteredList.where((name) => !name.contains('.')).length;
+    checkedDirectory = List.generate(
+        getDirectoryLength, (index) => false);
+  }
+
   @override
   void initState() {
     super.initState();
     initializeDirectoriesName();
+    initializeDirectoriesCheckbox();
   }
 
   @override
