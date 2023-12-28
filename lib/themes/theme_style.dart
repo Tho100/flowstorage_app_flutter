@@ -65,7 +65,7 @@ class GlobalsStyle {
   ); 
 
   static final btnBottomDialogBackgroundStyle = ElevatedButton.styleFrom(
-    backgroundColor: ThemeColor.darkGrey,
+    backgroundColor: ThemeColor.darkBlack,
     elevation: 0,
     minimumSize: const Size(double.infinity, 45),
     shape: const RoundedRectangleBorder(
