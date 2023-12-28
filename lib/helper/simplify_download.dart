@@ -35,11 +35,13 @@ class SimplifyDownload {
 
     if (Platform.isAndroid) {
       directory = await getExternalStorageDirectory();
+
     } else if (Platform.isIOS) {
       directory = await getApplicationDocumentsDirectory();
+
     }
 
-    String videoPath = '${directory!.path}/$fileNameValue';
+    String videoPath = '${directory!.path}/Flowstorage-$fileNameValue';
     File videoFile = File(videoPath);
     await videoFile.writeAsBytes(videoData);
 
@@ -56,7 +58,8 @@ class SimplifyDownload {
       const generalFilesTableName = {GlobalsTable.homeText, GlobalsTable.psText, GlobalsTable.homeVideo, GlobalsTable.psVideo};
 
       if(currentTableValue == GlobalsTable.homeImage || currentTableValue == GlobalsTable.psImage) {
-        await ImageGallerySaver.saveImage(fileDataValue!);
+        final setupName = "Flowstorage-$fileNameValue";
+        await ImageGallerySaver.saveImage(fileDataValue!, name: setupName);
 
       } else if (currentTableValue == GlobalsTable.homeText || currentTableValue == GlobalsTable.psText) {
         final textFileContent = utf8.decode(fileDataValue!);
