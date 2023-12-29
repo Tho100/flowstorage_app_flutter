@@ -155,6 +155,9 @@ class InsertData {
 
     await conn.prepare(insertFileDataQuery)
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData, tag, title]);
+
+    tempData.addPsTotalUpload();
+
   }
 
   Future<void> _insertVideoInfoPs(
@@ -178,6 +181,9 @@ class InsertData {
 
     await conn.prepare(insertFileDataQuery)
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData, thumb, tag, title]);
+
+    tempData.addPsTotalUpload();
+
   }
 
 }
