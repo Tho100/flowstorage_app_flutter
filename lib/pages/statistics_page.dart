@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
+import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
@@ -66,10 +68,13 @@ class StatsPageState extends State<StatisticsPage> {
   final tempData = GetIt.instance<TempDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
+  final profilePicNotifier = ValueNotifier<Uint8List?>(Uint8List(0));
+
   @override
   void initState() {
     super.initState();
     _initializeStatsData();
+    _initializeProfilePic();
   }
 
   @override
@@ -77,6 +82,27 @@ class StatsPageState extends State<StatisticsPage> {
     dataIsLoading.dispose();
     tempStorageData.statsFileNameList.clear();
     super.dispose();
+  }
+
+  Future<void> _initializeProfilePic() async {
+    
+    try {
+
+      final picData = await ProfilePictureModel().loadProfilePic();
+
+      if(picData == null) {
+        profilePicNotifier.value = Uint8List(0);
+        
+      } else {
+        profilePicNotifier.value = picData;
+
+      }
+
+    } catch (error) {
+      profilePicNotifier.value = Uint8List(0);
+
+    }
+
   }
 
   Future<void> _readLocalAccountUsernames() async {
@@ -511,21 +537,37 @@ class StatsPageState extends State<StatisticsPage> {
             height: 45,
             decoration: const BoxDecoration(
               color: ThemeColor.justWhite,
-              shape: BoxShape.circle
+              shape: BoxShape.circle,
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                localAccountUsernamesList[index][0],
-                style: const TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600
-                ),
-                textAlign: TextAlign.center,
-              ),
+            child: ValueListenableBuilder(
+              valueListenable: profilePicNotifier,
+              builder: (context, imageBytes, child) {
+                if (imageBytes!.isNotEmpty && localAccountUsernamesList[index] == userData.username) {
+                  return ClipOval(
+                    child: Image.memory(
+                      imageBytes,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: EdgeInsets.only(top: imageBytes.isNotEmpty ? 9.0 : 8.0),
+                    child: Text(
+                      localAccountUsernamesList[index][0],
+                      style: const TextStyle(
+                        color: ThemeColor.darkPurple,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+              },
             ),
           ),
+
           title: Text(localAccountUsernamesList[index] == userData.username 
               ? "${localAccountUsernamesList[index]} (Current)" 
               : localAccountUsernamesList[index],

@@ -55,8 +55,10 @@ class UploadDialog {
 
     final shortenText = ShortenText();
 
-    final details = await PickerModel()
-      .galleryPicker(source: ImageSource.both);
+    final details = await PickerModel().galleryPicker(
+      source: ImageSource.both, 
+      isFromSelectProfilePic: false
+    );
     
     if(details == null) {
       return;
@@ -568,8 +570,10 @@ class UploadDialog {
 
   Future<void> photoUpload() async {
 
-    final details = await PickerModel()
-      .galleryPicker(source: ImageSource.camera);
+    final details = await PickerModel().galleryPicker(
+      source: ImageSource.camera, 
+      isFromSelectProfilePic: false
+    );
 
     if (details!.selectedFiles.isEmpty) {
       return;
