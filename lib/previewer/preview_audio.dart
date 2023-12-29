@@ -29,7 +29,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Duration durationGradient = const Duration(milliseconds: 859);
 
-  final List<List<Color>> gradientColors = [
+  final gradientColors = [
     [ThemeColor.secondaryPurple, ThemeColor.justWhite],
     [ThemeColor.secondaryWhite, ThemeColor.darkPurple],
   ];

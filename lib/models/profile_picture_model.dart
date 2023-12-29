@@ -20,7 +20,6 @@ class ProfilePictureModel {
     
   }
 
-
   Future<void> _saveProfilePic(Uint8List imageBytes) async {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/$_fileName');
