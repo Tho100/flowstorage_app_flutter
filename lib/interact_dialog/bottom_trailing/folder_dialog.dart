@@ -16,7 +16,7 @@ class FolderDialog {
   }) {
 
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
+      backgroundColor: ThemeColor.darkBlack,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {

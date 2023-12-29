@@ -55,8 +55,10 @@ class UploadDialog {
 
     final shortenText = ShortenText();
 
-    final details = await PickerModel()
-      .galleryPicker(source: ImageSource.both);
+    final details = await PickerModel().galleryPicker(
+      source: ImageSource.both, 
+      isFromSelectProfilePic: false
+    );
     
     if(details == null) {
       return;
@@ -207,7 +209,7 @@ class UploadDialog {
 
     int countSelectedFiles = resultPicker.files.length;
 
-    final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
+    final uploadedPsFilesCount = tempData.psTotalUpload;
     final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
 
     if (tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
@@ -568,8 +570,10 @@ class UploadDialog {
 
   Future<void> photoUpload() async {
 
-    final details = await PickerModel()
-      .galleryPicker(source: ImageSource.camera);
+    final details = await PickerModel().galleryPicker(
+      source: ImageSource.camera, 
+      isFromSelectProfilePic: false
+    );
 
     if (details!.selectedFiles.isEmpty) {
       return;

@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/interact_dialog/signout_dialog.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
+import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -57,6 +58,20 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
   
+  final profilePicNotifier = ValueNotifier<Uint8List?>(Uint8List(0));
+
+  void _onCreateProfilePicPressed() async {
+    
+    final isProfileSelected = await ProfilePictureModel()
+        .createProfilePicture();
+
+    if(isProfileSelected) {
+      profilePicNotifier.value = await ProfilePictureModel()
+        .loadProfilePic();
+    }
+
+  }
+
   void _clearUserStorageData() {
     storageData.fileNamesList.clear();
     storageData.fileNamesFilteredList.clear();
@@ -83,6 +98,8 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     if(offlineDirs.existsSync()) {
       offlineDirs.delete(recursive: true);
     }
+
+    await ProfilePictureModel().deleteProfilePicture();
 
     const storage = FlutterSecureStorage();
     
@@ -221,20 +238,35 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    width: 55,
-                    height: 55,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        custUsername.substring(0, 2),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: ThemeColor.darkPurple,
-                        ),
+                  child: GestureDetector(
+                    onTap: () async {
+                      _onCreateProfilePicPressed();
+                    },
+                    child: Container(
+                      width: 55,
+                      height: 55,
+                      decoration: const BoxDecoration(
+                        color: ThemeColor.darkGrey,
+                        shape: BoxShape.circle,
+                      ),
+                      child: ValueListenableBuilder(
+                        valueListenable: profilePicNotifier,
+                        builder: (context, imageBytes, child) {
+                          return imageBytes!.isEmpty 
+                          ? const Center(
+                            child: Icon(
+                              Icons.photo_camera_rounded, 
+                              color: ThemeColor.secondaryWhite
+                            ),
+                          )
+                          : ClipOval(
+                            child: Image.memory(
+                              imageBytes,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.center,
+                            ),
+                          );
+                        }
                       ),
                     ),
                   ),
@@ -487,6 +519,27 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     );
   }
 
+  Future<void> initializeProfilePic() async {
+    
+    try {
+
+      final picData = await ProfilePictureModel().loadProfilePic();
+
+      if(picData == null) {
+        profilePicNotifier.value = Uint8List(0);
+
+      } else {
+        profilePicNotifier.value = picData;
+
+      }
+
+    } catch (error) {
+      profilePicNotifier.value = Uint8List(0);
+
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -495,11 +548,13 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     accountType = widget.accType;
     uploadLimit = widget.uploadLimit;
     sharingEnabledButton = widget.sharingEnabledButton == '0' ? 'Disable' : 'Enable';
+    initializeProfilePic();
   }
 
   @override 
   void dispose() {
     super.dispose();
+    profilePicNotifier.dispose();
   }
 
   @override

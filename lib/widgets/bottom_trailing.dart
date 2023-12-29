@@ -9,7 +9,7 @@ class BottomTrailing {
     required List<Widget> childrens
   }) {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
+      backgroundColor: ThemeColor.darkBlack,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       isScrollControlled: true,

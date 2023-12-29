@@ -184,8 +184,8 @@ class PsStaggeredListView extends StatelessWidget {
               children: [
                 
                 Container(
-                  width: Globals.generalFileTypes.contains(fileType) ? 72 : mediaQuery.width - 33,
-                  height: Globals.generalFileTypes.contains(fileType) ? 72 : 395,
+                  width: Globals.generalFileTypes.contains(fileType) ? mediaQuery.width - 33 : mediaQuery.width - 33,
+                  height: Globals.generalFileTypes.contains(fileType) ? 175 : 395,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
@@ -195,10 +195,10 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    child: Image.memory(imageBytes, fit: BoxFit.cover),
+                    child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover) 
                   ),
-                ),
-
+                ), 
+                 
                 if (Globals.videoType.contains(fileType))
                 Padding(
                   padding: const EdgeInsets.only(left: 10, top: 8),
@@ -211,7 +211,7 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                   child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)),
                 ),
-
+        
               ],
             ),
           ),

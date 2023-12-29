@@ -15,41 +15,54 @@ class PickerModel {
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<SelectedImagesDetails?> galleryPicker({required ImageSource source}) async {
+  Future<SelectedImagesDetails?> galleryPicker({
+    required ImageSource source,
+    required bool isFromSelectProfilePic,
+  }) async {
 
     try {
 
       final maxUpload = AccountPlan.mapFilesUpload[userData.accountType];
       final currentUpload = storageData.fileNamesFilteredList.length;
+      final maximumSelections = maxUpload! - currentUpload;
 
-      final maximumSelections = maxUpload!-currentUpload;
+      final picker = ImagePickerPlus(navigatorKey.currentContext!);
 
-      ImagePickerPlus picker = ImagePickerPlus(navigatorKey.currentContext!);
-      
-      return await picker.pickBoth(
-        source: source,
-        multiSelection: true,
-        galleryDisplaySettings: GalleryDisplaySettings(
-          tabsTexts: TabsTexts(
-              videoText: "", 
-              photoText: "", 
-              noImagesFounded: "Gallery is empty",
-              acceptAllPermissions: "Permission denied", 
-              clearImagesText: "Clear selections"
-            ),
-          maximumSelection: maximumSelections,
-          appTheme: AppTheme(
-            focusColor: ThemeColor.justWhite,
-            primaryColor: ThemeColor.darkBlack,
-          ),
-        ),
-      );
-
+      return isFromSelectProfilePic
+      ? await picker.pickImage(
+          source: source,
+          multiImages: false,
+          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections),
+        )
+      : await picker.pickBoth(
+          source: source,
+          multiSelection: true,
+          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections),
+        );
+        
     } catch (err) {
       return null;
     }
-    
+
   }
+
+  GalleryDisplaySettings _buildGalleryDisplaySettings(int maximumSelections) {
+    return GalleryDisplaySettings(
+      tabsTexts: TabsTexts(
+        videoText: "",
+        photoText: "",
+        noImagesFounded: "Gallery is empty",
+        acceptAllPermissions: "Permission denied",
+        clearImagesText: "Clear selections",
+      ),
+      maximumSelection: maximumSelections,
+      appTheme: AppTheme(
+        focusColor: ThemeColor.justWhite,
+        primaryColor: ThemeColor.darkBlack,
+      ),
+    );
+  }
+
 
   Future<FilePickerResult?> filePicker() async {
 

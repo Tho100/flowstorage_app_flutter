@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -22,6 +25,28 @@ class CustomSideBarMenu extends StatelessWidget {
 
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
+
+
+  Future<Uint8List?> initializeProfilePic() async {
+    
+    try {
+
+      final picData = await ProfilePictureModel().loadProfilePic();
+
+      if(picData == null) {
+        return Uint8List(0);
+
+      } else {
+        return picData;
+
+      }
+
+    } catch (err) {
+      return Uint8List(0);
+
+    }
+
+  }
 
   Widget _buildSidebarButtons({
     required String title,
@@ -70,17 +95,38 @@ class CustomSideBarMenu extends StatelessWidget {
                       width: 55,
                       height: 55,
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: ThemeColor.justWhite,
                         shape: BoxShape.circle,
                       ),
-                      child: Center(
-                        child: Text(
-                          userData.username != "" ? userData.username.substring(0, 2) : "",
-                          style: const TextStyle(
-                            fontSize: 24,
-                            color: ThemeColor.darkPurple,
-                          ),
-                        ),
+                      child: FutureBuilder(
+                        future: initializeProfilePic(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+                            
+                          } else if (snapshot.hasError) {
+                            return const Text('Failed to load profile ');
+
+                          } else {
+                            return snapshot.data!.isEmpty 
+                            ? Center(
+                              child: Text(
+                                userData.username != "" ? userData.username.substring(0, 2) : "",
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  color: ThemeColor.darkPurple,
+                                ),
+                              ),
+                            )
+                            : ClipOval(
+                              child: Image.memory(
+                                snapshot.data!,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
   
