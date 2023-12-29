@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/folder_query/folder_data_retriever.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
+import 'package:flowstorage_fsc/public_storage_query/count_upload.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -179,6 +180,14 @@ class DataCaller {
     final justLoading = JustLoading();
 
     justLoading.startLoading(context: context);
+
+    if(psStorageData.psImageBytesList.isEmpty) {
+      final uploadCount = await PublicStorageCountTotalUpload()
+        .countTotalFilesUploaded();
+
+      tempData.setPsTotalUpload(uploadCount);
+
+    }
 
     final psDataRetriever = PublicStorageDataRetriever();
     final dataList = await psDataRetriever.retrieveParams(isFromMyPs: false);

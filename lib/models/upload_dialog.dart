@@ -207,7 +207,7 @@ class UploadDialog {
 
     int countSelectedFiles = resultPicker.files.length;
 
-    final uploadedPsFilesCount = psStorageData.psUploaderList.where((name) => name == userData.username).length;
+    final uploadedPsFilesCount = tempData.psTotalUpload;
     final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
 
     if (tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {

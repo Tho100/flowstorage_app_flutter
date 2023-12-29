@@ -14,6 +14,8 @@ class TempDataProvider extends ChangeNotifier {
   String _selectedFileName = '';
   String _appBarTitle = '';
 
+  int _psTotalUpload = 0;
+
   OriginFile get origin => _origin;
 
   Uint8List get fileByteData => _fileByteData;
@@ -23,8 +25,14 @@ class TempDataProvider extends ChangeNotifier {
   String get selectedFileName => _selectedFileName;
   String get appBarTitle => _appBarTitle;
 
+  int get psTotalUpload => _psTotalUpload;
+
   void clearFileData() {
     _fileByteData = Uint8List(0);
+  }
+
+  void setPsTotalUpload(int value) {
+    _psTotalUpload = value;
   }
 
   void setFileData(Uint8List byteData) {
