@@ -31,6 +31,11 @@ class TempDataProvider extends ChangeNotifier {
     _fileByteData = Uint8List(0);
   }
 
+  void addPsTotalUpload() {
+    _psTotalUpload++;
+    notifyListeners();
+  }
+
   void setPsTotalUpload(int value) {
     _psTotalUpload = value;
   }

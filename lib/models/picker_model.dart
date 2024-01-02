@@ -32,12 +32,12 @@ class PickerModel {
       ? await picker.pickImage(
           source: source,
           multiImages: false,
-          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections),
+          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections, true),
         )
       : await picker.pickBoth(
           source: source,
           multiSelection: true,
-          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections),
+          galleryDisplaySettings: _buildGalleryDisplaySettings(maximumSelections, false),
         );
         
     } catch (err) {
@@ -46,8 +46,9 @@ class PickerModel {
 
   }
 
-  GalleryDisplaySettings _buildGalleryDisplaySettings(int maximumSelections) {
+  GalleryDisplaySettings _buildGalleryDisplaySettings(int maximumSelections, bool showImagePreview) {
     return GalleryDisplaySettings(
+      showImagePreview: showImagePreview,
       tabsTexts: TabsTexts(
         videoText: "",
         photoText: "",

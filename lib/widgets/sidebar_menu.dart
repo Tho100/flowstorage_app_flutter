@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,23 +27,26 @@ class CustomSideBarMenu extends StatelessWidget {
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-
-  Future<Uint8List?> initializeProfilePic() async {
+  Future<ValueNotifier<Uint8List?>> initializeProfilePic() async {
     
+    final profilePictureNotifier = ValueNotifier<Uint8List?>(Uint8List(0));
+
     try {
 
       final picData = await ProfilePictureModel().loadProfilePic();
 
       if(picData == null) {
-        return Uint8List(0);
+        profilePictureNotifier.value = Uint8List(0);
 
       } else {
-        return picData;
+        profilePictureNotifier.value = picData;
 
       }
 
+      return profilePictureNotifier;
+
     } catch (err) {
-      return Uint8List(0);
+      return profilePictureNotifier;
 
     }
 
@@ -91,25 +95,14 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      width: 55,
-                      height: 55,
-                      decoration: const BoxDecoration(
-                        color: ThemeColor.justWhite,
-                        shape: BoxShape.circle,
-                      ),
-                      child: FutureBuilder(
-                        future: initializeProfilePic(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator(color: ThemeColor.darkPurple);
-                            
-                          } else if (snapshot.hasError) {
-                            return const Text('Failed to load profile ');
-
-                          } else {
-                            return snapshot.data!.isEmpty 
-                            ? Center(
+                    FutureBuilder<ValueNotifier<Uint8List?>>(
+                      future: initializeProfilePic(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ProfilePicture(
+                            notifierValue: snapshot.data,
+                            customBackgroundColor: ThemeColor.justWhite,
+                            customOnEmpty: Center(
                               child: Text(
                                 userData.username != "" ? userData.username.substring(0, 2) : "",
                                 style: const TextStyle(
@@ -117,19 +110,16 @@ class CustomSideBarMenu extends StatelessWidget {
                                   color: ThemeColor.darkPurple,
                                 ),
                               ),
-                            )
-                            : ClipOval(
-                              child: Image.memory(
-                                snapshot.data!,
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                            ),
+                          );
+
+                        } else {
+                          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
+                        }
+                      },
                     ),
-  
+                  
                     const SizedBox(width: 15),
   
                     Expanded(

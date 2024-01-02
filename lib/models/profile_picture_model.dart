@@ -34,7 +34,7 @@ class ProfilePictureModel {
 
       final details = await PickerModel().galleryPicker(
         source: ImageSource.both, 
-        isFromSelectProfilePic: true
+        isFromSelectProfilePic: true,
       );
 
       for(final filesPath in details!.selectedFiles) {

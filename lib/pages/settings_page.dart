@@ -13,6 +13,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -242,32 +243,26 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     onTap: () async {
                       _onCreateProfilePicPressed();
                     },
-                    child: Container(
-                      width: 55,
-                      height: 55,
-                      decoration: const BoxDecoration(
-                        color: ThemeColor.darkGrey,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ValueListenableBuilder(
-                        valueListenable: profilePicNotifier,
-                        builder: (context, imageBytes, child) {
-                          return imageBytes!.isEmpty 
-                          ? const Center(
-                            child: Icon(
-                              Icons.photo_camera_rounded, 
-                              color: ThemeColor.secondaryWhite
-                            ),
-                          )
-                          : ClipOval(
-                            child: Image.memory(
-                              imageBytes,
-                              fit: BoxFit.cover,
-                              alignment: Alignment.center,
-                            ),
-                          );
-                        }
-                      ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ProfilePicture(
+                          notifierValue: profilePicNotifier
+                        ),
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(90, 0, 0, 0),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.photo_camera_rounded, 
+                            color: ThemeColor.justWhite,
+                            size: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
