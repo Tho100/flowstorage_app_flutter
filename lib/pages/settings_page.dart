@@ -243,8 +243,27 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     onTap: () async {
                       _onCreateProfilePicPressed();
                     },
-                    child: ProfilePicture(
-                      notifierValue: profilePicNotifier
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ProfilePicture(
+                          notifierValue: profilePicNotifier
+                        ),
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(90, 0, 0, 0),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.photo_camera_rounded, 
+                            color: ThemeColor.justWhite,
+                            size: 16,
+                          ),
+                        ),
+                        
+                      ],
                     ),
                   ),
                 ),
