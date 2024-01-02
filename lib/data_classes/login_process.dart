@@ -78,13 +78,15 @@ class SignInUser {
       retrieveFolders.addAll(await FolderRetriever().retrieveParams(custUsernameGetter));
     }
 
-    final uniqueFolder = retrieveFolders.toList();
+    final foldersName = retrieveFolders.toList();
+    final directoriesName = uniqueFileNames.where((fileName) => !fileName.contains('.')).toList();
 
     storageData.setFilesName(uniqueFileNames);
     storageData.setImageBytes(uniqueBytes);
     storageData.setFilesDate(dates);
     
-    tempStorageData.setFoldersName(uniqueFolder);
+    tempStorageData.setFoldersName(foldersName);
+    tempStorageData.setDirectoriesName(directoriesName);
 
     if (isRememberMeChecked) {
       await LocalStorageModel()
