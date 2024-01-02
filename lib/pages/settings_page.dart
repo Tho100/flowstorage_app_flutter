@@ -249,6 +249,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                         ProfilePicture(
                           notifierValue: profilePicNotifier
                         ),
+                        if(profilePicNotifier.value!.isNotEmpty)
                         Container(
                           width: 32,
                           height: 32,
