@@ -1539,18 +1539,22 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           if (directoryCount != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
             if (tempData.origin != OriginFile.offline) {
               _openCreateDirectoryDialog();
+
             } else {
               CustomAlertDialog.alertDialog("Can't create Directory on offline mode.");
+
             }
           } else {
             UpgradeDialog.buildUpgradeBottomSheet(
               message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directories.",
               context: context,
             );
+
           }
 
         } else {
           _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
+          
         }
 
       }, 
