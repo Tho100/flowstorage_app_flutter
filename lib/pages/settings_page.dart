@@ -262,7 +262,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                             size: 16,
                           ),
                         ),
-                        
                       ],
                     ),
                   ),
