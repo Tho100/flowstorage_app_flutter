@@ -757,9 +757,7 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   void initializeDirectoriesData() {
 
-    final getDirectory = storageData.fileNamesFilteredList
-      .where((name) => !name.contains('.'));
-
+    final getDirectory = tempStorageData.directoryNameList;
     final getFolder = tempStorageData.folderNameList;
 
     directoriesList.addAll(getDirectory);
