@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -532,42 +533,46 @@ class StatsPageState extends State<StatisticsPage> {
       itemExtent: 70,
       itemBuilder: (context, index) {
         return ListTile(
-          leading: Container(
+          leading: localAccountUsernamesList[index] == userData.username 
+          ? ProfilePicture(
+            notifierValue: profilePicNotifier,
+            customWidth: 45,
+            customHeight: 45,
+            customBackgroundColor: ThemeColor.justWhite,
+            customOnEmpty: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                localAccountUsernamesList[index][0],
+                style: const TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+          : Container(
             width: 45,
             height: 45,
             decoration: const BoxDecoration(
               color: ThemeColor.justWhite,
               shape: BoxShape.circle,
             ),
-            child: ValueListenableBuilder(
-              valueListenable: profilePicNotifier,
-              builder: (context, imageBytes, child) {
-                if (imageBytes!.isNotEmpty && localAccountUsernamesList[index] == userData.username) {
-                  return ClipOval(
-                    child: Image.memory(
-                      imageBytes,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: EdgeInsets.only(top: imageBytes.isNotEmpty ? 9.0 : 8.0),
-                    child: Text(
-                      localAccountUsernamesList[index][0],
-                      style: const TextStyle(
-                        color: ThemeColor.darkPurple,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                }
-              },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                localAccountUsernamesList[index][0],
+                style: const TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-
+          
           title: Text(localAccountUsernamesList[index] == userData.username 
               ? "${localAccountUsernamesList[index]} (Current)" 
               : localAccountUsernamesList[index],
