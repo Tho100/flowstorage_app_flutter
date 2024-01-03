@@ -11,14 +11,9 @@ class UserDataRetriever {
         "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
     final params = {'email': email};
 
-    final results = await conn.execute(retrieveCase,params);
+    final retrievedData = await conn.execute(retrieveCase,params);
 
-    String? accountType = '';
-    for(final row in results.rows) {
-      accountType = row.assoc()['ACC_TYPE'];
-    }
-
-    return accountType!;
+    return retrievedData.rows.last.assoc()['ACC_TYPE']!;
 
   }
 
@@ -30,13 +25,10 @@ class UserDataRetriever {
     const query = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
     final params = {'email': email};
     
-    final execute = await conn.execute(query,params);
+    final retrievedData = await conn.execute(query,params);
 
-    for (final usernameRows in execute.rows) {
-      return usernameRows.assoc()['CUST_USERNAME']!;
-    }
+    return retrievedData.rows.last.assoc()['CUST_USERNAME']!;
 
-    return '';
   }
 
   Future<List<String?>> retrieveAccountTypeAndUsername({
@@ -59,6 +51,7 @@ class UserDataRetriever {
     return results
         .expand((result) => result.rows.map((row) => row.assoc().values.first))
         .toList();
+
   }
 
   Future<Map<String, String>> retrieveAccountAuthentication({
@@ -66,21 +59,19 @@ class UserDataRetriever {
     required String username
   }) async {
 
-    Map<String, String> values = {};
-
     const query = "SELECT CUST_PASSWORD, CUST_PIN FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': username};
 
     final results = await conn.execute(query, params);
 
-    for (final rows in results.rows) {
-      final password = rows.assoc()['CUST_PASSWORD']!;
-      final pin = rows.assoc()['CUST_PIN']!;
-      values['password'] = password;
-      values['pin'] = pin;
-    }
+    final lastRow = results.rows.last;
+    final values = {
+      'password': lastRow.assoc()['CUST_PASSWORD']!,
+      'pin': lastRow.assoc()['CUST_PIN']!,
+    };
 
     return values;
+
   }
 
 }
