@@ -15,14 +15,9 @@ class TitleGetterPs {
       final params = {'username': userData.username};
       final retrievedTitles = await conn.execute(selectTitles, params);
 
-      final titleValuesList = <String>[];
-
-      for (final res in retrievedTitles.rows) {
-        final titleValue = res.assoc()['CUST_TITLE']!;
-        titleValuesList.add(titleValue);
-      }
-
-      return titleValuesList;
+      return retrievedTitles.rows
+        .map((row) => row.assoc()['CUST_TITLE']!)
+        .toList();
 
     } catch (err) {
       return <String>[];
@@ -36,15 +31,10 @@ class TitleGetterPs {
 
       final selectTitles = 'SELECT CUST_TITLE FROM $tableName ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       final retrievedTitles = await conn.execute(selectTitles);
-
-      final titleValuesList = <String>[];
-
-      for (final res in retrievedTitles.rows) {
-        final titleValue = res.assoc()['CUST_TITLE']!;
-        titleValuesList.add(titleValue);
-      }
-
-      return titleValuesList;
+      
+      return retrievedTitles.rows
+        .map((row) => row.assoc()['CUST_TITLE']!)
+        .toList();
 
     } catch (err) {
       return <String>[];

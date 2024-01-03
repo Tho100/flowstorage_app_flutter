@@ -15,16 +15,11 @@ class NameGetterPs {
       final query = 'SELECT CUST_FILE_PATH FROM $tableName WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
       final params = {'username': userData.username};
-      final retrieveNames = await conn.execute(query, params);
+      final retrievedFilesName = await conn.execute(query, params);
 
-      final nameSet = <String>{};
-
-      for (final row in retrieveNames.rows) {
-        final getNameValues = row.assoc()['CUST_FILE_PATH'];
-        nameSet.add(encryption.decrypt(getNameValues));
-      }
-
-      return nameSet.toList();  
+      return retrievedFilesName.rows
+        .map((row) => encryption.decrypt(row.assoc()['CUST_FILE_PATH']!))
+        .toList();
 
     } catch (err) {
       return <String>[];
@@ -38,15 +33,11 @@ class NameGetterPs {
 
       final query = 'SELECT CUST_FILE_PATH FROM $tableName ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
-      final retrieveNames = await conn.execute(query);
-      final nameSet = <String>{};
+      final retrievedFilesName = await conn.execute(query);
 
-      for (final row in retrieveNames.rows) {
-        final getNameValues = row.assoc()['CUST_FILE_PATH'];
-        nameSet.add(encryption.decrypt(getNameValues));
-      }
-
-      return nameSet.toList();  
+      return retrievedFilesName.rows
+        .map((row) => encryption.decrypt(row.assoc()['CUST_FILE_PATH']!))
+        .toList();
 
     } catch (err) {
       return <String>[];

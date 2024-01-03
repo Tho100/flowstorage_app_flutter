@@ -14,15 +14,11 @@ class FolderRetriever {
 
       final conn = await SqlConnection.initializeConnection();
 
-      final retrieveNames = await conn.execute(query, params);
-      final fileNameList = <String>{};
-
-      for (final row in retrieveNames.rows) {
-        final getNameValues = encryption.decrypt(row.assoc()['FOLDER_TITLE']!);
-        fileNameList.add(getNameValues);
-      }
-
-      return fileNameList.toList();
+      final retrievedFolderName = await conn.execute(query, params);
+      
+      return retrievedFolderName.rows
+        .map((row) => encryption.decrypt(row.assoc()['FOLDER_TITLE']))
+        .toList();
 
     } catch (err) {
       return <String>[];

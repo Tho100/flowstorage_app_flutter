@@ -8,14 +8,11 @@ class DateGetter {
     
     final selectUploadDate =
         "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
-
     final params = {'username': username};
-    final retrieveUploadDate = await conn.execute(selectUploadDate, params);
+    
+    final retrievedDate = await conn.execute(selectUploadDate, params);
 
-    final storeDateValues = <String>[];
-
-    for (final res in retrieveUploadDate.rows) {
-
+    return retrievedDate.rows.map((res) {
       final dateValue = res.assoc()['UPLOAD_DATE']!;
       final dateValueWithDashes = dateValue.replaceAll('/', '-');
       final dateComponents = dateValueWithDashes.split('-');
@@ -25,11 +22,9 @@ class DateGetter {
       final difference = now.difference(date).inDays;
 
       final formattedDate = DateFormat('MMM d yyyy').format(date);
-      storeDateValues.add('$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate');
-
-    }
-    
-    return storeDateValues;
+      return '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+      
+    }).toList();
 
   }
 }

@@ -38,12 +38,15 @@ class DataRetriever {
 
       if(storageData.homeImageBytesList.isEmpty) {
         return getFileInfoParams(conn, username);
+        
       } else {
         return storageData.homeImageBytesList;
+
       }
 
     } else {
       return getOtherTableParams(conn, username, tableName);
+
     }
 
   }
@@ -52,24 +55,22 @@ class DataRetriever {
 
     const query = 'SELECT CUST_FILE FROM ${GlobalsTable.homeImage} WHERE CUST_USERNAME = :username';
     final params = {'username': username};
-    final executeRetrieval = await conn.execute(query, params);
 
-    final getByteValue = <Uint8List>[];
+    final retrievedData = await conn.execute(query, params);
 
-    for (final row in executeRetrieval.rows) {
+    final imageBytes = retrievedData.rows.map((row) {
       final encryptedFile = row.assoc()['CUST_FILE']!;
       final decodedFile = base64.decode(encryption.decrypt(encryptedFile));
 
       final buffer = ByteData.view(decodedFile.buffer);
-      final bufferedFileBytes =
-          Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
+      return Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
 
-      getByteValue.add(bufferedFileBytes);
-    }
+    }).toList();
 
-    storageData.setHomeImageBytes(getByteValue);
+    storageData.setHomeImageBytes(imageBytes);
 
-    return getByteValue;
+    return imageBytes;
+
   }
 
   Future<List<Uint8List>> getOtherTableParams(MySQLConnectionPool conn, String username, String tableName) async {
