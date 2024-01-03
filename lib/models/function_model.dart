@@ -268,6 +268,8 @@ class FunctionModel {
       storageData.fileNamesFilteredList.add(directoryName);
       storageData.fileNamesList.add(directoryName);
 
+      tempStorageData.directoryNameList.add(directoryName);
+
       SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
     } catch (err, st) {
@@ -283,7 +285,8 @@ class FunctionModel {
       await DeleteDirectory(name: directoryName).delete();
     
       storageData.directoryImageBytesList.clear();
-
+      tempStorageData.directoryNameList.remove(directoryName);
+      
       SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {

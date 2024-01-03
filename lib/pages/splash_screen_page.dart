@@ -222,12 +222,15 @@ class SplashScreenState extends State<SplashScreen> {
       final uniqueBytes = bytes.toList();
       final uniqueFolders = retrieveFolders.toList();
 
+      final directoriesName = uniqueFileNames.where((fileName) => !fileName.contains('.')).toList();
+
       storageData.setFilesName(uniqueFileNames);
       storageData.setImageBytes(uniqueBytes);
       storageData.setFilesDate(dates);
 
+      tempStorageData.setDirectoriesName(directoriesName);
       tempStorageData.setFoldersName(uniqueFolders);
-      
+
     } catch (err) {
       NavigatePage.replacePageMain(context);
       return;

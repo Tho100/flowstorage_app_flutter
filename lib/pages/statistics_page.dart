@@ -125,9 +125,6 @@ class StatsPageState extends State<StatisticsPage> {
 
       final uploadCategoryList = await Future.wait(futuresFile);
 
-      totalFilesUpload = uploadCategoryList
-        .reduce((sum, uploadCount) => sum + uploadCount);
-
       int maxUploadCount = 0;
       int maxCategoryIndex = 0;
       int minUploadCount = 2000;
@@ -146,15 +143,14 @@ class StatsPageState extends State<StatisticsPage> {
           minUploadCount = uploadCount;
           minCategoryIndex = i;
         }
+
       }
 
       categoryWithMostUpload = uploadCategoryList[maxCategoryIndex] == 0 ? "None" : categoryNamesHomeFiles.elementAt(maxCategoryIndex);
       categoryWithLeastUpload = categoryNamesHomeFiles.elementAt(minCategoryIndex) == "Image" ? "None" : categoryNamesHomeFiles.elementAt(minCategoryIndex);
 
-      final countDirectories = _countDirectory();
-
       folderCount = tempStorageData.folderNameList.length;
-      directoryCount = countDirectories;
+      directoryCount = tempStorageData.directoryNameList.length;
 
       totalOfflineFilesUpload = await _countOfflineFileUpload();
 
@@ -173,6 +169,9 @@ class StatsPageState extends State<StatisticsPage> {
         ];
       });
       
+      totalFilesUpload = uploadCategoryList
+        .reduce((sum, uploadCount) => sum + uploadCount + sumDocument);
+
       dataIsLoading.value = false;
 
     } catch (err, st) {
@@ -228,11 +227,6 @@ class StatsPageState extends State<StatisticsPage> {
       return 0;
     }
 
-  }
-
-  int _countDirectory() {
-    return storageData.fileNamesFilteredList
-      .where((dir) => !dir.contains('.')).length;
   }
 
   Widget _buildInfoWidget(String header, String subHeader, IconData icon) {

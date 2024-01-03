@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:get_it/get_it.dart';
@@ -12,7 +13,9 @@ import 'package:get_it/get_it.dart';
 class QuickActionsModel {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
+
   final dataCaller = DataCaller();
 
   final context = navigatorKey.currentContext!;
@@ -48,8 +51,7 @@ class QuickActionsModel {
     final limitFilesUpload = AccountPlan.mapFilesUpload[userData.accountType]!;
 
     if(storageData.fileNamesList.length < limitFilesUpload) {
-      final countDirectory = storageData.fileNamesFilteredList
-        .where((dir) => !dir.contains('.')).length;
+      final countDirectory = tempStorageData.directoryNameList.length;
         
       if(countDirectory != limitDirectoryUpload) {
         _openCreateDirectoryDialog();
