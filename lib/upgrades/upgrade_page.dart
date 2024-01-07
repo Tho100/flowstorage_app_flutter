@@ -249,6 +249,9 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Max", () {
+                    if(_userIsAlreadySubscribed()) {
+                      return;
+                    }
                     userChoosenPlan = "Max";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const MaxPage()))
@@ -358,6 +361,9 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Supreme", () {
+                    if(_userIsAlreadySubscribed()) {
+                      return;
+                    }
                     userChoosenPlan = "Supreme";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const SupremePage()))
@@ -465,6 +471,9 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Express", () {
+                    if(_userIsAlreadySubscribed()) {
+                      return;
+                    }
                     userChoosenPlan = "Express";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const ExpressPage()))
@@ -673,6 +682,22 @@ class UpgradePageState extends State<UpradePage> {
       singleLoading.stopLoading();
     }
     
+  }
+
+  bool _userIsAlreadySubscribed() {
+
+    if(userData.accountType != "Basic") {
+      CustomAlertDialog.alertDialogTitle(
+        "Subscription Failure",
+        "Unable to subscribe. To proceed with this plan, please cancel your current subscription."
+      );
+
+      return true;
+
+    }
+
+    return false;
+
   }
 
   @override
