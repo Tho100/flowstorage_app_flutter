@@ -19,7 +19,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/public_storage_query/data_retriever.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_data_receiver.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
+import 'package:flowstorage_fsc/ui_dialog/loading/call_ps_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -177,9 +177,9 @@ class DataCaller {
 
   Future<void> publicStorageData({required BuildContext context}) async {
 
-    final justLoading = JustLoading();
+    final psLoading = CallPsLoading(context: context);
 
-    justLoading.startLoading(context: context);
+    psLoading.startLoading();
 
     if(psStorageData.psImageBytesList.isEmpty) {
       final uploadCount = await PublicStorageCountTotalUpload()
@@ -212,15 +212,15 @@ class DataCaller {
     tempData.setOrigin(OriginFile.public);
     tempData.setAppBarTitle("Public Storage");
 
-    justLoading.stopLoading();
+    psLoading.stopLoading();
     
   }
 
   Future<void> myPublicStorageData({required BuildContext context}) async {
 
-    final justLoading = JustLoading();
+    final psLoading = CallPsLoading(context: context);
 
-    justLoading.startLoading(context: context);
+    psLoading.startLoading();
 
     psStorageData.psImageBytesList.clear();
     psStorageData.psUploaderList.clear();
@@ -253,7 +253,7 @@ class DataCaller {
     tempData.setOrigin(OriginFile.public);
     tempData.setAppBarTitle("My Public Storage");
 
-    justLoading.stopLoading();
+    psLoading.stopLoading();
     
   }
 

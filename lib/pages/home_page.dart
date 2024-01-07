@@ -2069,7 +2069,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
                     children: [
                       Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
                       SizedBox(width: 8),
-                      Text(
+                      Text( 
                         "Discover",
                         style: TextStyle(
                           fontSize: 23,
