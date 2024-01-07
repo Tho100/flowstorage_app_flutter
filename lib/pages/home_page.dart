@@ -166,7 +166,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage.");
   }
 
-  void _floatingButtonVisibility(bool visible) {
+  void _addItemButtonVisibility(bool visible) {
     floatingActionButtonVisible.value = visible;
   }
 
@@ -478,8 +478,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if (togglePhotosPressed) {
       _activatePhotosView();
+
     } else {
       _deactivatePhotosView();
+      
     }
 
     if (tempData.origin == OriginFile.public) {
@@ -498,7 +500,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     staggeredListViewSelected.value = true;
 
     _navDirectoryButtonVisibility(false);
-    _floatingButtonVisibility(true);
+    _addItemButtonVisibility(true);
 
     _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv,.avi');
 
@@ -515,7 +517,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectedPhotosIndex.clear();
 
     if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
-      _floatingButtonVisibility(true);
+      _addItemButtonVisibility(true);
       _navDirectoryButtonVisibility(true);
     }
 
@@ -555,7 +557,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     }
 
     _navDirectoryButtonVisibility(true);
-    _floatingButtonVisibility(true);
+    _addItemButtonVisibility(true);
 
     selectedItemIsChecked = false;
     togglePhotosPressed = false;
@@ -575,7 +577,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Future<void> _refreshPublicStorage() async {
     await _callPublicStorageData(); 
     await _sortDataDescendingPs();
-    _floatingButtonVisibility(true);
+    _addItemButtonVisibility(true);
   }
 
   void _scrollEndListView() {
@@ -757,7 +759,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       await _refreshListViewData();
       
       _navDirectoryButtonVisibility(true);
-      _floatingButtonVisibility(true);
+      _addItemButtonVisibility(true);
 
       if(!mounted) return;
       Navigator.pop(context);
@@ -789,7 +791,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     _clearItemSelection(); 
 
     _navDirectoryButtonVisibility(false);
-    _floatingButtonVisibility(true);
+    _addItemButtonVisibility(true);
 
     searchBarVisibileNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
@@ -816,7 +818,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     await dataCaller.sharingData(originFrom);
 
     _itemSearchingImplementation('');
-    _floatingButtonVisibility(false);
+    _addItemButtonVisibility(false);
     _navDirectoryButtonVisibility(false);
 
     searchHintText.value = "Search in Flowstorage";
@@ -831,7 +833,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     _itemSearchingImplementation('');
     _navDirectoryButtonVisibility(false);
-    _floatingButtonVisibility(true);
+    _addItemButtonVisibility(true);
 
     psButtonTextNotifier.value = "My Files";
     searchBarVisibileNotifier.value = false;
@@ -849,7 +851,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     await dataCaller.myPublicStorageData(context: context);
 
     _itemSearchingImplementation('');
-    _floatingButtonVisibility(false);
+    _addItemButtonVisibility(false);
     await _sortDataDescendingPs();
 
     psButtonTextNotifier.value = "Back";
@@ -871,7 +873,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     
     _itemSearchingImplementation('');
 
-    _floatingButtonVisibility(false);
+    _addItemButtonVisibility(false);
     _navDirectoryButtonVisibility(false);
     
     searchBarController.text = '';
@@ -929,10 +931,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(tempData.origin == OriginFile.home && togglePhotosPressed) {
       _togglePhotos();
+
+    }
+
+    if(togglePhotosPressed) {
+      searchBarVisibileNotifier.value = false;
+      
     }
 
     if(storageData.fileNamesList.isEmpty) {
       _buildEmptyBody();
+
     }
 
   }
@@ -1640,7 +1649,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
 
     if(selectedPhotosIndex.isEmpty) {
-      _floatingButtonVisibility(true);
+      _addItemButtonVisibility(true);
       tempData.setAppBarTitle("Photos");
       selectedItemIsChecked = false;
     }
@@ -1656,7 +1665,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
     tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
     
-    _floatingButtonVisibility(false);
+    _addItemButtonVisibility(false);
 
   }
 
@@ -1709,6 +1718,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           selectedPhotosIndex.clear();
         });
         tempData.setAppBarTitle("Photos");
+        _addItemButtonVisibility(true);
       },
       icon: const Icon(Icons.check, 
         color: Colors.white, size: 26),
