@@ -199,6 +199,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       _itemSearchingImplementation('');
 
       final storageUsagePercentage = await _getStorageUsagePercentage();
+
       if(storageUsagePercentage > 70) {
         _callStorageUsageWarning();
       }
@@ -220,7 +221,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       _itemSearchingImplementation('');
 
       final storageUsagePercentage = await _getStorageUsagePercentage();
-      if(storageUsagePercentage > 70) {
+      final isShowWarning = storageUsagePercentage > 70 && tempData.origin != OriginFile.offline;
+      if(isShowWarning) {
         _callStorageUsageWarning();
       }
 

@@ -216,7 +216,7 @@ class UploadDialog {
       upgradeExceededDialog();
       return;
 
-    } else if (tempData.origin != OriginFile.public && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
+    } else if ((tempData.origin != OriginFile.public || tempData.origin != OriginFile.offline) && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
       upgradeExceededDialog();
       return;
       
