@@ -478,8 +478,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if (togglePhotosPressed) {
       _activatePhotosView();
+
     } else {
       _deactivatePhotosView();
+      
     }
 
     if (tempData.origin == OriginFile.public) {
@@ -929,10 +931,17 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(tempData.origin == OriginFile.home && togglePhotosPressed) {
       _togglePhotos();
+
+    }
+
+    if(togglePhotosPressed) {
+      searchBarVisibileNotifier.value = false;
+      
     }
 
     if(storageData.fileNamesList.isEmpty) {
       _buildEmptyBody();
+
     }
 
   }
