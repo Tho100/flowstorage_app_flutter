@@ -249,7 +249,7 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Max", () {
-                    if(userIsAlreadySubscribed()) {
+                    if(_userIsAlreadySubscribed()) {
                       return;
                     }
                     userChoosenPlan = "Max";
@@ -361,7 +361,7 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Supreme", () {
-                    if(userIsAlreadySubscribed()) {
+                    if(_userIsAlreadySubscribed()) {
                       return;
                     }
                     userChoosenPlan = "Supreme";
@@ -471,7 +471,7 @@ class UpgradePageState extends State<UpradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildGetNowButton("Express", () {
-                    if(userIsAlreadySubscribed()) {
+                    if(_userIsAlreadySubscribed()) {
                       return;
                     }
                     userChoosenPlan = "Express";
@@ -684,7 +684,7 @@ class UpgradePageState extends State<UpradePage> {
     
   }
 
-  bool userIsAlreadySubscribed() {
+  bool _userIsAlreadySubscribed() {
 
     if(userData.accountType != "Basic") {
       CustomAlertDialog.alertDialogTitle(
