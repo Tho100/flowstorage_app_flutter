@@ -350,12 +350,12 @@ class PasscodePageState extends State<PasscodePage> {
         ),
         onPressed: () {
 
-          if(isButtonsEnabledNotifier.value == false) {
+          if(!isButtonsEnabledNotifier.value) {
             CallToast.call(message: "Passcode has been locked.");
             return;
           }
 
-          isButtonsEnabledNotifier.value == false 
+          !isButtonsEnabledNotifier.value
           ? null 
           : setState(() {
             updateCurrentFieldText(input);

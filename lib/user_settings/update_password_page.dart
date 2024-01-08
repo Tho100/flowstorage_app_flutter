@@ -71,13 +71,13 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
                 controller: controller,
-                obscureText: isSecured == true ? !isVisible : true,
-                keyboardType: isPin == true ? TextInputType.number : TextInputType.text,
-                maxLength: isPin == true ? 3 : 3000,
+                obscureText: isSecured ? !isVisible : true,
+                keyboardType: isPin ? TextInputType.number : TextInputType.text,
+                maxLength: isPin ? 3 : 3000,
                 maxLines: 1,
                 decoration: GlobalsStyle.setupTextFieldDecoration(
                   hintText,
-                  customSuffix: isSecured == true
+                  customSuffix: isSecured 
                     ? IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,

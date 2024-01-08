@@ -37,13 +37,13 @@ class BackupRecovery extends StatelessWidget {
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
                 controller: mainController,
-                obscureText: isSecured == true ? !isVisible : false,
+                obscureText: isSecured ? !isVisible : false,
                 maxLines: 1,
-                maxLength: isFromPin == true ? 3 : null,
-                keyboardType: isFromPin == true ? TextInputType.number : null,
+                maxLength: isFromPin ? 3 : null,
+                keyboardType: isFromPin ? TextInputType.number : null,
                 decoration: GlobalsStyle.setupTextFieldDecoration(
                   hintText,
-                  customSuffix: isSecured == true
+                  customSuffix: isSecured
                   ? IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,

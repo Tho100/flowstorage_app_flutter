@@ -47,11 +47,11 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
                 controller: controller,
-                obscureText: isSecured == true ? !isVisible : true,
+                obscureText: isSecured ? !isVisible : true,
                 maxLines: 1,
                 decoration: GlobalsStyle.setupTextFieldDecoration(
                   hintText,
-                  customSuffix: isSecured == true
+                  customSuffix: isSecured 
                     ? IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,

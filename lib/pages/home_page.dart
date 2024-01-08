@@ -447,7 +447,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       deleteOnPressed: () async {
         final countSelectedItems = togglePhotosPressed
           ? checkedItemsName.length
-          : selectedItemsCheckedList.where((item) => item == true).length;
+          : selectedItemsCheckedList.where((checked) => checked).length;
         
         await _deleteMultipleSelectedFiles(count: countSelectedItems);
       }
@@ -592,10 +592,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   void _clearItemSelection() {
 
-    if(togglePhotosPressed == false) {
+    if(!togglePhotosPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
+
     } else {
       tempData.setAppBarTitle("Photos");
+
     }
 
     setState(() {
@@ -681,15 +683,22 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   }
 
-  void _updateCheckboxState(int index, bool value) {
-    
+  void _updateCheckboxState(int index, bool isChecked) {
+
     setState(() {
-      selectedItemsCheckedList[index] = value;
-      selectedItemIsChecked = selectedItemsCheckedList.where((item) => item == true).isNotEmpty ? true : false;
-      value == true ? checkedItemsName.add(storageData.fileNamesFilteredList[index]) : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
+      selectedItemsCheckedList[index] = isChecked;
+      selectedItemIsChecked = selectedItemsCheckedList.any((item) => item);
+
+      if (isChecked) {
+        checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+
+      } else {
+        checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
+
+      }
     });
 
-    final setAppBarTitle = "${(selectedItemsCheckedList.where((item) => item == true).length).toString()} item(s) selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} item(s) selected";
     tempData.setAppBarTitle(setAppBarTitle);
 
   }
@@ -1747,7 +1756,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
             if(selectedPhotosIndex.isNotEmpty)
             _buildDeselectAllPhotosButton(),
 
-            if(tempData.origin != OriginFile.public && togglePhotosPressed == false)
+            if(tempData.origin != OriginFile.public && !togglePhotosPressed)
             _buildSelectAll(),  
 
             if(selectedItemIsChecked)
@@ -2227,8 +2236,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   Widget _buildDefaultOrStaggeredListView() {
     return ValueListenableBuilder<bool>(
       valueListenable: staggeredListViewSelected,
-      builder: (context, value, child) {
-        return value == false 
+      builder: (context, isSelected, child) {
+        return !isSelected 
           ? _buildResponsiveListView()
           : _buildStaggeredListView();
       }

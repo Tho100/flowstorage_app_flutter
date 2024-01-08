@@ -292,7 +292,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                                   
                                   buttonPlayPausePressed = !buttonPlayPausePressed;
                               
-                                  if(videoIsEnded == true) {
+                                  if(videoIsEnded) {
                                     iconPausePlayNotifier.value = Icons.pause;
                                     videoPlayerController.play();
                                     videoIsEnded = false;
@@ -377,7 +377,7 @@ class PreviewVideoState extends State<PreviewVideo> {
         GestureDetector(
           onTap: () {
             videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
-            if(isLandscapeMode == false) {
+            if(!isLandscapeMode) {
             PreviewFileState.bottomBarVisibleNotifier.value =
                 !PreviewFileState.bottomBarVisibleNotifier.value;
             }
@@ -489,7 +489,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       iconPausePlayNotifier.value = Icons.replay;
       videoIsEnded = true;
       videoIsTappedNotifier.value = true;
-      if(isLandscapeMode == false) {
+      if(!isLandscapeMode) {
         PreviewFileState.bottomBarVisibleNotifier.value = true;
       }
     }

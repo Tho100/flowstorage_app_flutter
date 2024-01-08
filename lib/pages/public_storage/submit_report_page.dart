@@ -392,7 +392,7 @@ class SubmitReportPage extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              if(violationReport.contains(reportType) && isMyEntityNotifier.value == false && isNotMyEntityNotifier.value == false) {
+              if(violationReport.contains(reportType) && !isMyEntityNotifier.value && !isNotMyEntityNotifier.value) {
                 CustomAlertDialog.alertDialog("We need your input on the last question. Please choose at least one checkbox.");
                 return;
               }
