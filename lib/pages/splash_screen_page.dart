@@ -75,7 +75,7 @@ class SplashScreenState extends State<SplashScreen> {
 
       if(getLocalUsername.isNotEmpty) {
 
-        if(shortcutType == newDirectoryAction && isPassCodeExists == false) {
+        if(shortcutType == newDirectoryAction && !isPassCodeExists) {
           await _navigateToNextScreen();
           quickActionsModel.newDirectory();          
 

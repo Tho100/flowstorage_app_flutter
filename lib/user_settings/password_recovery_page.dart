@@ -48,12 +48,12 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
                 controller: mainController,
-                obscureText: isSecured == true ? !isVisible : false,
+                obscureText: isSecured ? !isVisible : false,
                 maxLines: 1,
                 maxLength: null,
                 decoration: GlobalsStyle.setupTextFieldDecoration(
                   hintText,
-                  customSuffix: isSecured == true
+                  customSuffix: isSecured
                   ? IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,

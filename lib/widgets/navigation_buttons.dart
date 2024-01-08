@@ -175,8 +175,8 @@ class NavigationButtons extends StatelessWidget {
                   children: [
                     ValueListenableBuilder<bool>(
                       valueListenable: isStaggeredListViewSelected,
-                      builder: (context, value, child) {
-                        return value == false ? const Icon(Icons.grid_view,size: 23) : const Icon(Icons.format_list_bulleted_outlined,size: 25);
+                      builder: (context, isSelected, child) {
+                        return !isSelected ? const Icon(Icons.grid_view,size: 23) : const Icon(Icons.format_list_bulleted_outlined, size: 25);
                       }
                     ),
                   ],

@@ -347,7 +347,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildResultWidget() {
 
-    final mediaQuery = isTagsVisibleNotifier.value == true 
+    final mediaQuery = isTagsVisibleNotifier.value 
       ? MediaQuery.of(context).size.height-340
       : MediaQuery.of(context).size.height-195;
 
