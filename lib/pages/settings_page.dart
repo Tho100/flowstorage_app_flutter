@@ -10,14 +10,11 @@ import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -82,12 +79,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     tempStorageData.folderNameList.clear();
   }
 
-  void _clearAppCache() async {
-    final cacheDir = await getTemporaryDirectory();
-    await DefaultCacheManager().emptyCache();
-    cacheDir.delete(recursive: true);
-  }
-
   Future<void> _deleteAutoLoginAndOfflineFiles() async {
 
     final getDirApplication = await getApplicationDocumentsDirectory();
@@ -111,116 +102,56 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   }
 
-  Widget _buildRow(String leftText,String rightText) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0, top: 8, bottom: 8),
-          child: Text(leftText,
-            style: GlobalsStyle.settingsLeftTextStyle
-          ),
-        ),
-
-        const Spacer(),
-
-        Padding(
-          padding: const EdgeInsets.only(right: 15.0, top: 8, bottom: 8),
-          child: Text(rightText,
-            style: GlobalsStyle.settingsRightTextStyle
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLogoutButton() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
-        ),
-        onPressed: () {
-          SignOutDialog().buildSignOutDialog(
-            context: context, 
-            signOutOnPressed: () async {
-              _clearUserStorageData();
-              await _deleteAutoLoginAndOfflineFiles();
-
-              if(!mounted) return;
-              NavigatePage.replacePageMain(context);
-            }
-          );
-        },
-        child: const Text("Logout from my account",
-          style: TextStyle(
-            fontSize: 17,
-            color: Colors.redAccent,
-          ),
-        ),
+  Widget _buildButtons(String title, String subheader, IconData icon, VoidCallback onPressed, {Color? customColor}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16.0),
+        backgroundColor: ThemeColor.darkBlack,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero
+        )
       ),
-    );
-  }
-
-  Widget _buildRowWithButtons({
-    required String topText, 
-    required String bottomText, 
-    required VoidCallback onPressed
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-            child: InkWell(
-              onTap: onPressed,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  const SizedBox(height: 5),
-
-                  Text(
-                    topText,
-                    style: GlobalsStyle.settingsLeftTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                    width: 305,
-                    child: Text(
-                      bottomText,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: ThemeColor.thirdWhite
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 5),
-
-                ],
-              ),
+          Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+              color: customColor ?? ThemeColor.darkPurple,
+              borderRadius: BorderRadius.circular(6),
             ),
+            child: Icon(
+              icon, 
+              size: 20.0,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 16.0),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeColor.secondaryWhite, 
+                ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                subheader,
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  color: ThemeColor.secondaryWhite, 
+                ),
+              ),
+            ],
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInfoText(String text) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 14),
-          child: Text(text,
-            style: GlobalsStyle.settingsInfoTextStyle
-          ),
-        ),
-      ],
     );
   }
 
@@ -235,258 +166,165 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       
             const SizedBox(height: 5),
       
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: GestureDetector(
-                    onTap: () async {
-                      _onCreateProfilePicPressed();
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        ProfilePicture(
-                          notifierValue: profilePicNotifier
-                        ),
-                        if(profilePicNotifier.value!.isNotEmpty)
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(90, 0, 0, 0),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.photo_camera_rounded, 
-                            color: ThemeColor.justWhite,
-                            size: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-      
-                const SizedBox(width: 5),
-      
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: custUsername));
-                        CallToast.call(message: "Username copied.");
+            Container(
+              width: MediaQuery.of(context).size.width-25,
+              height: 85,
+              decoration: BoxDecoration(
+                color: ThemeColor.mediumGrey,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: GestureDetector(
+                      onTap: () async {
+                        _onCreateProfilePicPressed();
                       },
-                      child: Text(
-                        custUsername,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w500
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          ProfilePicture(
+                            notifierValue: profilePicNotifier
+                          ),
+                          if(profilePicNotifier.value!.isNotEmpty)
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(90, 0, 0, 0),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.photo_camera_rounded, 
+                              color: ThemeColor.justWhite,
+                              size: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(width: 5),
+                  
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: custUsername));
+                          CallToast.call(message: "Username copied.");
+                        },
+                        child: Text(
+                          custUsername,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w500
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      accountType,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 185, 185, 185),
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
+                      const SizedBox(height: 5),
+                      Text(
+                        accountType,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 185, 185, 185),
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-      
-                const Spacer(),
-
-                SizedBox(
-                  width: 112,
-                  height: 46,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      NavigatePage.goToPageUpgrade();
-                    },
-                    style: GlobalsStyle.btnMainStyle,
-                    child: const Text('Upgrade'),
+                    ],
                   ),
-                ),
-
-                const SizedBox(width: 10),
-
-              ],
-            ),
-      
-            const SizedBox(height: 10),
-      
-            _buildInfoText("Account Information"),
-      
-            _buildRow("Email",custEmail),
-            _buildRow("Account Type",accountType),
-            _buildRow("Upload Limit",uploadLimit.toString()),
+                  
+                  const Spacer(),
             
-            const SizedBox(height: 15),
-      
-            _buildInfoText("Update Information"),
-      
-            const SizedBox(height: 8),
-      
-            _buildRowWithButtons(
-              topText: "Change my password", 
-              bottomText: "Update your Flowstorage password", 
-              onPressed: () {
-                NavigatePage.goToPageChangePass(context);
-              }
+                  SizedBox(
+                    width: 115,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        NavigatePage.goToPageUpgrade();
+                      },
+                      style: GlobalsStyle.btnMainStyle,
+                      child: const Text('Upgrade'),
+                    ),
+                  ),
+            
+                  const SizedBox(width: 10),
+            
+                ],
+              ),
             ),
       
-            const SizedBox(height: 15),
-      
-            _buildInfoText("Sharing"),
-      
-            const SizedBox(height: 8),
-      
-            _buildRowWithButtons(
-              topText: "File sharing", 
-              bottomText: sharingEnabledButton, 
-              onPressed: () async {
-
-                sharingEnabledButton == 'Disable' 
-                ? await SharingOptions.disableSharing(custUsername) 
-                : await SharingOptions.enableSharing(custUsername);
-      
-                setState(() {
-                  sharingEnabledButton = sharingEnabledButton == "Disable" ? "Enable" : "Disable";
-                });
-
-                final sharingStatus = sharingEnabledButton == "Enable" ? "Disabled" : "Enabled";
-
-                const fileSharingDisabledMsg = "File sharing disabled. No one can share a file to you.";
-                const fileSharingEnabledMsg = "File sharing enabled. People can share a file to you.";
-
-                final updatedStatus = sharingEnabledButton == "Enable" ? "1" : "0";
-
-                userData.setSharingStatus(updatedStatus);
-
-                final conclusionSubMsg = sharingStatus == "Disabled" ? fileSharingDisabledMsg : fileSharingEnabledMsg;
-                CustomAlertDialog.alertDialogTitle("Sharing $sharingStatus", conclusionSubMsg);
-              }
-            ),
-      
-            const SizedBox(height: 10),
-      
-            _buildRowWithButtons(
-              topText: "Configure password", 
-              bottomText: "Require password for file sharing with you", 
-              onPressed: () async {
-                NavigatePage.goToPageCongfigureSharingPassword();
-              }
-            ),
-      
-            const SizedBox(height: 15),
-      
-            _buildInfoText("Security"),
-      
-            const SizedBox(height: 8),
-      
-            _buildRowWithButtons(
-              topText: "Configure passcode", 
-              bottomText: "Require to enter passcode before allowing to open Flowstorage", 
-              onPressed: () async {
-                NavigatePage.goToPageCongfigurePasscode();
+            const SizedBox(height: 20),
+            
+            _buildButtons(
+              "Account", 
+              "Account informations and more", 
+              Icons.person, () {
+                NavigatePage.goToPageSettingsAccount();
               }
             ),
 
-            const SizedBox(height: 15),
-
-            _buildRowWithButtons(
-              topText: "Backup recovery key", 
-              bottomText: "Recovery key enables password reset in case of forgotten passwords", 
-              onPressed: () async {
-                NavigatePage.goToPageBackupRecovery();
+            _buildButtons(
+              "Sharing", 
+              "Update sharing configuration", 
+              Icons.share, () {
+                NavigatePage.goToSettingsSharingPage(sharingEnabledButton);
               }
             ),
 
-            const SizedBox(height: 15),
-      
-            _buildInfoText("Insight"),
-      
-            const SizedBox(height: 8),
-      
-            _buildRowWithButtons(
-              topText: "Statistics", 
-              bottomText: "Get more insight about your Flowstorage activity", 
-              onPressed: () async {
+            _buildButtons(
+              "Security", 
+              "Passcode and recovery key", 
+              Icons.shield, () {
+                NavigatePage.goToSecurityPage();
+              }
+            ),
 
+            _buildButtons(
+              "Statistics", 
+              "Insight about your Flowstorage activity", 
+              Icons.bar_chart, () async {
                 if(tempData.origin != OriginFile.home) {
                   await dataCaller.homeData(isFromStatistics: true);
                 }
 
                 if(!mounted) return;
                 NavigatePage.goToPageStatistics();
-
               }
             ),
 
-            const SizedBox(height: 20),
-      
-            _buildInfoText("Flowstorage"),
-      
-            const SizedBox(height: 8),
-      
-            _buildRowWithButtons(
-              topText: "App version", 
-              bottomText: "2.1.4", 
-              onPressed: () {}
-            ),
-
-            const SizedBox(height: 15),
-
-            _buildRowWithButtons(
-              topText: "Rate us", 
-              bottomText: "Rate your experience with Flowstorage", 
-              onPressed: () { }
-            ),
-
-            const SizedBox(height: 15),
-
-            _buildRowWithButtons(
-              topText: "Clear cache", 
-              bottomText: "Clear Flowstorage cache", 
-              onPressed: () {
-                _clearAppCache();
-                CallToast.call(message: "Cache cleared.");
+            _buildButtons(
+              "App Settings", 
+              "Cache, rating and more", 
+              Icons.info_outline, () {
+                NavigatePage.goToPageSettingsAppSettings();
               }
             ),
 
-            const SizedBox(height: 10),
+            const Divider(color: ThemeColor.lightGrey),
 
-            Visibility(
-              visible: accountType != "Basic",
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  
-                  _buildInfoText("Plan"),
-                  
-                  const SizedBox(height: 10),
-                  
-                  _buildRowWithButtons(
-                    topText: "My plan", 
-                    bottomText: "See your subscription plan details", 
-                    onPressed: () async {
-                      NavigatePage.goToPageMyPlan();
-                    }
-                  ),
-                ],
-              ),
+            _buildButtons(
+              "Sign Out", 
+              "Sign out from your account", 
+              Icons.logout, () async {
+                SignOutDialog().buildSignOutDialog(
+                  context: context, 
+                  signOutOnPressed: () async {
+                    _clearUserStorageData();
+                    await _deleteAutoLoginAndOfflineFiles();
+
+                    if(!mounted) return;
+                    NavigatePage.replacePageMain(context);
+                  }
+                );
+              },
+              customColor: ThemeColor.darkRed
             ),
-
-            const SizedBox(height: 20),
-
-            _buildLogoutButton(),
       
           ],
         ),

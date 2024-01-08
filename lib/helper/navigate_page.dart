@@ -3,6 +3,10 @@ import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
 import 'package:flowstorage_fsc/pages/move_file_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
+import 'package:flowstorage_fsc/pages/settings/account_page.dart';
+import 'package:flowstorage_fsc/pages/settings/app_page.dart';
+import 'package:flowstorage_fsc/pages/settings/security_page.dart';
+import 'package:flowstorage_fsc/pages/settings/sharing_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -237,6 +241,34 @@ class NavigatePage {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const PasscodePage())
+    );
+  }
+
+  static void goToSecurityPage() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => const SettingsSecurityPage())
+    );
+  }
+
+  static void goToSettingsSharingPage(String sharingEnabledButton) {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => SettingsSharingPage(sharingEnabledButton: sharingEnabledButton))
+    );
+  }
+
+  static void goToPageSettingsAccount() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => SettingsAccountPage())
+    );
+  }
+
+  static void goToPageSettingsAppSettings() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => SettingsAppSettings())
     );
   }
 

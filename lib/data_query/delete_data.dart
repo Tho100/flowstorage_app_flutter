@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -122,4 +123,14 @@ class DeleteData {
     await crud.delete(query: query, params: params);
 
   }
+
+  Future<void> deleteAccount() async {
+
+    for(var tables in GlobalsTable.tableNames) {
+      final query = "DELETE FROM :table WHERE CUST_USERNAME";
+      // TODO: delete data from all tables
+    }
+
+  }
+
 }
