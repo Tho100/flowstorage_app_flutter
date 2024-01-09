@@ -92,7 +92,7 @@ class NavigatePage {
     );
   }
   
-  static void permanentPageHome(BuildContext context) {
+  static void permanentPageMain(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context, 
       MaterialPageRoute(builder: (context) => const MainPage()), 

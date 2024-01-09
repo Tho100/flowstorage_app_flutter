@@ -36,7 +36,7 @@ class DeleteAccountDialog {
               ),
               onPressed: deleteOnPressed,
               child: const Text(
-                'Logout',
+                'Delete',
                 style: TextStyle(color: Colors.red),
               ),
             ),

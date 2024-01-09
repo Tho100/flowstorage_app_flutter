@@ -126,11 +126,34 @@ class DeleteData {
 
   Future<void> deleteAccount() async {
 
+    final params = {
+      'username': userData.username
+    };
+
     for(var tables in GlobalsTable.tableNames) {
-      final query = "DELETE FROM :table WHERE CUST_USERNAME";
-      // TODO: delete data from all tables
+      final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
+      await crud.delete(query: query, params: params);
+
     }
 
+    for(var tables in GlobalsTable.tableNamesPs) {
+      final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
+      await crud.delete(query: query, params: params);
+
+    }
+
+    final queries = [
+      "DELETE FROM information WHERE CUST_USERNAME = :username",
+      "DELETE FROM upload_info_directory WHERE CUST_USERNAME = :username",
+      "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username",
+      "DELETE FROM cust_sharing WHERE CUST_FROM = :username",
+      "DELETE FROM cust_sharing WHERE CUST_TO = :username",
+    ];
+
+    for (final query in queries) {
+      await crud.delete(query: query, params: params);
+    }
+    
   }
 
 }
