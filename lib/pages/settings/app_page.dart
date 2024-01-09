@@ -39,12 +39,11 @@ class SettingsAppSettings extends StatelessWidget {
           const SizedBox(height: 8),
 
           SettingsButton(
-              topText: "App version", 
-              bottomText: "2.1.4", 
-              onPressed: () {}
-            ),
-
-            const SizedBox(height: 15),
+            hideCaret: true,
+            topText: "App version", 
+            bottomText: "2.1.4", 
+            onPressed: () {}
+          ),
 
           SettingsButton(
             topText: "Rate us", 
@@ -52,9 +51,8 @@ class SettingsAppSettings extends StatelessWidget {
             onPressed: () { }
           ),
 
-          const SizedBox(height: 15),
-
           SettingsButton(
+            hideCaret: true,
             topText: "Clear cache", 
             bottomText: "Clear Flowstorage cache", 
             onPressed: () {
@@ -62,8 +60,6 @@ class SettingsAppSettings extends StatelessWidget {
               CallToast.call(message: "Cache cleared.");
             }
           ),
-
-          const SizedBox(height: 10),
 
           Visibility(
             visible: accountType != "Basic",

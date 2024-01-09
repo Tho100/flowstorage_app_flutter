@@ -1,7 +1,8 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flowstorage_fsc/widgets/default_switch.dart';
+import 'package:flowstorage_fsc/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -24,95 +25,64 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
   }
 
   Widget buildBody() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, bottom: 2.0), 
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Enable passcode",
-                        style: GlobalsStyle.settingsLeftTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      CupertinoSwitch(
-                        thumbColor: ThemeColor.justWhite, 
-                        activeColor: ThemeColor.darkPurple,
-                        trackColor: ThemeColor.darkGrey, 
-                        value: isPasscodeEnabled,
-                        onChanged: (value) async {
-                          setState(() {
-                            isPasscodeEnabled = value;
-                          });
-                                  
-                          bool isPassCodeExists = await storage.containsKey(key: 'key0015');
-                                  
-                          if (!isPassCodeExists) {
-                            isPasscodeEnabled = false;
-                            if (!mounted) return;
-                            NavigatePage.goToAddPasscodePage();
-                                  
-                          } else {
-                            final isEnabled = isPasscodeEnabled ? "true" : "false";
-                            togglePasscode(isEnabled);
-                                  
-                          }
-                                  
-                        },
-                      ),
-                      
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+        const SizedBox(height: 8),
 
-          Visibility(
-            visible: isPasscodeEnabled,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        NavigatePage.goToAddPasscodePage();
-                      },
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           Text(
-                            "Edit passcode",
-                            style: GlobalsStyle.settingsLeftTextStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "Edit current passcode",
-                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: ThemeColor.thirdWhite),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+        Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Enable passcode",
+                style: GlobalsStyle.settingsLeftTextStyle,
+                textAlign: TextAlign.center,
               ),
-            ),
+              const Spacer(),
+              DefaultSwitch(
+                value: isPasscodeEnabled, 
+                onChanged: (value) async {
+                  setState(() {
+                    isPasscodeEnabled = value;
+                  });
+                          
+                  bool isPassCodeExists = await storage.containsKey(key: 'key0015');
+                          
+                  if (!isPassCodeExists) {
+                    isPasscodeEnabled = false;
+                    if (!mounted) return;
+                    NavigatePage.goToAddPasscodePage();
+                          
+                  } else {
+                    final isEnabled = isPasscodeEnabled ? "true" : "false";
+                    togglePasscode(isEnabled);
+                          
+                  }
+                }
+              ),
+              
+            ],
           ),
-        ],
-      ),
+        ),
+
+        const SizedBox(height: 8),
+
+        Visibility(
+          visible: isPasscodeEnabled,
+          child: SettingsButton(
+            topText: "Edit passcode", 
+            bottomText: "Update your current passcode", 
+            onPressed: () {
+              NavigatePage.goToAddPasscodePage();
+            }
+          ),
+        ),
+
+      ],
+    
     );
   }
 

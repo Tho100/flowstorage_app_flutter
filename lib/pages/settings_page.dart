@@ -22,7 +22,6 @@ class CakeSettingsPage extends StatefulWidget {
   final String custEmail;
   final String accType;
   final int uploadLimit;
-  final String sharingEnabledButton;
 
   const CakeSettingsPage({
     Key? key, 
@@ -30,7 +29,6 @@ class CakeSettingsPage extends StatefulWidget {
     required this.custEmail, 
     required this.accType,
     required this.uploadLimit,
-    required this.sharingEnabledButton,
   }) : super(key: key);
 
   @override
@@ -43,7 +41,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   late String custEmail;
   late String accountType;
   late int uploadLimit;
-  late String sharingEnabledButton;
 
   final dataCaller = DataCaller();
 
@@ -247,7 +244,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               "Sharing", 
               "Update sharing configuration", 
               Icons.share, () {
-                NavigatePage.goToSettingsSharingPage(sharingEnabledButton);
+                NavigatePage.goToSettingsSharingPage();
               }
             ),
 
@@ -356,7 +353,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     custEmail = widget.custEmail;
     accountType = widget.accType;
     uploadLimit = widget.uploadLimit;
-    sharingEnabledButton = widget.sharingEnabledButton == '0' ? 'Disable' : 'Enable';
     initializeProfilePic();
   }
 
