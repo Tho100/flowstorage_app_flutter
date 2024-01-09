@@ -30,7 +30,7 @@ class GlobalsTable {
 
   static const Set<String> tableNames = {
     directoryInfoTable, homeImage, homeText, homeExe, homePdf,
-    homeVideo,homeExcel, homePtx, homeAudio, homeWord,
+    homeVideo, homeExcel, homePtx, homeAudio, homeWord,
     directoryUploadTable
   };
 

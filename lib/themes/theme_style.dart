@@ -41,21 +41,9 @@ class GlobalsStyle {
   );
 
   static const settingsLeftTextStyle = TextStyle(
-    fontSize: 16,
-    color: ThemeColor.secondaryWhite,
-    fontWeight: FontWeight.w600,
-  );
-
-  static const settingsInfoTextStyle = TextStyle(
-    fontSize: 15,
-    color: ThemeColor.darkPurple,
-    fontWeight: FontWeight.w600
-  );
-
-  static const settingsRightTextStyle = TextStyle(
     fontSize: 17,
-    color: ThemeColor.thirdWhite,
-    fontWeight: FontWeight.w500,
+    color: ThemeColor.secondaryWhite,
+    fontWeight: FontWeight.bold,
   );
 
   static const btnBottomDialogTextStyle = TextStyle(

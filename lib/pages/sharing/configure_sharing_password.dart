@@ -4,7 +4,8 @@ import 'package:flowstorage_fsc/sharing_query/add_password_sharing.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flowstorage_fsc/widgets/default_switch.dart';
+import 'package:flowstorage_fsc/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -32,94 +33,63 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   }
 
   Widget buildBody() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, bottom: 2.0), 
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Enable sharing password",
-                        style: GlobalsStyle.settingsLeftTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      CupertinoSwitch(
-                        thumbColor: ThemeColor.justWhite, 
-                        activeColor: ThemeColor.darkPurple,
-                        trackColor: ThemeColor.darkGrey, 
-                        value: isPasswordEnabled,
-                        onChanged: (value) async {
-                          setState(() {
-                            isPasswordEnabled = value;
-                          });
-                    
-                          final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
-                    
-                          if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
-                            if(!mounted) return;
-                            AddSharingPassword().buildAddPasswordDialog(context);
-                    
-                          } else {
-                            final isEnabled = isPasswordEnabled ? "0" : "1";
-                            togglePasscode(isEnabled);
-                    
-                          }
-                        },
-                      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+        const SizedBox(height: 8),
 
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Visibility(
-            visible: isPasswordEnabled,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        if(!mounted) return;
-                        AddSharingPassword().buildAddPasswordDialog(context);
-                      },
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           Text(
-                            "Edit password",
-                            style: GlobalsStyle.settingsLeftTextStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "Edit sharing password",
-                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: ThemeColor.thirdWhite),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+        Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Enable sharing password",
+                style: GlobalsStyle.settingsLeftTextStyle,
+                textAlign: TextAlign.center,
               ),
-            ),
+              const Spacer(),
+              DefaultSwitch(
+                value: isPasswordEnabled, 
+                onChanged: (value) async {
+                  setState(() {
+                    isPasswordEnabled = value;
+                  });
+            
+                  final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
+            
+                  if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
+                    if(!mounted) return;
+                    AddSharingPassword().buildAddPasswordDialog(context);
+            
+                  } else {
+                    final isEnabled = isPasswordEnabled ? "0" : "1";
+                    togglePasscode(isEnabled);
+            
+                  }
+                }
+              ),
+
+            ],
           ),
-        ],
-      ),
+        ),
+         
+
+        const SizedBox(height: 8),
+
+        Visibility(
+          visible: isPasswordEnabled,
+          child: SettingsButton(
+            topText: "Edit password", 
+            bottomText: "Update your sharing password", 
+            onPressed: () {
+              if(!mounted) return;
+              AddSharingPassword().buildAddPasswordDialog(context);
+            }
+          ),
+        ),
+      ],
     );
   }
 

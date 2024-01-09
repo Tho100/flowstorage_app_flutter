@@ -12,12 +12,9 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CakeSettingsPage extends StatefulWidget {
 
@@ -25,7 +22,6 @@ class CakeSettingsPage extends StatefulWidget {
   final String custEmail;
   final String accType;
   final int uploadLimit;
-  final String sharingEnabledButton;
 
   const CakeSettingsPage({
     Key? key, 
@@ -33,7 +29,6 @@ class CakeSettingsPage extends StatefulWidget {
     required this.custEmail, 
     required this.accType,
     required this.uploadLimit,
-    required this.sharingEnabledButton,
   }) : super(key: key);
 
   @override
@@ -46,7 +41,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   late String custEmail;
   late String accountType;
   late int uploadLimit;
-  late String sharingEnabledButton;
 
   final dataCaller = DataCaller();
 
@@ -77,29 +71,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     storageData.imageBytesList.clear();
     storageData.imageBytesFilteredList.clear();
     tempStorageData.folderNameList.clear();
-  }
-
-  Future<void> _deleteAutoLoginAndOfflineFiles() async {
-
-    final getDirApplication = await getApplicationDocumentsDirectory();
-
-    await LocalStorageModel().deleteLocalAccountData();
-
-    final offlineDirs = Directory('${getDirApplication.path}/offline_files');
-    
-    if(offlineDirs.existsSync()) {
-      offlineDirs.delete(recursive: true);
-    }
-
-    await ProfilePictureModel().deleteProfilePicture();
-
-    const storage = FlutterSecureStorage();
-    
-    if(await storage.containsKey(key: "key0015")) {
-      await storage.delete(key: "key0015");
-      await storage.delete(key: "isEnabled");
-    }
-
   }
 
   Widget _buildButtons(String title, String subheader, IconData icon, VoidCallback onPressed, {Color? customColor}) {
@@ -273,7 +244,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               "Sharing", 
               "Update sharing configuration", 
               Icons.share, () {
-                NavigatePage.goToSettingsSharingPage(sharingEnabledButton);
+                NavigatePage.goToSettingsSharingPage();
               }
             ),
 
@@ -316,7 +287,8 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                   context: context, 
                   signOutOnPressed: () async {
                     _clearUserStorageData();
-                    await _deleteAutoLoginAndOfflineFiles();
+                    await LocalStorageModel()
+                      .deleteAutoLoginAndOfflineFiles(userData.username);
 
                     if(!mounted) return;
                     NavigatePage.replacePageMain(context);
@@ -381,7 +353,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     custEmail = widget.custEmail;
     accountType = widget.accType;
     uploadLimit = widget.uploadLimit;
-    sharingEnabledButton = widget.sharingEnabledButton == '0' ? 'Disable' : 'Enable';
     initializeProfilePic();
   }
 

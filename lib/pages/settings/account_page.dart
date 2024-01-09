@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog/verify_account_deletion_dialog.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -22,7 +22,7 @@ class SettingsAccountPage extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, top: 8, bottom: 8),
+          padding: const EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
           child: Text(leftText,
             style: GlobalsStyle.settingsLeftTextStyle
           ),
@@ -31,9 +31,13 @@ class SettingsAccountPage extends StatelessWidget {
         const Spacer(),
 
         Padding(
-          padding: const EdgeInsets.only(right: 15.0, top: 8, bottom: 8),
+          padding: const EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
           child: Text(rightText,
-            style: GlobalsStyle.settingsRightTextStyle
+            style: const TextStyle(
+              fontSize: 17,
+              color: ThemeColor.thirdWhite,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ],
@@ -73,11 +77,8 @@ class SettingsAccountPage extends StatelessWidget {
             topText: "Remove Account", 
             bottomText: "Delete all your account data and informations", 
             onPressed: () {
-              DeleteAccountDialog().buildDeleteAccountDialog(
-                deleteOnPressed: () {
-                  // TODO: Execute delete account query
-                }
-              );
+              VerifyAccountDeletionDialog()
+                .buildVerifyAccountDeletionDialog();
             }
           ),
 

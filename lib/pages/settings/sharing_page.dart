@@ -3,42 +3,27 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/widgets/default_switch.dart';
 import 'package:flowstorage_fsc/widgets/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class SettingsSharingPage extends StatelessWidget {
 
-  final String sharingEnabledButton;
+  final bool isSharingDisabled;
 
   SettingsSharingPage({
-    required this.sharingEnabledButton,
+    required this.isSharingDisabled,
     super.key
   });
 
   final userData = GetIt.instance<UserDataProvider>();
-/*sharingEnabledButton == 'Disable' 
-  ? await SharingOptions.disableSharing(custUsername) 
-  : await SharingOptions.enableSharing(custUsername);
 
-  setState(() {
-    sharingEnabledButton = sharingEnabledButton == "Disable" ? "Enable" : "Disable";
-  });
+  final sharingDisabledStatusNotifier = ValueNotifier<bool>(false);
 
-  final sharingStatus = sharingEnabledButton == "Enable" ? "Disabled" : "Enabled";
-
-  const fileSharingDisabledMsg = "File sharing disabled. No one can share a file to you.";
-  const fileSharingEnabledMsg = "File sharing enabled. People can share a file to you.";
-
-  final updatedStatus = sharingEnabledButton == "Enable" ? "1" : "0";
-
-  userData.setSharingStatus(updatedStatus);
-
-  final conclusionSubMsg = sharingStatus == "Disabled" ? fileSharingDisabledMsg : fileSharingEnabledMsg;
-  CustomAlertDialog.alertDialogTitle("Sharing $sharingStatus", conclusionSubMsg); */
   @override
   Widget build(BuildContext context) {
+    sharingDisabledStatusNotifier.value = isSharingDisabled;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ThemeColor.darkBlack,
@@ -52,31 +37,46 @@ class SettingsSharingPage extends StatelessWidget {
           
           const SizedBox(height: 8),
 
-          SettingsButton(
-            topText: "File sharing", 
-            bottomText: sharingEnabledButton, 
-            onPressed: () async {
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
 
-              sharingEnabledButton == 'Disable' 
-              ? await SharingOptions.disableSharing(userData.username) 
-              : await SharingOptions.enableSharing(userData.username);
-    
-              final updatedSharingEnabledUpdate = sharingEnabledButton == "Disable" ? "Enable" : "Disable";
+                const Text(
+                  "Enable file sharing",
+                  style: GlobalsStyle.settingsLeftTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                const Spacer(),
 
-              final sharingStatus = updatedSharingEnabledUpdate == "Enable" ? "Disabled" : "Enabled";
+                ValueListenableBuilder(
+                  valueListenable: sharingDisabledStatusNotifier,
+                  builder: (context, sharingDisabled, child) {
+                    return DefaultSwitch(
+                      value: sharingDisabled, 
+                      onChanged: (switchValue) async {
+                        sharingDisabledStatusNotifier.value = !sharingDisabledStatusNotifier.value;
 
-              const fileSharingDisabledMsg = "File sharing disabled. No one can share a file to you.";
-              const fileSharingEnabledMsg = "File sharing enabled. People can share a file to you.";
+                        if(switchValue == false) {
+                          await SharingOptions.disableSharing(userData.username);
+                          userData.setSharingStatus("1");
 
-              final updatedStatus = updatedSharingEnabledUpdate == "Enable" ? "1" : "0";
+                        } else {
+                          await SharingOptions.enableSharing(userData.username);  
+                          userData.setSharingStatus("0");
 
-              userData.setSharingStatus(updatedStatus);
+                        }
 
-              final conclusionSubMsg = sharingStatus == "Disabled" ? fileSharingDisabledMsg : fileSharingEnabledMsg;
-              CustomAlertDialog.alertDialogTitle("Sharing $sharingStatus", conclusionSubMsg);
-            }
+                      },
+                    );
+                  },
+                ),
+                
+              ],
+            ),
           ),
-    
+
           const SizedBox(height: 8),
     
           SettingsButton(

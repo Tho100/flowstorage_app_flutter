@@ -16,7 +16,7 @@ class DeleteAccountDialog {
           ),
           backgroundColor: ThemeColor.darkGrey,
           content: const Text(
-            'Delete your Flowstorage account?. This action is irreversible',
+            'Delete your Flowstorage account? This action is irreversible.',
             style: TextStyle(color: Colors.white),
           ),
           actions: <Widget>[
@@ -36,7 +36,7 @@ class DeleteAccountDialog {
               ),
               onPressed: deleteOnPressed,
               child: const Text(
-                'Logout',
+                'Delete',
                 style: TextStyle(color: Colors.red),
               ),
             ),

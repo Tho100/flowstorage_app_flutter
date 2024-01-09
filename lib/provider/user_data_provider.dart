@@ -18,10 +18,12 @@ class UserDataProvider extends ChangeNotifier {
 
   void setSharingStatus(String status) {
     _sharingStatus = status;
+    notifyListeners();
   }
 
   void setSharingPasswordStatus(String status) {
     _sharingPasswordDisabled = status;
+    notifyListeners();
   }
   
   void setAccountType(String accountType) {

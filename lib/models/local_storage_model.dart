@@ -1,4 +1,6 @@
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
+import 'package:flowstorage_fsc/models/profile_picture_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -55,6 +57,27 @@ class LocalStorageModel {
 
         setupFiles.writeAsStringSync(
           "$username\n", mode: FileMode.append);
+
+      } catch (err, st) {
+        logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
+      }
+
+    }
+    
+  }
+
+  Future<void> deleteLocalAccountUsernames(String username) async {
+        
+    final localDir = await _retrieveLocalDirectory(
+      customFolder: _accountUsernamesFolderName);
+
+    if (username.isNotEmpty) {
+
+      final filePath = File('${localDir.path}/$_fileName');
+
+      try {
+
+        await filePath.delete();
 
       } catch (err, st) {
         logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
@@ -143,6 +166,30 @@ class LocalStorageModel {
     final getDirApplication = await getApplicationDocumentsDirectory();
     final setupPath = '${getDirApplication.path}/$folderName';
     return Directory(setupPath);
+
+  }
+
+  Future<void> deleteAutoLoginAndOfflineFiles(String username) async {
+
+    final getDirApplication = await getApplicationDocumentsDirectory();
+
+    await deleteLocalAccountData();
+    await deleteLocalAccountUsernames(username);
+
+    final offlineDirs = Directory('${getDirApplication.path}/offline_files');
+    
+    if(offlineDirs.existsSync()) {
+      offlineDirs.delete(recursive: true);
+    }
+
+    await ProfilePictureModel().deleteProfilePicture();
+
+    const storage = FlutterSecureStorage();
+    
+    if(await storage.containsKey(key: "key0015")) {
+      await storage.delete(key: "key0015");
+      await storage.delete(key: "isEnabled");
+    }
 
   }
 

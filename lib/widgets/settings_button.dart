@@ -8,10 +8,13 @@ class SettingsButton extends StatelessWidget {
   final String bottomText;
   final VoidCallback onPressed;
 
+  final bool? hideCaret;
+
   const SettingsButton({
     required this.topText,
     required this.bottomText,
     required this.onPressed,
+    this.hideCaret = false,
     Key? key,
   }) : super(key: key);
 
@@ -24,19 +27,33 @@ class SettingsButton extends StatelessWidget {
           child: InkWell(
             onTap: onPressed,
             child: Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: const EdgeInsets.only(left: 18.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
             
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 10),
             
-                  Text(
-                    topText,
-                    style: GlobalsStyle.settingsLeftTextStyle,
-                    textAlign: TextAlign.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        topText,
+                        style: GlobalsStyle.settingsLeftTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      const Spacer(),
+                      if(hideCaret == false)
+                      Transform.translate(
+                        offset: const Offset(0, 10),
+                        child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20,)
+                      ),
+                      const SizedBox(width: 25),
+                    ],
                   ),
+
                   const SizedBox(height: 5),
+                  
                   SizedBox(
                     width: 305,
                     child: Text(

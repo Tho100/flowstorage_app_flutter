@@ -31,8 +31,6 @@ class SettingsSecurityPage extends StatelessWidget {
             }
           ),
 
-          const SizedBox(height: 8),
-
           SettingsButton(
             topText: "Backup recovery key", 
             bottomText: "Recovery key enables password reset in case of forgotten passwords", 

@@ -92,7 +92,7 @@ class NavigatePage {
     );
   }
   
-  static void permanentPageHome(BuildContext context) {
+  static void permanentPageMain(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context, 
       MaterialPageRoute(builder: (context) => const MainPage()), 
@@ -159,16 +159,10 @@ class NavigatePage {
 
     try {
 
-      if(userData.sharingStatus.isEmpty) {
-        final status = await SharingOptions.retrieveDisabled(userData.username);
-        userData.setSharingStatus(status);
-      } 
-
       _openSettingsPage(
         email: email,
         username: username,
         accountType: accountType,
-        sharingDisabledStatus: userData.sharingStatus,
       );
 
     } catch (err, st) {
@@ -179,7 +173,6 @@ class NavigatePage {
       await Future.delayed(const Duration(milliseconds: 990));
 
       _openSettingsPage(
-        sharingDisabledStatus: "0",
         email: email,
         username: username,
         accountType: accountType,
@@ -192,7 +185,6 @@ class NavigatePage {
     required String email, 
     required String username,
     required String accountType,
-    required String sharingDisabledStatus
   }) {
     Navigator.push(
       navigatorKey.currentContext!,
@@ -203,7 +195,6 @@ class NavigatePage {
           custEmail: email,
           custUsername: username,
           uploadLimit: AccountPlan.mapFilesUpload[accountType]!,
-          sharingEnabledButton: sharingDisabledStatus,
         ),
       ),
     );
@@ -251,11 +242,24 @@ class NavigatePage {
     );
   }
 
-  static void goToSettingsSharingPage(String sharingEnabledButton) {
+  static void goToSettingsSharingPage() async{
+
+    final userData = GetIt.instance<UserDataProvider>();
+
+    if(userData.sharingStatus.isEmpty) {
+      final status = await SharingOptions.retrieveDisabled(userData.username);
+      userData.setSharingStatus(status);
+    } 
+
+    final isSharingDisabled = userData.sharingStatus == "0" 
+    ? true
+    : false;
+
     Navigator.push(
       navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => SettingsSharingPage(sharingEnabledButton: sharingEnabledButton))
+      MaterialPageRoute(builder: (context) => SettingsSharingPage(isSharingDisabled: isSharingDisabled))
     );
+
   }
 
   static void goToPageSettingsAccount() {
