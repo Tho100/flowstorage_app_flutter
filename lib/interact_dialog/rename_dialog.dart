@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
-import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';

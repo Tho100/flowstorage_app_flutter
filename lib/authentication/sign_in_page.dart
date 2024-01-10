@@ -3,7 +3,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/user_settings/password_recovery_page.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
-import 'package:flowstorage_fsc/widgets/main_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/main_text_field.dart';
 import 'package:flowstorage_fsc/data_classes/login_process.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';

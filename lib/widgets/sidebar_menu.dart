@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/models/profile_picture_model.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -74,7 +73,11 @@ class CustomSideBarMenu extends StatelessWidget {
             ),
             title: Text(
               title,
-              style: GlobalsStyle.sidebarMenuButtonsStyle,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 216, 216, 216),
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),

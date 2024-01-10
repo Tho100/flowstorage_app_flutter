@@ -18,7 +18,7 @@ import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
-import 'package:flowstorage_fsc/widgets/main_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
