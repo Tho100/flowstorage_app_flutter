@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
-import 'package:flowstorage_fsc/widgets/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
 
 class SharingPassword {

@@ -34,12 +34,6 @@ class GlobalsStyle {
     fontSize: 19,          
   );
 
-  static const sidebarMenuButtonsStyle = TextStyle(
-    color: Color.fromARGB(255, 216, 216, 216),
-    fontSize: 15,
-    fontWeight: FontWeight.w500,
-  );
-
   static const settingsLeftTextStyle = TextStyle(
     fontSize: 17,
     color: ThemeColor.secondaryWhite,
@@ -66,12 +60,6 @@ class GlobalsStyle {
       topLeft: Radius.circular(18),
       topRight: Radius.circular(18)
     )
-  );
-
-  static const btnPageTextStyle = TextStyle(
-    color: ThemeColor.justWhite,
-    fontWeight: FontWeight.w600,
-    fontSize: 16,
   );
 
   static final btnMainStyle = ElevatedButton.styleFrom(

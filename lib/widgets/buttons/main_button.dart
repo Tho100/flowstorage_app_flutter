@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,11 @@ class MainButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: GlobalsStyle.btnPageTextStyle,
+          style: const TextStyle(
+            color: ThemeColor.justWhite,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
         ),
       ),
     );

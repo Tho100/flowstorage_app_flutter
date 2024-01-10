@@ -1,6 +1,6 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/widgets/main_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

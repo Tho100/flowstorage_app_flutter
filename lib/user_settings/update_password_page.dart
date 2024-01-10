@@ -3,7 +3,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
-import 'package:flowstorage_fsc/widgets/main_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/verify_auth.dart';

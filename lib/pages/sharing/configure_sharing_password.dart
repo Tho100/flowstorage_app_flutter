@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/default_switch.dart';
-import 'package:flowstorage_fsc/widgets/settings_button.dart';
+import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
