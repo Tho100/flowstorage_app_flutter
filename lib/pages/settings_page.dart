@@ -288,7 +288,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                   signOutOnPressed: () async {
                     _clearUserStorageData();
                     await LocalStorageModel()
-                      .deleteAutoLoginAndOfflineFiles(userData.username);
+                      .deleteAutoLoginAndOfflineFiles(userData.username, false);
 
                     if(!mounted) return;
                     NavigatePage.replacePageMain(context);

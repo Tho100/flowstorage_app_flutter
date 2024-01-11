@@ -41,7 +41,7 @@ class BottomTrailingSorting {
         
         const Divider(color: ThemeColor.lightGrey),
       
-        if(tempData.origin != OriginFile.offline)
+        if(tempData.origin != OriginFile.offline && tempData.origin != OriginFile.sharedMe && tempData.origin != OriginFile.sharedOther)
         ElevatedButton(
           onPressed: sortUploadDateOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
