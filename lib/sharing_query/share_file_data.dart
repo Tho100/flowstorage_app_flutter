@@ -22,7 +22,6 @@ class ShareFileData {
     required String? fileName,
     required String? comment,
     required dynamic fileValue,
-    required String? fileType,
     dynamic thumbnail,
   }) async {
 
@@ -31,8 +30,8 @@ class ShareFileData {
       final uploadDate = dateNow.format(DateTime.now());
 
       const insertSharingData =
-      'INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, FILE_EXT, CUST_THUMB, CUST_COMMENT) '
-      'VALUES (:to, :from, :filename, :fileval, :date, :type, :thumbnail, :comment)';
+      'INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, CUST_THUMB, CUST_COMMENT) '
+      'VALUES (:to, :from, :filename, :fileval, :date, :thumbnail, :comment)';
 
       final params = {
         'to': receiverUsername!,
@@ -40,7 +39,6 @@ class ShareFileData {
         'fileval': fileValue!,
         'filename': fileName!,
         'date': uploadDate,
-        'type': fileType!,
         'thumbnail': thumbnail ?? '',
         'comment': comment ?? '',
       };
@@ -57,7 +55,6 @@ class ShareFileData {
     required String? fileName,
     required String? comment,
     required dynamic fileData,
-    required String? fileType,
     dynamic thumbnail,
   }) async {
 
@@ -68,7 +65,6 @@ class ShareFileData {
         fileName: fileName,
         comment: comment,
         fileValue: fileData,
-        fileType: fileType,
         thumbnail: thumbnail,
       );
 
