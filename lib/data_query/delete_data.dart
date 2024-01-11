@@ -146,7 +146,6 @@ class DeleteData {
       "DELETE FROM information WHERE CUST_USERNAME = :username",
       "DELETE FROM cust_type WHERE CUST_FROM = :username",
       "DELETE FROM sharing_info WHERE CUST_USERNAME = :username"
-      "DELETE FROM upload_info_directory WHERE CUST_USERNAME = :username",
       "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username",
       "DELETE FROM cust_sharing WHERE CUST_FROM = :username",
       "DELETE FROM cust_sharing WHERE CUST_TO = :username",

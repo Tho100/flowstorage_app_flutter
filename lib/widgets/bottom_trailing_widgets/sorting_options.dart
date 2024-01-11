@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -41,7 +42,8 @@ class BottomTrailingSorting {
         
         const Divider(color: ThemeColor.lightGrey),
       
-        if(tempData.origin != OriginFile.offline && tempData.origin != OriginFile.sharedMe && tempData.origin != OriginFile.sharedOther)
+
+        if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe, OriginFile.sharedOther]))
         ElevatedButton(
           onPressed: sortUploadDateOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,

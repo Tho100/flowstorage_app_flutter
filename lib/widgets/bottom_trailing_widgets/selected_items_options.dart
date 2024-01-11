@@ -66,29 +66,26 @@ class BottomTrailingSelectedItems {
             ),
           ),
 
-          Visibility(
-            visible: VisibilityChecker.setNotVisible(OriginFile.offline) 
-                  && itemsName.every((name) => !Globals.videoType.contains(name.split('.').last)),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                makeAoOnPressed();
-              },
-              style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-                children: [
-                  Icon(Icons.offline_bolt_outlined),
-                  SizedBox(width: 15.0),
-                  Text(
-                    'Make available offline',
-                    style: GlobalsStyle.btnBottomDialogTextStyle,
-                  ),
-                ],
-              ),
+          if(WidgetVisibility.setNotVisible(OriginFile.offline) && itemsName.every((name) => !Globals.videoType.contains(name.split('.').last)))
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              makeAoOnPressed();
+            },
+            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+            child: const Row(
+              children: [
+                Icon(Icons.offline_bolt_outlined),
+                SizedBox(width: 15.0),
+                Text(
+                  'Make available offline',
+                  style: GlobalsStyle.btnBottomDialogTextStyle,
+                ),
+              ],
             ),
           ),
         
-          if(tempData.origin == OriginFile.home)
+          if(WidgetVisibility.setVisibile(OriginFile.home))
           ElevatedButton(
             onPressed: moveOnPressed,
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,

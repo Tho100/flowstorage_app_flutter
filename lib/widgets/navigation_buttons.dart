@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -50,7 +51,7 @@ class NavigationButtons extends StatelessWidget {
           ? const SizedBox(height: 0)
           : const SizedBox(height: 10),
     
-          if(tempData.origin != OriginFile.public) ... [
+          if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
             Row(
             
               children: [
@@ -162,7 +163,7 @@ class NavigationButtons extends StatelessWidget {
     
               const Spacer(),
     
-              if(tempData.origin != OriginFile.public)
+              if(WidgetVisibility.setNotVisible(OriginFile.public))
               ElevatedButton(
                 onPressed: () {
                   isStaggeredListViewSelected.value = !isStaggeredListViewSelected.value;
