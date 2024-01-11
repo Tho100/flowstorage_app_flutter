@@ -76,7 +76,7 @@ class BottomTrailingOptions {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if(tempData.origin == OriginFile.public) ... [
+                    if(WidgetVisibility.setVisibile(OriginFile.public)) ... [
                       const SizedBox(height: 2),
                       Text(
                         "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}",
@@ -97,24 +97,22 @@ class BottomTrailingOptions {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        Visibility(
-          visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]),
-          child: ElevatedButton(
-            onPressed: onRenamePressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: Row(
-              children: [
-                const Icon(Icons.edit_outlined),
-                const SizedBox(width: 15.0),
-                Text(
-                  fileName.contains('.') ? "Rename file" : "Rename directory",
-                  style: GlobalsStyle.btnBottomDialogTextStyle,
-                ),
-              ],
-            ),
+        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
+        ElevatedButton(
+          onPressed: onRenamePressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: Row(
+            children: [
+              const Icon(Icons.edit_outlined),
+              const SizedBox(width: 15.0),
+              Text(
+                fileName.contains('.') ? "Rename file" : "Rename directory",
+                style: GlobalsStyle.btnBottomDialogTextStyle,
+              ),
+            ],
           ),
         ),
-
+        
         if(fileName.contains('.'))
         ElevatedButton(
           onPressed: onOpenWithPressed,
@@ -131,51 +129,44 @@ class BottomTrailingOptions {
           ),
         ), 
 
-        Visibility(
-          visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,
-          child: ElevatedButton(
-            onPressed: onSharingPressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-              child: const Row(
-              children: [
-                Icon(Icons.share_outlined),
-                SizedBox(width: 15.0),
-                Text('Share file',
-                  style: GlobalsStyle.btnBottomDialogTextStyle
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        Visibility(
-          visible: VisibilityChecker.setNotVisible(OriginFile.offline),
-          child: const Divider(color: ThemeColor.lightGrey)
-        ),
-
-        Visibility(
-          visible: VisibilityChecker.setNotVisible(OriginFile.offline) && fileName.split('.').last != fileName,
-          child: ElevatedButton(
-            onPressed: onAOPressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+        if(WidgetVisibility.setNotVisible(OriginFile.offline))
+        ElevatedButton(
+          onPressed: onSharingPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
-              children: [
-                Icon(Icons.offline_bolt_outlined),
-                SizedBox(width: 15.0),
-                Text('Make available offline',
-                  style: GlobalsStyle.btnBottomDialogTextStyle
-                ),
-              ],
-            ),
+            children: [
+              Icon(Icons.share_outlined),
+              SizedBox(width: 15.0),
+              Text('Share file',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
+          ),
+        ),  
+
+        if(WidgetVisibility.setNotVisible(OriginFile.offline))
+        const Divider(color: ThemeColor.lightGrey),
+
+        if(WidgetVisibility.setNotVisible(OriginFile.offline))
+        ElevatedButton(
+          onPressed: onAOPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.offline_bolt_outlined),
+              SizedBox(width: 15.0),
+              Text('Make available offline',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
           ),
         ),
+        
 
-        Visibility(
-          visible: fileName.contains('.'),
-          child: const Divider(color: ThemeColor.lightGrey)
-        ),
+        if(fileName.contains('.'))
+        const Divider(color: ThemeColor.lightGrey),
 
-        if(tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching)
+        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);

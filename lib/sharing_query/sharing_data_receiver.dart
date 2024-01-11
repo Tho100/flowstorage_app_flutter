@@ -35,8 +35,11 @@ class SharingDataReceiver {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String originFrom) async {
 
-    final query =
-        'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM cust_sharing WHERE ${originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO'} = :username';
+    final selectUsernameColumn = originFrom == 'sharedFiles' ? 'CUST_TO' : 'CUST_FROM';
+    final selectSharedColumn = originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO';
+
+    final query = 
+      'SELECT CUST_FILE_PATH, $selectUsernameColumn, UPLOAD_DATE FROM cust_sharing WHERE $selectSharedColumn = :username';
     final params = {'username': username};
 
     try {
@@ -48,23 +51,21 @@ class SharingDataReceiver {
 
       Uint8List fileBytes = Uint8List(0);
 
-      String encryptedFileNames;
-      String decryptedFileNames;
-      String fileType;
-
       for (final row in result.rows) {
 
-        encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
-        decryptedFileNames = encryption.decrypt(encryptedFileNames);
-        fileType = decryptedFileNames.split('.').last.toLowerCase();
+        final sharedUsername = row.assoc()[selectUsernameColumn];
+
+        final encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
+        final decryptedFileNames = encryption.decrypt(encryptedFileNames);
+        final fileType = decryptedFileNames.split('.').last.toLowerCase();
 
         if(Globals.imageType.contains(fileType)) {
 
-          final retrieveEncryptedMetadata =
+          final querySelectImage =
                 'SELECT CUST_FILE FROM cust_sharing WHERE ${originFrom == 'sharedFiles' ? 'CUST_FROM' : 'CUST_TO'} = :username AND CUST_FILE_PATH = :filename';
 
           final encryptedBase64 = await retrieveFiles(
-            query: retrieveEncryptedMetadata, 
+            query: querySelectImage, 
             returnedColumn: "CUST_FILE", 
             fileName: encryptedFileNames, 
             username: username, 
@@ -98,7 +99,6 @@ class SharingDataReceiver {
         final dateComponents = dateValueWithDashes.split('-');
         
         final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-        final difference = now.difference(date).inDays;
 
         final formattedDate = DateFormat('MMM d yyyy').format(date);
         final buffer = ByteData.view(fileBytes.buffer);
@@ -107,7 +107,7 @@ class SharingDataReceiver {
 
         final data = {
           'name': decryptedFileNames,
-          'date': '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate',
+          'date': '$sharedUsername ${GlobalsStyle.dotSeperator} $formattedDate',
           'file_data': bufferedFileBytes,
         };
         
@@ -122,4 +122,5 @@ class SharingDataReceiver {
     }
 
   }
+  
 }

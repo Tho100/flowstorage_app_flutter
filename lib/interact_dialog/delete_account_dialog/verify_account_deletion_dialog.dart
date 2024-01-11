@@ -173,7 +173,7 @@ class VerifyAccountDeletionDialog {
 
       await DeleteData().deleteAccount();
       await LocalStorageModel()
-        .deleteAutoLoginAndOfflineFiles(userData.username);
+        .deleteAutoLoginAndOfflineFiles(userData.username, true);
 
       clearUserStorageData();
 

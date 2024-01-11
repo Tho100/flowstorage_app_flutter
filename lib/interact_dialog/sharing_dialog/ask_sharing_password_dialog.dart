@@ -17,7 +17,6 @@ class SharingPassword {
     required String sendTo, 
     required String fileName, 
     required String comment, 
-    required String fileType, 
     required String authInput,
     required dynamic fileData, 
     required dynamic thumbnail,
@@ -97,7 +96,6 @@ class SharingPassword {
                     fileName: fileName, 
                     comment: comment, 
                     fileData: fileData, 
-                    fileType: fileType, 
                     thumbnail: thumbnail
                   );
 

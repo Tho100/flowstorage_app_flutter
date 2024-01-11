@@ -2274,10 +2274,19 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
   
         return [
+          if(tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe) 
+          WidgetSpan(
+            child: Transform.translate(
+              offset: const Offset(-4, 0),
+              child: const Icon(Icons.person, color: ThemeColor.thirdWhite, size: 16)
+            )
+          ),
+
           TextSpan(
             text: tempData.origin == OriginFile.public ? psFilesCategoryTags : originalDateValues,
             style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
           ),
+
           if (tempData.origin == OriginFile.public)
           TextSpan(
             text: " ${psStorageData.psTagsList[index]}",

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -215,7 +216,7 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
               ),
   
-              if(tempData.origin != OriginFile.offline && tempData.origin != OriginFile.sharedOther) ... [ 
+              if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedOther])) ... [ 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

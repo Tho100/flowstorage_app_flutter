@@ -169,12 +169,15 @@ class LocalStorageModel {
 
   }
 
-  Future<void> deleteAutoLoginAndOfflineFiles(String username) async {
+  Future<void> deleteAutoLoginAndOfflineFiles(String username, bool deleteLocalUsernames) async {
 
     final getDirApplication = await getApplicationDocumentsDirectory();
 
     await deleteLocalAccountData();
-    await deleteLocalAccountUsernames(username);
+    
+    if(deleteLocalUsernames) {
+      await deleteLocalAccountUsernames(username);
+    }
 
     final offlineDirs = Directory('${getDirApplication.path}/offline_files');
     

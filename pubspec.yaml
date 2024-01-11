@@ -43,7 +43,7 @@ dependencies:
   share_plus: ^7.0.0
   archive: ^3.4.3
   flutter_sharing_intent: ^1.1.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

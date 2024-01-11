@@ -36,7 +36,6 @@ class ProcessFileSharing {
     required String shareToName, 
     required String encryptedFileName, 
     required String shareToComment, 
-    required String fileExtension, 
     required dynamic fileData,
     required dynamic thumbnail,
   }) async {
@@ -46,9 +45,9 @@ class ProcessFileSharing {
       fileName: encryptedFileName, 
       comment: shareToComment,
       fileData: fileData,
-      fileType: fileExtension,
       thumbnail: thumbnail,
     );
+
   }
 
   Future<Uint8List> _callFileBytesData(String selectedFilename, String tableName) async {
@@ -140,7 +139,6 @@ class ProcessFileSharing {
           fileName: encryptedFileName,
           comment: shareToComment,
           fileData: encryptedFileData,
-          fileType: '.$fileExtension',
           authInput: getSharingAuth,
           thumbnail: thumbnailBase64 ?? '',
           context: context,
@@ -171,7 +169,6 @@ class ProcessFileSharing {
       shareToName: username,
       encryptedFileName: encryptedFileName, 
       shareToComment: shareToComment, 
-      fileExtension: '.$fileExtension', 
       fileData: encryptedFileData,
       thumbnail: thumbnailBase64 ?? '',
     );

@@ -331,7 +331,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                   ),
                   const SizedBox(width: 18),
                   buildSkipForward(),
-                  const SizedBox(width: 35),
+                  const SizedBox(width: 32),
                   buildDurationText(videoDurationNotifier),
                 ],
               ),

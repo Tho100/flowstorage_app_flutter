@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -746,7 +747,7 @@ class PreviewFileState extends State<PreviewFile> {
               )),
             ),
 
-            if(tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching)
+            if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
             Padding(
               padding: const EdgeInsets.only(left: 12.0, right: 12.0),
               child: Text(

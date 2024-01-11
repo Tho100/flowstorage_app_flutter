@@ -47,24 +47,22 @@ class BottomTrailingAddItem {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        Visibility(
-          visible: VisibilityChecker.setNotVisibleList([OriginFile.offline, OriginFile.public]),
-          child: ElevatedButton(
-            onPressed: galleryOnPressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.photo_outlined),
-                SizedBox(width: 15.0),
-                Text(
-                  'Upload from gallery',
-                  style: GlobalsStyle.btnBottomDialogTextStyle
-                ),
-              ],
-            ),
+        if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.public]))
+        ElevatedButton(
+          onPressed: galleryOnPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.photo_outlined),
+              SizedBox(width: 15.0),
+              Text(
+                'Upload from gallery',
+                style: GlobalsStyle.btnBottomDialogTextStyle
+              ),
+            ],
           ),
         ),
-
+        
         ElevatedButton(
           onPressed: fileOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -80,9 +78,8 @@ class BottomTrailingAddItem {
           ),
         ),
 
-        Visibility(
-          visible: VisibilityChecker.setNotVisibleList([OriginFile.offline , OriginFile.public, OriginFile.directory, OriginFile.folder]),
-          child: ElevatedButton(
+        if(WidgetVisibility.setVisibile(OriginFile.home))
+        ElevatedButton(
           onPressed: folderOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
@@ -95,9 +92,8 @@ class BottomTrailingAddItem {
             ],
           ),
         ),
-      ),
 
-      if(tempData.origin != OriginFile.public) ... [
+        if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(
@@ -116,25 +112,23 @@ class BottomTrailingAddItem {
         ),
       ],
 
-      Visibility(
-        visible: VisibilityChecker.setNotVisibleList([OriginFile.public]),
-        child: ElevatedButton(
-          onPressed: scannerOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.center_focus_strong_outlined),
-              SizedBox(width: 15.0),
-              Text(
-                'Scan document',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+      if(WidgetVisibility.setNotVisible(OriginFile.public))
+      ElevatedButton(
+        onPressed: scannerOnPressed,
+        style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+        child: const Row(
+          children: [
+            Icon(Icons.center_focus_strong_outlined),
+            SizedBox(width: 15.0),
+            Text(
+              'Scan document',
+              style: GlobalsStyle.btnBottomDialogTextStyle,
+            ),
+          ],
         ),
       ),
-
-      if(tempData.origin != OriginFile.public) ... [
+    
+      if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(
@@ -152,10 +146,9 @@ class BottomTrailingAddItem {
             ),
           ),
         ],    
-    
-        Visibility(
-          visible: VisibilityChecker.setNotVisibleList([OriginFile.public, OriginFile.directory, OriginFile.folder, OriginFile.offline]),
-          child: ElevatedButton(
+
+        if(WidgetVisibility.setVisibile(OriginFile.home))
+        ElevatedButton(
           onPressed: directoryOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
@@ -169,8 +162,7 @@ class BottomTrailingAddItem {
               ],
             ),
           ),
-        ),
-
+        
         const SizedBox(height: 20),
         
       ],
