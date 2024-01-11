@@ -78,7 +78,7 @@ class UpdateTextData {
   }
 
   Future<void> _updateFolderData() async {
-    await _updateDatabase("UPDATE folder_upload_info SET CUST_FILE = :newvalue WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname", {
+    await _updateDatabase("UPDATE folder_upload_info SET CUST_FILE = :newvalue WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_NAME = :foldname", {
       "username": userName,
       "foldname": encryption.encrypt(tempData.folderName),
     });

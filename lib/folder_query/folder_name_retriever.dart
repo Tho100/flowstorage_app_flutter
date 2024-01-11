@@ -7,7 +7,7 @@ class FolderRetriever {
 
   Future<List<String>> retrieveParams(String? custUsername) async {
 
-    const query = 'SELECT FOLDER_TITLE FROM folder_upload_info WHERE CUST_USERNAME = :username';
+    const query = 'SELECT FOLDER_NAME FROM folder_upload_info WHERE CUST_USERNAME = :username';
     final params = {'username': custUsername};
 
     try {
@@ -17,7 +17,7 @@ class FolderRetriever {
       final retrievedFolderName = await conn.execute(query, params);
       
       return retrievedFolderName.rows
-        .map((row) => encryption.decrypt(row.assoc()['FOLDER_TITLE']))
+        .map((row) => encryption.decrypt(row.assoc()['FOLDER_NAME']))
         .toList();
 
     } catch (err) {

@@ -47,7 +47,7 @@ class RenameData {
       break;
 
       case OriginFile.folder:
-        const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
+        const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle";
         query = updateFileNameQuery;
         params =  {
           'username': userData.username,

@@ -11,14 +11,12 @@ class CreateFolder {
   final String titleFolder;
   final List<String> fileValues;
   final List<String> fileNames;
-  final List<String> fileTypes;
   final List<dynamic>? videoThumbnail;
 
   CreateFolder({
     required this.titleFolder,
     required this.fileValues,
     required this.fileNames,
-    required this.fileTypes,
     required this.videoThumbnail
   });
 
@@ -32,8 +30,7 @@ class CreateFolder {
     
     final conn = await SqlConnection.initializeConnection();
 
-    const query = 
-    "INSERT INTO folder_upload_info VALUES (:folder_name,:username,:file_data,:file_type,:upload_date,:file_name,:thumbnail)";
+    const query = "INSERT INTO folder_upload_info VALUES (:folder_name, :username, :file_data, :upload_date, :file_name, :thumbnail)";
 
     final encryptedFolderName = encryption.encrypt(titleFolder);
 
@@ -50,7 +47,6 @@ class CreateFolder {
             : encryption.encrypt(fileValues[i]),
 
         'file_name': encryption.encrypt(fileNames[i]),
-        'file_type': fileTypes[i],
         'upload_date': formattedDate,
 
         'thumbnail': videoThumbnail != null && videoThumbnail!.length > i
