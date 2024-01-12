@@ -127,7 +127,6 @@ class MoveFilePageState extends State<MoveFilePage> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () async {
-              selectedDirectory = directoriesList[index];
               _updateCheckboxState(index, true);
             },
             child: Ink(
@@ -181,9 +180,9 @@ class MoveFilePageState extends State<MoveFilePage> {
         for (int i = 0; i < checkedDirectory.length; i++) {
           if (i != index) {
             checkedDirectory[i] = false;
-            selectedDirectory = directoriesList[index];
           }
         }
+        selectedDirectory = directoriesList[index];
 
       } else {
         if (checkedDirectory.every((element) => !element)) {
