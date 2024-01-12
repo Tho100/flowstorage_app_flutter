@@ -125,13 +125,12 @@ class InsertData {
     String fileName,
   ) async {
 
-    final fileExtension = ".${fileName.split('.').last}";
     final encryptedDirName = encryption.encrypt(directoryName);
 
-    const insertFileDataQuery = 'INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, FILE_EXT, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const insertFileDataQuery = 'INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?)';
 
     await conn.prepare(insertFileDataQuery)
-        ..execute([userName, encryptedFileData, encryptedDirName, encryptedFilePath, dateNow, fileExtension, thumb]);
+        ..execute([userName, encryptedFileData, encryptedDirName, encryptedFilePath, dateNow, thumb]);
   }
 
   Future<void> _insertFileInfoPs(

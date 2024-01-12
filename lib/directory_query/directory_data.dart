@@ -47,7 +47,10 @@ class DirectoryDataReceiver {
     final encryptedDirectoryName = encryption.encrypt(dirName);
 
     const querySelectMetadata = 'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname';
-    final params = {'username': userData.username,'dirname': encryptedDirectoryName};
+    final params = {
+      'username': userData.username, 
+      'dirname': encryptedDirectoryName
+    };
 
     const querySelectThumbnail = 'SELECT CUST_THUMB FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename';
     const querySelectImage = 'SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename';
@@ -67,7 +70,8 @@ class DirectoryDataReceiver {
 
         encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
         decryptedFileNames = encryption.decrypt(encryptedFileNames);
-        fileType = decryptedFileNames.split('.').last.toLowerCase();
+
+        fileType = decryptedFileNames.split('.').last;
 
         if(Globals.imageType.contains(fileType)) {
 
@@ -126,5 +130,6 @@ class DirectoryDataReceiver {
       Logger().e("Exception from retrieveParams {directory_data}", err, st);
       return <Map<String, dynamic>>[];
     }
+    
   }
 }

@@ -253,31 +253,30 @@ class MoveFilePageState extends State<MoveFilePage> {
     
     final conn = await SqlConnection.initializeConnection();
 
-    const query = "INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, FILE_EXT, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const query = "INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?)";
 
     final encryptedDirectoryName = encryption.encrypt(selectedDirectory);
 
     for(int i=0; i<widget.fileNames.length; i++) {
       
-      final fileTypeNew = widget.fileNames[i].split('.').last;
-      final fileType = ".${widget.fileNames[i].split('.').last}";
+      final fileType = widget.fileNames[i].split('.').last;
 
-      final encryptedData = specialFile.ignoreEncryption(fileTypeNew) 
+      final encryptedData = specialFile.ignoreEncryption(fileType) 
         ? widget.fileBase64Data[i] 
         : encryption.encrypt(widget.fileBase64Data[i]);
         
       final encryptedFileName = encryption.encrypt(widget.fileNames[i]);
 
-      if(Globals.videoType.contains(fileTypeNew)) {
+      if(Globals.videoType.contains(fileType)) {
         final thumbnailIndex = storageData.fileNamesFilteredList.indexOf(widget.fileNames[i]);
         final thumbnailBytes = storageData.imageBytesFilteredList.elementAt(thumbnailIndex);
         final thumbnail = base64.encode(thumbnailBytes!);
         await conn.prepare(query)
-          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, fileType, thumbnail]);
+          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, thumbnail]);
 
       } else {
         await conn.prepare(query)
-          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, fileType, null]);
+          ..execute([userData.username, encryptedData, encryptedDirectoryName, encryptedFileName, dateNow, null]);
 
       }
 
