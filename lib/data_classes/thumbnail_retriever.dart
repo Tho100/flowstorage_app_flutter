@@ -95,7 +95,7 @@ class ThumbnailGetter {
 
     } else if (tempData.origin == OriginFile.folder) {
       
-      const query = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname";
+      const query = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_NAME = :foldname";
       final params = {
         'username': userData.username,'filename': encryptedFileName,
         'foldname': subDirName

@@ -45,7 +45,7 @@ class RetrieveData {
         break;
 
       case OriginFile.folder:
-        query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
+        query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle AND CUST_FILE_PATH = :filename";
         queryParams = {"username": username, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
         break;
 

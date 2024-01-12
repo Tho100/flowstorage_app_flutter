@@ -47,10 +47,10 @@ class FolderDataReceiver {
 
     final conn = await SqlConnection.initializeConnection();
         
-    const querySelectThumbnail = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
-    const querySelectImage = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldname AND CUST_FILE_PATH = :filename";
+    const querySelectThumbnail = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldname AND CUST_FILE_PATH = :filename";
+    const querySelectImage = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldname AND CUST_FILE_PATH = :filename";
 
-    const query = 'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM folder_upload_info WHERE FOLDER_TITLE = :foldtitle AND CUST_USERNAME = :username';
+    const query = 'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM folder_upload_info WHERE FOLDER_NAME = :foldtitle AND CUST_USERNAME = :username';
     final params = {'username': username,'foldtitle': encryption.encrypt(folderTitle)};
 
     try {

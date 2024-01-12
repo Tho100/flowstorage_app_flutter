@@ -46,7 +46,7 @@ class DeleteData {
         break;
 
       case OriginFile.folder:
-        query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_TITLE = :foldname";
+        query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_NAME = :foldname";
         params = {'username': userData.username, 'filename': encryptedFileName, 'foldname': EncryptionClass().encrypt(tempData.folderName)};
         break;
 
@@ -102,7 +102,7 @@ class DeleteData {
         break;
 
       case OriginFile.folder:
-        query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle AND CUST_FILE_PATH = :filename";
+        query = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle AND CUST_FILE_PATH = :filename";
         params = {'username': username!, 'foldtitle': EncryptionClass().encrypt(tempData.folderName), 'filename': fileName!};
         break;
 

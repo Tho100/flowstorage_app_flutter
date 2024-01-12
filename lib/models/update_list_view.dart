@@ -63,7 +63,6 @@ class UpdateListView {
     required List<File> files
     }) async {
 
-    final fileTypes = <String>[];
     final videoThumbnails = <String>[];
     final fileNames = <String>[];
     final fileValues = <String>[];
@@ -103,7 +102,6 @@ class UpdateListView {
 
       }
 
-      fileTypes.add(getExtension);
       fileNames.add(getFileName);
       
     }
@@ -112,7 +110,6 @@ class UpdateListView {
       titleFolder: folderName,
       fileValues: fileValues,
       fileNames: fileNames,
-      fileTypes: fileTypes,
       videoThumbnail: videoThumbnails,
     ).create();
 

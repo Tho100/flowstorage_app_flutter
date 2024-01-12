@@ -17,7 +17,7 @@ class DeleteFolder {
 
   Future<void> delete() async {
 
-    const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_TITLE = :foldtitle";
+    const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle";
     final params = {
       'username': userData.username, 
       'foldtitle': EncryptionClass().encrypt(folderName)
