@@ -14,7 +14,12 @@ class CallPsLoading {
   void startLoading() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SkeletonLoadingPs())
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return const SkeletonLoadingPs();
+        },
+        reverseTransitionDuration: Duration.zero
+      ),
     );
   }
 
