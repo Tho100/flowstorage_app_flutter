@@ -620,7 +620,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
-    if (directoryPath != null) {
+    if (directoryPath!.isNotEmpty) {
 
       await functionModel.multipleFilesDownload(
         count: count, 
