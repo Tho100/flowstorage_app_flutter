@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/helper/format_date.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
@@ -102,19 +101,14 @@ class FolderDataReceiver {
         }
 
         final dateValue = row.assoc()['UPLOAD_DATE']!;
-        final dateValueWithDashes = dateValue.replaceAll('/', '-');
-        final dateComponents = dateValueWithDashes.split('-');
-        
-        final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-        final difference = dateNow.difference(date).inDays;
-        final formattedDate = DateFormat('MMM d yyyy').format(date);
+        final formattedDate = FormatDate().formatDifference(dateValue);
 
         final buffer = ByteData.view(fileBytes.buffer);
         final bufferedFileBytes = Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
 
         final data = {
           'name': decryptedFileNames,
-          'date': '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate',
+          'date': formattedDate,
           'file_data': bufferedFileBytes,
         };
         dataSet.add(data);

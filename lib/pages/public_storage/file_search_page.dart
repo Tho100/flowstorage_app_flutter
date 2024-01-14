@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
+import 'package:flowstorage_fsc/helper/format_date.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -570,21 +571,13 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       final fileNameData = encryption.decrypt(rowAssoc['CUST_FILE_PATH']!);
       final imageData = assetImage;
 
-      final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
-      final dateComponents = dateValueWithDashes.split('-');
-
-      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-      final now = DateTime.now();
-      final difference = now.difference(date).inDays;
-
-      final formattedDate = DateFormat('MMM d yyyy').format(date);
-      final dateString = '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+      final formattedDate = FormatDate().formatDifference(uploadDateData);
 
       fileDataList.add({
         'title': titleData, 
         'image': imageData,
         'file_name': fileNameData,
-        'upload_date': dateString,
+        'upload_date': formattedDate,
         'uploader_name': usernameData,
       });
 
@@ -610,21 +603,13 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             ? encryption.decrypt(rowAssoc['CUST_FILE']!) 
             : rowAssoc['CUST_THUMB']!;
 
-      final dateValueWithDashes = uploadDateData.replaceAll('/', '-');
-      final dateComponents = dateValueWithDashes.split('-');
-
-      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-      final now = DateTime.now();
-      final difference = now.difference(date).inDays;
-
-      final formattedDate = DateFormat('MMM d yyyy').format(date);
-      final dateString = '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+      final formattedDate = FormatDate().formatDifference(uploadDateData);
 
       fileDataList.add({
         'title': titleData, 
         'image': imageData,
         'file_name': fileNameData,
-        'upload_date': dateString,
+        'upload_date': formattedDate,
         'uploader_name': usernameData,
       });
 

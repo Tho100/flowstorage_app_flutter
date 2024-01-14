@@ -1,7 +1,7 @@
+import 'package:flowstorage_fsc/helper/format_date.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 class DateGetterPs {
@@ -22,16 +22,9 @@ class DateGetterPs {
       final dateValue = res.assoc()['UPLOAD_DATE']!;
       final tagValue = res.assoc()['CUST_TAG']!;
 
-      final dateValueWithDashes = dateValue.replaceAll('/', '-');
-      final dateComponents = dateValueWithDashes.split('-');
+      final formattedDate = FormatDate().formatDifference(dateValue);
 
-      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-      final now = DateTime.now();
-      final difference = now.difference(date).inDays;
-
-      final formattedDate = DateFormat('MMM d yyyy').format(date);
-
-      storeDateValues.add('$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
+      storeDateValues.add('$formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
 
     }
 
@@ -51,16 +44,9 @@ class DateGetterPs {
       final dateValue = res.assoc()['UPLOAD_DATE']!;
       final tagValue = res.assoc()['CUST_TAG']!;
 
-      final dateValueWithDashes = dateValue.replaceAll('/', '-');
-      final dateComponents = dateValueWithDashes.split('-');
+      final formattedDate = FormatDate().formatDifference(dateValue);
 
-      final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
-      final now = DateTime.now();
-      final difference = now.difference(date).inDays;
-
-      final formattedDate = DateFormat('MMM d yyyy').format(date);
-
-      storeDateValues.add('$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
+      storeDateValues.add('$formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
 
     }
 
