@@ -1,7 +1,5 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/password_reset_page.dart';
@@ -99,13 +97,56 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
           onPressed: () async {
             await executeChanges(
               email: emailController.text, 
-              recoveryToken: recoveryController.text, 
+              recoveryTokenInput: recoveryController.text, 
             );
           }
         ),
 
       ],
     );
+  }
+
+  Future<void> executeChanges({
+    required String email, 
+    required String recoveryTokenInput, 
+  }) async {
+
+    try {
+
+      if(email.isEmpty || recoveryTokenInput.isEmpty) {
+        return;
+      }
+
+      final conn = await SqlConnection.initializeConnection();
+
+      final username = await UserDataRetriever()
+        .retrieveUsername(email: email, conn: conn);
+
+      final recoveryToken = await UserDataRetriever()
+        .retrieveRecoveryToken(username);
+
+      if(recoveryToken != recoveryTokenInput) {
+        CustomAlertDialog.alertDialog("Invalid recovery key.");
+        return;
+      }  
+
+      emailController.clear();
+      recoveryController.clear();      
+
+      if(mounted) {
+        Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context) => ResetPasswordPage(
+            custUsername: widget.username, custEmail: email
+            )
+          )
+        );
+      }
+
+    } catch (err) {
+      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to process your recovery key. Please try again later");
+    }
+
   }
 
   @override
@@ -136,58 +177,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         ),
       ),
     );
-  }
-
-  Future<String> retrieveRecovery(String username) async {
-
-    const selectAuth = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
-    final params = {'username': username};
-
-    final returnedAuth = await Crud().select(
-      query: selectAuth, 
-      returnedColumn: "RECOV_TOK", 
-      params: params
-    );
-
-    return EncryptionClass().decrypt(returnedAuth);
-
-  }
-
-  Future<void> executeChanges({
-    required String email, 
-    required String recoveryToken, 
-  }) async {
-
-    try {
-
-      if(email.isEmpty || recoveryToken.isEmpty) {
-        return;
-      }
-
-      final conn = await SqlConnection.initializeConnection();
-
-      final username = await UserDataRetriever()
-        .retrieveUsername(email: email, conn: conn);
-
-      if(await retrieveRecovery(username) != recoveryToken) {
-        if(!mounted) return;
-        CustomAlertDialog.alertDialog("Invalid recovery key.");
-        return;
-      }  
-
-      emailController.clear();
-      recoveryController.clear();      
-
-      if(!mounted) return;
-      Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => 
-        ResetPasswordPage(
-          custUsername: widget.username, custEmail: email)));
-
-    } catch (exportBackupFailed) {
-      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to process your recovery key. Please try again later");
-    }
-
   }
 
 }

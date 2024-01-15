@@ -1,6 +1,6 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 
-class Verification {
+class AuthVerification {
 
   Future<bool> notEqual(String getUsername, String getAuthString, String columnName) async {
 
