@@ -161,9 +161,7 @@ class SplashScreenState extends State<SplashScreen> {
         } else {
 
           final conn = await SqlConnection.initializeConnection();
-          
-          if(!mounted) return;
-          
+                    
           tempData.origin == OriginFile.offline 
           ? await quickActionsModel.offline()
           : await _callFileData(

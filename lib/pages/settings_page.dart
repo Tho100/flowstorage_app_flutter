@@ -264,7 +264,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                   await dataCaller.homeData(isFromStatistics: true);
                 }
 
-                if(!mounted) return;
                 NavigatePage.goToPageStatistics();
               }
             ),
