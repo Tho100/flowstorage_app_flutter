@@ -1,3 +1,5 @@
+import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 class UserDataRetriever {
@@ -71,6 +73,21 @@ class UserDataRetriever {
     };
 
     return values;
+
+  }
+
+  Future<String> retrieveRecoveryToken(String username) async {
+
+    const selectAuth = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
+    final params = {'username': username};    
+
+    final returnAuth = await Crud().select(
+      query: selectAuth, 
+      returnedColumn: "RECOV_TOK", 
+      params: params
+    );
+
+    return EncryptionClass().decrypt(returnAuth);
 
   }
 

@@ -1,6 +1,5 @@
 import 'package:flowstorage_fsc/api/save_api.dart';
-import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
@@ -119,21 +118,6 @@ class BackupRecovery extends StatelessWidget {
     );
   }
 
-  Future<String> _getBackup(String username) async {
-
-    const selectAuth = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
-    final params = {'username': username};    
-
-    final returnAuth = await Crud().select(
-      query: selectAuth, 
-      returnedColumn: "RECOV_TOK", 
-      params: params
-    );
-
-    return EncryptionClass().decrypt(returnAuth);
-
-  }
-
   Future<void> _executeChanges(String auth0,String auth1, BuildContext context) async {
 
     try {
@@ -144,19 +128,26 @@ class BackupRecovery extends StatelessWidget {
         return;
       }
 
-      if(await _incorrectAuth(userData.username, AuthModel().computeAuth(auth0),"CUST_PIN")) {
+      final pinIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(auth0), "CUST_PIN");
+
+      if(pinIsIncorrect) {
         CustomAlertDialog.alertDialog("Entered PIN is incorrect.");
         return;
       }
 
-      if(await _incorrectAuth(userData.username, AuthModel().computeAuth(auth1),"CUST_PASSWORD")) {
+      final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(auth1), "CUST_PASSWORD");
+
+      if(passwordIsIncorrect) {
         CustomAlertDialog.alertDialog("Password is incorrect.");
         return;
 
       } 
 
-      final getBackupData = await _getBackup(userData.username);
-      final saveBackup = await SaveApi().saveFile(fileName: "FlowstorageRECOVERYKEY.txt", fileData: getBackupData);
+      final recoveryToken = await UserDataRetriever()
+        .retrieveRecoveryToken(userData.username);
+
+      final saveBackup = await SaveApi()
+        .saveFile(fileName: "FlowstorageRECOVERYKEY.txt", fileData: recoveryToken);
 
       CustomFormDialog.startDialog(
         "Recovery key has been backed up",
@@ -165,11 +156,6 @@ class BackupRecovery extends StatelessWidget {
     } catch (err) {
       CustomAlertDialog.alertDialog("Failed to backup your recovery key.");
     }
-  }
-
-  Future<bool> _incorrectAuth(String getUsername,String getAuthString,String originFrom) async {
-
-    return await Verification().notEqual(getUsername, getAuthString, originFrom);
 
   }
 

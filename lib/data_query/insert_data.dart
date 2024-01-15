@@ -29,6 +29,20 @@ class InsertData {
     required dynamic videoThumbnail,
   }) async {
 
+    const defaultHomeTables = {
+      GlobalsTable.homeImage, GlobalsTable.homeText, 
+      GlobalsTable.homePdf, GlobalsTable.homePtx, 
+      GlobalsTable.homeExcel, GlobalsTable.homeExe, 
+      GlobalsTable.homeAudio, GlobalsTable.homeWord
+    };
+
+    const defaultPsTables = {
+      GlobalsTable.psImage, GlobalsTable.psText, 
+      GlobalsTable.psPdf, GlobalsTable.psPtx, 
+      GlobalsTable.psExcel, GlobalsTable.psExe, 
+      GlobalsTable.psAudio, GlobalsTable.psWord
+    };
+
     final conn = await SqlConnection.initializeConnection();
 
     final encryptedFilePath = encryption.encrypt(fileName);
@@ -44,45 +58,31 @@ class InsertData {
         ? fileValue 
         : encryptedFileData;
 
-    switch (tableName) {
+    if(defaultHomeTables.contains(tableName)) {
+      await _insertFileInfo(
+        conn, tableName, userName, encryptedFilePath, fileData);
 
-      case GlobalsTable.homeImage:
-      case GlobalsTable.homeText:
-      case GlobalsTable.homePdf:
-      case GlobalsTable.homePtx:
-      case GlobalsTable.homeAudio:
-      case GlobalsTable.homeExcel:
-      case GlobalsTable.homeWord:
-      case GlobalsTable.homeExe:
-        await _insertFileInfo(conn, tableName, userName, encryptedFilePath, fileData);
-        break;
+    } else if (defaultPsTables.contains(tableName)) {
+      await _insertFileInfoPs(
+        conn, tableName, userName, encryptedFilePath, fileData);
 
-      case GlobalsTable.homeVideo:
-        await _insertVideoInfo(conn, tableName, userName, encryptedFilePath, fileData, thumbnail);
-        break;
+    } else if (tableName == GlobalsTable.homeVideo) {
+      await _insertVideoInfo(
+        conn, tableName, userName, encryptedFilePath, fileData, thumbnail);
 
-      case GlobalsTable.psText:
-      case GlobalsTable.psImage:
-      case GlobalsTable.psExe:
-      case GlobalsTable.psExcel:
-      case GlobalsTable.psPdf:
-      case GlobalsTable.psWord:
-      case GlobalsTable.psApk:
-      case GlobalsTable.psAudio:
-        await _insertFileInfoPs(conn, tableName, userName, encryptedFilePath, fileData);
-        break;
+    } else if (tableName == GlobalsTable.psVideo) {
+      await _insertVideoInfoPs(
+        conn, userName, encryptedFilePath, fileData, thumbnail);
 
-      case GlobalsTable.psVideo:
-        await _insertVideoInfoPs(conn, userName, encryptedFilePath, fileData, thumbnail);
-        break;
+    } else if (tableName == GlobalsTable.directoryUploadTable) {
+      await _insertDirectoryInfo(
+        conn, tableName, userName, tempData.directoryName, fileData, encryptedFilePath, thumbnail, fileName);
 
-      case GlobalsTable.directoryUploadTable:
-        await _insertDirectoryInfo(conn, tableName, userName, tempData.directoryName, fileData, encryptedFilePath, thumbnail, fileName);
-        break;
+    } else {
+      throw ArgumentError('Invalid tableName: $tableName');
 
-      default:
-        throw ArgumentError('Invalid tableName: $tableName');
     }
+
   }
 
   Future<void> _insertFileInfo(

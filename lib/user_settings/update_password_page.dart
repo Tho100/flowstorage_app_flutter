@@ -145,8 +145,8 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
           text: "Update", 
           onPressed: () async {
             await processUpdatePassword(
-              currentAuth: curPassController.text, 
-              newAuth: newPassController.text, 
+              currentPasswordAuth: curPassController.text, 
+              newPasswordAuth: newPassController.text, 
               pinAuth: curPinController.text
             );
           }
@@ -157,25 +157,25 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
   }
 
   Future<void> processUpdatePassword({
-    required String currentAuth, 
-    required String newAuth, 
+    required String currentPasswordAuth, 
+    required String newPasswordAuth, 
     required String pinAuth
   }) async {
 
-    if(newAuth.isEmpty && currentAuth.isEmpty) {
+    if(newPasswordAuth.isEmpty && currentPasswordAuth.isEmpty) {
       return;
     }
 
-    final authCase0 = await verifyAuthInput(currentAuth, "CUST_PASSWORD");
-    final authCase1 = await verifyAuthInput(pinAuth, "CUST_PIN");
+    final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, currentPasswordAuth, "CUST_PASSWORD");
+    final pinIsIncorrect = await AuthVerification().notEqual(userData.username, pinAuth, "CUST_PIN");
     
-    if (!authCase0 && !authCase1) {
+    if (!passwordIsIncorrect && !pinIsIncorrect) {
 
-      await updateAuthPassword(newPasswordAuth: newAuth);
+      await updateAuthPassword(newPasswordAuth: newPasswordAuth);
 
       CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
 
-    } else if (authCase0) {
+    } else if (passwordIsIncorrect) {
       CustomAlertDialog.alertDialog("Password is incorrect.");
 
     } else {
@@ -183,16 +183,6 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
     }
 
-  }
-
-  Future<bool> verifyAuthInput(String inputStr, String columnName) async {
-
-    return await Verification().notEqual(
-      userData.username, 
-      AuthModel().computeAuth(inputStr),
-      columnName
-    );
-    
   }
 
   Future<void> updateAuthPassword({required String newPasswordAuth}) async {

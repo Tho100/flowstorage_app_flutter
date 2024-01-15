@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/format_date.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 class SharingDataReceiver {
@@ -95,12 +95,8 @@ class SharingDataReceiver {
         }
 
         final dateValue = row.assoc()['UPLOAD_DATE']!;
-        final dateValueWithDashes = dateValue.replaceAll('/', '-');
-        final dateComponents = dateValueWithDashes.split('-');
-        
-        final date = DateTime(int.parse(dateComponents[2]), int.parse(dateComponents[1]), int.parse(dateComponents[0]));
+        final formattedDate = FormatDate().format(dateValue);
 
-        final formattedDate = DateFormat('MMM d yyyy').format(date);
         final buffer = ByteData.view(fileBytes.buffer);
 
         final bufferedFileBytes = Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
