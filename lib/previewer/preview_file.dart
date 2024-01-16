@@ -852,7 +852,7 @@ class PreviewFileState extends State<PreviewFile> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: filesInfrontAppBar.contains(currentTable) ? false : true,
+      extendBodyBehindAppBar: !filesInfrontAppBar.contains(currentTable),
       appBar: _buildCustomAppBar(),
       body: WillPopScope(
         onWillPop: () async {
