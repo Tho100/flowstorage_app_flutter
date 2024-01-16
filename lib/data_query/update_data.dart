@@ -6,8 +6,8 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mysql_client/mysql_client.dart';
 
@@ -32,8 +32,9 @@ class UpdateTextData {
   late String? fileType;
 
   final encryption = EncryptionClass();
-  final sharingName = SharingName();
+
   final tempData = GetIt.instance<TempDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
   late final MySQLConnectionPool conn;
@@ -86,7 +87,7 @@ class UpdateTextData {
 
   Future<void> _updateSharedOthersData() async {
     final encryptedFileText = _returnEncryptedTextData();
-    final receiverUsername = await sharingName.shareToOtherName(); 
+    final receiverUsername = tempStorageData.sharedNameList[tappedIndex];
 
     const query = "UPDATE cust_sharing SET CUST_FILE = :newvalue WHERE CUST_TO = :receiver_username AND CUST_FROM = :username AND CUST_FILE_PATH = :filename";
     final params = {
@@ -101,7 +102,7 @@ class UpdateTextData {
 
   Future<void> _updateSharedMeData() async {
     final encryptedFileText = _returnEncryptedTextData();
-    final sharerUsername = await sharingName.sharerName();
+    final sharerUsername = tempStorageData.sharedNameList[tappedIndex];
 
     const query = "UPDATE cust_sharing SET CUST_FILE = :newvalue WHERE CUST_TO = :username AND CUST_FROM = :sender_username AND CUST_FILE_PATH = :filename";
     final params = {

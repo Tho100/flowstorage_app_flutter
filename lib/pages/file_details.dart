@@ -9,8 +9,8 @@ import 'package:flowstorage_fsc/models/offline_mode.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/sharing_query/sharing_username.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/foundation.dart';
@@ -40,6 +40,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final tempData = GetIt.instance<TempDataProvider>();
+
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
 
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -377,10 +379,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           ? "${psStorageData.psUploaderList[index]} (You)"
           : psStorageData.psUploaderList[index]), 
 
-      OriginFile.sharedMe: await SharingName().sharerName(), 
-      OriginFile.sharedOther: await SharingName().shareToOtherName(), 
+      OriginFile.sharedMe: tempStorageData.sharedNameList[index],
+      OriginFile.sharedOther: tempStorageData.sharedNameList[index], 
     };
-
+    // TODO: Clear out sharedNameList on finish
     uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
 
   }
