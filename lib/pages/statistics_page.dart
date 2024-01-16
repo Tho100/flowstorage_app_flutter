@@ -1,12 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/models/local_storage_model.dart';
-import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/models/offline_mode.dart';
@@ -15,7 +12,6 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
-import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -69,13 +65,10 @@ class StatsPageState extends State<StatisticsPage> {
   final tempData = GetIt.instance<TempDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
-  final profilePicNotifier = ValueNotifier<Uint8List?>(Uint8List(0));
-
   @override
   void initState() {
     super.initState();
     _initializeStatsData();
-    _initializeProfilePic();
   }
 
   @override
@@ -83,32 +76,6 @@ class StatsPageState extends State<StatisticsPage> {
     dataIsLoading.dispose();
     tempStorageData.statsFileNameList.clear();
     super.dispose();
-  }
-
-  Future<void> _initializeProfilePic() async {
-    
-    try {
-
-      final picData = await ProfilePictureModel().loadProfilePic();
-
-      if(picData == null) {
-        profilePicNotifier.value = Uint8List(0);
-        
-      } else {
-        profilePicNotifier.value = picData;
-
-      }
-
-    } catch (error) {
-      profilePicNotifier.value = Uint8List(0);
-
-    }
-
-  }
-
-  Future<void> _readLocalAccountUsernames() async {
-    final usernames = await LocalStorageModel().readLocalAccountUsernames();
-    localAccountUsernamesList.addAll(usernames);
   }
 
   Future<void> _initializeStatsData() async {
@@ -520,67 +487,6 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildLocalAccountListView() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: localAccountUsernamesList.length,
-      itemExtent: 70,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: localAccountUsernamesList[index] == userData.username 
-          ? ProfilePicture(
-            notifierValue: profilePicNotifier,
-            customWidth: 45,
-            customHeight: 45,
-            customBackgroundColor: ThemeColor.justWhite,
-            customOnEmpty: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                localAccountUsernamesList[index][0],
-                style: const TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-          : Container(
-            width: 45,
-            height: 45,
-            decoration: const BoxDecoration(
-              color: ThemeColor.justWhite,
-              shape: BoxShape.circle,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                localAccountUsernamesList[index][0],
-                style: const TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          
-          title: Text(localAccountUsernamesList[index] == userData.username 
-              ? "${localAccountUsernamesList[index]} (Current)" 
-              : localAccountUsernamesList[index],
-            style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 16,
-              fontWeight: FontWeight.w600
-            ),
-          ),
-        );
-      },      
-    );
-  }
-
   Widget _buildUsageContainer(BuildContext context) {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
@@ -629,22 +535,6 @@ class StatsPageState extends State<StatisticsPage> {
                 ),
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            FutureBuilder<void>(
-              future: _readLocalAccountUsernames(),
-              builder: (context, snapshot) {
-                if(snapshot.connectionState == ConnectionState.done) {
-                  return _buildLocalAccountListView();
-
-                } else {
-                  return const CircularProgressIndicator(color: ThemeColor.darkPurple);
-
-                }
-              }
-            ),
-
           ],
         ),
       ),

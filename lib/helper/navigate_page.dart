@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/pages/settings/security_page.dart';
 import 'package:flowstorage_fsc/pages/settings/sharing_page.dart';
 import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
+import 'package:flowstorage_fsc/pages/user_accounts_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
@@ -273,6 +274,13 @@ class NavigatePage {
     Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => SettingsAppSettings())
+    );
+  }
+
+  static void goToPageMyAccounts() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => const UserAccountsPage())
     );
   }
 

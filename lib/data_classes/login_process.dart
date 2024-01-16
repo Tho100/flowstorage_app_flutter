@@ -90,7 +90,7 @@ class SignInUser {
 
     if (isRememberMeChecked) {
       await LocalStorageModel()
-        .setupLocalAutoLogin(custUsernameGetter,custEmailInit,custTypeGetter);
+        .setupLocalAutoLogin(custUsernameGetter, custEmailInit, custTypeGetter);
     }
 
     custUsernameList.clear();
@@ -119,12 +119,6 @@ class SignInUser {
 
         if (case0 && case1) {
 
-          final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
-
-          if(localUsernames.isEmpty && isRememberMeChecked) {
-            await LocalStorageModel().setupLocalAccountUsernames(custUsername);
-          }
-
           final justLoading = JustLoading();
 
           if(context.mounted) {
@@ -132,6 +126,14 @@ class SignInUser {
           }
 
           await _callFileData(conn, isRememberMeChecked);
+
+          final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
+
+          if(!localUsernames.contains(custUsername) && isRememberMeChecked) {
+            await LocalStorageModel().setupLocalAccountUsernames(custUsername);
+            await LocalStorageModel().setupLocalAccountEmails(custEmailInit);
+            await LocalStorageModel().setupLocalAccountPlans(userData.accountType);
+          }
 
           justLoading.stopLoading();
           
