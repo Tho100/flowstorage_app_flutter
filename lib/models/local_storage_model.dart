@@ -17,24 +17,25 @@ class LocalStorageModel {
   final _accountPlanFolderName = "FlowStorageAccountInfoPlan";
   final _accountEmailFolderName = "FlowStorageAccountInfoEmail";
 
-  Future<List<String>> readLocalAccountUsernames() async {
+  Future<List<String>> _readLocalData(String customFolder) async {
 
     try {
 
-      List<String> usernames = [];
+      List<String> dataList = [];
 
       final localDir = await _retrieveLocalDirectory(
-        customFolder: _accountUsernamesFolderName);
+        customFolder: customFolder
+      );
 
       final setupFiles = File('${localDir.path}/$_fileName');
 
       final fileContent = await setupFiles.readAsLines();
       
       for(final item in fileContent) {
-        usernames.add(item);
+        dataList.add(item);
       }
 
-      return usernames;
+      return dataList;
       
     } catch(err, st) {
       logger.e('Exception from readLocalAccountUsernames {local_storage_model}', err, st); 
@@ -43,64 +44,25 @@ class LocalStorageModel {
 
   }
 
+  Future<List<String>> readLocalAccountUsernames() async {
+    return await _readLocalData(_accountUsernamesFolderName);
+  }
+
   Future<List<String>> readLocalAccountEmails() async {
-
-    try {
-
-      List<String> emails = [];
-
-      final localDir = await _retrieveLocalDirectory(
-        customFolder: _accountEmailFolderName);
-
-      final setupFiles = File('${localDir.path}/$_fileName');
-
-      final fileContent = await setupFiles.readAsLines();
-      
-      for(final item in fileContent) {
-        emails.add(item);
-      }
-
-      return emails;
-      
-    } catch(err, st) {
-      logger.e('Exception from readLocalAccountEmails {local_storage_model}', err, st); 
-      return [];
-    }
-
+    return await _readLocalData(_accountEmailFolderName);
   }
 
   Future<List<String>> readLocalAccountPlans() async {
-
-    try {
-
-      List<String> plans = [];
-
-      final localDir = await _retrieveLocalDirectory(
-        customFolder: _accountPlanFolderName);
-
-      final setupFiles = File('${localDir.path}/$_fileName');
-
-      final fileContent = await setupFiles.readAsLines();
-      
-      for(final item in fileContent) {
-        plans.add(item);
-      }
-
-      return plans;
-      
-    } catch(err, st) {
-      logger.e('Exception from readLocalAccountPlans {local_storage_model}', err, st); 
-      return [];
-    }
-
+    return await _readLocalData(_accountPlanFolderName);
   }
 
-  Future<void> setupLocalAccountUsernames(String username) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountUsernamesFolderName);
+  Future<void> _setupLocalData(String customFolder, String data) async {
 
-    if (username.isNotEmpty) {
+    final localDir = await _retrieveLocalDirectory(
+      customFolder: customFolder
+    );
+
+    if (data.isNotEmpty) {
       if (!localDir.existsSync()) {
         localDir.createSync();
       }
@@ -110,127 +72,60 @@ class LocalStorageModel {
       try {
 
         setupFiles.writeAsStringSync(
-          "$username\n", mode: FileMode.append);
-
-      } catch (err, st) {
-        logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
-      }
-
-    }
-    
-  }
-
-  Future<void> setupLocalAccountEmails(String email) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountEmailFolderName);
-
-    if (email.isNotEmpty) {
-      if (!localDir.existsSync()) {
-        localDir.createSync();
-      }
-
-      final setupFiles = File('${localDir.path}/$_fileName');
-
-      try {
-
-        setupFiles.writeAsStringSync(
-          "$email\n", mode: FileMode.append);
-
-      } catch (err, st) {
-        logger.e('Exception from setupLocalAccountEmails {local_storage_model}', err, st); 
-      }
-
-    }
-    
-  }
-
-  Future<void> setupLocalAccountPlans(String plan) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountPlanFolderName);
-
-    if (plan.isNotEmpty) {
-      if (!localDir.existsSync()) {
-        localDir.createSync();
-      }
-
-      final setupFiles = File('${localDir.path}/$_fileName');
-
-      try {
-
-        setupFiles.writeAsStringSync(
-          "$plan\n", mode: FileMode.append);
+          "$data\n", mode: FileMode.append);
 
       } catch (err, st) {
         logger.e('Exception from setupLocalAccountPlans {local_storage_model}', err, st); 
       }
 
     }
-    
+
+  }
+
+  Future<void> setupLocalAccountUsernames(String username) async {
+    await _setupLocalData(_accountUsernamesFolderName, username);
+  }
+
+  Future<void> setupLocalAccountEmails(String email) async {
+    await _setupLocalData(_accountEmailFolderName, email);    
+  }
+
+  Future<void> setupLocalAccountPlans(String plan) async {
+    await _setupLocalData(_accountPlanFolderName, plan);
+  }
+
+  Future<void> _deleteLocalData(String customFolder, String data) async {
+
+    if (data.isEmpty) {
+      return;
+    }
+
+    final localDir = await _retrieveLocalDirectory(
+      customFolder: customFolder
+    );
+
+    final filePath = File('${localDir.path}/$_fileName');
+
+    try {
+
+      await filePath.delete();
+
+    } catch (err, st) {
+      logger.e('Exception from deleteLocalData {local_storage_model}', err, st);
+    }
+
   }
 
   Future<void> deleteLocalAccountUsernames(String username) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountUsernamesFolderName);
-
-    if (username.isNotEmpty) {
-
-      final filePath = File('${localDir.path}/$_fileName');
-
-      try {
-
-        await filePath.delete();
-
-      } catch (err, st) {
-        logger.e('Exception from setupLocalAccountUsernames {local_storage_model}', err, st); 
-      }
-
-    }
-    
+    await _deleteLocalData(_accountUsernamesFolderName, username);
   }
 
   Future<void> deleteLocalAccountEmails(String email) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountEmailFolderName);
-
-    if (email.isNotEmpty) {
-
-      final filePath = File('${localDir.path}/$_fileName');
-
-      try {
-
-        await filePath.delete();
-
-      } catch (err, st) {
-        logger.e('Exception from deleteLocalAccountEmails {local_storage_model}', err, st); 
-      }
-
-    }
-    
+    await _deleteLocalData(_accountEmailFolderName, email);
   }
 
   Future<void> deleteLocalAccountPlans(String plan) async {
-        
-    final localDir = await _retrieveLocalDirectory(
-      customFolder: _accountPlanFolderName);
-
-    if (plan.isNotEmpty) {
-
-      final filePath = File('${localDir.path}/$_fileName');
-
-      try {
-
-        await filePath.delete();
-
-      } catch (err, st) {
-        logger.e('Exception from deleteLocalAccountPlans {local_storage_model}', err, st); 
-      }
-
-    }
-    
+    await _deleteLocalData(_accountPlanFolderName, plan);
   }
 
   Future<void> setupLocalAutoLogin(String custUsername, String custEmail, String accountType) async {
