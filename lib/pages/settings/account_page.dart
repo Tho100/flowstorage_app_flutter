@@ -74,7 +74,15 @@ class SettingsAccountPage extends StatelessWidget {
           ),
 
           SettingsButton(
-            topText: "Remove Account", 
+            topText: "My accounts", 
+            bottomText: "See all your existing accounts", 
+            onPressed: () {
+              NavigatePage.goToPageMyAccounts();
+            }
+          ),
+
+          SettingsButton(
+            topText: "Remove account", 
             bottomText: "Delete all your account data and informations", 
             onPressed: () {
               VerifyAccountDeletionDialog()

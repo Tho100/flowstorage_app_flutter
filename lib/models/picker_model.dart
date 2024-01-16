@@ -78,8 +78,7 @@ class PickerModel {
         type: FileType.custom,
         allowedExtensions: tempData.origin == OriginFile.offline 
           ? offlineFileTypes : nonOfflineFileTypes,
-        allowMultiple: tempData.origin == OriginFile.public 
-          ? false : true
+        allowMultiple: tempData.origin != OriginFile.public 
       );
 
     } catch (err) {

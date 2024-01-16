@@ -78,6 +78,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
       auth0: custAuth0Input, 
       auth1: custAuth1Input
     );
+    
   }
 
   @override
