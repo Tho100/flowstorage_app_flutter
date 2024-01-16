@@ -160,10 +160,7 @@ class PreviewFileState extends State<PreviewFile> {
       uploaderNameNotifer.value = userData.username;
 
     } else if (sharingOriginFrom.contains(originFrom)) {
-      await Future.delayed(const Duration(milliseconds: 450));
-      final uploaderName = originFrom == OriginFile.sharedOther 
-        ? await retrieveSharingName.shareToOtherName() 
-        : await retrieveSharingName.sharerName();
+      final uploaderName = tempStorageData.sharedNameList[widget.tappedIndex];
       uploaderNameNotifer.value = uploaderName;
 
     } else if (originFrom == OriginFile.public || originFrom == OriginFile.publicSearching) {

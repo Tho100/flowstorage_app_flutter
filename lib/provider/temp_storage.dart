@@ -7,12 +7,19 @@ class TempStorageProvider extends ChangeNotifier {
   List<String> _statsFileNameList = <String>[];
   List<String> _folderNameList = <String>[];
   List<String> _directoryNameList = <String>[];
+  List<String> _sharedNameList = <String>[];
 
   List<String> get statsFileNameList => _statsFileNameList;
   List<String> get folderNameList => _folderNameList;
   List<String> get directoryNameList => _directoryNameList;
+  List<String> get sharedNameList => _sharedNameList;
 
   Set<String> get offlineFileNameList => _offlineFileNameList;
+
+  void setSharedName(List<String> sharedName) {
+    _sharedNameList = sharedName;
+    notifyListeners();
+  }
 
   void setStatsFilesName(List<String> statisticsFilesName) {
     _statsFileNameList = statisticsFilesName;
