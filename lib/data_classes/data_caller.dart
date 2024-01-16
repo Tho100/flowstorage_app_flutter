@@ -285,6 +285,13 @@ class DataCaller {
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
 
+    final sharedNames = fileDateList.map((string) {
+      final dotIndex = string.indexOf(GlobalsStyle.dotSeperator);
+      return dotIndex != -1 ? string.substring(0, dotIndex-1) : string;
+    }).toList();
+
+    tempStorageData.setSharedName(sharedNames);
+
     if(originFrom == "sharedFiles") {
       tempData.setOrigin(OriginFile.sharedOther);
       tempData.setAppBarTitle("Shared files");
