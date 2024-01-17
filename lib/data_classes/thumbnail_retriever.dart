@@ -56,58 +56,13 @@ class ThumbnailGetter {
 
   Future<String?> retrieveParamsSingle({
     required String? fileName,
-    String? subDirName
   }) async {
     
     final conn = await SqlConnection.initializeConnection();
 
-    String? base64EncodeThumbnail;
-
     final encryptedFileName = encryption.encrypt(fileName);
 
-    if(tempData.origin == OriginFile.home) {
-
-      const query = "SELECT CUST_THUMB FROM file_info_video WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-      final params = {
-        'username': userData.username,
-        'filename': encryptedFileName
-      };
-
-      final results = await conn.execute(query,params);
-      
-      for(final row in results.rows) {
-        base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
-      }
-
-    } else if (tempData.origin == OriginFile.directory) {
-
-      const query = "SELECT CUST_THUMB FROM upload_info_directory WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND DIR_NAME = :dirname";
-      final params = {
-        'username': userData.username,'filename': encryptedFileName,
-        'dirname': subDirName
-      };
-
-      final results = await conn.execute(query,params);
-      
-      for(final row in results.rows) {
-        base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
-      }
-
-    } else if (tempData.origin == OriginFile.folder) {
-      
-      const query = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename AND FOLDER_NAME = :foldname";
-      final params = {
-        'username': userData.username,'filename': encryptedFileName,
-        'foldname': subDirName
-      };
-
-      final results = await conn.execute(query,params);
-      
-      for(final row in results.rows) {
-        base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
-      }
-
-    } else if (tempData.origin == OriginFile.sharedOther) {
+    if (tempData.origin == OriginFile.sharedOther) {
 
       const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
       final params = {
@@ -116,10 +71,8 @@ class ThumbnailGetter {
       };
 
       final results = await conn.execute(query,params);
-      
-      for(final row in results.rows) {
-        base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
-      }
+
+      return results.rows.last.assoc()['CUST_THUMB'];
 
     } else if (tempData.origin == OriginFile.sharedMe) {
 
@@ -130,14 +83,13 @@ class ThumbnailGetter {
       };
 
       final results = await conn.execute(query,params);
-      
-      for(final row in results.rows) {
-        base64EncodeThumbnail = row.assoc()['CUST_THUMB'];
-      }
+
+      return results.rows.last.assoc()['CUST_THUMB'];
 
     }
   
-    return base64EncodeThumbnail!;
+    return '';
 
   }
+  
 }

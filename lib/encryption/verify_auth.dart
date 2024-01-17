@@ -11,12 +11,14 @@ class AuthVerification {
     final result = await conn.execute(que,params);
     
     String? authString = '';
+
     for(final row in result.rows) {
       final getAuthRows = columnName == "CUST_PASSWORD" ? row.assoc()['CUST_PASSWORD'] : row.assoc()['CUST_PIN'];
       authString = getAuthRows;
     }
     
     return authString != getAuthString;
+
   }
 
 }

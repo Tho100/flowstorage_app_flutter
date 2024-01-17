@@ -27,14 +27,16 @@ class DirectoryDataReceiver {
     required String returnColumn,
   }) async {
 
-    final params = {"username": userData.username, "dirname": directoryTitle,"filename": fileName};
-    final results = await conn.execute(query,params);
+    final params = {
+      "username": userData.username, 
+      "dirname": directoryTitle,
+      "filename": fileName
+    };
 
-    for(final row in results.rows) { 
-      return row.assoc()[returnColumn]!;
-    }
+    final results = await conn.execute(query, params);
 
-    return '';
+    return results.rows.last.assoc()[returnColumn]!;
+
   }
   
   Future<List<Map<String, dynamic>>> retrieveParams({
@@ -62,10 +64,10 @@ class DirectoryDataReceiver {
       late String encryptedFileNames;
       late String decryptedFileNames;
 
-      final result = await conn.execute(querySelectMetadata, params);
+      final results = await conn.execute(querySelectMetadata, params);
       final dataSet = <Map<String, dynamic>>[];
-      
-      for (final row in result.rows) {
+
+      for (final row in results.rows) {
 
         encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
         decryptedFileNames = encryption.decrypt(encryptedFileNames);

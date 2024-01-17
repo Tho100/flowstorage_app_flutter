@@ -35,11 +35,8 @@ class FolderDataReceiver {
 
     final results = await conn.execute(query,params);
 
-    for(final row in results.rows) {
-      return row.assoc()[returnColumn]!;
-    }
+    return results.rows.last.assoc()[returnColumn]!;
 
-    return '';
   }
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
