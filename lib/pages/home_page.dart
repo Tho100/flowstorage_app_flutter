@@ -19,7 +19,6 @@ import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -553,9 +552,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if (tempData.origin == OriginFile.home && togglePhotosPressed) {
       _configureGoBackHome();
+
     } else {
       _configureGoBackHome();
       await _refreshListViewData();
+
     }
 
     _navDirectoryButtonVisibility(true);
@@ -609,11 +610,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     selectedPhotosIndex.clear();
     checkedItemsName.clear();
 
-  }
-
-  Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
-    return await retrieveData.retrieveDataParams(
-      userData.username, selectedFilename, tableName);
   }
 
   Future<void> _selectDirectoryOnMultipleDownload(int count) async {
@@ -955,6 +951,11 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     }
 
+    if(tempData.origin != OriginFile.sharedMe && tempData.origin != OriginFile.sharedOther) {
+      tempStorageData.sharedNameList.clear();
+
+    }
+
   }
 
   Future<void> _deleteMultipleSelectedFiles({
@@ -1003,47 +1004,12 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final offlineMode = OfflineMode();
-      final singleLoading = SingleTextLoading();
-
-      singleLoading.startLoading(title: "Preparing...", context: context);
-
-      for(int i=0; i<count; i++) {
-        
-        late final Uint8List fileData;
-
-        final fileType = checkedItemsName.elementAt(i).split('.').last;
-
-        if(Globals.supportedFileTypes.contains(fileType)) {
-
-          final tableName = Globals.fileTypesToTableNames[fileType]!;
-
-          if(Globals.imageType.contains(fileType)) {
-            fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i))]!;
-            
-          } else {
-            fileData = CompressorApi.compressByte(await _callFileByteData(checkedItemsName.elementAt(i), tableName));
-
-          }
-
-          await offlineMode.saveOfflineFile(
-            fileName: checkedItemsName.elementAt(i), 
-            fileData: fileData
-          );
-
-          tempStorageData.addOfflineFileName(
-            checkedItemsName.elementAt(i));
-            
-        } 
-
-      }
-
-      singleLoading.stopLoading();
-
-      SnakeAlert.okSnake(message: "$count Item(s) now available offline.", icon: Icons.check);
-
-      await CallNotify().customNotification(title: "Offline", subMesssage: "$count Item(s) now available offline");
-
+      await functionModel.makeMultipleFilesAvailableOffline(
+        checkedFilesName: checkedItemsName,
+        count: count,
+        context: context
+      );
+      
       _clearItemSelection();
 
     } catch (err, st) {
@@ -1064,6 +1030,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       _clearItemSelection();
 
     } catch (err, st) {
+      SnakeAlert.errorSnake("An error occurred.");
       logger.e('Exception from _makeAvailableOfflineOnPressed {main}', err, st);
     }
 
@@ -1091,8 +1058,10 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       if(togglePhotosPressed) {
         _togglePhotos();
         return;
+
       } else {
         _itemSearchingImplementation('');
+
       }
 
     } catch (err, st) {

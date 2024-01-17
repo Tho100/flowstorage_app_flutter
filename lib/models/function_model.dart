@@ -309,6 +309,56 @@ class FunctionModel {
 
   }
 
+  Future<void> makeMultipleFilesAvailableOffline({
+    required Set<String> checkedFilesName,
+    required int count,
+    required BuildContext context
+  }) async {
+
+    final offlineMode = OfflineMode();
+    final singleLoading = SingleTextLoading();
+
+    singleLoading.startLoading(title: "Preparing...", context: context);
+
+    for(int i=0; i<count; i++) {
+      
+      late final Uint8List fileData;
+
+      final fileType = checkedFilesName.elementAt(i).split('.').last;
+
+      if(Globals.supportedFileTypes.contains(fileType)) {
+
+        final tableName = Globals.fileTypesToTableNames[fileType]!;
+
+        if(Globals.imageType.contains(fileType)) {
+          fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedFilesName.elementAt(i))]!;
+          
+        } else {
+          fileData = CompressorApi.compressByte(await _callFileByteData(checkedFilesName.elementAt(i), tableName));
+
+        }
+
+        await offlineMode.saveOfflineFile(
+          fileName: checkedFilesName.elementAt(i), 
+          fileData: fileData
+        );
+
+        tempStorageData.addOfflineFileName(
+          checkedFilesName.elementAt(i));
+          
+      } 
+
+    }
+
+    singleLoading.stopLoading();
+
+    SnakeAlert.okSnake(message: "$count Item(s) now available offline.", icon: Icons.check);
+
+    await CallNotify().customNotification(title: "Offline", subMesssage: "$count Item(s) now available offline");
+
+
+  }
+
   Future<void> makeAvailableOffline({
     required String fileName
   }) async {

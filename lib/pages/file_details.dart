@@ -382,7 +382,6 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       OriginFile.sharedMe: tempStorageData.sharedNameList[index],
       OriginFile.sharedOther: tempStorageData.sharedNameList[index], 
     };
-    // TODO: Clear out sharedNameList on finish
     uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
 
   }
