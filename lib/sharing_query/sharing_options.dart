@@ -33,13 +33,7 @@ class SharingOptions {
 
     final results = await conn.execute(query,params);
     
-    String? disabledStatus = "";
-
-    for(final row in results.rows) {
-      return row.assoc()['DISABLED']!;
-    }
-
-    return disabledStatus;
+    return results.rows.last.assoc()['DISABLED']!;
     
   } 
 
@@ -52,12 +46,7 @@ class SharingOptions {
 
     final results = await conn.execute(query,params);
     
-    String? sharingAuth = "";
-    for(final row in results.rows) {
-      sharingAuth = row.assoc()['SET_PASS'];
-    }
-
-    return sharingAuth!;
+    return results.rows.last.assoc()['SET_PASS']!;
     
   } 
 
@@ -70,12 +59,7 @@ class SharingOptions {
 
     final results = await conn.execute(query,params);
     
-    String? sharingAuth = "";
-    for(final row in results.rows) {
-      sharingAuth = row.assoc()['PASSWORD_DISABLED'];
-    }
-
-    return sharingAuth!;
+    return results.rows.last.assoc()['PASSWORD_DISABLED']!;
     
   } 
 

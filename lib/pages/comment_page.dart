@@ -28,6 +28,7 @@ class CommentPageState extends State<CommentPage> {
 
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
+  final storageData = GetIt.instance<StorageDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
   late final String mainFileComment;
@@ -87,59 +88,47 @@ class CommentPageState extends State<CommentPage> {
 
   }
 
-  Future<String> _shareToOtherName() async {
-
-    final conn = await SqlConnection.initializeConnection();
-
-    const query = "SELECT CUST_TO FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
-    final results = await conn.execute(query,params);
-
-    String? sharedToName;
-    for(final row in results.rows) {
-      sharedToName = row.assoc()['CUST_TO'];
-    }
-
-    return sharedToName!;
-    
-  }
-
   Future<String> _sharedFileComment() async {
 
     final conn = await SqlConnection.initializeConnection();
     
+    final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+
     const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename AND CUST_TO = :sharedto";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': await _shareToOtherName()};
+    final params = {
+      'from': userData.username, 
+      'filename': EncryptionClass().encrypt(tempData.selectedFileName),
+      'sharedto': tempStorageData.sharedNameList[index]
+    };
+
     final results = await conn.execute(query,params);
 
-    String? decryptedComment;
-    for(final row in results.rows) {
-      decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
-    }
+    final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
+    final decryptedComment = EncryptionClass().decrypt(retrievedComment);
 
-    return decryptedComment ?? '(No Comment)';
+    return decryptedComment.isNotEmpty ? decryptedComment : '(No Comment)';
 
   }
 
   Future<String> _sharedToMeComment() async {
 
     final conn = await SqlConnection.initializeConnection();
-
-    final storageData = GetIt.instance<StorageDataProvider>();
     
-    final index = storageData.fileNamesFilteredList.indexOf(widget.fileName);
-    final sharerName = tempStorageData.sharedNameList[index];
+    final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
     const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
-    final params = {'from': userData.username, 'filename': EncryptionClass().encrypt(tempData.selectedFileName),'sharedto': sharerName};
+    final params = {
+      'from': userData.username, 
+      'filename': EncryptionClass().encrypt(tempData.selectedFileName),
+      'sharedto': tempStorageData.sharedNameList[index]
+    };
+
     final results = await conn.execute(query,params);
 
-    String? decryptedComment;
-    for(final row in results.rows) {
-      decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
-    }
+    final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
+    final decryptedComment = EncryptionClass().decrypt(retrievedComment);
 
-    return decryptedComment ?? '(No Comment)';
+    return decryptedComment.isNotEmpty ? decryptedComment : '(No Comment)';
     
   }
 
@@ -148,15 +137,17 @@ class CommentPageState extends State<CommentPage> {
     final conn = await SqlConnection.initializeConnection();
     
     const query = "SELECT CUST_COMMENT FROM ps_info_comment WHERE CUST_FILE_NAME = :filename";
-    final params = {'filename': EncryptionClass().encrypt(tempData.selectedFileName)};
+    final params = {
+      'filename': EncryptionClass().encrypt(tempData.selectedFileName)
+    };
+
     final results = await conn.execute(query,params);
 
-    String? decryptedComment;
-    for(final row in results.rows) {
-      decryptedComment = EncryptionClass().decrypt(row.assoc()['CUST_COMMENT']);
-    }
+    final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
+    final decryptedComment = EncryptionClass().decrypt(retrievedComment);
 
-    return decryptedComment ?? '(No Comment)';
+    return decryptedComment.isNotEmpty ? decryptedComment : '(No Comment)';
+
   }
 
   Future<Widget> _buildComment() async {

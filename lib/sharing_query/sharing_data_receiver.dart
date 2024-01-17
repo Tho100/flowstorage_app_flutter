@@ -20,17 +20,14 @@ class SharingDataReceiver {
     required String returnedColumn,
     required String fileName,
     required String username,
-    required MySQLConnectionPool connection
+    required MySQLConnectionPool conn
   }) async {
     
     final params = {'username': username, 'filename': fileName};
-    final executeRetrieval = await connection.execute(query, params);
+    final results = await conn.execute(query, params);
 
-    for (final row in executeRetrieval.rows) {
-      return row.assoc()[returnedColumn]!;
-    }
+    return results.rows.last.assoc()[returnedColumn]!;
 
-    return '';
   }
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String originFrom) async {
@@ -69,7 +66,7 @@ class SharingDataReceiver {
             returnedColumn: "CUST_FILE", 
             fileName: encryptedFileNames, 
             username: username, 
-            connection: conn
+            conn: conn
           );
 
           fileBytes = base64.decode(encryption.decrypt(encryptedBase64));
@@ -84,7 +81,7 @@ class SharingDataReceiver {
             returnedColumn: "CUST_THUMB", 
             fileName: encryptedFileNames, 
             username: username, 
-            connection: conn
+            conn: conn
           );
 
           fileBytes = base64.decode(base64EncodedThumbnail);
