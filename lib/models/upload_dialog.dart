@@ -64,7 +64,7 @@ class UploadDialog {
       return;
     }
 
-    int countSelectedFiles = details.selectedFiles.length;
+    final countSelectedFiles = details.selectedFiles.length;
 
     if (countSelectedFiles == 0) {
       return;
@@ -207,7 +207,7 @@ class UploadDialog {
 
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
-    int countSelectedFiles = resultPicker.files.length;
+    final countSelectedFiles = resultPicker.files.length;
 
     final uploadedPsFilesCount = tempData.psTotalUpload;
     final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;

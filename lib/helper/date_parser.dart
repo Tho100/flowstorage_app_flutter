@@ -16,7 +16,7 @@ class DateParser {
     
     if (date.contains('days ago')) {
 
-      int daysAgo = int.parse(date.split(' ')[0]);
+      final daysAgo = int.parse(date.split(' ')[0]);
       
       return now.subtract(Duration(days: daysAgo));
 

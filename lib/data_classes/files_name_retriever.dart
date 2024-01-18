@@ -16,15 +16,13 @@ class NameGetter {
 
       final params = {'username': username};
 
-      final retrieveNames = await conn.execute(query, params);
-      final nameSet = <String>{};
+      final retrievedNames = await conn.execute(query, params);
 
-      for (final row in retrieveNames.rows) {
-        final getNameValues = row.assoc()['CUST_FILE_PATH'] ?? row.assoc()['DIR_NAME'];
-        nameSet.add(encryption.decrypt(getNameValues));
-      }
-
-      return nameSet.toList();
+      return retrievedNames.rows
+        .map((row) => row.assoc()['CUST_FILE_PATH'] ?? row.assoc()['DIR_NAME'])
+        .where((nameValues) => nameValues != null)
+        .map((nameValues) => encryption.decrypt(nameValues))
+        .toList();
 
     } catch (err) {
       return <String>[];

@@ -74,8 +74,8 @@ class DataCaller {
       final formattedDate = DateFormat('MMM d yyyy')
                               .format(lastModified);
 
-      String fileName = path.basename(file.path);
-      String? fileType = fileName.split('.').last;
+      final fileName = path.basename(file.path);
+      final fileType = fileName.split('.').last;
 
       Uint8List imageBytes;
       String actualFileSize = '';

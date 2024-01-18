@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/add_password_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -15,9 +16,9 @@ class AddSharingPassword {
   
   final addPasswordController = TextEditingController();
 
-  Future buildAddPasswordDialog(BuildContext context) {
+  Future buildAddPasswordDialog() {
     return InteractDialog().buildDialog(
-      context: context, 
+      context: navigatorKey.currentContext!, 
       childrenWidgets: <Widget>[
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +69,7 @@ class AddSharingPassword {
               text: "Close", 
               onPressed: () {
                 addPasswordController.clear();
-                Navigator.pop(context);
+                Navigator.pop(navigatorKey.currentContext!);
               }, 
               isButtonClose: true
             ),

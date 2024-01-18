@@ -108,8 +108,8 @@ class FunctionModel {
         ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
         : await OfflineMode().renameFile(oldFileName, newFileName);
 
-      int indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
-      int indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
+      final indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
+      final indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
 
       if (indexOldFileSearched != -1) {
         storageData.updateRenameFile(
@@ -121,6 +121,7 @@ class FunctionModel {
         }
 
         SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName, customLength: 35)}` Renamed to `${ShortenText().cutText(newFileName, customLength: 35)}`.");
+        
       }
 
     } catch (err, st) {

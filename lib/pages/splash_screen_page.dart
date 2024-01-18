@@ -86,8 +86,10 @@ class SplashScreenState extends State<SplashScreen> {
         } 
         
       } else {
-        if(!mounted) return;
-        NavigatePage.replacePageMain(context);
+        if(mounted) {
+          NavigatePage.replacePageMain(context);
+        }
+        
       }
     
     });
@@ -133,8 +135,9 @@ class SplashScreenState extends State<SplashScreen> {
 
       if(getLocalUsername == '') {
 
-        if(!mounted) return;
-        NavigatePage.replacePageMain(context);
+        if(mounted) {
+          NavigatePage.replacePageMain(context);
+        }
 
       } else {
 
@@ -155,8 +158,9 @@ class SplashScreenState extends State<SplashScreen> {
           
           await Future.delayed(const Duration(milliseconds: 850));
 
-          if(!mounted) return;
-          NavigatePage.goToPagePasscode(context);
+          if(mounted) {
+            NavigatePage.goToPagePasscode(context);
+          }
 
         } else {
 
@@ -167,8 +171,9 @@ class SplashScreenState extends State<SplashScreen> {
           : await _callFileData(
             conn, getLocalUsername, getLocalEmail, getLocalAccountType);
           
-          if(!mounted) return;
-          NavigatePage.permanentPageMainboard(context);
+          if(mounted) {
+            NavigatePage.permanentPageMainboard(context);
+          }
           
         }
       }

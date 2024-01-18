@@ -300,28 +300,28 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     } 
 
-    if(!mounted) return;    
-    
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => UploadPsPage(
-          fileName: fileName,
-          imageBase64Encoded: imagePreview,
-          fileBase64Encoded: base64Encoded,
-          onUploadPressed: () async {
-            await _onPsUploadPressed(
-              fileName: fileName,
-              fileData: base64Encoded,
-              filePath: filePath,
-              tableName: tableName,
-              previewData: previewData,
-              videoThumbnail: thumbnail
-            );
-          }, 
+    if(mounted) {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (context) => UploadPsPage(
+            fileName: fileName,
+            imageBase64Encoded: imagePreview,
+            fileBase64Encoded: base64Encoded,
+            onUploadPressed: () async {
+              await _onPsUploadPressed(
+                fileName: fileName,
+                fileData: base64Encoded,
+                filePath: filePath,
+                tableName: tableName,
+                previewData: previewData,
+                videoThumbnail: thumbnail
+              );
+            }, 
+          )
         )
-      )
-    );
+      );
+    }
 
     await NotificationApi.stopNotification(0);
 
@@ -768,8 +768,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       _navDirectoryButtonVisibility(true);
       _addItemButtonVisibility(true);
 
-      if(!mounted) return;
-      Navigator.pop(context);
+      if(mounted) {
+        Navigator.pop(context);
+      }
 
       SnakeAlert.okSnake(message: "Deleted $folderName folder.", icon: Icons.check);
 
@@ -1182,8 +1183,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         loading.stopLoading();
  
-        if(!mounted) return;
-        Navigator.pop(context);
+        if(mounted) {
+          Navigator.pop(context);
+        }
 
       },
       trailingOnPressed: (int index) {
@@ -1294,9 +1296,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(tempData.origin == OriginFile.public) {
 
-      int count = psStorageData.psUploaderList
-      .where((uploader) => uploader == userData.username)
-      .length;
+      final count = psStorageData.psUploaderList
+        .where((uploader) => uploader == userData.username)
+        .length;
 
       if (count < limitUpload) {
         await _openDialogUploadFile();
@@ -1326,9 +1328,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
         if (tempData.origin == OriginFile.public) {
 
-          int count = psStorageData.psUploaderList
-              .where((uploader) => uploader == userData.username)
-              .length;
+          final count = psStorageData.psUploaderList
+            .where((uploader) => uploader == userData.username)
+            .length;
 
           if (count < limitUpload) {
             Navigator.pop(context);
@@ -1360,8 +1362,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         
         if(tempStorageData.folderNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
 
-          if(!mounted) return;
-          Navigator.pop(context);
+          if(mounted) {
+            Navigator.pop(context);
+          }
 
           await _openDialogUploadFolder();
           
@@ -1409,8 +1412,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
           if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
 
-            if(!mounted) return;
-            Navigator.pop(context);
+            if(mounted) {
+              Navigator.pop(context);
+            }
 
             _openCreateDirectoryDialog();
             
@@ -1940,6 +1944,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       }
 
       isRecent = index <= 2;
+      
     }
 
     return Padding(
@@ -2138,7 +2143,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
   Widget _buildStaggeredListView() {
 
-    int fitSize = tempData.origin == OriginFile.public ? 5 : 1;
+    final fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
     EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
     ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0, bottom: 8.0) 
@@ -2377,8 +2382,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
       (currentHour >= 20 && currentHour < 21))) {
 
       await Future.delayed(const Duration(milliseconds: 759));
-      if(!mounted) return;
-      UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
+      if(mounted) {
+        UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
+      }      
     }
 
   }
@@ -2447,17 +2453,18 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     }
 
-    if(!mounted) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => 
-      IntentSharingPage(
-        fileName: fileName, 
-        filePath: file.path,
-        imageBase64Encoded: imagePreview, 
-        fileData: fileBase64
-      ))
-    );
+    if(mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => 
+        IntentSharingPage(
+          fileName: fileName, 
+          filePath: file.path,
+          imageBase64Encoded: imagePreview, 
+          fileData: fileBase64
+        ))
+      );
+    }
 
   }
 

@@ -654,8 +654,9 @@ class UpgradePageState extends State<UpradePage> {
 
       if(returnedEmail.contains(userData.email)) {
         
-        if(!mounted) return;
-        singleLoading.startLoading(title: "Upgrading...", context: context);
+        if(mounted) {
+          singleLoading.startLoading(title: "Upgrading...", context: context);
+        }
 
         final returnedId = await StripeCustomers.getCustomerIdByEmail(userData.email);
       

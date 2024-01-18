@@ -143,6 +143,7 @@ class ByteGetterPs {
 
       final loadImg = await Future.wait(List.generate(totalCount, (_) => GetAssets().loadAssetsData(iconName)));
       getByteValue.addAll(loadImg);
+
     }
 
     if (tableName == GlobalsTable.psVideo) {
@@ -174,4 +175,5 @@ class ByteGetterPs {
     return getByteValue.toList();
 
   }
+  
 }

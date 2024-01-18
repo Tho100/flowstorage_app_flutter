@@ -133,8 +133,9 @@ class MyPlanPageState extends State<MyPlanPage> {
                 await StripeCustomers.
                 cancelCustomerSubscriptionByEmail(userData.email, context);
 
-                if(!mounted) return;
-                Navigator.pop(context);
+                if(mounted) {
+                  Navigator.pop(context);
+                }
 
                 CustomAlertDialog.alertDialogTitle(
                   "Subscription plan cancelled successfully", 

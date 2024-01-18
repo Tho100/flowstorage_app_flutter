@@ -96,10 +96,14 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   void setupAudioDuration() async {
+
     await audioPlayerController.setAudioSource(ProcessAudio(byteAudio!, audioContentType!));
-    Duration duration = audioPlayerController.duration!;
-    String formattedDuration = getDurationString(duration);
+
+    final duration = audioPlayerController.duration!;
+    final formattedDuration = getDurationString(duration);
+
     audioDuration = formattedDuration;
+
   }
 
   Future<void> playOrPauseAudioAsync() async {
@@ -131,10 +135,12 @@ class PreviewAudioState extends State<PreviewAudio> {
         return;
       }
 
-      Duration currentPosition = audioPlayerController.position;
-      String formattedPosition = getDurationString(currentPosition);
+      final currentPosition = audioPlayerController.position;
+      final formattedPosition = getDurationString(currentPosition);
+
       currentAudioDuration.value = formattedPosition;
       audioPositionNotifier.value = audioPlayerController.position.inSeconds.toDouble();
+
     });
 
     audioPlayerController.playerStateStream.listen((state) async {
@@ -161,10 +167,10 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   String getDurationString(Duration duration) {
 
-    String twoDigitMinutes = toTwoDigits(
+    final twoDigitMinutes = toTwoDigits(
         duration.inMinutes.remainder(60));
 
-    String twoDigitSeconds = toTwoDigits(
+    final twoDigitSeconds = toTwoDigits(
         duration.inSeconds.remainder(60));
 
     return "$twoDigitMinutes:$twoDigitSeconds";

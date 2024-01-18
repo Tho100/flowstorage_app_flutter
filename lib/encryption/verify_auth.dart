@@ -9,7 +9,7 @@ class AuthVerification {
     final que = "SELECT $columnName FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': getUsername};
     final result = await conn.execute(que,params);
-    
+
     String? authString = '';
 
     for(final row in result.rows) {
