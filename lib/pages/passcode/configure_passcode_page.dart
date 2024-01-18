@@ -49,15 +49,16 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                     isPasscodeEnabled = value;
                   });
                           
-                  bool isPassCodeExists = await storage.containsKey(key: 'key0015');
+                  final isPassCodeExists = await storage.containsKey(key: 'key0015');
                           
                   if (!isPassCodeExists) {
                     isPasscodeEnabled = false;
-                    if (!mounted) return;
-                    NavigatePage.goToAddPasscodePage();
+                    if(mounted) {
+                      NavigatePage.goToAddPasscodePage();
+                    }
                           
                   } else {
-                    final isEnabled = isPasscodeEnabled ? "true" : "false";
+                    final isEnabled = isPasscodeEnabled.toString();
                     togglePasscode(isEnabled);
                           
                   }

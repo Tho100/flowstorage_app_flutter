@@ -698,10 +698,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void onPastWeekPressed() async {
 
-    DateTime oneWeekAgo = now.subtract(const Duration(days: 7));
+    final oneWeekAgo = now.subtract(const Duration(days: 7));
 
-    String startDate = DateFormat('dd/MM/yyyy').format(oneWeekAgo);
-    String endDate = DateFormat('dd/MM/yyyy').format(now);
+    final startDate = DateFormat('dd/MM/yyyy').format(oneWeekAgo);
+    final endDate = DateFormat('dd/MM/yyyy').format(now);
 
     await searchByDateOnPressed(startDate, endDate, "week");
 
@@ -709,10 +709,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void onPastMonthPressed() async {
 
-    DateTime oneMonthAgo = DateTime(now.year, now.month - 1, now.day);
+    final oneMonthAgo = DateTime(now.year, now.month - 1, now.day);
 
-    String startDate = DateFormat('dd/MM/yyyy').format(oneMonthAgo);
-    String endDate = DateFormat('dd/MM/yyyy').format(now);
+    final startDate = DateFormat('dd/MM/yyyy').format(oneMonthAgo);
+    final endDate = DateFormat('dd/MM/yyyy').format(now);
 
     await searchByDateOnPressed(startDate, endDate, "month");
 
@@ -720,7 +720,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   void onPast24HoursPressed() async {
 
-    String todayDate = DateFormat('dd/MM/yyyy').format(now);
+    final todayDate = DateFormat('dd/MM/yyyy').format(now);
     await searchByDateOnPressed(todayDate, "none", "24_hours");
 
   }

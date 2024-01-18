@@ -41,8 +41,9 @@ class SimplifyDownload {
 
     }
 
-    String videoPath = '${directory!.path}/Flowstorage-$fileNameValue';
-    File videoFile = File(videoPath);
+    final videoPath = '${directory!.path}/Flowstorage-$fileNameValue';
+    final videoFile = File(videoPath);
+    
     await videoFile.writeAsBytes(videoData);
 
     await GallerySaver.saveVideo(videoPath);

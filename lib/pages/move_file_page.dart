@@ -231,8 +231,9 @@ class MoveFilePageState extends State<MoveFilePage> {
     if(canMoveFile) {
       final loading = SingleTextLoading();
 
-      if(!mounted) return;
-      loading.startLoading(title: "Moving file(s)...", context: context);
+      if(mounted) {
+        loading.startLoading(title: "Moving file(s)...", context: context);
+      }
 
       await moveFileToDirectory();
 

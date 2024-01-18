@@ -289,8 +289,9 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     await LocalStorageModel()
                       .deleteAutoLoginAndOfflineFiles(userData.username, false);
 
-                    if(!mounted) return;
-                    NavigatePage.replacePageMain(context);
+                    if(mounted) {
+                      NavigatePage.replacePageMain(context);
+                    }
                   }
                 );
               },

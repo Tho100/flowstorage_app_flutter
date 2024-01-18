@@ -136,8 +136,9 @@ class PasscodePageState extends State<PasscodePage> {
 
         final justLoading = JustLoading();
 
-        if(!mounted) return;
-        justLoading.startLoading(context: context);
+        if(mounted) {
+          justLoading.startLoading(context: context);
+        }
 
         tempData.origin == OriginFile.offline 
         ? await QuickActionsModel().offline()
@@ -146,8 +147,9 @@ class PasscodePageState extends State<PasscodePage> {
 
         justLoading.stopLoading();
         
-        if(!mounted) return;
-        NavigatePage.permanentPageMainboard(context);
+        if(mounted) {
+          NavigatePage.permanentPageMainboard(context);
+        }
 
       } else {        
         isPasscodeIncorrectNotifier.value = true;

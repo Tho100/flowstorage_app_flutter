@@ -231,8 +231,9 @@ class PreviewFileState extends State<PreviewFile> {
 
       tempData.clearFileData();
       
-      if(!mounted) return;
-      NavigatePage.permanentPageMainboard(context);
+      if(mounted) {
+        NavigatePage.permanentPageMainboard(context);
+      }
 
     } catch (err, st) {
       logger.e("Exception from _onRenamePressed {preview_file}", err, st);

@@ -60,8 +60,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
                   final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
             
                   if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
-                    if(!mounted) return;
-                    AddSharingPassword().buildAddPasswordDialog(context);
+                    AddSharingPassword().buildAddPasswordDialog();
             
                   } else {
                     final isEnabled = isPasswordEnabled ? "0" : "1";
@@ -84,8 +83,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
             topText: "Edit password", 
             bottomText: "Update your sharing password", 
             onPressed: () {
-              if(!mounted) return;
-              AddSharingPassword().buildAddPasswordDialog(context);
+              AddSharingPassword().buildAddPasswordDialog();
             }
           ),
         ),

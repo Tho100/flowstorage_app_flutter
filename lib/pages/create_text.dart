@@ -181,8 +181,9 @@ class CreateTextPageState extends State<CreateText> {
 
     fileNameController.clear();
 
-    if(!mounted) return;
-    Navigator.pop(context);
+    if(mounted) {
+      Navigator.pop(context);
+    }
     
   }
 

@@ -50,8 +50,9 @@ class AddPasscodePageState extends State<AddPasscodePage> {
       controller.clear();
     }
 
-    if(!mounted) return;
-    NavigatePage.permanentPageMainboard(context);
+    if(mounted) {
+      NavigatePage.permanentPageMainboard(context);
+    }
 
   }
 
