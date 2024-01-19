@@ -24,7 +24,6 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
@@ -276,7 +275,7 @@ class FunctionModel {
         SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
 
       } else {
-        CustomAlertDialog.alertDialog('Failed to create directory.');
+        SnakeAlert.errorSnake("Failed to create directory.");
         
       }
 
