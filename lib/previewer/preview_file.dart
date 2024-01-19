@@ -827,6 +827,7 @@ class PreviewFileState extends State<PreviewFile> {
                 backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
                 actions: <Widget>[ 
 
+                  if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
                   _buildReadingModeIconButton(),
                   
                   if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
