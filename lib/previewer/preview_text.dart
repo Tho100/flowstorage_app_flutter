@@ -59,9 +59,10 @@ class PreviewText extends StatelessWidget {
         if (snapshot.hasData) {        
           textController.text = utf8.decode(snapshot.data!);
           return Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: TextFormField(controller: textController,
-            keyboardType: TextInputType.multiline,
+            padding: const EdgeInsets.only(left: 14.0),
+            child: TextFormField(
+              controller: textController,
+              keyboardType: TextInputType.multiline,
               maxLines: null,
               style: GoogleFonts.roboto(
                 color: const Color.fromARGB(255, 220, 220, 220),

@@ -195,21 +195,21 @@ class CreateTextPageState extends State<CreateText> {
         controller: textEditingController,
         enabled: textFormEnabled,
         keyboardType: TextInputType.multiline,
-          maxLines: 140,
-          maxLength: 3100,
-          style: GoogleFonts.roboto(
-            color: const Color.fromARGB(255, 220, 220, 220),
-            fontWeight: FontWeight.w500,
+        maxLines: 500,
+        maxLength: 5500,
+        style: GoogleFonts.roboto(
+          color: const Color.fromARGB(255, 220, 220, 220),
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: const InputDecoration(
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
           ),
-          decoration: const InputDecoration(
-            counterStyle: TextStyle(color: ThemeColor.secondaryWhite),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-            ),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
-            ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
           ),
+          counterText: '',
+        ),
       ),
     );
   }
