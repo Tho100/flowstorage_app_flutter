@@ -73,40 +73,35 @@ class ByteGetterPs {
   Future<List<Uint8List>> getFileInfoParams(MySQLConnectionPool conn, bool isFromMyPs) async {
 
     final String query; 
-    final IResultSet executeRetrieval;
+    final IResultSet results;
 
     if(isFromMyPs) {
 
       query = 'SELECT CUST_FILE FROM ${GlobalsTable.psImage} WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       final params = {'username': userData.username};
 
-      executeRetrieval = await conn.execute(query,params);
+      results = await conn.execute(query,params);
 
     } else {
       query = 'SELECT CUST_FILE FROM ${GlobalsTable.psImage} ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
-      executeRetrieval = await conn.execute(query);
+      results = await conn.execute(query);
 
     }
     
-    final getByteValue = <Uint8List>[];
-
-    for (final row in executeRetrieval.rows) {
+    final bytesData = results.rows.map((row) {
       final encryptedFile = row.assoc()['CUST_FILE']!;
       final decodedFile = base64.decode(EncryptionClass().decrypt(encryptedFile));
 
       final buffer = ByteData.view(decodedFile.buffer);
-      final bufferedFileBytes =
-          Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
+      return Uint8List.view(buffer.buffer, buffer.offsetInBytes, buffer.lengthInBytes);
 
-      getByteValue.add(bufferedFileBytes);
-
-    }
+    }).toList();
     
     isFromMyPs 
-    ? psStorageData.setMyPsImageBytes(getByteValue)
-    : psStorageData.setPsImageBytes(getByteValue);
+    ? psStorageData.setMyPsImageBytes(bytesData)
+    : psStorageData.setPsImageBytes(bytesData);
 
-    return getByteValue;
+    return bytesData;
 
   }
 

@@ -16,7 +16,7 @@ import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/main.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -269,7 +269,7 @@ class UploadDialog {
         final decodeToBytes = base64.decode(compressedImageBase64Encoded);
         final imageBytes = Uint8List.fromList(decodeToBytes);
 
-        await OfflineMode().saveOfflineFile(fileName: fileName, fileData: imageBytes);
+        await OfflineModel().saveOfflineFile(fileName: fileName, fileData: imageBytes);
 
         UpdateListView().addItemDetailsToListView(fileName: fileName);
 
@@ -537,7 +537,7 @@ class UploadDialog {
       final imageBytes = Uint8List.fromList(decodeToBytes);
       final decodedBase64String = base64.decode(toBase64Encoded);
 
-      await OfflineMode().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
+      await OfflineModel().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
 
       storageData.imageBytesFilteredList.add(imageBytes);
       storageData.imageBytesList.add(imageBytes);
@@ -609,7 +609,7 @@ class UploadDialog {
         final decodeToBytes = base64.decode(imageBase64Encoded);
         final imageBytes = Uint8List.fromList(decodeToBytes);
         
-        await OfflineMode().saveOfflineFile(fileName: imageName, fileData: imageBytes);
+        await OfflineModel().saveOfflineFile(fileName: imageName, fileData: imageBytes);
 
         storageData.imageBytesFilteredList.add(decodeToBytes);
         storageData.imageBytesList.add(decodeToBytes);

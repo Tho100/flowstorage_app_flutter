@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -123,7 +123,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       }
 
     } else {
-      final offlineDirPath = await OfflineMode().returnOfflinePath();
+      final offlineDirPath = await OfflineModel().returnOfflinePath();
       final filePath = '${offlineDirPath.path}/${widget.fileName}';
 
       fileBytes = await File(filePath).readAsBytes();

@@ -4,12 +4,12 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flutter/services.dart';
-import 'package:flowstorage_fsc/data_classes/thumbnail_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/thumbnail_getter.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mysql_client/mysql_client.dart';
 
-class DataRetriever {
+class FileDataGetter {
 
   int countDirCurr = 0;
 
@@ -92,7 +92,7 @@ class DataRetriever {
 
       if(storageData.homeThumbnailBytesList.isEmpty) {
         
-        final thumbnailBytes = await thumbnailGetter.retrieveParams(conn);
+        final thumbnailBytes = await thumbnailGetter.getThumbnails(conn);
 
         storageData.setHomeThumbnailBytes(thumbnailBytes);
         getByteValue.addAll(thumbnailBytes);

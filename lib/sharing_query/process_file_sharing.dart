@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/data_classes/thumbnail_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/thumbnail_getter.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
@@ -122,7 +122,9 @@ class ProcessFileSharing {
     final passwordSharingDisabled = await SharingOptions.retrievePasswordStatus(username);
 
     if(Globals.videoType.contains(fileExtension)) {
-      thumbnailBase64 = await Future.value(ThumbnailGetter().retrieveParamsSingle(fileName: fileName));
+      thumbnailBase64 = await Future.value(
+        ThumbnailGetter().getSingleThumbnail(fileName: fileName)
+      );
     }
 
     if(passwordSharingDisabled == "0") {

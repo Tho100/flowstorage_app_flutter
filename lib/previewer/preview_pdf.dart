@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/widgets/failed_load.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
@@ -38,18 +38,18 @@ class PreviewPdf extends StatelessWidget {
       }
 
       if(tempData.origin != OriginFile.offline) {
-        final fileData = await CallPreviewData().callDataAsync(
+        final fileData = await CallPreviewFileData(
           tableNamePs: GlobalsTable.psPdf, 
           tableNameHome: GlobalsTable.homePdf, 
           fileValues: {"pdf"}
-        );
+        ).callData();
 
         tempData.setFileData(fileData);
 
         return fileData;
 
       } else {
-        return await OfflineMode().loadOfflineFileByte(tempData.selectedFileName);
+        return await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
       }
 

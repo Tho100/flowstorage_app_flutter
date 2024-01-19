@@ -15,32 +15,26 @@ class UploaderName {
 
     final conn = await SqlConnection.initializeConnection();
 
-    List<String> uploaderNameList = <String>[];
-
     final query = 'SELECT CUST_USERNAME FROM $tableName';
     final results = await conn.execute(query);
 
-    String? uploaderName;
-    for(final row in results.rows) {
-      uploaderName = row.assoc()['CUST_USERNAME'];
-      uploaderNameList.add(uploaderName!);
-    }
-
-    return uploaderNameList[getUsernameIndex(fileValues)];
+    return results.rows
+      .map((row) => row.assoc()['CUST_USERNAME']!)
+      .toList()[_getUsernameIndex(fileValues)];
     
   }
 
-  int getUsernameIndex(Set fileValues) {
+  int _getUsernameIndex(Set fileValues) {
 
     final getVideoFiles = GetIt.instance<StorageDataProvider>()
-      .fileNamesList.where((file) {
-    for (final fileType in fileValues) {
-      if (file.endsWith('.$fileType')) {
-        return true;
+    .fileNamesList.where((file) {
+      for (final fileType in fileValues) {
+        if (file.endsWith('.$fileType')) {
+          return true;
 
+        }
       }
-    }
-    return false;
+      return false;
     }).toList();
 
     return getVideoFiles.indexOf(tempData.selectedFileName);

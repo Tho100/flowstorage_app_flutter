@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
+import 'package:flowstorage_fsc/data_classes/file_name_getter.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
@@ -28,7 +29,7 @@ import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -82,9 +83,8 @@ import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
-import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
-import 'package:flowstorage_fsc/data_classes/date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/file_date_getter.dart';
+import 'package:flowstorage_fsc/data_classes/file_data_getter.dart';
 
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -101,9 +101,9 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   late final TempStorageProvider tempStorageData;
   late final TempDataProvider tempData;
 
-  final fileNameGetterHome = NameGetter();
-  final dataGetterHome = DataRetriever();
-  final dateGetterHome = DateGetter();
+  final fileNameGetterHome = FileNameGetter();
+  final dataGetterHome = FileDataGetter();
+  final dateGetterHome = FileDateGetter();
   final retrieveData = RetrieveData();
   final insertData = InsertData();
   final dataCaller = DataCaller();
@@ -2344,7 +2344,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     try {
 
-      final offlineMode = OfflineMode();
+      final offlineMode = OfflineModel();
       final offlineDir = await offlineMode.returnOfflinePath();
 
       final listOfflineFiles = offlineDir.listSync();

@@ -15,7 +15,7 @@ class CreateDirectory {
   final userData = GetIt.instance<UserDataProvider>();
   
   Future<bool> create() async {
-    
+
     try {
 
       final conn = await SqlConnection.initializeConnection();
@@ -30,7 +30,6 @@ class CreateDirectory {
     } catch (err, st) {
       logger.e("Exception from createDirectory {create_directory}",err, st);
       return false;
-
     }
     
   }

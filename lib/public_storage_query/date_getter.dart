@@ -13,44 +13,34 @@ class DateGetterPs {
     final selectUploadDate = 'SELECT UPLOAD_DATE, CUST_TAG FROM $tableName WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
     final params = {'username': userData.username};
-    final retrieveUploadDate = await conn.execute(selectUploadDate,params);
+    final results = await conn.execute(selectUploadDate,params);
 
-    final storeDateValues = <String>[];
-
-    for (final res in retrieveUploadDate.rows) {
-
-      final dateValue = res.assoc()['UPLOAD_DATE']!;
-      final tagValue = res.assoc()['CUST_TAG']!;
+    return results.rows.map((row) {
+      final dateValue = row.assoc()['UPLOAD_DATE']!;
+      final tagValue = row.assoc()['CUST_TAG']!;
 
       final formattedDate = FormatDate().formatDifference(dateValue);
 
-      storeDateValues.add('$formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
+      return '$formattedDate ${GlobalsStyle.dotSeperator} $tagValue';
 
-    }
-
-    return storeDateValues;
+    }).toList();
 
   }
 
   Future<List<String>> getDateParams(MySQLConnectionPool conn, String tableName) async {
     
     final selectUploadDate = 'SELECT UPLOAD_DATE, CUST_TAG FROM $tableName ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
-    final retrieveUploadDate = await conn.execute(selectUploadDate);
+    final results = await conn.execute(selectUploadDate);
 
-    final storeDateValues = <String>[];
-
-    for (final res in retrieveUploadDate.rows) {
-
-      final dateValue = res.assoc()['UPLOAD_DATE']!;
-      final tagValue = res.assoc()['CUST_TAG']!;
+    return results.rows.map((row) {
+      final dateValue = row.assoc()['UPLOAD_DATE']!;
+      final tagValue = row.assoc()['CUST_TAG']!;
 
       final formattedDate = FormatDate().formatDifference(dateValue);
 
-      storeDateValues.add('$formattedDate ${GlobalsStyle.dotSeperator} $tagValue');
+      return '$formattedDate ${GlobalsStyle.dotSeperator} $tagValue';
 
-    }
-
-    return storeDateValues;
+    }).toList();
 
   }
 
