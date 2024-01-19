@@ -1,7 +1,7 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
-import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
@@ -40,7 +40,7 @@ class SplashScreenState extends State<SplashScreen> {
   final localModel = LocalStorageModel();
 
   final encryption = EncryptionClass();
-  final accountInformationRetriever = UserDataRetriever();
+  final accountInformationRetriever = UserDataGetter();
   final quickActionsModel = QuickActionsModel();
   
   final tempStorageData = GetIt.instance<TempStorageProvider>();
@@ -193,7 +193,7 @@ class SplashScreenState extends State<SplashScreen> {
       userData.setEmail(savedCustEmail);
       
       final accountType = await accountInformationRetriever
-        .retrieveAccountType(email: savedCustEmail, conn: conn);
+        .getAccountType(email: savedCustEmail, conn: conn);
       
       userData.setAccountType(accountType);
       

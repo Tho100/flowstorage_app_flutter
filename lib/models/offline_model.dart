@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
-class OfflineMode {
+class OfflineModel {
 
   late Directory offlineDirs;
 
-  OfflineMode() {
+  OfflineModel() {
     initializeOfflineDirs();
   }
 
@@ -129,7 +129,7 @@ class OfflineMode {
 
   Future<Uint8List> loadOfflineFileByte(String fileName) async {
 
-    final offlineDirsPath = await OfflineMode().returnOfflinePath();
+    final offlineDirsPath = await OfflineModel().returnOfflinePath();
     
     final file = File('${offlineDirsPath.path}/$fileName');
 

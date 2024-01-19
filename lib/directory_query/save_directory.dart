@@ -102,7 +102,8 @@ class SaveDirectory {
 
     try {
 
-      final loadingDialog = SingleTextLoading();      
+      final loadingDialog = SingleTextLoading(); 
+           
       loadingDialog.startLoading(title: "Saving...", context: context);
 
       final dataList = await retrieveParams(directoryName);
@@ -115,6 +116,7 @@ class SaveDirectory {
       }
 
       loadingDialog.stopLoading();
+      
       SnakeAlert.okSnake(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
 
       await CallNotify().customNotification(title: "Directory Saved", subMesssage: "${nameList.length} File(s) has been downloaded");

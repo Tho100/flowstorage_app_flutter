@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/api/save_api.dart';
-import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
@@ -143,8 +143,8 @@ class BackupRecovery extends StatelessWidget {
 
       } 
 
-      final recoveryToken = await UserDataRetriever()
-        .retrieveRecoveryToken(userData.username);
+      final recoveryToken = await UserDataGetter()
+        .getRecoveryToken(userData.username);
 
       final saveBackup = await SaveApi()
         .saveFile(fileName: "FlowstorageRECOVERYKEY.txt", fileData: recoveryToken);

@@ -85,11 +85,11 @@ class PreviewVideoState extends State<PreviewVideo> {
     
     if (videoBytes.isEmpty) {
       videoIsLoading = true;
-      videoBytes = await CallPreviewData().callDataAsync(
+      videoBytes = await CallPreviewFileData(
         tableNamePs: GlobalsTable.psVideo, 
         tableNameHome: GlobalsTable.homeVideo, 
         fileValues: Globals.videoType
-      );
+      ).callData();
 
       tempData.setFileData(videoBytes);
 

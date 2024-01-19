@@ -2,9 +2,9 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:mysql_client/mysql_client.dart';
 
-class UserDataRetriever {
+class UserDataGetter {
 
-  Future<String> retrieveAccountType({
+  Future<String> getAccountType({
     required MySQLConnectionPool conn,
     required String? email
   }) async {
@@ -19,7 +19,7 @@ class UserDataRetriever {
 
   }
 
-  Future<String> retrieveUsername({
+  Future<String> getUsername({
     required MySQLConnectionPool conn,
     required String? email
   }) async {
@@ -33,7 +33,7 @@ class UserDataRetriever {
 
   }
 
-  Future<List<String?>> retrieveAccountTypeAndUsername({
+  Future<List<String?>> getAccountTypeAndUsername({
     required MySQLConnectionPool conn,
     required String? email
   }) async {
@@ -56,7 +56,7 @@ class UserDataRetriever {
 
   }
 
-  Future<Map<String, String>> retrieveAccountAuthentication({
+  Future<Map<String, String>> getAccountAuthentication({
     required MySQLConnectionPool conn,
     required String username
   }) async {
@@ -76,7 +76,7 @@ class UserDataRetriever {
 
   }
 
-  Future<String> retrieveRecoveryToken(String username) async {
+  Future<String> getRecoveryToken(String username) async {
 
     const selectAuth = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': username};    

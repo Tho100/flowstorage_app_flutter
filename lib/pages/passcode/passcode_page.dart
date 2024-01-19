@@ -1,7 +1,7 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
-import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/models/quick_actions_model.dart';
@@ -41,7 +41,7 @@ class PasscodePageState extends State<PasscodePage> {
   final controllers = List.generate(4, (_) => TextEditingController());
   final focusNodes = List.generate(4, (_) => FocusNode());
 
-  final accountInformationRetriever = UserDataRetriever();
+  final accountInformationRetriever = UserDataGetter();
 
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
@@ -66,7 +66,7 @@ class PasscodePageState extends State<PasscodePage> {
       userData.setEmail(savedCustEmail);
 
       final accountType = await accountInformationRetriever
-        .retrieveAccountType(email: savedCustEmail, conn: conn);
+        .getAccountType(email: savedCustEmail, conn: conn);
       
       userData.setAccountType(accountType);
 

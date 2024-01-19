@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
-import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
@@ -132,7 +132,7 @@ class VerifyAccountDeletionDialog {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final getPin = await UserDataRetriever().retrieveAccountAuthentication(conn: conn, username: userData.username);
+    final getPin = await UserDataGetter().getAccountAuthentication(conn: conn, username: userData.username);
 
     final userPin = getPin["pin"];
 

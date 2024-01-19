@@ -7,7 +7,17 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/public_storage_query/get_uploader_name.dart';
 import 'package:get_it/get_it.dart';
 
-class CallPreviewData {
+class CallPreviewFileData {
+
+  final String tableNamePs;
+  final String tableNameHome;
+  final Set<dynamic> fileValues;
+
+  CallPreviewFileData({
+    required this.tableNameHome,
+    required this.tableNamePs,
+    required this.fileValues,
+  });
 
   final retrieveData = RetrieveData();
   final uploaderName = UploaderName();
@@ -15,11 +25,7 @@ class CallPreviewData {
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<Uint8List> callDataAsync({
-    required String tableNamePs, 
-    required String tableNameHome, 
-    required Set<dynamic> fileValues
-  }) async {
+  Future<Uint8List> callData() async {
 
     final tableName = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching
       ? tableNamePs 

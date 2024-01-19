@@ -9,7 +9,7 @@ import 'package:flowstorage_fsc/folder_query/create_folder.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -137,7 +137,7 @@ class UpdateListView {
 
     } else {
       final fileByteData = base64.decode(fileBase64Encoded);
-      await OfflineMode().processSaveOfflineFile(
+      await OfflineModel().processSaveOfflineFile(
         fileName: selectedFileName, fileData: fileByteData);
 
     }

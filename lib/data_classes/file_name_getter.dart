@@ -2,7 +2,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:mysql_client/mysql_client.dart';
 
-class NameGetter {
+class FileNameGetter {
 
   final encryption = EncryptionClass();
 

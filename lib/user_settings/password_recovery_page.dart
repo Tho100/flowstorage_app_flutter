@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
-import 'package:flowstorage_fsc/data_classes/user_data_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/password_reset_page.dart';
@@ -119,11 +119,11 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
       final conn = await SqlConnection.initializeConnection();
 
-      final username = await UserDataRetriever()
-        .retrieveUsername(email: email, conn: conn);
+      final username = await UserDataGetter()
+        .getUsername(email: email, conn: conn);
 
-      final recoveryToken = await UserDataRetriever()
-        .retrieveRecoveryToken(username);
+      final recoveryToken = await UserDataGetter()
+        .getRecoveryToken(username);
 
       if(recoveryToken != recoveryTokenInput) {
         CustomAlertDialog.alertDialog("Invalid recovery key.");

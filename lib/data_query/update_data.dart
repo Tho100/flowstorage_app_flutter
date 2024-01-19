@@ -4,7 +4,7 @@ import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -57,7 +57,7 @@ class UpdateTextData {
     final compressedFileBytes = CompressorApi.compressByte(base64Bytes);
     final compressedFileBase64 = base64.encode(compressedFileBytes);
 
-    OfflineMode().saveOfflineTextFile(inputValue: compressedFileBase64, fileName: tempData.selectedFileName);
+    OfflineModel().saveOfflineTextFile(inputValue: compressedFileBase64, fileName: tempData.selectedFileName);
   }
 
   Future<void> _updateDatabase(String updateQuery, Map<String, dynamic> params) async {

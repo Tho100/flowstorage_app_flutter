@@ -13,7 +13,7 @@ import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -149,7 +149,7 @@ class CreateTextPageState extends State<CreateText> {
 
   void _createTextFileOnOffline(String fileName, String inputValue) {
     
-    OfflineMode().saveOfflineTextFile(
+    OfflineModel().saveOfflineTextFile(
       inputValue: inputValue,
       fileName: fileName,
     );

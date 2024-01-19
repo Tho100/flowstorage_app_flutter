@@ -9,7 +9,7 @@ import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -223,7 +223,7 @@ class IntentSharingPage extends StatelessWidget {
 
     }
 
-    await OfflineMode().processSaveOfflineFile(
+    await OfflineModel().processSaveOfflineFile(
       fileName: fileName, 
       fileData: fileBytes
     );

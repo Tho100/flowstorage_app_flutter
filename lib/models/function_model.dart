@@ -18,7 +18,7 @@ import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/simplify_download.dart';
 import 'package:flowstorage_fsc/main.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -78,7 +78,7 @@ class FunctionModel {
     try {
 
       if(tempData.origin == OriginFile.offline) {
-        await OfflineMode().deleteFile(fileName);
+        await OfflineModel().deleteFile(fileName);
         SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}", icon: Icons.check);
         return;
 
@@ -105,7 +105,7 @@ class FunctionModel {
       
       tempData.origin != OriginFile.offline
         ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
-        : await OfflineMode().renameFile(oldFileName, newFileName);
+        : await OfflineModel().renameFile(oldFileName, newFileName);
 
       final indexOldFile = storageData.fileNamesList.indexOf(oldFileName);
       final indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(oldFileName);
@@ -155,7 +155,7 @@ class FunctionModel {
         } else {
 
           if(tempData.origin == OriginFile.offline) {
-            getBytes = await OfflineMode().loadOfflineFileByte(checkedItemsName.elementAt(i));
+            getBytes = await OfflineModel().loadOfflineFileByte(checkedItemsName.elementAt(i));
 
           } else {
             getBytes = await _callFileByteData(
@@ -226,7 +226,7 @@ class FunctionModel {
         ).downloadFile();
 
       } else {
-        await OfflineMode().downloadFile(fileName);
+        await OfflineModel().downloadFile(fileName);
 
       } 
 
@@ -322,7 +322,7 @@ class FunctionModel {
     required BuildContext context
   }) async {
 
-    final offlineMode = OfflineMode();
+    final offlineMode = OfflineModel();
     final singleLoading = SingleTextLoading();
 
     singleLoading.startLoading(title: "Preparing...", context: context);
@@ -372,7 +372,7 @@ class FunctionModel {
 
     try {
 
-      final offlineMode = OfflineMode();
+      final offlineMode = OfflineModel();
       final singleLoading = SingleTextLoading();
 
       final fileType = fileName.split('.').last;
@@ -445,7 +445,7 @@ class FunctionModel {
         }
 
       } else {
-        fileData = await OfflineMode().loadOfflineFileByte(fileName);
+        fileData = await OfflineModel().loadOfflineFileByte(fileName);
 
       }
 

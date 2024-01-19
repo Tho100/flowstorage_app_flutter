@@ -15,7 +15,7 @@ class ThumbnailGetter {
   final tempData = GetIt.instance<TempDataProvider>();
   final encryption = EncryptionClass();
 
-  Future<List<Uint8List>> retrieveParams(MySQLConnectionPool conn) async {
+  Future<List<Uint8List>> getThumbnails(MySQLConnectionPool conn) async {
     
     final conn = await SqlConnection.initializeConnection();
 
@@ -42,19 +42,15 @@ class ThumbnailGetter {
 
     params = {'username': userData.username};
 
-    final getThumbBytesQue = await conn.execute(query, params);
-    final thumbnailBytesList = <Uint8List>[];
+    final results = await conn.execute(query, params);
 
-    for (final res in getThumbBytesQue.rows) {
-      final thumbBytes = res.assoc()['CUST_THUMB'];
-      thumbnailBytesList.add(base64.decode(thumbBytes!));
-    }
-
-    return thumbnailBytesList;
+    return results.rows.map((row) => 
+      base64.decode(row.assoc()['CUST_THUMB']!)
+    ).toList();
   
   }
 
-  Future<String?> retrieveParamsSingle({
+  Future<String?> getSingleThumbnail({
     required String? fileName,
   }) async {
     

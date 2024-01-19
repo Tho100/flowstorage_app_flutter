@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/data_classes/data_retriever.dart';
-import 'package:flowstorage_fsc/data_classes/date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/files_name_retriever.dart';
+import 'package:flowstorage_fsc/data_classes/file_data_getter.dart';
+import 'package:flowstorage_fsc/data_classes/file_date_getter.dart';
+import 'package:flowstorage_fsc/data_classes/file_name_getter.dart';
 import 'package:flowstorage_fsc/directory_query/directory_data.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/folder_query/folder_data_retriever.dart';
@@ -27,7 +27,7 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:path/path.dart' as path;
 
 import 'package:flowstorage_fsc/global/globals.dart';
-import 'package:flowstorage_fsc/models/offline_mode.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 
 class DataCaller {
 
@@ -38,11 +38,11 @@ class DataCaller {
   final tempData = GetIt.instance<TempDataProvider>();
 
   final _crud = Crud();
-  final _offlineMode = OfflineMode();
+  final _offlineMode = OfflineModel();
   
-  final _fileNameGetterHome = NameGetter();
-  final _dataGetterHome = DataRetriever();
-  final _dateGetterHome = DateGetter();
+  final _fileNameGetterHome = FileNameGetter();
+  final _dataGetterHome = FileDataGetter();
+  final _dateGetterHome = FileDateGetter();
   
   final _directoryDataReceiver = DirectoryDataReceiver();
   final _folderDataReceiver = FolderDataReceiver();
