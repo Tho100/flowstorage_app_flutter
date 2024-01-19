@@ -426,14 +426,15 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  Widget _buildCopyTextIconButton() {
+  Widget _buildReadingModeIconButton() {
     return IconButton(
       onPressed: () {
-        final textValue = PreviewText.textController.text;
-        Clipboard.setData(ClipboardData(text: textValue));
-        CallToast.call(message: "Copied to clipboard");
+        FocusScope.of(context).unfocus();
+        bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
       },
-      icon: const Icon(Icons.copy),
+      icon: bottomBarVisibleNotifier.value 
+      ? const Icon(Icons.import_contacts_outlined, size: 28)
+      : const Icon(Icons.edit_note_outlined, size: 32),
     );
   }
 
@@ -723,48 +724,60 @@ class PreviewFileState extends State<PreviewFile> {
 
     const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
 
-    return textTables.contains(currentTable) ? Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                tempData.selectedFileName.length > 28 ? "${tempData.selectedFileName.substring(0,28)}..." : tempData.selectedFileName,
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
-              )),
-            ),
+    if(textTables.contains(currentTable)) {
+      final displayFileName = tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
 
-            if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-              child: Text(
-                tempData.origin == OriginFile.public 
-                ? psStorageData.psTitleList[widget.tappedIndex]
-                : psStorageData.psSearchTitleList[widget.tappedIndex],
-                style: const TextStyle(
-                  color: ThemeColor.justWhite,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width-15,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    displayFileName,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 240, 240, 240),
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis,
+                  )),
                 ),
-                softWrap: true,
-                textAlign: TextAlign.start,
               ),
-            ),
 
-          ],
-        ),
-      ],
-    ) : const SizedBox();
+              if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Text(
+                  tempData.origin == OriginFile.public 
+                  ? psStorageData.psTitleList[widget.tappedIndex]
+                  : psStorageData.psSearchTitleList[widget.tappedIndex],
+                  style: const TextStyle(
+                    color: ThemeColor.justWhite,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  softWrap: true,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+
+            ],
+          ),
+        ],
+      );
+
+    } else {
+      return const SizedBox();
+
+    }
+
   }
 
   Widget _buildBody() {
@@ -772,7 +785,7 @@ class PreviewFileState extends State<PreviewFile> {
       decoration: _buildBackgroundDecoration(),
       child: Column(
         children: [
-
+          
           _buildTextHeaderTitle(),
 
           Expanded(
@@ -814,9 +827,8 @@ class PreviewFileState extends State<PreviewFile> {
                 backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
                 actions: <Widget>[ 
 
-                  if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
-                  _buildCopyTextIconButton(),
-
+                  _buildReadingModeIconButton(),
+                  
                   if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
                   _buildCommentIconButtonAudio(),
 
