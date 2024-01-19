@@ -256,27 +256,34 @@ class FunctionModel {
 
     try {
 
-      await CreateDirectory(name: directoryName).create();
+      final isDirectoryCreated = await CreateDirectory(name: directoryName).create();
 
-      final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
+      if(isDirectoryCreated) {
 
-      storageData.fileDateFilteredList.add("Directory");
-      storageData.fileDateList.add("Directory");
-      storageData.imageBytesList.add(directoryImage.readAsBytesSync());
-      storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
+        final directoryImage = await GetAssets().loadAssetsFile('dir1.jpg');
 
-      storageData.directoryImageBytesList.clear();
-      storageData.fileNamesFilteredList.add(directoryName);
-      storageData.fileNamesList.add(directoryName);
+        storageData.fileDateFilteredList.add("Directory");
+        storageData.fileDateList.add("Directory");
+        storageData.imageBytesList.add(directoryImage.readAsBytesSync());
+        storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
 
-      tempStorageData.directoryNameList.add(directoryName);
+        storageData.directoryImageBytesList.clear();
+        storageData.fileNamesFilteredList.add(directoryName);
+        storageData.fileNamesList.add(directoryName);
 
-      SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
+        tempStorageData.directoryNameList.add(directoryName);
+
+        SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
+
+      } else {
+        CustomAlertDialog.alertDialog('Failed to create directory.');
+        
+      }
 
     } catch (err, st) {
       logger.e('Exception from createDirectoryData {function_model}',err,st);
-      CustomAlertDialog.alertDialog('Failed to create directory.');
     }
+
   }
   
   Future<void> deleteDirectoryData(String directoryName) async {

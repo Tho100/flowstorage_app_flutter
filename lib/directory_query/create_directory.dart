@@ -14,7 +14,7 @@ class CreateDirectory {
   final encryption = EncryptionClass();
   final userData = GetIt.instance<UserDataProvider>();
   
-  Future<void> create() async {
+  Future<bool> create() async {
     
     try {
 
@@ -25,8 +25,12 @@ class CreateDirectory {
 
       await conn.execute(query,params);
 
+      return true;
+
     } catch (err, st) {
       logger.e("Exception from createDirectory {create_directory}",err, st);
+      return false;
+
     }
     
   }
