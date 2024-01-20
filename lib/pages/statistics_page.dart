@@ -520,21 +520,6 @@ class StatsPageState extends State<StatisticsPage> {
               ),
             ),
 
-            const SizedBox(height: 24),
-            
-            const Padding(
-              padding: EdgeInsets.only(top: 24, left: 8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Accounts",
-                  style: TextStyle(
-                    color: ThemeColor.secondaryWhite,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
