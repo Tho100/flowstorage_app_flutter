@@ -60,8 +60,8 @@ class SettingsAccountPage extends StatelessWidget {
           const SizedBox(height: 8),
 
           _buildRow("Email", email),
-          _buildRow("Account Type", accountType),
-          _buildRow("Upload Limit", uploadLimit.toString()),
+          _buildRow("Account plan", accountType),
+          _buildRow("Upload limit", uploadLimit.toString()),
 
           const SizedBox(height: 12),
 
