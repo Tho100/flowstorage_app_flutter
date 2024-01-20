@@ -12,7 +12,6 @@ import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/pages/user_accounts_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
-import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/pages/passcode/add_passcode_page.dart';
 import 'package:flowstorage_fsc/user_settings/backup_recovery_page.dart';
 import 'package:flowstorage_fsc/pages/my_plan_page.dart';
@@ -155,15 +154,13 @@ class NavigatePage {
     final userData = GetIt.instance<UserDataProvider>();
 
     final username = userData.username;
-    final email = userData.email;
     final accountType = userData.accountType;
 
     try {
 
       _openSettingsPage(
-        email: email,
         username: username,
-        accountType: accountType,
+        plan: accountType,
       );
 
     } catch (err, st) {
@@ -174,28 +171,24 @@ class NavigatePage {
       await Future.delayed(const Duration(milliseconds: 990));
 
       _openSettingsPage(
-        email: email,
         username: username,
-        accountType: accountType,
+        plan: accountType,
       );
 
     }
   }
 
   static void _openSettingsPage({
-    required String email, 
     required String username,
-    required String accountType,
+    required String plan,
   }) {
     Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(
         builder: (context) => 
           CakeSettingsPage(
-          accType: accountType,
-          custEmail: email,
+          accountPlan: plan,
           custUsername: username,
-          uploadLimit: AccountPlan.mapFilesUpload[accountType]!,
         ),
       ),
     );

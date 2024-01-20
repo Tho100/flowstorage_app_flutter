@@ -106,7 +106,7 @@ class BackupRecovery extends StatelessWidget {
         MainButton(
           text: "Export Recovery Key",
           onPressed: () async {
-            await _executeChanges(pinController.text, passController.text, context);
+            await _exportOnPressed(pinController.text, passController.text);
           },
         ),
 
@@ -114,46 +114,24 @@ class BackupRecovery extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        backgroundColor: ThemeColor.darkBlack,
-         body: Builder(
-          builder: (context) => _buildBody(context),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _executeChanges(String auth0,String auth1, BuildContext context) async {
+  Future<void> _exportOnPressed(String pinInput, String passwordInput) async {
 
     try {
 
       final userData = GetIt.instance<UserDataProvider>();
 
-      if(auth0.isEmpty && auth1.isEmpty) {
+      if(pinInput.isEmpty && passwordInput.isEmpty) {
         return;
       }
 
-      final pinIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(auth0), "CUST_PIN");
+      final pinIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(pinInput), "CUST_PIN");
 
       if(pinIsIncorrect) {
         CustomAlertDialog.alertDialog("Entered PIN is incorrect.");
         return;
       }
 
-      final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(auth1), "CUST_PASSWORD");
+      final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(passwordInput), "CUST_PASSWORD");
 
       if(passwordIsIncorrect) {
         CustomAlertDialog.alertDialog("Password is incorrect.");
@@ -175,6 +153,17 @@ class BackupRecovery extends StatelessWidget {
       CustomAlertDialog.alertDialog("Failed to backup your recovery key.");
     }
 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ThemeColor.darkBlack,
+        elevation: 0,
+      ),
+      body: _buildBody(context),
+    );
   }
 
 }

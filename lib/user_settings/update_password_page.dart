@@ -196,21 +196,12 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: ThemeColor.darkBlack,
-        body: _buildBody(context),
+        elevation: 0,
       ),
+      body: _buildBody(context),
     );
   }
 
