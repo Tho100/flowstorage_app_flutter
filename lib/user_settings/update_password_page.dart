@@ -121,7 +121,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
         const SizedBox(height: 12),
 
         _buildTextField(
-          hintText: "Enter your current password", 
+          hintText: "Enter your password", 
           controller: curPassController, 
           context: context, 
           isSecured: true, 
@@ -132,7 +132,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
         const SizedBox(height: 12),
 
         _buildTextField(
-          hintText: "Enter your current PIN key", 
+          hintText: "Enter your PIN", 
           controller: curPinController, 
           context: context, 
           isSecured: false, 

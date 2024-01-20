@@ -16,7 +16,13 @@ class BackupRecovery extends StatelessWidget {
 
   const BackupRecovery({Key? key}) : super (key: key);
   
-  Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured, {bool isFromPin = false}) {
+  Widget _buildTextField({
+    required String hintText, 
+    required TextEditingController controller, 
+    required BuildContext context, 
+    required bool isSecured, 
+    required bool isFromPin
+  }) {
 
     final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
@@ -35,7 +41,7 @@ class BackupRecovery extends StatelessWidget {
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
-                controller: mainController,
+                controller: controller,
                 obscureText: isSecured ? !isVisible : false,
                 maxLines: 1,
                 maxLength: isFromPin ? 3 : null,
@@ -77,18 +83,30 @@ class BackupRecovery extends StatelessWidget {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter your Password",passController,context,true),
+        _buildTextField(
+          hintText: "Enter your password", 
+          controller: passController, 
+          context: context, 
+          isSecured: true,
+          isFromPin: false
+        ),
 
         const SizedBox(height: 15),
 
-        _buildTextField("Enter your PIN",pinController,context,true,isFromPin: true),
+        _buildTextField(
+          hintText: "Enter your PIN", 
+          controller: pinController, 
+          context: context, 
+          isSecured: true, 
+          isFromPin: true
+        ),
 
         const SizedBox(height: 20),
         
         MainButton(
           text: "Export Recovery Key",
           onPressed: () async {
-            await _executeChanges(pinController.text,passController.text, context);
+            await _executeChanges(pinController.text, passController.text, context);
           },
         ),
 
