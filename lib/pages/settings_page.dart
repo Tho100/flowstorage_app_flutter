@@ -19,16 +19,12 @@ import 'package:get_it/get_it.dart';
 class CakeSettingsPage extends StatefulWidget {
 
   final String custUsername;
-  final String custEmail;
-  final String accType;
-  final int uploadLimit;
+  final String accountPlan;
 
   const CakeSettingsPage({
     Key? key, 
     required this.custUsername, 
-    required this.custEmail, 
-    required this.accType,
-    required this.uploadLimit,
+    required this.accountPlan,
   }) : super(key: key);
 
   @override
@@ -38,9 +34,7 @@ class CakeSettingsPage extends StatefulWidget {
 class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   late String custUsername;
-  late String custEmail;
-  late String accountType;
-  late int uploadLimit;
+  late String accountPlan;
 
   final dataCaller = DataCaller();
 
@@ -200,7 +194,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        accountType,
+                        accountPlan,
                         style: const TextStyle(
                           color: Color.fromARGB(255, 185, 185, 185),
                           fontSize: 16,
@@ -304,27 +298,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     );
   }
 
-  Widget _buildTabs(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ThemeColor.darkBlack,
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text(
-          'Settings',
-          style: GlobalsStyle.appBarTextStyle
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: _buildBody(context),
-    );
-  }
-
   Future<void> initializeProfilePic() async {
     
     try {
@@ -350,9 +323,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   void initState() {
     super.initState();
     custUsername = widget.custUsername;
-    custEmail = widget.custEmail;
-    accountType = widget.accType;
-    uploadLimit = widget.uploadLimit;
+    accountPlan = widget.accountPlan;
     initializeProfilePic();
   }
 
@@ -364,9 +335,16 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: _buildTabs(context),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ThemeColor.darkBlack,
+        elevation: 0,
+        title: const Text(
+          'Settings',
+          style: GlobalsStyle.appBarTextStyle
+        ),
+      ),
+      body: _buildBody(context),
     );
   }
 
