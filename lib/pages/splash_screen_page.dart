@@ -202,13 +202,14 @@ class SplashScreenState extends State<SplashScreen> {
 
       final results = await Future.wait(futures);
 
-      final fileNames = <String>{};
+      final fileNames = <String>[];
       final bytes = <Uint8List>[];
       final dates = <String>[];
-      final retrieveFolders = <String>{};
 
+      final foldersList = <String>[];
+      
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-        retrieveFolders.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
+        foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
       }
 
       for (final result in results) {
@@ -221,37 +222,20 @@ class SplashScreenState extends State<SplashScreen> {
         dates.addAll(datesForTable);
       }
 
-      final uniqueFileNames = fileNames.toList();
-      final uniqueBytes = bytes.toList();
-      final uniqueFolders = retrieveFolders.toList();
+      final directoriesList = fileNames.where((fileName) => !fileName.contains('.')).toList();
 
-      final directoriesName = uniqueFileNames.where((fileName) => !fileName.contains('.')).toList();
-
-      storageData.setFilesName(uniqueFileNames);
-      storageData.setImageBytes(uniqueBytes);
+      storageData.setFilesName(fileNames);
+      storageData.setImageBytes(bytes);
       storageData.setFilesDate(dates);
 
-      tempStorageData.setDirectoriesName(directoriesName);
-      tempStorageData.setFoldersName(uniqueFolders);
+      tempStorageData.setDirectoriesName(directoriesList);
+      tempStorageData.setFoldersName(foldersList);
 
     } catch (err) {
       NavigatePage.replacePageMain(context);
       return;
     }
 
-  }
-
-  @override
-  void dispose() {
-    splashScreenTimer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildSplashScreen(context),
-    );
   }
 
   Widget _buildSplashScreen(BuildContext context) {
@@ -268,6 +252,19 @@ class SplashScreenState extends State<SplashScreen> {
           ),  
         ),
       ),
+    );
+  }
+
+  @override
+  void dispose() {
+    splashScreenTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildSplashScreen(context),
     );
   }
 

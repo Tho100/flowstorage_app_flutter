@@ -143,7 +143,7 @@ class DataCaller {
 
     final results = await Future.wait(futures);
 
-    final fileNames = <String>{};
+    final fileNames = <String>[];
     final bytes = <Uint8List>[];
     final dates = <String>[];
 
@@ -157,16 +157,13 @@ class DataCaller {
       dates.addAll(datesForTable);
     }
 
-    final uniqueFileNames = fileNames.toList();
-    final uniqueBytes = bytes.toList();
-
     if(isFromStatistics!) {
-      tempStorageData.setStatsFilesName(uniqueFileNames);
+      tempStorageData.setStatsFilesName(fileNames);
       return;
     }
 
-    storageData.setFilesName(uniqueFileNames);
-    storageData.setImageBytes(uniqueBytes);
+    storageData.setFilesName(fileNames);
+    storageData.setImageBytes(bytes);
     storageData.setFilesDate(dates);
     
     tempData.setAppBarTitle("Home");
