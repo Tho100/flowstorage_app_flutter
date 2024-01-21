@@ -75,13 +75,14 @@ class PasscodePageState extends State<PasscodePage> {
 
       final results = await Future.wait(futures);
 
-      final fileNames = <String>{};
+      final fileNames = <String>[];
       final bytes = <Uint8List>[];
       final dates = <String>[];
-      final retrieveFolders = <String>{};
+
+      final foldersList = <String>[];
 
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-        retrieveFolders.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
+        foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
       }
 
       for (final result in results) {
@@ -94,15 +95,11 @@ class PasscodePageState extends State<PasscodePage> {
         dates.addAll(datesForTable);
       }
 
-      final uniqueFileNames = fileNames.toList();
-      final uniqueBytes = bytes.toList();
-      final uniqueFolders = retrieveFolders.toList();
-
-      storageData.setFilesName(uniqueFileNames);
-      storageData.setImageBytes(uniqueBytes);
+      storageData.setFilesName(fileNames);
+      storageData.setImageBytes(bytes);
       storageData.setFilesDate(dates);
 
-      tempStorageData.setFoldersName(uniqueFolders);
+      tempStorageData.setFoldersName(foldersList);
       
       tempData.setOrigin(OriginFile.home);
 

@@ -56,10 +56,11 @@ class SignInUser {
   
     final results = await Future.wait(futures);
 
-    final fileNames = <String>{};
+    final fileNames = <String>[];
     final bytes = <Uint8List>[];
     final dates = <String>[];
-    final retrieveFolders = <String>{};
+
+    final foldersList = <String>[];
 
     for (final result in results) {
       final fileNamesForTable = result[0] as List<String>;
@@ -71,22 +72,18 @@ class SignInUser {
       dates.addAll(datesForTable);
     }
 
-    final uniqueFileNames = fileNames.toList();
-    final uniqueBytes = bytes.toList();
-
     if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-      retrieveFolders.addAll(await FolderRetriever().retrieveParams(custUsernameGetter));
+      foldersList.addAll(await FolderRetriever().retrieveParams(custUsernameGetter));
     }
 
-    final foldersName = retrieveFolders.toList();
-    final directoriesName = uniqueFileNames.where((fileName) => !fileName.contains('.')).toList();
+    final directoriesList = fileNames.where((fileName) => !fileName.contains('.')).toList();
 
-    storageData.setFilesName(uniqueFileNames);
-    storageData.setImageBytes(uniqueBytes);
+    storageData.setFilesName(fileNames);
+    storageData.setImageBytes(bytes);
     storageData.setFilesDate(dates);
     
-    tempStorageData.setFoldersName(foldersName);
-    tempStorageData.setDirectoriesName(directoriesName);
+    tempStorageData.setFoldersName(foldersList);
+    tempStorageData.setDirectoriesName(directoriesList);
 
     if (isRememberMeChecked) {
       await LocalStorageModel()

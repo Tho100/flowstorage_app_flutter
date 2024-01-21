@@ -312,7 +312,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
       }
 
-    } catch (error) {
+    } catch (err) {
       profilePicNotifier.value = Uint8List(0);
 
     }
@@ -329,8 +329,8 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
   @override 
   void dispose() {
-    super.dispose();
     profilePicNotifier.dispose();
+    super.dispose();
   }
 
   @override
