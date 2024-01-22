@@ -129,7 +129,7 @@ class BottomTrailingOptions {
           ),
         ), 
 
-        if(WidgetVisibility.setNotVisible(OriginFile.offline))
+        if(WidgetVisibility.setNotVisible(OriginFile.offline) && fileName.contains('.'))
         ElevatedButton(
           onPressed: onSharingPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -166,7 +166,7 @@ class BottomTrailingOptions {
         if(fileName.contains('.'))
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
+        if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
