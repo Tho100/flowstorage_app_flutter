@@ -140,6 +140,7 @@ class OfflineModel {
 
     } else {
       throw Exception('File not found');
+      
     }
     
   }
