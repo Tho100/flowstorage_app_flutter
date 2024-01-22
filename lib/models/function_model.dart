@@ -428,28 +428,24 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
       final fileTable = Globals.fileTypesToTableNames[fileType]!;
       
-      Uint8List fileData;
+      if(Globals.imageType.contains(fileType)) {
+        final index = storageData.fileNamesFilteredList.indexOf(fileName);
+        return storageData.imageBytesFilteredList.elementAt(index)!;
 
-      if(tempData.origin != OriginFile.offline) {
+      } else {
 
-        if(Globals.imageType.contains(fileType)) {
-          final index = storageData.fileNamesFilteredList.indexOf(fileName);
-          fileData = storageData.imageBytesFilteredList.elementAt(index)!;
-
-        } else {
-          fileData = isCompressed 
+        if(tempData.origin != OriginFile.offline) {
+          return isCompressed 
           ? CompressorApi.compressByte(
             await _callFileByteData(fileName, fileTable))
           : await _callFileByteData(fileName, fileTable);
+          
+        } else {
+          return await OfflineModel().loadOfflineFileByte(fileName);
 
         }
 
-      } else {
-        fileData = await OfflineModel().loadOfflineFileByte(fileName);
-
       }
-
-      return fileData;
 
     } catch (err, st) {
       logger.e('Exception from retrieveFileData {function_model}', err, st); 
@@ -466,20 +462,16 @@ class FunctionModel {
 
       final fileType = tempData.selectedFileName.split('.').last;
 
-      late Uint8List fileByteData;
-
       if(Globals.imageType.contains(fileType)) {
         final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
-        fileByteData = storageData.imageBytesFilteredList.elementAt(index)!; 
+        return storageData.imageBytesFilteredList.elementAt(index)!; 
 
       } else {
-        fileByteData = isCompressed 
+        return isCompressed 
         ? CompressorApi.compressByte(tempData.fileByteData)
         : tempData.fileByteData;
 
       }
-
-      return fileByteData;
       
     } catch (err, st) {
       logger.e('Exception from retreiveFileDataPreviewer {function_model}', err, st); 
