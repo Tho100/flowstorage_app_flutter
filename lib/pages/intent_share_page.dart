@@ -165,9 +165,6 @@ class IntentSharingPage extends StatelessWidget {
   }
 
   void previewPdfOnPressed(BuildContext context) {
-
-    Navigator.pop(context);
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => PreviewPdf(
@@ -176,7 +173,6 @@ class IntentSharingPage extends StatelessWidget {
         )
       )
     );
-
   }
 
   Future<void> processFileUpload(BuildContext context) async {
