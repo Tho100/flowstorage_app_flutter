@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -39,10 +40,11 @@ class SettingsAppSettings extends StatelessWidget {
           const SizedBox(height: 8),
 
           SettingsButton(
-            hideCaret: true,
-            topText: "App version", 
-            bottomText: "2.1.4", 
-            onPressed: () {}
+            topText: "Configure notification", 
+            bottomText: "Configure Flowstorage notification settings", 
+            onPressed: () {
+              AppSettings.openAppSettings(type: AppSettingsType.notification);
+            }
           ),
 
           SettingsButton(
@@ -77,6 +79,13 @@ class SettingsAppSettings extends StatelessWidget {
                 ),
               ],
             )
+          ),
+
+          SettingsButton(
+            hideCaret: true,
+            topText: "App version", 
+            bottomText: "2.1.4", 
+            onPressed: () {}
           ),
                   
         ],
