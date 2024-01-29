@@ -63,7 +63,14 @@ class SettingsAccountPage extends StatelessWidget {
           _buildRow("Account plan", accountType),
           _buildRow("Upload limit", uploadLimit.toString()),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
+
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider(color: ThemeColor.lightGrey),
+          ),
+
+          const SizedBox(height: 5),
 
           SettingsButton(
             topText: "Change my password", 
@@ -79,6 +86,21 @@ class SettingsAccountPage extends StatelessWidget {
             onPressed: () {
               NavigatePage.goToPageMyAccounts();
             }
+          ),
+
+          Visibility(
+            visible: accountType != "Basic",
+            child: Column(
+              children: [                                                
+                SettingsButton(
+                  topText: "My plan", 
+                  bottomText: "See your subscription plan details", 
+                  onPressed: () async {
+                    NavigatePage.goToPageMyPlan();
+                  }
+                ),
+              ],
+            )
           ),
 
           SettingsButton(

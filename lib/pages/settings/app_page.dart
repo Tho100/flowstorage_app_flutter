@@ -1,6 +1,5 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -12,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 class SettingsAppSettings extends StatelessWidget {
 
-  SettingsAppSettings({super.key});
+  const SettingsAppSettings({super.key});
 
   void _clearAppCache() async {
     final cacheDir = await getTemporaryDirectory();
@@ -21,8 +20,6 @@ class SettingsAppSettings extends StatelessWidget {
   }
 
   static final userData = GetIt.instance<UserDataProvider>();
-
-  final accountType = userData.accountType;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +45,21 @@ class SettingsAppSettings extends StatelessWidget {
           ),
 
           SettingsButton(
+            topText: "Configure permissions", 
+            bottomText: "Configure Flowstorage permissions settings", 
+            onPressed: () {
+              AppSettings.openAppSettings(type: AppSettingsType.settings);
+            }
+          ),
+
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider(color: ThemeColor.lightGrey),
+          ),
+
+          const SizedBox(height: 5),
+
+          SettingsButton(
             topText: "Rate us", 
             bottomText: "Rate your experience with Flowstorage", 
             onPressed: () { }
@@ -63,29 +75,28 @@ class SettingsAppSettings extends StatelessWidget {
             }
           ),
 
-          Visibility(
-            visible: accountType != "Basic",
-            child: Column(
-              children: [
-
-                const SizedBox(height: 20),
-                                                
-                SettingsButton(
-                  topText: "My plan", 
-                  bottomText: "See your subscription plan details", 
-                  onPressed: () async {
-                    NavigatePage.goToPageMyPlan();
-                  }
+          const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
+                child: Text("App version",
+                  style: GlobalsStyle.settingsLeftTextStyle
                 ),
-              ],
-            )
-          ),
+              ),
 
-          SettingsButton(
-            hideCaret: true,
-            topText: "App version", 
-            bottomText: "2.1.4", 
-            onPressed: () {}
+              Spacer(),
+
+              Padding(
+                padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
+                child: Text("2.1.4",
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: ThemeColor.thirdWhite,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ),
                   
         ],

@@ -58,17 +58,17 @@ class SimplifyDownload {
 
       const generalFilesTableName = {GlobalsTable.homeText, GlobalsTable.psText, GlobalsTable.homeVideo, GlobalsTable.psVideo};
 
-      if(currentTableValue == GlobalsTable.homeImage || currentTableValue == GlobalsTable.psImage) {
+      if([GlobalsTable.homeImage, GlobalsTable.psImage].contains(currentTableValue)) {
         final setupName = "Flowstorage-$fileNameValue";
         await ImageGallerySaver.saveImage(fileDataValue!, name: setupName);
 
-      } else if (currentTableValue == GlobalsTable.homeText || currentTableValue == GlobalsTable.psText) {
+      } else if ([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTableValue)) {
         final textFileContent = utf8.decode(fileDataValue!);
         
         await SaveApi().saveFile(
           fileName: fileNameValue!, fileData: textFileContent);
         
-      } else if (currentTableValue == GlobalsTable.homeVideo || currentTableValue == GlobalsTable.psVideo) { 
+      } else if ([GlobalsTable.homeVideo, GlobalsTable.psVideo].contains(currentTableValue)) { 
         await _videoGallerySaver(fileDataValue!);
 
       } else if (!(generalFilesTableName.contains(currentTableValue))) {

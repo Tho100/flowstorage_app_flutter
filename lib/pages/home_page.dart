@@ -517,7 +517,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     selectedPhotosIndex.clear();
 
-    if (tempData.origin == OriginFile.home || tempData.origin == OriginFile.directory) {
+    if ([OriginFile.home, OriginFile.directory].contains(tempData.origin)) {
       _addItemButtonVisibility(true);
       _navDirectoryButtonVisibility(true);
     }
@@ -1286,10 +1286,13 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
 
     if(tempData.origin == OriginFile.public) {
       headerText = "Upload to Public Storage";
-    } else if (tempData.origin == OriginFile.directory || tempData.origin == OriginFile.folder) {
+
+    } else if ([OriginFile.directory, OriginFile.folder].contains(tempData.origin)) {
       headerText = "Add item to ${tempData.appBarTitle}";
+
     } else {
       headerText = "Add item to Flowstorage";
+
     }
     
     final limitUpload = AccountPlan.mapFilesUpload[userData.accountType]!;
@@ -1700,6 +1703,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         setState(() {
           checkedItemsName.clear();
           selectedPhotosIndex.clear();
+          selectedItemIsChecked = false;
         });
         tempData.setAppBarTitle("Photos");
         _addItemButtonVisibility(true);
@@ -2248,7 +2252,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
   
         return [
-          if(tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe) 
+          if([OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) 
           WidgetSpan(
             child: Transform.translate(
               offset: const Offset(-4, 0),

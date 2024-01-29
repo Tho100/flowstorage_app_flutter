@@ -132,11 +132,9 @@ class PreviewFileState extends State<PreviewFile> {
       currentTable = Globals.fileTypesToTableNamesPs[fileType]!;
 
     }
-
-    if (tempData.origin == OriginFile.public ||
-        tempData.origin == OriginFile.publicSearching || 
-        tempData.origin == OriginFile.sharedMe ||
-        tempData.origin == OriginFile.sharedOther) {
+  
+    if ([OriginFile.public, OriginFile.publicSearching, 
+        OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) {
       _initializeUploaderName();
     }
 
@@ -161,7 +159,7 @@ class PreviewFileState extends State<PreviewFile> {
       final uploaderName = tempStorageData.sharedNameList[widget.tappedIndex];
       uploaderNameNotifer.value = uploaderName;
 
-    } else if (originFrom == OriginFile.public || originFrom == OriginFile.publicSearching) {
+    } else if ([OriginFile.public, OriginFile.publicSearching].contains(originFrom)) {
       if(tempData.origin == OriginFile.public) {
         psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
         uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
@@ -452,7 +450,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   BoxDecoration _buildBackgroundDecoration() {
     return BoxDecoration(
-      gradient: currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio
+      gradient: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)
       ? const LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -462,7 +460,7 @@ class PreviewFileState extends State<PreviewFile> {
           ],
         )
       : null,
-      color: currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio ? null : ThemeColor.darkBlack,
+      color: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable) ? null : ThemeColor.darkBlack,
     );
   }
 
@@ -827,13 +825,13 @@ class PreviewFileState extends State<PreviewFile> {
                 backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
                 actions: <Widget>[ 
 
-                  if(currentTable == GlobalsTable.homeText || currentTable == GlobalsTable.psText)
+                  if([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTable))
                   _buildReadingModeIconButton(),
                   
-                  if(currentTable == GlobalsTable.homeAudio || currentTable == GlobalsTable.psAudio)
+                  if([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable))
                   _buildCommentIconButtonAudio(),
 
-                  if(currentTable == GlobalsTable.homePdf || currentTable == GlobalsTable.psPdf)
+                  if([GlobalsTable.homePdf, GlobalsTable.psPdf].contains(currentTable))
                   _buildOpenWithIconButton(),
 
                   _buildInfoIconButton(),

@@ -266,7 +266,7 @@ class NavigatePage {
   static void goToPageSettingsAppSettings() {
     Navigator.push(
       navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => SettingsAppSettings())
+      MaterialPageRoute(builder: (context) => const SettingsAppSettings())
     );
   }
 
