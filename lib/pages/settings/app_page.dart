@@ -48,6 +48,16 @@ class SettingsAppSettings extends StatelessWidget {
           ),
 
           SettingsButton(
+            topText: "Configure permissions", 
+            bottomText: "Configure Flowstorage permissions settings", 
+            onPressed: () {
+              AppSettings.openAppSettings(type: AppSettingsType.security);
+            }
+          ),
+
+          const SizedBox(height: 12),
+
+          SettingsButton(
             topText: "Rate us", 
             bottomText: "Rate your experience with Flowstorage", 
             onPressed: () { }
@@ -81,11 +91,28 @@ class SettingsAppSettings extends StatelessWidget {
             )
           ),
 
-          SettingsButton(
-            hideCaret: true,
-            topText: "App version", 
-            bottomText: "2.1.4", 
-            onPressed: () {}
+          const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
+                child: Text("App version",
+                  style: GlobalsStyle.settingsLeftTextStyle
+                ),
+              ),
+
+              Spacer(),
+
+              Padding(
+                padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
+                child: Text("2.1.4",
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: ThemeColor.thirdWhite,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ),
                   
         ],
