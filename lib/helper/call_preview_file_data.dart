@@ -27,11 +27,11 @@ class CallPreviewFileData {
 
   Future<Uint8List> callData() async {
 
-    final tableName = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching
+    final tableName = [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
       ? tableNamePs 
       : tableNameHome;
 
-    final uploaderUsername = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching
+    final uploaderUsername = [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
       ? await uploaderName.getUploaderName(tableName: tableNamePs, fileValues: fileValues)
       : userData.username;
 

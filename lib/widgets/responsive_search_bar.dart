@@ -105,7 +105,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                         ).copyWith(
                           fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
                         ),
-                        child: tempData.origin == OriginFile.publicSearching || tempData.origin == OriginFile.public
+                        child: [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
                           ? const Icon(Icons.cancel, color: ThemeColor.darkWhite, size: 25)
                           : const Icon(Icons.filter_list_outlined, size: 25),
                       ),
