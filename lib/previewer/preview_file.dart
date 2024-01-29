@@ -317,6 +317,7 @@ class PreviewFileState extends State<PreviewFile> {
         tempData.selectedFileName.split('.').last);
 
     if(textValue.isNotEmpty && isTextType) {
+      PreviewText.isChangesSaved = true;
       _updateTextChanges(textValue);
       return;
 

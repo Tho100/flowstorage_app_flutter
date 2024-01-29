@@ -215,9 +215,8 @@ class CreateTextPageState extends State<CreateText> {
   }
 
   Future<bool> discardChangesConfirmation() async {
-    bool confirm = await DiscardChangesDialog()
+    return await DiscardChangesDialog()
                       .buildConfirmationDialog(context);
-    return confirm;
   }
 
   @override
