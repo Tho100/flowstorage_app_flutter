@@ -1700,6 +1700,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
         setState(() {
           checkedItemsName.clear();
           selectedPhotosIndex.clear();
+          selectedItemIsChecked = false;
         });
         tempData.setAppBarTitle("Photos");
         _addItemButtonVisibility(true);
