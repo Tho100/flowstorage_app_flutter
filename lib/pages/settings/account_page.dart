@@ -88,6 +88,21 @@ class SettingsAccountPage extends StatelessWidget {
             }
           ),
 
+          Visibility(
+            visible: accountType != "Basic",
+            child: Column(
+              children: [                                                
+                SettingsButton(
+                  topText: "My plan", 
+                  bottomText: "See your subscription plan details", 
+                  onPressed: () async {
+                    NavigatePage.goToPageMyPlan();
+                  }
+                ),
+              ],
+            )
+          ),
+
           SettingsButton(
             topText: "Remove account", 
             bottomText: "Delete all your account data and informations", 
