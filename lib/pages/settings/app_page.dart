@@ -51,11 +51,16 @@ class SettingsAppSettings extends StatelessWidget {
             topText: "Configure permissions", 
             bottomText: "Configure Flowstorage permissions settings", 
             onPressed: () {
-              AppSettings.openAppSettings(type: AppSettingsType.security);
+              AppSettings.openAppSettings(type: AppSettingsType.settings);
             }
           ),
 
-          const SizedBox(height: 12),
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider(color: ThemeColor.lightGrey),
+          ),
+
+          const SizedBox(height: 5),
 
           SettingsButton(
             topText: "Rate us", 
