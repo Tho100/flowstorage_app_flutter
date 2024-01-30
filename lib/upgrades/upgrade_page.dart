@@ -628,7 +628,7 @@ class UpgradePageState extends State<UpradePage> {
     
   }
 
-  Future<void> updateUserAccountPlan(String customerId) async {
+  Future<void> _updateUserAccountPlan(String customerId) async {
 
     final dateToStr = DateFormat('yyyy/MM/dd').format(DateTime.now());
 
@@ -646,7 +646,7 @@ class UpgradePageState extends State<UpradePage> {
 
     try {
 
-      singleLoading.startLoading(title: "Validating...",context: context);
+      singleLoading.startLoading(title: "Validating...", context: context);
 
       final returnedEmail = await StripeCustomers.getCustomersEmails("");
 
@@ -660,12 +660,11 @@ class UpgradePageState extends State<UpradePage> {
 
         final returnedId = await StripeCustomers.getCustomerIdByEmail(userData.email);
       
-        await updateUserAccountPlan(returnedId);
+        await _updateUserAccountPlan(returnedId);
 
         userData.setAccountType(userChoosenPlan);      
 
-        await LocalStorageModel().setupLocalAutoLogin(
-          userData.username, userData.email, userChoosenPlan);
+        await _updateLocalDataOnSubscribed();
 
         singleLoading.stopLoading();
 
@@ -683,6 +682,21 @@ class UpgradePageState extends State<UpradePage> {
       singleLoading.stopLoading();
     }
     
+  }
+
+  Future<void> _updateLocalDataOnSubscribed() async {
+
+    await LocalStorageModel().setupLocalAutoLogin(
+      userData.username, userData.email, userChoosenPlan);
+
+    final readLocalUsernames = await LocalStorageModel()
+      .readLocalAccountUsernames();
+
+    final usernameIndex = readLocalUsernames.indexOf(userData.username);
+
+    await LocalStorageModel().updateLocalPlans(
+      usernameIndex, userChoosenPlan);
+
   }
 
   bool _userIsAlreadySubscribed() {

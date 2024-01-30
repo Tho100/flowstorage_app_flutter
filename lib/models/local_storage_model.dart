@@ -239,4 +239,39 @@ class LocalStorageModel {
 
   }
 
+  Future<void> updateLocalPlans(int index, String newPlan) async {
+
+    final localDir = await _retrieveLocalDirectory(
+      customFolder: _accountPlanFolderName
+    );
+
+    if (newPlan.isNotEmpty) {
+      if (!localDir.existsSync()) {
+        localDir.createSync();
+      }
+
+      final setupFiles = File('${localDir.path}/$_fileName');
+
+      try {
+
+        final content = await setupFiles.readAsString();
+
+        final lines = content.split('\n');
+
+        if (lines.isNotEmpty) {
+          lines[index] = newPlan;
+        }
+
+        final updatedContent = lines.join('\n');
+
+        await setupFiles.writeAsString(updatedContent);
+
+      } catch (err, st) {
+        logger.e('Exception from updateLocalPlans {local_storage_model}', err, st); 
+      }
+
+    }
+
+  }
+
 }
