@@ -147,7 +147,7 @@ class BottomTrailingOptions {
         if(WidgetVisibility.setNotVisible(OriginFile.offline))
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setNotVisible(OriginFile.offline))
+        if(WidgetVisibility.setNotVisible(OriginFile.offline) && fileName.contains('.'))
         ElevatedButton(
           onPressed: onAOPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,

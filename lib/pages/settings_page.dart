@@ -255,7 +255,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               "Insight about your Flowstorage activity", 
               Icons.bar_chart, () async {
                 if(tempData.origin != OriginFile.home) {
-                  await dataCaller.homeData(isFromStatistics: true);
+                  await dataCaller.statisticsData();
                 }
 
                 NavigatePage.goToPageStatistics();

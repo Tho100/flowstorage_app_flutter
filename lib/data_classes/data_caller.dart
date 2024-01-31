@@ -134,7 +134,7 @@ class DataCaller {
 
   }
 
-  Future<void> homeData({bool? isFromStatistics = false}) async {
+  Future<void> homeData() async {
 
     final conn = await SqlConnection.initializeConnection();
 
@@ -157,19 +157,42 @@ class DataCaller {
       dates.addAll(datesForTable);
     }
 
-    if(isFromStatistics!) {
-      tempStorageData.setStatsFilesName(fileNames);
-      return;
-    }
-
     storageData.setFilesName(fileNames);
     storageData.setImageBytes(bytes);
     storageData.setFilesDate(dates);
-    
-    tempData.setAppBarTitle("Home");
-
+        
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();
+
+  }
+
+  Future<void> statisticsData() async {
+
+    final conn = await SqlConnection.initializeConnection();
+
+    final tablesToCheck = [
+      GlobalsTable.homeImage, GlobalsTable.homeText, 
+      GlobalsTable.homeVideo, GlobalsTable.homePdf,
+      GlobalsTable.homeAudio, GlobalsTable.homeExcel, 
+      GlobalsTable.homePtx, GlobalsTable.homeWord,
+      GlobalsTable.homeExe, GlobalsTable.homeApk
+    ];
+
+    final getFileNames = tablesToCheck.map((table) async {
+        final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
+        return [fileNames];
+      }).toList();
+
+    final futures = await Future.wait(getFileNames);
+
+    final fileNames = <String>[];
+
+    for (final result in futures) {
+      final fileNamesForTable = result[0];
+      fileNames.addAll(fileNamesForTable);
+    }
+
+    tempStorageData.setStatsFilesName(fileNames);
 
   }
 
