@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
-import 'package:flowstorage_fsc/data_classes/file_name_getter.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
@@ -83,14 +82,12 @@ import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
-import 'package:flowstorage_fsc/data_classes/file_date_getter.dart';
-import 'package:flowstorage_fsc/data_classes/file_data_getter.dart';
 
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
 
-class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin { 
+class HomePage extends State<Mainboard> { 
 
   final _locator = GetIt.instance;
 
@@ -101,9 +98,6 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   late final TempStorageProvider tempStorageData;
   late final TempDataProvider tempData;
 
-  final fileNameGetterHome = FileNameGetter();
-  final dataGetterHome = FileDataGetter();
-  final dateGetterHome = FileDateGetter();
   final retrieveData = RetrieveData();
   final insertData = InsertData();
   final dataCaller = DataCaller();
@@ -2335,6 +2329,25 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  Widget _buildFloatingAddItemButton() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: floatingActionButtonVisible,
+      builder: (context, value, child) {
+        return Visibility(
+          visible: value,
+          child: FloatingActionButton(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            ),
+            backgroundColor: ThemeColor.darkPurple,
+            onPressed: _callBottomTrailingAddItem,
+            child: const Icon(Icons.add, color: ThemeColor.darkBlack, size: 30),
+          ),
+        );
+      },
+    );
+  }
+
   void _initializeProvider() {
     userData = _locator<UserDataProvider>();
     storageData = _locator<StorageDataProvider>();
@@ -2513,11 +2526,7 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -2545,24 +2554,8 @@ class HomePage extends State<Mainboard> with AutomaticKeepAliveClientMixin {
           togglePublicStorage: _togglePublicStorage, 
           context: context
         ),
-
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: ValueListenableBuilder<bool>(
-          valueListenable: floatingActionButtonVisible,
-          builder: (context, value, child) {
-            return Visibility(
-              visible: value,
-              child: FloatingActionButton(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                ),
-                backgroundColor: ThemeColor.darkPurple,
-                onPressed: _callBottomTrailingAddItem,
-                child: const Icon(Icons.add, color: ThemeColor.darkBlack, size: 30),
-              ),
-            );
-          },
-        ),
+        floatingActionButton: _buildFloatingAddItemButton(),
       ),
     );
   }
