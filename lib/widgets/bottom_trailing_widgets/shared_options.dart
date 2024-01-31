@@ -40,7 +40,7 @@ class BottomTrailingShared {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.chevron_left),
+              Icon(Icons.chevron_right),
               SizedBox(width: 10.0),
               Text(
                 'Shared to me',
@@ -55,7 +55,7 @@ class BottomTrailingShared {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.chevron_right),
+              Icon(Icons.chevron_left),
               SizedBox(width: 10.0),
               Text(
                 'Shared files',
