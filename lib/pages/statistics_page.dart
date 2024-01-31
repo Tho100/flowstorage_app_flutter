@@ -125,6 +125,8 @@ class StatsPageState extends State<StatisticsPage> {
       final excelDocument = await _countFileUpload(GlobalsTable.homeExcel);
       final wordDocument = await _countFileUpload(GlobalsTable.homeWord);
 
+      final texts = await _countFileUpload(GlobalsTable.homeText);
+
       final sumDocument = pdfDocument+excelDocument+wordDocument;
 
       setState(() {
@@ -136,8 +138,7 @@ class StatsPageState extends State<StatisticsPage> {
         ];
       });
       
-      totalFilesUpload = uploadCategoryList
-        .reduce((sum, uploadCount) => sum + uploadCount + sumDocument);
+      totalFilesUpload = uploadCategoryList.fold(0, (sum, uploadCount) => sum + uploadCount) + sumDocument + texts;
 
       dataIsLoading.value = false;
 
@@ -490,6 +491,7 @@ class StatsPageState extends State<StatisticsPage> {
   Widget _buildUsageContainer(BuildContext context) {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
+
     final totalUpload = storageData.fileNamesList.length;
     final percentage = ((totalUpload/maxValue) * 100).toInt();
 

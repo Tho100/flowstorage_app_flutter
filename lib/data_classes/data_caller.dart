@@ -134,7 +134,7 @@ class DataCaller {
 
   }
 
-  Future<void> homeData({bool? isFromStatistics = false}) async {
+  Future<void> homeData() async {
 
     final conn = await SqlConnection.initializeConnection();
 
@@ -157,19 +157,33 @@ class DataCaller {
       dates.addAll(datesForTable);
     }
 
-    if(isFromStatistics!) {
-      tempStorageData.setStatsFilesName(fileNames);
-      return;
-    }
-
     storageData.setFilesName(fileNames);
     storageData.setImageBytes(bytes);
     storageData.setFilesDate(dates);
-    
-    tempData.setAppBarTitle("Home");
-
+        
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();
+
+  }
+
+  Future<void> statisticsData() async {
+
+    final conn = await SqlConnection.initializeConnection();
+
+    final futures = await startupDataCaller(
+      conn: conn, username: userData.username);
+
+    final results = await Future.wait(futures);
+
+    final fileNames = <String>[];
+
+    for (final result in results) {
+      final fileNamesForTable = result[0] as List<String>;
+      fileNames.addAll(fileNamesForTable);
+    }
+
+    print("IN");
+    tempStorageData.setStatsFilesName(fileNames);
 
   }
 
