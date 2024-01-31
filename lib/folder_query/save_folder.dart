@@ -10,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +19,6 @@ class SaveFolder {
   final userData = GetIt.instance<UserDataProvider>();
   
   final encryption = EncryptionClass();
-  final getAssets = GetAssets();
 
   Future<List<Map<String, dynamic>>> retrieveParams(String folderTitle) async {
 

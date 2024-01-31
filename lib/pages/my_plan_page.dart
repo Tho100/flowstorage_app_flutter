@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flowstorage_fsc/api/geographic_api.dart';
-import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -24,7 +23,6 @@ class MyPlanPage extends StatefulWidget {
 class MyPlanPageState extends State<MyPlanPage> {
 
   final userData = GetIt.instance<UserDataProvider>();
-  final tempData = GetIt.instance<TempDataProvider>();
 
   final containerWidth = 35.0;
   final containerheight = 305.0;

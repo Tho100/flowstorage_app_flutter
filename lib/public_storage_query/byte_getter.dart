@@ -17,7 +17,6 @@ class ByteGetterPs {
   final userData = GetIt.instance<UserDataProvider>();
 
   final crud = Crud();
-  final getAssets = GetAssets();
   final thumbnailGetter = ThumbnailGetterPs();
 
   final tableNameToAssetsImage = {

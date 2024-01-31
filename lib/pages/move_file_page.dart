@@ -9,7 +9,6 @@ import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
-import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -42,7 +41,6 @@ class MoveFilePage extends StatefulWidget {
 class MoveFilePageState extends State<MoveFilePage> {
 
   final storageData = GetIt.instance<StorageDataProvider>();
-  final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
   final encryption = EncryptionClass();

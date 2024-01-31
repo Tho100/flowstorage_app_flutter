@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -52,7 +51,6 @@ class PreviewAudioState extends State<PreviewAudio> {
   final currentAudioDuration = ValueNotifier<String>("0:00");
 
   final audioPlayerController = AudioPlayer();  
-  final retrieveData = RetrieveData();
 
   String audioDuration = "0:00";
 

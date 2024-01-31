@@ -10,7 +10,6 @@ import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
-import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
@@ -54,7 +53,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   final tempData = GetIt.instance<TempDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
-  final userData = GetIt.instance<UserDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final uploadDateList = [];

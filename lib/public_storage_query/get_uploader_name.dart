@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 
 class UploaderName {
 
-  final storageData = GetIt.instance<StorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
   Future<String> getUploaderName({

@@ -158,7 +158,7 @@ class IntentSharingPage extends StatelessWidget {
   String fileSizeInMb() {
 
     final fileByte = base64.decode(fileData);
-    double getSizeMB = fileByte.lengthInBytes/(1024*1024);
+    final getSizeMB = fileByte.lengthInBytes/(1024*1024);
     
     return getSizeMB.toDouble().toStringAsFixed(2);
     
