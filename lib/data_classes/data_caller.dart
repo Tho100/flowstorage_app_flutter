@@ -170,19 +170,28 @@ class DataCaller {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final futures = await startupDataCaller(
-      conn: conn, username: userData.username);
+    final tablesToCheck = [
+      GlobalsTable.homeImage, GlobalsTable.homeText, 
+      GlobalsTable.homeVideo, GlobalsTable.homePdf,
+      GlobalsTable.homeAudio, GlobalsTable.homeExcel, 
+      GlobalsTable.homePtx, GlobalsTable.homeWord,
+      GlobalsTable.homeExe, GlobalsTable.homeApk
+    ];
 
-    final results = await Future.wait(futures);
+    final getFileNames = tablesToCheck.map((table) async {
+        final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
+        return [fileNames];
+      }).toList();
+
+    final futures = await Future.wait(getFileNames);
 
     final fileNames = <String>[];
 
-    for (final result in results) {
-      final fileNamesForTable = result[0] as List<String>;
+    for (final result in futures) {
+      final fileNamesForTable = result[0];
       fileNames.addAll(fileNamesForTable);
     }
 
-    print("IN");
     tempStorageData.setStatsFilesName(fileNames);
 
   }
