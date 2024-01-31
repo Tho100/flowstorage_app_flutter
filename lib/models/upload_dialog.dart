@@ -19,7 +19,6 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
-import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -42,7 +41,6 @@ class UploadDialog {
   });
 
   final storageData = GetIt.instance<StorageDataProvider>();
-  final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();

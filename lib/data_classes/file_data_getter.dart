@@ -11,8 +11,6 @@ import 'package:mysql_client/mysql_client.dart';
 
 class FileDataGetter {
 
-  int countDirCurr = 0;
-
   final storageData = GetIt.instance<StorageDataProvider>();
 
   final crud = Crud();

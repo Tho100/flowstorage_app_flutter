@@ -57,8 +57,6 @@ class StatsPageState extends State<StatisticsPage> {
 
   double usageProgress = 0.0;
   
-  List<String> localAccountUsernamesList = [];
-
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   

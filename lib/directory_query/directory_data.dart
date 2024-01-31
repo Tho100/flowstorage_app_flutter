@@ -17,7 +17,6 @@ class DirectoryDataReceiver {
 
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
-  final dateNow = DateTime.now();
   
   Future<String> retrieveFiles({
     required MySQLConnectionPool conn, 

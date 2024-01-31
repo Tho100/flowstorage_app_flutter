@@ -79,7 +79,6 @@ import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 
-import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
 
@@ -98,7 +97,6 @@ class HomePage extends State<Mainboard> {
   late final TempStorageProvider tempStorageData;
   late final TempDataProvider tempData;
 
-  final retrieveData = RetrieveData();
   final insertData = InsertData();
   final dataCaller = DataCaller();
   final updateListView = UpdateListView();

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 class SharingPassword {
 
   final sharingPasswordController = TextEditingController();
+  
   final shareFileData = ShareFileData();
 
   Future buildAskPasswordDialog({

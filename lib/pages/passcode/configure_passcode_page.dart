@@ -18,7 +18,6 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
   final storage = const FlutterSecureStorage();
   
   bool isPasscodeEnabled = false;
-  bool isTapped = false;
 
   void togglePasscode(String value) async {
     await storage.write(key: "isEnabled", value: value);

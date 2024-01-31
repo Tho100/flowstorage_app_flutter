@@ -148,6 +148,7 @@ class Globals {
     "ptx": "ptx0.jpg",
 
     "exe": "exe0.jpg",
+    "msi": "exe0.jpg",
     "apk": "apk0.jpg",
 
     "mp3": "music0.jpg",
