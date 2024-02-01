@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
@@ -16,6 +17,7 @@ import 'package:get_it/get_it.dart';
 class BottomTrailingOptions {
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
@@ -76,10 +78,16 @@ class BottomTrailingOptions {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if(WidgetVisibility.setVisibile(OriginFile.public)) ... [
+                    if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [
                       const SizedBox(height: 2),
                       Text(
-                        "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}",
+                        tempData.origin == OriginFile.public
+                          ? "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}"
+                          : tempData.origin == OriginFile.sharedMe
+                            ? "Uploaded by ${tempStorageData.sharedNameList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}"
+                            : tempData.origin == OriginFile.sharedOther
+                              ? "Shared to ${tempStorageData.sharedNameList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}"
+                              : "Unknown",
                         style: const TextStyle(
                           color: ThemeColor.secondaryWhite,
                           fontSize: 14,
