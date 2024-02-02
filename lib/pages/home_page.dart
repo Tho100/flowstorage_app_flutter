@@ -2229,13 +2229,13 @@ class HomePage extends State<Mainboard> {
         return [
   
           if (isOffline) ... [
-            const Icon(Icons.offline_bolt_rounded, color: Colors.white, size: 21),
+            const Icon(Icons.offline_bolt_rounded, color: ThemeColor.secondaryWhite, size: 21),
             const SizedBox(width: 8),
           ],
   
           GestureDetector(
             onTap: () => _callBottomTrailling(index),
-            child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: Colors.white),
+            child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
           ),
         ];
       },
