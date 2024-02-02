@@ -60,19 +60,22 @@ class PreviewText extends StatelessWidget {
                     .buildConfirmationDialog(context);
   }
 
+  void resetData() {
+    isChangesMade = false;
+    isChangesSaved = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
 
         if(isChangesMade && !isChangesSaved) {
-          isChangesMade = false;
-          isChangesSaved = false;
+          resetData();
           return await discardChangesConfirmation(context);
 
         } else {
-          isChangesMade = false;
-          isChangesSaved = false;
+          resetData();
           return true;
           
         }
@@ -99,6 +102,9 @@ class PreviewText extends StatelessWidget {
                   fontSize: 17,
                 ),
                 decoration: const InputDecoration(
+                  disabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
@@ -120,5 +126,5 @@ class PreviewText extends StatelessWidget {
       ),
     );
   }
-
+  
 }

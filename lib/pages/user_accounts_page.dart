@@ -41,9 +41,9 @@ class UserAccountsPageState extends State<UserAccountsPage> {
             customHeight: 45,
             customBackgroundColor: ThemeColor.justWhite,
             customOnEmpty: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 9.0),
               child: Text(
-                localAccountUsernamesList[index][0],
+                localAccountUsernamesList[index].substring(0, 2),
                 style: const TextStyle(
                   color: ThemeColor.darkPurple,
                   fontSize: 20,
@@ -61,9 +61,9 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               shape: BoxShape.circle,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 9.0),
               child: Text(
-                localAccountUsernamesList[index][0],
+                localAccountUsernamesList[index].substring(0, 2),
                 style: const TextStyle(
                   color: ThemeColor.darkPurple,
                   fontSize: 20,
@@ -86,7 +86,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
             style: const TextStyle(
               color: ThemeColor.thirdWhite,
               fontSize: 14,
-              fontWeight: FontWeight.w600
+              fontWeight: FontWeight.w500
             ),
           ),
         );
