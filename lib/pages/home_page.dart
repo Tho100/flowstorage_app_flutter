@@ -1153,7 +1153,7 @@ class HomePage extends State<Mainboard> {
       newDirectoryName: newDirName
     ).rename();
 
-    SnakeAlert.okSnake(message: "Directory `$oldDirName` renamed to `$newDirName`.");
+    SnakeAlert.okSnake(message: "Directory '$oldDirName' renamed to '$newDirName'.");
     
   }
 
@@ -2145,8 +2145,8 @@ class HomePage extends State<Mainboard> {
     final fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
     EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
-    ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0, bottom: 8.0) 
-    : const EdgeInsets.only(top: 16.0, left: 14.0, right: 14.0, bottom: 8.0);
+    ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0) 
+    : const EdgeInsets.only(top: 2.0, left: 14.0, right: 14.0);
 
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
@@ -2174,13 +2174,13 @@ class HomePage extends State<Mainboard> {
     final mediaQuery = MediaQuery.of(context).size;
 
     if(tempData.origin == OriginFile.public) {
-      mediaHeight = mediaQuery.height - 148;
+      mediaHeight = mediaQuery.height - 157;
 
     } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 312;
+      mediaHeight = mediaQuery.height - 321;
 
     } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 148;
+      mediaHeight = mediaQuery.height - 157;
 
     }
 
@@ -2232,7 +2232,7 @@ class HomePage extends State<Mainboard> {
         return [
   
           if (isOffline) ... [
-            const Icon(Icons.offline_bolt_rounded, color: ThemeColor.secondaryWhite, size: 21),
+            const Icon(Icons.offline_bolt_rounded, color: ThemeColor.justWhite, size: 21),
             const SizedBox(width: 8),
           ],
   

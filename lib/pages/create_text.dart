@@ -175,7 +175,7 @@ class CreateTextPageState extends State<CreateText> {
     );
 
     SnakeAlert.okSnake(
-      message: "`${fileNameController.text.replaceAll(".txt", "")}.txt` Has been saved${isFromOffline ? " as an offline file." : "."}",
+      message: "'${fileNameController.text.replaceAll(".txt", "")}.txt' Has been saved${isFromOffline ? " as an offline file." : "."}",
       icon: Icons.check,
     );
 

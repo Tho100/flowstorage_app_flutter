@@ -14,7 +14,12 @@ class SnakeAlert {
           children: [
             const Icon(Icons.close,color: Colors.white),
             const SizedBox(width: 10),
-            Text(message),
+            SizedBox(
+              width: 320,
+              child: Text(message, 
+                overflow: TextOverflow.ellipsis
+            ),
+          ),
         ],
       ),
       duration: const Duration(seconds: 2),
@@ -35,7 +40,12 @@ class SnakeAlert {
           children: [
             if (icon != null) Icon(icon, color: Colors.white, size: 16),
             if (icon != null) const SizedBox(width: 10),
-            Text(message),
+            SizedBox(
+              width: 320,
+              child: Text(message, 
+                overflow: TextOverflow.ellipsis
+              ),
+            ),
           ],
         ),
         duration: const Duration(seconds: 2),
@@ -78,7 +88,12 @@ class SnakeAlert {
         backgroundColor: ThemeColor.mediumGrey,
         content: Row(
           children: [
-            Text(message), 
+            SizedBox(
+              width: 320,
+              child: Text(message, 
+                overflow: TextOverflow.ellipsis
+              ),
+            ),
             const Spacer(),
             TextButton(
               onPressed: () async { },
@@ -100,7 +115,12 @@ class SnakeAlert {
           children: [
             const Icon(Icons.check, color: Colors.white, size: 16),
             const SizedBox(width: 10),
-            Text(message),
+            SizedBox(
+              width: 320,
+              child: Text(message, 
+                overflow: TextOverflow.ellipsis
+              ),
+            ),
           ],
         ),
         duration: const Duration(seconds: 2),
