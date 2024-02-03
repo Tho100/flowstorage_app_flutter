@@ -19,7 +19,7 @@ class CreateDirectoryDialog {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+              padding: EdgeInsets.only(bottom: 2.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
                 "Create new directory",
                 style: TextStyle(

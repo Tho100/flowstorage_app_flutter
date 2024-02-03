@@ -2113,7 +2113,10 @@ class HomePage extends State<Mainboard> {
 
   Widget _buildDefaultStaggeredListView(Uint8List imageBytes, int index) {
 
-    final fileType = storageData.fileNamesFilteredList[index].split('.').last;
+    final lastDotIndex = storageData.fileNamesFilteredList[index].lastIndexOf('.');
+    final fileType = lastDotIndex != -1 
+      ? storageData.fileNamesFilteredList[index].substring(lastDotIndex) 
+      : storageData.fileNamesFilteredList[index];
 
     return DefaultStaggeredListView(
       imageBytes: imageBytes, 
@@ -2143,7 +2146,7 @@ class HomePage extends State<Mainboard> {
 
     EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
     ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0, bottom: 8.0) 
-    : const EdgeInsets.only(top: 12.0, left: 8.0, right: 8.0, bottom: 8.0);
+    : const EdgeInsets.only(top: 16.0, left: 14.0, right: 14.0, bottom: 8.0);
 
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
@@ -2155,7 +2158,7 @@ class HomePage extends State<Mainboard> {
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (context, index) => _buildStaggeredItems(index),
             staggeredTileBuilder: (index) => StaggeredTile.fit(fitSize),
-            crossAxisCount: togglePhotosPressed ? 2 : 4,
+            crossAxisCount: 2,
             mainAxisSpacing: togglePhotosPressed ? 8 : 6.5,
             crossAxisSpacing: togglePhotosPressed ? 8 : 6.5,
           ),
