@@ -32,6 +32,8 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
   final bottomNavigationBarIndex = ValueNotifier<int>(0); 
   final isPhotosPressedNotifier = ValueNotifier<bool>(false);
 
+  final bottomPadding = 2.0;
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +45,51 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
     super.dispose();
   }
 
+  Widget _buildHome(bool isSelected) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: isSelected 
+        ? const Icon(Icons.home) : const Icon(Icons.home_outlined)
+    );
+  }
+
+  Widget _buildFolders(bool isSelected) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: isSelected 
+        ? const Icon(Icons.folder) : const Icon(Icons.folder_outlined)
+    );
+  }
+
+  Widget _buildPhotos() {
+    return ValueListenableBuilder(
+      valueListenable: isPhotosPressedNotifier,
+      builder: (context, isPressed, child) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: !isPressed
+            ? const Icon(Icons.photo_outlined) 
+            : const Icon(Icons.photo),
+        );
+      }
+    );
+  }
+
+  Widget _buildPublic(bool isSelected) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: SizedBox(
+        width: 26,
+        height: 26,
+        child: isSelected 
+          ? Image.asset('assets/images/public_icon_selected.jpg') 
+          : Image.asset('assets/images/public_icon.jpg'),
+      ),
+    );
+  }
+
   Widget _buildNavigationBar() {
+    
     const labelTextStyle = TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 12,
@@ -58,6 +104,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
           color: ThemeColor.whiteGrey,
         ),
         Container(
+          height: 65,
           color: ThemeColor.whiteGrey,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -71,47 +118,28 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
             items: [
               BottomNavigationBarItem(
                 icon: tempData.origin == OriginFile.home 
-                ? const Icon(Icons.home) 
-                : const Icon(Icons.home_outlined),
+                ? _buildHome(true)
+                : _buildHome(false),
                 activeIcon: tempData.origin == OriginFile.home 
-                ? const Icon(Icons.home) 
-                : const Icon(Icons.home_outlined),
+                ? _buildHome(true)
+                : _buildHome(false),
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                icon: ValueListenableBuilder(
-                  valueListenable: isPhotosPressedNotifier,
-                  builder: (context, isPressed, child) {
-                    return !isPressed
-                      ? const Icon(Icons.photo_outlined) 
-                      : const Icon(Icons.photo);
-                  }
-                ),
+                icon: _buildPhotos(),
                 label: "Photos",
               ),
               BottomNavigationBarItem(
-                icon: SizedBox(
-                  width: 26,
-                  height: 26,
-                  child: Image.asset('assets/images/public_icon.jpg'),
-                ),
+                icon: _buildPublic(false),
                 activeIcon: tempData.origin == OriginFile.public
-                ? SizedBox(
-                  width: 26,
-                  height: 26,
-                  child: Image.asset('assets/images/public_icon_selected.jpg'),
-                ) 
-                : SizedBox(
-                  width: 26,
-                  height: 26,
-                  child: Image.asset('assets/images/public_icon.jpg'),
-                ),
+                ? _buildPublic(true)
+                : _buildPublic(false),
                 label: "Public",
               ),
               BottomNavigationBarItem(
                 icon: tempData.origin == OriginFile.folder
-                ? const Icon(Icons.folder) 
-                : const Icon(Icons.folder_outlined),
+                ? _buildFolders(true)
+                : _buildFolders(false),
                 label: "Folders",
               ),
             ],

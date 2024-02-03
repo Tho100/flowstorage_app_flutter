@@ -62,9 +62,9 @@ class FunctionModel {
         tempStorageData.folderNameList[indexOldFolder] = newFolderName;
       }
 
-      await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "$oldFolderName renamed to $newFolderName");
+      await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "'$oldFolderName' renamed to '$newFolderName'");
 
-      SnakeAlert.okSnake(message: "`$oldFolderName` Has been renamed to `$newFolderName`");
+      SnakeAlert.okSnake(message: "'$oldFolderName' Has been renamed to '$newFolderName'");
 
     } catch (err, st) {
       logger.e('Exception from renameFolderData {function_model}', err, st);
@@ -79,7 +79,7 @@ class FunctionModel {
 
       if(tempData.origin == OriginFile.offline) {
         await OfflineModel().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}", icon: Icons.check);
+        SnakeAlert.okSnake(message: "Deleted $fileName", icon: Icons.check);
         return;
 
       } 
@@ -87,11 +87,11 @@ class FunctionModel {
       final encryptVals = EncryptionClass().encrypt(fileName);
       await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
       
-      SnakeAlert.okSnake(message: "Deleted ${ShortenText().cutText(fileName, customLength: 35)}.", icon: Icons.check);
+      SnakeAlert.okSnake(message: "Deleted $fileName", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from deleteFileData {function_model}',err,st);
-      SnakeAlert.errorSnake("Failed to delete ${ShortenText().cutText(fileName)}");
+      SnakeAlert.errorSnake("Failed to delete $fileName");
     }
 
   }
@@ -119,7 +119,7 @@ class FunctionModel {
           tempStorageData.offlineFileNameList.add(newFileName);
         }
 
-        SnakeAlert.okSnake(message: "`${ShortenText().cutText(oldFileName, customLength: 35)}` Renamed to `${ShortenText().cutText(newFileName, customLength: 35)}`.");
+        SnakeAlert.okSnake(message: "'$oldFileName' renamed to '$newFileName'");
         
       }
 
@@ -175,7 +175,7 @@ class FunctionModel {
 
       loadingDialog.stopLoading();
 
-      SnakeAlert.okSnake(message: "$count item(s) has been saved.",icon: Icons.check);
+      SnakeAlert.okSnake(message: "$count item(s) has been saved.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from multipleFilesDownload {function_model}', err, st);
@@ -235,10 +235,10 @@ class FunctionModel {
       await CallNotify().downloadedNotification(fileName: fileName);
 
       if(Globals.imageType.contains(fileType) || Globals.videoType.contains(fileType)) {
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Saved to gallery.",icon: Icons.check);
+        SnakeAlert.okSnake(message: "$fileName Saved to gallery.", icon: Icons.check);
 
       } else {
-        SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName, customLength: 35)} Has been downloaded.",icon: Icons.check);
+        SnakeAlert.okSnake(message: "$fileName Has been downloaded.", icon: Icons.check);
 
       }
 
@@ -246,7 +246,7 @@ class FunctionModel {
     } catch (err, st) {
       logger.e('Exception from downloadFileData {function_model}', err, st);
       await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
-      SnakeAlert.errorSnake("Failed to download ${ShortenText().cutText(fileName, customLength: 35)}");
+      SnakeAlert.errorSnake("Failed to download $fileName.");
     }
 
   }

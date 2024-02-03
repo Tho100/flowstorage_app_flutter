@@ -30,6 +30,9 @@ class DefaultStaggeredListView extends StatelessWidget {
 
     return Column(
       children: [
+        
+        const SizedBox(height: 14),
+
         Expanded(
           child: Stack(
             children: [
@@ -53,15 +56,15 @@ class DefaultStaggeredListView extends StatelessWidget {
               ),
               
               if(Globals.videoType.contains(actualFileType))
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 12),
+              Align(
+                alignment: Alignment.center,
                 child: Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: ThemeColor.mediumGrey.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: ThemeColor.mediumGrey.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
               ),
             
