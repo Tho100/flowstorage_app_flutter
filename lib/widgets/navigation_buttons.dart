@@ -186,7 +186,7 @@ class NavigationButtons extends StatelessWidget {
             ]
           ),
     
-          const Divider(color: ThemeColor.thirdWhite, height: 0),
+          const Divider(color: ThemeColor.lightGrey, height: 0),
           
         ],
       ),
