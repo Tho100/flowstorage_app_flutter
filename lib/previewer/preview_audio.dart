@@ -33,7 +33,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     [ThemeColor.secondaryWhite, ThemeColor.darkPurple],
   ];
 
-  int currentGradientIndex = 0;
+  final currentGradientIndexNotifier = ValueNotifier<int>(0);
 
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
@@ -390,16 +390,21 @@ class PreviewAudioState extends State<PreviewAudio> {
             child: SizedBox(
               width: mediaQuery.width-90,
               height: mediaQuery.height-570,
-              child: AnimatedContainer(
-                duration: const Duration(seconds: 1),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: gradientColors[currentGradientIndex],
-                  ),
-                ),
+              child: ValueListenableBuilder(
+                valueListenable: currentGradientIndexNotifier,
+                builder: (context, value, child) {
+                  return AnimatedContainer(
+                    duration: const Duration(seconds: 1),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: gradientColors[value],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -476,9 +481,8 @@ class PreviewAudioState extends State<PreviewAudio> {
   void initializeGradient() {
     Timer.periodic(durationGradient, (timer) {
       if(iconPausePlayNotifier.value == Icons.pause) {
-        setState(() {
-          currentGradientIndex = (currentGradientIndex + 1) % gradientColors.length;
-        });
+        currentGradientIndexNotifier.value = 
+        (currentGradientIndexNotifier.value + 1) % gradientColors.length;
       }
     });
   }
@@ -498,6 +502,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     iconPausePlayNotifier.dispose();
     keepPlayingIconColorNotifier.dispose();
     isKeepPlayingEnabledNotifier.dispose();
+    currentGradientIndexNotifier.dispose();
     audioPlayerController.dispose();
     super.dispose();
   }

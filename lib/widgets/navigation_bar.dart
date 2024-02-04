@@ -35,11 +35,6 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
   final bottomPadding = 2.0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     bottomNavigationBarIndex.dispose();
     super.dispose();

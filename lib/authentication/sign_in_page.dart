@@ -23,8 +23,6 @@ class CakeSignInPage extends StatefulWidget {
 
 class CakeSignInPageState extends State<CakeSignInPage> {
 
-  BuildContext? loginContext;
-
   final userData = GetIt.instance<UserDataProvider>();
 
   final isCheckedNotifier = ValueNotifier<bool>(true); 
@@ -39,8 +37,6 @@ class CakeSignInPageState extends State<CakeSignInPage> {
     required String auth0, 
     required String auth1
   }) async {
-
-    loginContext = context;
 
     final loginSetup = SignInUser();
     await loginSetup.logParams(email, auth0, auth1, isCheckedNotifier.value, context);
@@ -105,18 +101,13 @@ class CakeSignInPageState extends State<CakeSignInPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
-        automaticallyImplyLeading: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        )
       ),
-      body: Padding (
+      body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: mediaQuery.size.width * 0.05,
           vertical: mediaQuery.size.height * 0.05,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
@@ -127,9 +118,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   HeaderText(title: "Sign In", subTitle: "Sign in to your Flowstorage account"),
-
                 ],
               ),
             ),
@@ -281,6 +270,7 @@ class CakeSignInPageState extends State<CakeSignInPage> {
         ),
       ),      
     );
+
   }
 
 }

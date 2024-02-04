@@ -271,7 +271,6 @@ class AcitivtyPageState extends State<ActivityPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
     

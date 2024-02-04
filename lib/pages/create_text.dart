@@ -45,8 +45,8 @@ class CreateTextPageState extends State<CreateText> {
   final logger = Logger();
   final getAssets = GetAssets();
   
-  bool saveVisibility = true;
-  bool textFormEnabled = true;
+  final saveVisibilityNotifier = ValueNotifier<bool>(true);
+  final textFormEnabledNotifier = ValueNotifier<bool>(true);
 
   Future<void> _insertUserFile({
     required String table,
@@ -164,10 +164,8 @@ class CreateTextPageState extends State<CreateText> {
 
     _addTextFileToListView(fileName: fileName);
 
-    setState(() {
-      saveVisibility = false;
-      textFormEnabled = false;
-    });
+    saveVisibilityNotifier.value = false;
+    textFormEnabledNotifier.value = false;
 
     await CallNotify().customNotification(
       title: "Text File Saved",
@@ -190,26 +188,31 @@ class CreateTextPageState extends State<CreateText> {
   Widget _buildTxt(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 6.0, bottom: 16.0, right: 16, left: 16),
-      child: TextFormField(
-        autofocus: true,
-        controller: textEditingController,
-        enabled: textFormEnabled,
-        keyboardType: TextInputType.multiline,
-        maxLines: 500,
-        maxLength: 5500,
-        style: GoogleFonts.roboto(
-          color: const Color.fromARGB(255, 220, 220, 220),
-          fontWeight: FontWeight.w500,
-        ),
-        decoration: const InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
-          counterText: '',
-        ),
+      child: ValueListenableBuilder(
+        valueListenable: textFormEnabledNotifier,
+        builder: (context, value, child) {
+          return TextFormField(
+            autofocus: true,
+            controller: textEditingController,
+            enabled: value,
+            keyboardType: TextInputType.multiline,
+            maxLines: 500,
+            maxLength: 5500,
+            style: GoogleFonts.roboto(
+              color: const Color.fromARGB(255, 220, 220, 220),
+              fontWeight: FontWeight.w500,
+            ),
+            decoration: const InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              counterText: '',
+            ),
+          );
+        },
       ),
     );
   }
@@ -221,6 +224,8 @@ class CreateTextPageState extends State<CreateText> {
 
   @override
   void dispose() {
+    saveVisibilityNotifier.dispose();
+    textFormEnabledNotifier.dispose();
     textEditingController.dispose();
     fileNameController.dispose();
     super.dispose();
@@ -231,7 +236,7 @@ class CreateTextPageState extends State<CreateText> {
     return WillPopScope(
       onWillPop: () async {
 
-        if(saveVisibility && textEditingController.text.isNotEmpty) {
+        if(saveVisibilityNotifier.value && textEditingController.text.isNotEmpty) {
           return await discardChangesConfirmation();
 
         } else {
@@ -244,32 +249,37 @@ class CreateTextPageState extends State<CreateText> {
         appBar: AppBar(
           actions: [
     
-            Visibility(
-              visible: saveVisibility,
-              child: TextButton(
-                onPressed: () {
-                  SaveTextDialog().buildSaveTextDialog(
-                    fileNameController: fileNameController, 
-                    saveOnPressed: () async {
-                      final getFileTitle = fileNameController.text.trim();
-                      if (getFileTitle.isEmpty) {
-                        return;
-                      }
-                      
-                      await _saveText(textEditingController.text);
-
-                    }, 
-                    context: context
-                  );
-                },
-                child: const Text("Save",
-                  style: TextStyle(
-                    color: ThemeColor.darkPurple,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
+            ValueListenableBuilder(
+              valueListenable: saveVisibilityNotifier,
+              builder: (context, value, child) {
+                return Visibility(
+                  visible: value,
+                  child: TextButton(
+                    onPressed: () {
+                      SaveTextDialog().buildSaveTextDialog(
+                        fileNameController: fileNameController, 
+                        saveOnPressed: () async {
+                          final getFileTitle = fileNameController.text.trim();
+                          if (getFileTitle.isEmpty) {
+                            return;
+                          }
+                          
+                          await _saveText(textEditingController.text);
+              
+                        }, 
+                        context: context
+                      );
+                    },
+                    child: const Text("Save",
+                      style: TextStyle(
+                        color: ThemeColor.darkPurple,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ],
           backgroundColor: ThemeColor.darkBlack,

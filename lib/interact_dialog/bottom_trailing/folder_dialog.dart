@@ -14,7 +14,6 @@ class FolderDialog {
     required Function(int) trailingOnPressed,
     required BuildContext context
   }) {
-
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkBlack,
       context: context,
@@ -23,7 +22,6 @@ class FolderDialog {
         return SizedBox(
           height: MediaQuery.of(context).size.height,  
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               

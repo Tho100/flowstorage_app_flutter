@@ -378,7 +378,6 @@ class StatsPageState extends State<StatisticsPage> {
       padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 28.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             headerText,

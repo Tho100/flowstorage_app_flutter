@@ -31,61 +31,12 @@ class CommentPageState extends State<CommentPage> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
-  late final String mainFileComment;
+  late ValueNotifier<String> commentNotifier = ValueNotifier('');
 
   @override
   void initState() {
     super.initState();
-    initializeFileComment();
-  }
-
-  Widget _buildHeader() {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Text(
-            'Comment',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              overflow: TextOverflow.ellipsis,
-            )
-          ),
-        ),
-      ],
-    );
-  }
-
-  void initializeFileComment() async {
-    
-    switch (tempData.origin) {
-      case OriginFile.home:
-        mainFileComment = "(No Comment)";
-        break;
-
-      case OriginFile.sharedOther:
-        mainFileComment = await _sharedFileComment();
-        break;
-
-      case OriginFile.sharedMe:
-        mainFileComment = await _sharedToMeComment();
-        break;
-
-      case OriginFile.public:
-      case OriginFile.publicSearching:
-        mainFileComment = await _psFileComment();
-        break;
-
-      default:
-        break;
-    }
-
-    setState(() {});
-
+    _initializeFileComment();
   }
 
   Future<String> _sharedFileComment() async {
@@ -150,24 +101,68 @@ class CommentPageState extends State<CommentPage> {
 
   }
 
-  Future<Widget> _buildComment() async {
+  void _initializeFileComment() async {
+    
+    switch (tempData.origin) {
+      case OriginFile.home:
+        commentNotifier.value = "(No Comment)";
+        break;
 
-    final commentValue = mainFileComment == "" ? '(No Comment)' : mainFileComment;
+      case OriginFile.sharedOther:
+        commentNotifier.value = await _sharedFileComment();
+        break;
+
+      case OriginFile.sharedMe:
+        commentNotifier.value = await _sharedToMeComment();
+        break;
+
+      case OriginFile.public:
+      case OriginFile.publicSearching:
+        commentNotifier.value = await _psFileComment();
+        break;
+
+      default:
+        break;
+    }
+    
+  }
+
+  Widget _buildHeader() {
+    return const Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text(
+            'Comment',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w500,
+              overflow: TextOverflow.ellipsis,
+            )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildComment({required String commentValue}) {
+
     final commentController = TextEditingController(text: commentValue);
     final mediaQuery = MediaQuery.of(context).size;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         _buildHeader(),
-
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            height: mediaQuery.height * 0.7, 
+            height: mediaQuery.height * 0.7,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: ThemeColor.darkBlack, 
+              color: ThemeColor.darkBlack,
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -261,19 +256,16 @@ class CommentPageState extends State<CommentPage> {
         style: GlobalsStyle.appBarTextStyle
       )
     ),
-
-    body: FutureBuilder(
-      future: _buildComment(),
-      builder: (context, snapshot) {
-
-        if (snapshot.hasData) {
-            return snapshot.data!;
+    body: ValueListenableBuilder<String>(
+      valueListenable: commentNotifier,
+        builder: (context, value, _) {
+          if (value.isNotEmpty) {
+            return _buildComment(commentValue: value);
 
           } else {
             return _buildNoComment();
 
           }
-          
         },
       ),
     );

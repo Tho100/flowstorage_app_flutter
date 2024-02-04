@@ -86,7 +86,6 @@ class RecentPsListView extends StatelessWidget {
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
