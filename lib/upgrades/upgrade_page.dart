@@ -40,11 +40,6 @@ class UpgradePageState extends State<UpradePage> {
 
   final cardBorderRadius = 25.0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Widget _buildSubHeader(String text, {double? customFont}) {
     return Text(
       text,

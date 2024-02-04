@@ -48,6 +48,12 @@ class PreviewImageState extends State<PreviewImage> {
     
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   void handlePageChange(int index) {
     tempData.setCurrentFileName(filteredNames[index]);
     widget.onPageChanged(); 
@@ -95,4 +101,5 @@ class PreviewImageState extends State<PreviewImage> {
   Widget build(BuildContext context) {
     return buildImageOnCondition();
   }
+
 }

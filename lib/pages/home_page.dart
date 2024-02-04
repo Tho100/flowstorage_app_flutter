@@ -88,14 +88,12 @@ import 'package:get_it/get_it.dart';
 
 class HomePage extends State<Mainboard> { 
 
-  final _locator = GetIt.instance;
-
-  late final UserDataProvider userData;
-  late final StorageDataProvider storageData;
-  late final PsStorageDataProvider psStorageData;
-  late final PsUploadDataProvider psUploadData;
-  late final TempStorageProvider tempStorageData;
-  late final TempDataProvider tempData;
+  final userData = GetIt.instance<UserDataProvider>();
+  final storageData = GetIt.instance<StorageDataProvider>();
+  final psStorageData = GetIt.instance<PsStorageDataProvider>();
+  final psUploadData = GetIt.instance<PsUploadDataProvider>();
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   final insertData = InsertData();
   final dataCaller = DataCaller();
@@ -694,7 +692,7 @@ class HomePage extends State<Mainboard> {
   void _itemSearchingImplementation(String value) async {
 
     debounceSearchingTimer?.cancel();
-    debounceSearchingTimer = Timer(const Duration(milliseconds: 299), () {
+    debounceSearchingTimer = Timer(const Duration(milliseconds: 10), () {
       final searchTerms =
           value.split(",").map((term) => term.trim().toLowerCase()).toList();
 
@@ -2349,14 +2347,14 @@ class HomePage extends State<Mainboard> {
     );
   }
 
-  void _initializeProvider() {
+  /*void _initializeProvider() {
     userData = _locator<UserDataProvider>();
     storageData = _locator<StorageDataProvider>();
     tempData = _locator<TempDataProvider>();
     tempStorageData = _locator<TempStorageProvider>();
     psUploadData = _locator<PsUploadDataProvider>();
     psStorageData = _locator<PsStorageDataProvider>();
-  }
+  }*/
 
   void _initializeOfflineFileNames() async {
 
@@ -2488,20 +2486,15 @@ class HomePage extends State<Mainboard> {
 
   @override
   void initState() {
-
     super.initState();
-
-    _initializeProvider();
     _initializeOfflineFileNames();
     _itemSearchingImplementation('');
     _initializeSharingIntentListener();
     _initializeShowUpgradeOccasionally();
-
   }
 
   @override 
   void dispose() {
-
     debounceSearchingTimer!.cancel();
     searchBarFocusNode.dispose();
     searchBarController.dispose();

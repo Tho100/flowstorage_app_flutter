@@ -44,7 +44,6 @@ class NavigationButtons extends StatelessWidget {
     return Visibility(
       visible: !isVisible,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
 
           tempData.origin == OriginFile.public 

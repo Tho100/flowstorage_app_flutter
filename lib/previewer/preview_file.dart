@@ -612,7 +612,6 @@ class PreviewFileState extends State<PreviewFile> {
         color: ThemeColor.darkBlack
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
   
@@ -723,39 +722,33 @@ class PreviewFileState extends State<PreviewFile> {
 
     const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
 
-    if(textTables.contains(currentTable)) {
-      final displayFileName = tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
+    if (textTables.contains(currentTable)) {
+      final displayFileName =
+          tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
 
       return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width-15,
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    displayFileName,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 240, 240, 240),
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                      overflow: TextOverflow.ellipsis,
-                  )),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  displayFileName,
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 240, 240, 240),
+                    fontSize: 26,
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-
-              if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
+              if (WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
               Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
-                  tempData.origin == OriginFile.public 
-                  ? psStorageData.psTitleList[widget.tappedIndex]
-                  : psStorageData.psSearchTitleList[widget.tappedIndex],
+                  tempData.origin == OriginFile.public
+                      ? psStorageData.psTitleList[widget.tappedIndex]
+                      : psStorageData.psSearchTitleList[widget.tappedIndex],
                   style: const TextStyle(
                     color: ThemeColor.justWhite,
                     fontSize: 17,
@@ -766,7 +759,6 @@ class PreviewFileState extends State<PreviewFile> {
                   textAlign: TextAlign.start,
                 ),
               ),
-
             ],
           ),
         ],
@@ -809,36 +801,28 @@ class PreviewFileState extends State<PreviewFile> {
   PreferredSize _buildCustomAppBar() {
 
     const hideableAppBarFile = {
-      GlobalsTable.homeImage, GlobalsTable.psImage, 
+      GlobalsTable.homeImage, GlobalsTable.psImage,
       GlobalsTable.homeVideo, GlobalsTable.psVideo
     };
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
       child: GestureDetector(
-        onTap: () { _copyAppBarTitle(); },
+        onTap: () {
+          _copyAppBarTitle();
+        },
         child: ValueListenableBuilder<bool>(
           valueListenable: bottomBarVisibleNotifier,
           builder: (context, value, child) {
             return Visibility(
-              visible: hideableAppBarFile.contains(currentTable) ? bottomBarVisibleNotifier.value : true,
+              visible: hideableAppBarFile.contains(currentTable)
+                  ? bottomBarVisibleNotifier.value
+                  : true,
               child: AppBar(
-                backgroundColor: filesInfrontAppBar.contains(currentTable) ? ThemeColor.darkBlack : const Color(0x44000000),
-                actions: <Widget>[ 
-
-                  if([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTable))
-                  _buildReadingModeIconButton(),
-                  
-                  if([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable))
-                  _buildCommentIconButtonAudio(),
-
-                  if([GlobalsTable.homePdf, GlobalsTable.psPdf].contains(currentTable))
-                  _buildOpenWithIconButton(),
-
-                  _buildInfoIconButton(),
-                  _buildMoreIconButton(),
-
-                ],
+                backgroundColor: filesInfrontAppBar.contains(currentTable)
+                    ? ThemeColor.darkBlack
+                    : const Color(0x44000000),
+                actions: _buildAppBarActions(),
                 titleSpacing: 0,
                 elevation: 0,
                 centerTitle: false,
@@ -850,6 +834,30 @@ class PreviewFileState extends State<PreviewFile> {
       ),
     );
   }
+
+  List<Widget> _buildAppBarActions() {
+
+    final actions = <Widget>[];
+
+    if ([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTable)) {
+      actions.add(_buildReadingModeIconButton());
+    }
+
+    if ([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)) {
+      actions.add(_buildCommentIconButtonAudio());
+    }
+
+    if ([GlobalsTable.homePdf, GlobalsTable.psPdf].contains(currentTable)) {
+      actions.add(_buildOpenWithIconButton());
+    }
+
+    actions.add(_buildInfoIconButton());
+    actions.add(_buildMoreIconButton());
+
+    return actions;
+    
+  }
+
 
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));

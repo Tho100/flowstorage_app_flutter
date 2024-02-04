@@ -39,11 +39,6 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
   final _locator = GetIt.instance;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     usernameController.clear();
     auth0Controller.clear();
@@ -63,10 +58,8 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
 
       final valueCase0 = AuthModel().computeAuth(auth0);
       final valueCase1 = AuthModel().computeAuth(auth1);
-      
-      final informationCon = RegisterUser();
-      
-      await informationCon.insertParams(
+            
+      await RegisterUser().insertParams(
         userName: username,
         auth0: valueCase0,
         email: email,
@@ -190,7 +183,6 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
           vertical: mediaQuery.size.height * 0.05,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 

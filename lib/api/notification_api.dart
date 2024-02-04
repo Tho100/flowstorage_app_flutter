@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationApi {
+  
   static final _notifications = FlutterLocalNotificationsPlugin();
 
   static Future<NotificationDetails> _notificationDetails({

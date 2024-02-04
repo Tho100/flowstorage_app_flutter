@@ -1,9 +1,7 @@
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
-import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class ResponsiveListView extends StatelessWidget {
@@ -13,22 +11,20 @@ class ResponsiveListView extends StatelessWidget {
   final List<Widget> Function(int index) childrens;
   final List<InlineSpan> Function(int index) inlineSpanWidgets;
 
-  ResponsiveListView({
+  const ResponsiveListView({
     required this.itemOnLongPress,
     required this.itemOnTap,
     required this.childrens,
     required this.inlineSpanWidgets,
     Key? key
   }) : super(key: key); 
-
-  final tempData = GetIt.instance<TempDataProvider>();
-
-  final double itemExtentValue = 65.0;
-  final double bottomExtraSpacesHeight = 89.0;
-  final double topExtraSpacesHeight = 5.0;
+  
+  final itemExtentValue = 65.0;
+  final bottomExtraSpacesHeight = 89.0;
+  final topExtraSpacesHeight = 5.0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
         return RawScrollbar(

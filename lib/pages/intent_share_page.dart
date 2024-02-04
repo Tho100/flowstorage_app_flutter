@@ -95,7 +95,6 @@ class IntentSharingPage extends StatelessWidget {
               const SizedBox(width: 10),
 
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

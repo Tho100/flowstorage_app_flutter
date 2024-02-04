@@ -28,12 +28,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final valueNotifierCur = ValueNotifier<bool>(false);
 
   final userData = GetIt.instance<UserDataProvider>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  
   @override
   void dispose() {
     curPassController.dispose();

@@ -561,11 +561,6 @@ class MyPlanPageState extends State<MyPlanPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
 
     final width = MediaQuery.of(context).size.width;
@@ -582,7 +577,6 @@ class MyPlanPageState extends State<MyPlanPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 35),
 

@@ -14,16 +14,35 @@ class SkeletonLoadingPs extends StatefulWidget {
 
 class SkeletonLoadingState extends State<SkeletonLoadingPs> {
 
-  Duration durationGradient = const Duration(milliseconds: 859);
+  final durationGradient = const Duration(milliseconds: 859);
 
   final gradientColors = [
     [ThemeColor.secondaryWhite, ThemeColor.thirdWhite],
     [ThemeColor.thirdWhite, ThemeColor.secondaryWhite],
   ];
 
-  int currentGradientIndex = 0;
+  final currentGradientIndexNotifier = ValueNotifier<int>(0);
 
   late Timer? gradientTimer;
+
+  Widget buildAnimatedContainer() {
+    return ValueListenableBuilder(
+      valueListenable: currentGradientIndexNotifier,
+      builder: (context, value, child) {
+        return AnimatedContainer(
+          duration: const Duration(seconds: 1),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: gradientColors[value],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Widget buildContainer(double width) {
     return Padding(
@@ -35,17 +54,7 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
           SizedBox(
             width: width - 150,
             height: 30, 
-            child: AnimatedContainer(
-              duration: const Duration(seconds: 1),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: gradientColors[currentGradientIndex],
-                ),
-              ),
-            ),
+            child: buildAnimatedContainer(),
           ),
 
           const SizedBox(height: 18),
@@ -53,17 +62,7 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
           SizedBox(
             width: width - 180,
             height: 20, 
-            child: AnimatedContainer(
-              duration: const Duration(seconds: 1),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: gradientColors[currentGradientIndex],
-                ),
-              ),
-            ),
+            child: buildAnimatedContainer(),
           ),
 
           const SizedBox(height: 25),
@@ -71,22 +70,11 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
           SizedBox(
             width: width - 33,
             height: 395, 
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 800),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: gradientColors[currentGradientIndex],
-                ),
-              ),
-            ),
+            child: buildAnimatedContainer(),
           ),
           const SizedBox(height: 12),
           
           const Divider(color: ThemeColor.lightGrey),
-
 
         ],
       ),
@@ -100,24 +88,16 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
       child: SizedBox(
         width: 85,
         height: 75,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 800),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: gradientColors[currentGradientIndex],
-            ),
-          ),
-        ),
+        child: buildAnimatedContainer(),
       ),
     );
   }
 
   Widget buildPublicStorageLoading(BuildContext context) {
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
     return Column( 
       crossAxisAlignment: CrossAxisAlignment.center, 
       children: [
@@ -204,9 +184,8 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
   void initializeGradient() {
     gradientTimer = Timer.periodic(durationGradient, (timer) {
       if (mounted) {
-        setState(() {
-          currentGradientIndex = (currentGradientIndex + 1) % gradientColors.length;
-        });
+          currentGradientIndexNotifier.value =  
+          (currentGradientIndexNotifier.value + 1) % gradientColors.length;
       } else {
         timer.cancel(); 
       }
@@ -214,15 +193,16 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
   }
 
   @override
-  void dispose() {
-    gradientTimer?.cancel();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     initializeGradient();
+  }
+  
+  @override
+  void dispose() {
+    gradientTimer?.cancel();
+    currentGradientIndexNotifier.dispose();
+    super.dispose();
   }
 
   @override

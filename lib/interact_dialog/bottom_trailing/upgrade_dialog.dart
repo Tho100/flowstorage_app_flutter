@@ -17,9 +17,7 @@ class UpgradeDialog {
       builder: (context) {
         return Column(
           children: [
-            
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(

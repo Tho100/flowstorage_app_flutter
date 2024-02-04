@@ -87,7 +87,6 @@ class UploadPsPage extends StatelessWidget {
               const SizedBox(width: 18),
 
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
