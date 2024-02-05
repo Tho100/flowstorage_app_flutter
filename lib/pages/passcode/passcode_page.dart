@@ -75,8 +75,8 @@ class PasscodePageState extends State<PasscodePage> {
 
       final results = await Future.wait(futures);
 
-      final fileNames = <String>[];
-      final bytes = <Uint8List>[];
+      final fileNames = <String>{};
+      final bytes = <Uint8List>{};
       final dates = <String>[];
 
       final foldersList = <String>[];
@@ -95,8 +95,8 @@ class PasscodePageState extends State<PasscodePage> {
         dates.addAll(datesForTable);
       }
 
-      storageData.setFilesName(fileNames);
-      storageData.setImageBytes(bytes);
+      storageData.setFilesName(fileNames.toList());
+      storageData.setImageBytes(bytes.toList());
       storageData.setFilesDate(dates);
 
       tempStorageData.setFoldersName(foldersList);

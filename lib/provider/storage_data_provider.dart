@@ -14,7 +14,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   List<Uint8List?> _imageBytesList = <Uint8List?>[];
   List<Uint8List?> _imageBytesFilteredList = <Uint8List?>[];
-  List<Uint8List> _directoryImageBytesList = <Uint8List>[];
 
   List<String> get fileNamesList => _fileNamesList;
   List<String> get fileNamesFilteredList => _fileNamesFilteredList;
@@ -24,7 +23,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   List<Uint8List?> get imageBytesList => _imageBytesList;
   List<Uint8List?> get imageBytesFilteredList => _imageBytesFilteredList;
-  List<Uint8List> get directoryImageBytesList => _directoryImageBytesList;
 
   List<Uint8List> get homeImageBytesList => _homeImageBytesList;
   List<Uint8List> get homeThumbnailBytesList => _homeThumbnailBytesList;
@@ -82,11 +80,6 @@ class StorageDataProvider extends ChangeNotifier {
 
   void setFilteredImageBytes(List<Uint8List?> bytes) {
     _imageBytesFilteredList = bytes;
-    notifyListeners();
-  }
-
-  void setDirectoryImageBytes(List<Uint8List> bytes) {
-    _directoryImageBytesList = bytes;
     notifyListeners();
   }
 

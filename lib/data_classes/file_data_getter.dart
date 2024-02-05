@@ -102,17 +102,8 @@ class FileDataGetter {
 
     } else if (tableName == GlobalsTable.directoryInfoTable) {
 
-      if(storageData.directoryImageBytesList.isEmpty) {
-
-        final dirImage = await Future.wait(List.generate(1, (_) => getAssets.loadAssetsData('dir1.jpg')));
-        getByteValue.addAll(dirImage);
-
-        storageData.setDirectoryImageBytes(dirImage);
-
-      } else {
-        getByteValue.addAll(storageData.directoryImageBytesList);
-
-      }
+      final dirImage = await Future.wait(List.generate(1, (_) => getAssets.loadAssetsData('dir1.jpg')));
+      getByteValue.addAll(dirImage);
 
     } else {
       await retrieveValue(tableNameToAssetsImage[tableName]!);
@@ -122,4 +113,5 @@ class FileDataGetter {
     return getByteValue.toList();
 
   }
+  
 }

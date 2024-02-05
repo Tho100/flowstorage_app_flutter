@@ -268,7 +268,6 @@ class FunctionModel {
         storageData.imageBytesList.add(directoryImage.readAsBytesSync());
         storageData.imageBytesFilteredList.add(directoryImage.readAsBytesSync());
 
-        storageData.directoryImageBytesList.clear();
         storageData.fileNamesFilteredList.add(directoryName);
         storageData.fileNamesList.add(directoryName);
 
@@ -293,7 +292,6 @@ class FunctionModel {
 
       await DeleteDirectory(name: directoryName).delete();
     
-      storageData.directoryImageBytesList.clear();
       tempStorageData.directoryNameList.remove(directoryName);
       
       SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
