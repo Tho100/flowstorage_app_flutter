@@ -1729,7 +1729,7 @@ class HomePage extends State<Mainboard> {
             if(selectedItemIsChecked)
             _buildMoreOptionsOnSelectButton(),
 
-            if(togglePhotosPressed)
+            if(togglePhotosPressed && checkedItemsName.isEmpty)
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
