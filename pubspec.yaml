@@ -44,6 +44,8 @@ dependencies:
   archive: ^3.4.3
   flutter_sharing_intent: ^1.1.0
   app_settings: ^5.1.1
+  http: ^0.13.6
+  crypto: ^3.0.3
   
 dev_dependencies:
   flutter_test:
