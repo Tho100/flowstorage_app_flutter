@@ -81,7 +81,7 @@ class RegisterUser {
     }
 
     if(context.mounted) {
-      await insertUserInfo(userName, auth0, createdDate!, email!, auth1!,context);
+      await insertUserInfo(userName, auth0, createdDate!, email!, auth1!);
     }
 
     const List<String> insertExtraInfoQuery = [
@@ -114,7 +114,7 @@ class RegisterUser {
   
   }
 
-  Future<void> insertUserInfo(String? userName, String? passWord, String? createdDate, String? email, String? pin, BuildContext context) async {
+  Future<void> insertUserInfo(String? userName, String? passWord, String? createdDate, String? email, String? pin) async {
 
     try {
       
@@ -140,6 +140,12 @@ class RegisterUser {
         
       await LocalStorageModel()
         .setupLocalAccountUsernames(userName);
+
+      await LocalStorageModel()
+        .setupLocalAccountEmails(email);
+
+      await LocalStorageModel()
+        .setupLocalAccountPlans("Basic");
 
     } catch (dupeUsernameErr, st) {
       Logger().e(dupeUsernameErr, st);

@@ -727,6 +727,7 @@ class PreviewFileState extends State<PreviewFile> {
           tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
 
       return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
             children: [
