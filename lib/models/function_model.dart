@@ -87,10 +87,12 @@ class FunctionModel {
       final encryptVals = EncryptionClass().encrypt(fileName);
       await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
       
+      tempData.clearFileData();
+
       SnakeAlert.okSnake(message: "Deleted $fileName", icon: Icons.check);
 
     } catch (err, st) {
-      logger.e('Exception from deleteFileData {function_model}',err,st);
+      logger.e('Exception from deleteFileData {function_model}', err, st);
       SnakeAlert.errorSnake("Failed to delete $fileName");
     }
 

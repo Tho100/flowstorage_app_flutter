@@ -684,7 +684,7 @@ class HomePage extends State<Mainboard> {
       }
     });
 
-    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} item(s) selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
     tempData.setAppBarTitle(setAppBarTitle);
 
   }
@@ -1623,7 +1623,7 @@ class HomePage extends State<Mainboard> {
       });
     }
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
 
     if(selectedPhotosIndex.isEmpty) {
       _addItemButtonVisibility(true);
@@ -1640,7 +1640,7 @@ class HomePage extends State<Mainboard> {
     });
     
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Item(s) selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
     
     _addItemButtonVisibility(false);
 
@@ -1729,7 +1729,7 @@ class HomePage extends State<Mainboard> {
             if(selectedItemIsChecked)
             _buildMoreOptionsOnSelectButton(),
 
-            if(togglePhotosPressed)
+            if(togglePhotosPressed && checkedItemsName.isEmpty)
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
