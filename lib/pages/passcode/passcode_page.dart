@@ -104,7 +104,7 @@ class PasscodePageState extends State<PasscodePage> {
       tempData.setOrigin(OriginFile.home);
 
     } catch (err) {
-      NavigatePage.permanentPageMainboard(context);
+      NavigatePage.permanentPageHome(context);
       return;
     }
 
@@ -145,7 +145,7 @@ class PasscodePageState extends State<PasscodePage> {
         justLoading.stopLoading();
         
         if(mounted) {
-          NavigatePage.permanentPageMainboard(context);
+          NavigatePage.permanentPageHome(context);
         }
 
       } else {        

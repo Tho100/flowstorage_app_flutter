@@ -51,7 +51,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     }
 
     if(mounted) {
-      NavigatePage.permanentPageMainboard(context);
+      NavigatePage.permanentPageHome(context);
     }
 
   }
@@ -60,7 +60,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     for (final controller in controllers) { 
       controller.clear();
     }
-    NavigatePage.permanentPageMainboard(context);
+    NavigatePage.permanentPageHome(context);
   }
 
   void processInput() async {

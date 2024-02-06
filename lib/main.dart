@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/pages/home_page.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -72,11 +71,3 @@ void homePage() => runApp(
   const MaterialApp(
   home: CakeSignUpPage(),
 ));
-
-class Mainboard extends StatefulWidget {
-  
-  const Mainboard({super.key});
-  @override
-  State<Mainboard> createState() => HomePage();
-
-}

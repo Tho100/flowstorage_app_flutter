@@ -26,7 +26,6 @@ import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
-import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
@@ -86,7 +85,15 @@ import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
 
-class HomePage extends State<Mainboard> { 
+class HomePage extends StatefulWidget {
+  
+  const HomePage({super.key});
+  @override
+  State<HomePage> createState() => HomePageState();
+
+}
+
+class HomePageState extends State<HomePage> { 
 
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();

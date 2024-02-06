@@ -172,7 +172,7 @@ class SplashScreenState extends State<SplashScreen> {
             conn, getLocalUsername, getLocalEmail, getLocalAccountType);
           
           if(mounted) {
-            NavigatePage.permanentPageMainboard(context);
+            NavigatePage.permanentPageHome(context);
           }
           
         }

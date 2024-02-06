@@ -230,7 +230,7 @@ class PreviewFileState extends State<PreviewFile> {
       tempData.clearFileData();
       
       if(mounted) {
-        NavigatePage.permanentPageMainboard(context);
+        NavigatePage.permanentPageHome(context);
       }
 
     } catch (err, st) {

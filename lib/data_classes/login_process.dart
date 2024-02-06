@@ -135,7 +135,7 @@ class SignInUser {
           justLoading.stopLoading();
           
           if(context.mounted) {
-            NavigatePage.permanentPageMainboard(context);
+            NavigatePage.permanentPageHome(context);
           }
 
         } else {
