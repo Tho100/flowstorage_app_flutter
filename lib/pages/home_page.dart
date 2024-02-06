@@ -3,41 +3,56 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
+import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/delete_data.dart';
+import 'package:flowstorage_fsc/data_query/insert_data.dart';
+import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
+import 'package:flowstorage_fsc/folder_query/delete_folder.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/call_notification.dart';
+import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/date_short_form.dart';
+import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/folder_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
+import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/models/upload_dialog.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
-import 'package:flowstorage_fsc/provider/temp_storage.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/helper/call_toast.dart';
-import 'package:flowstorage_fsc/helper/external_app.dart';
-import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_selection_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
-import 'package:flowstorage_fsc/main.dart';
-import 'package:flowstorage_fsc/models/update_list_view.dart';
-import 'package:flowstorage_fsc/models/offline_model.dart';
+import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
+import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/add_item.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/filter_type.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/folder_options.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/selected_items_options.dart';
@@ -50,43 +65,30 @@ import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
 import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
-import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/folder_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/recent_ps_list_view.dart';
 import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_view.dart';
-import 'package:flutter_sharing_intent/model/sharing_file.dart';
-
-import 'package:logger/logger.dart';
-import 'package:open_file/open_file.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:provider/provider.dart';
-
-import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/helper/call_notification.dart';
-import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
-import 'package:flowstorage_fsc/folder_query/delete_folder.dart';
-
-import 'package:flowstorage_fsc/previewer/preview_file.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
-
-import 'package:flowstorage_fsc/data_query/insert_data.dart';
-import 'package:flowstorage_fsc/data_query/delete_data.dart';
-
+import 'package:flutter/services.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
+import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends State<Mainboard> { 
+class HomePage extends StatefulWidget {
+  
+  const HomePage({super.key});
+  @override
+  State<HomePage> createState() => HomePageState();
+
+}
+
+class HomePageState extends State<HomePage> { 
 
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();

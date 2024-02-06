@@ -99,7 +99,6 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
     final height = MediaQuery.of(context).size.height;
 
     return Column( 
-      crossAxisAlignment: CrossAxisAlignment.center, 
       children: [
         Center(
           child: Column(

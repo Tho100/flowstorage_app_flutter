@@ -353,7 +353,6 @@ class PreviewAudioState extends State<PreviewAudio> {
   Widget buildHeader() {
     
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4),
@@ -421,7 +420,6 @@ class PreviewAudioState extends State<PreviewAudio> {
 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
               const SizedBox(width: 42),

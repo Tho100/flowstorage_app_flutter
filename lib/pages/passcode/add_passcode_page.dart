@@ -51,7 +51,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     }
 
     if(mounted) {
-      NavigatePage.permanentPageMainboard(context);
+      NavigatePage.permanentPageHome(context);
     }
 
   }
@@ -60,7 +60,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     for (final controller in controllers) { 
       controller.clear();
     }
-    NavigatePage.permanentPageMainboard(context);
+    NavigatePage.permanentPageHome(context);
   }
 
   void processInput() async {
@@ -89,7 +89,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
   Widget buildAddPasscodePage() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
         const SizedBox(height: 100),
@@ -160,7 +159,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("1", ""),
             buildButtons("2", "ABC"),
@@ -170,7 +168,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("4", "GHI"),
             buildButtons("5", "JKL"),
@@ -180,7 +177,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("7", "PQRS"),
             buildButtons("8", "TUV"),
@@ -190,7 +186,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("", ""),
             buildButtons("0", "*"),

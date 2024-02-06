@@ -2,15 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/data_query/update_data.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
-import 'package:flowstorage_fsc/helper/external_app.dart';
-import 'package:flowstorage_fsc/helper/visibility_checker.dart';
-import 'package:flowstorage_fsc/models/function_model.dart';
-import 'package:flowstorage_fsc/provider/temp_storage.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
+import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
+import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
+import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
@@ -19,19 +21,16 @@ import 'package:flowstorage_fsc/previewer/preview_video.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/pages/comment_page.dart';
-import 'package:flowstorage_fsc/data_query/update_data.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
-import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
-
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
@@ -230,7 +229,7 @@ class PreviewFileState extends State<PreviewFile> {
       tempData.clearFileData();
       
       if(mounted) {
-        NavigatePage.permanentPageMainboard(context);
+        NavigatePage.permanentPageHome(context);
       }
 
     } catch (err, st) {
@@ -730,6 +729,7 @@ class PreviewFileState extends State<PreviewFile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),

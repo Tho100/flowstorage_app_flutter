@@ -27,7 +27,6 @@ class BackupRecovery extends StatelessWidget {
     final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(

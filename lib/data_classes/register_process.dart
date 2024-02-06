@@ -105,7 +105,7 @@ class RegisterUser {
       );
     }
     
-    NavigatePage.permanentPageMainboard(context);
+    NavigatePage.permanentPageHome(context);
 
     auth0 = null;
     userName = null;

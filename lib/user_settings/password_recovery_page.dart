@@ -31,7 +31,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured) {
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
@@ -74,7 +73,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   Widget _buildBody(BuildContext context) {
     
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
         const Padding(

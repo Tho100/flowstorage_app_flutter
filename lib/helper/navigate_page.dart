@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/pages/acitivity_page.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
+import 'package:flowstorage_fsc/pages/home_page.dart';
 import 'package:flowstorage_fsc/pages/move_file_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/settings/account_page.dart';
@@ -99,17 +100,10 @@ class NavigatePage {
       (route) => false);
   }
 
-  static void replacePageMainboard(BuildContext context) {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(builder: (context) => const Mainboard())
-    );   
-  }
-
-  static void permanentPageMainboard(BuildContext context) {
+  static void permanentPageHome(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const Mainboard()),
+      MaterialPageRoute(builder: (context) => const HomePage()),
       (route) => false,
     );
   }
@@ -121,7 +115,8 @@ class NavigatePage {
   }
 
   static void goToPageRegister(BuildContext context) {
-    Navigator.push(context, 
+    Navigator.push(
+      context, 
       MaterialPageRoute(builder: (context) => const CakeSignUpPage()),
     );
   }

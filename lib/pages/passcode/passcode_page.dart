@@ -104,7 +104,7 @@ class PasscodePageState extends State<PasscodePage> {
       tempData.setOrigin(OriginFile.home);
 
     } catch (err) {
-      NavigatePage.permanentPageMainboard(context);
+      NavigatePage.permanentPageHome(context);
       return;
     }
 
@@ -145,7 +145,7 @@ class PasscodePageState extends State<PasscodePage> {
         justLoading.stopLoading();
         
         if(mounted) {
-          NavigatePage.permanentPageMainboard(context);
+          NavigatePage.permanentPageHome(context);
         }
 
       } else {        
@@ -188,7 +188,6 @@ class PasscodePageState extends State<PasscodePage> {
   Widget buildPassCode() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
         const SizedBox(height: 100),
@@ -208,7 +207,6 @@ class PasscodePageState extends State<PasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: List.generate(
             4,
             (index) => Container(
@@ -275,7 +273,6 @@ class PasscodePageState extends State<PasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("1", ""),
             buildButtons("2", "ABC"),
@@ -285,7 +282,6 @@ class PasscodePageState extends State<PasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("4", "GHI"),
             buildButtons("5", "JKL"),
@@ -295,7 +291,6 @@ class PasscodePageState extends State<PasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("7", "PQRS"),
             buildButtons("8", "TUV"),
@@ -305,7 +300,6 @@ class PasscodePageState extends State<PasscodePage> {
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildButtons("", ""),
             buildButtons("0", "*"),

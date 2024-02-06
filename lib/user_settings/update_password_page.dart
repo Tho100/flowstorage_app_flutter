@@ -28,16 +28,6 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final valueNotifierCur = ValueNotifier<bool>(false);
 
   final userData = GetIt.instance<UserDataProvider>();
-  
-  @override
-  void dispose() {
-    curPassController.dispose();
-    curPinController.dispose();
-    newPassController.dispose();
-    valueNotifierCur.dispose();
-    valueNotifierNew.dispose();
-    super.dispose();
-  }
 
   Widget _buildTextField({
     required String hintText,
@@ -51,7 +41,6 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
     valueNotifier ??= ValueNotifier<bool>(false); 
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
@@ -187,6 +176,16 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
     final params = {'newauth': AuthModel().computeAuth(newPasswordAuth), 'username': userData.username};
     await Crud().update(query: updateAuthQuery, params: params);
 
+  }
+
+  @override
+  void dispose() {
+    curPassController.dispose();
+    curPinController.dispose();
+    newPassController.dispose();
+    valueNotifierCur.dispose();
+    valueNotifierNew.dispose();
+    super.dispose();
   }
 
   @override

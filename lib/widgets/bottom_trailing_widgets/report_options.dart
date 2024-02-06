@@ -1,10 +1,8 @@
 import 'package:flowstorage_fsc/pages/public_storage/submit_report_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class BottomTrailingReport {
 
@@ -15,8 +13,6 @@ class BottomTrailingReport {
     required this.context, 
     required this.fileName
   });
-
-  final tempData = GetIt.instance<TempDataProvider>();
 
   Widget _buildReportTypeButtons(
     String reportName, 

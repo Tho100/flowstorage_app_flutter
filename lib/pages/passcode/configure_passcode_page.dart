@@ -33,7 +33,6 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
         Padding(
           padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
                 "Enable passcode",
