@@ -107,7 +107,6 @@ class RegisterUser {
     
     NavigatePage.permanentPageMainboard(context);
 
-
     auth0 = null;
     userName = null;
     email = null;

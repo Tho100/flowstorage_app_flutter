@@ -80,6 +80,7 @@ class FileDataGetter {
       if (storageData.homeThumbnailBytesList.isEmpty) {
         
         final thumbnailBytes = await thumbnailGetter.getThumbnails(conn);
+        
         storageData.setHomeThumbnailBytes(thumbnailBytes);
         getByteValue.addAll(thumbnailBytes);
 
