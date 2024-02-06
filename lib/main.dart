@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/authentication/sign_up_page.dart';
 import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -5,14 +6,12 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/authentication/sign_up_page.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/splash_screen_page.dart';
-import 'package:get_it/get_it.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
