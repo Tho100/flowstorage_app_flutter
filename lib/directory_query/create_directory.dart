@@ -20,8 +20,11 @@ class CreateDirectory {
 
       final conn = await SqlConnection.initializeConnection();
 
-      const query = "INSERT INTO file_info_directory(DIR_NAME,CUST_USERNAME) VALUES (:dirname,:username)";
-      final params = {'dirname': encryption.encrypt(name),'username': userData.username};
+      const query = "INSERT INTO file_info_directory(DIR_NAME, CUST_USERNAME) VALUES (:dirname, :username)";
+      final params = {
+        'dirname': encryption.encrypt(name),
+        'username': userData.username
+      };
 
       await conn.execute(query,params);
 

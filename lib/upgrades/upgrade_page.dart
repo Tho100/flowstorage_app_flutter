@@ -631,7 +631,7 @@ class UpgradePageState extends State<UpradePage> {
     final params = {"username": userData.username,"email": userData.email,"type": userChoosenPlan};
     await Crud().update(query: queryUpdateAccType, params: params);
 
-    const queryInsertBuyer = "INSERT INTO cust_buyer(CUST_USERNAME,CUST_EMAIL,ACC_TYPE,CUST_ID,PURCHASE_DATE) VALUES (:username,:email,:type,:id,:date)";
+    const queryInsertBuyer = "INSERT INTO cust_buyer(CUST_USERNAME, CUST_EMAIL, ACC_TYPE, CUST_ID, PURCHASE_DATE) VALUES (:username, :email, :type, :id, :date)";
     final paramsBuyer = {"username": userData.username,"email": userData.email,"type": userChoosenPlan,"id": customerId,"date": dateToStr};
     await Crud().insert(query: queryInsertBuyer, params: paramsBuyer);
 

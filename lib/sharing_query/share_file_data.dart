@@ -29,10 +29,7 @@ class ShareFileData {
 
       final uploadDate = dateNow.format(DateTime.now());
 
-      const insertSharingData =
-      'INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, CUST_THUMB, CUST_COMMENT) '
-      'VALUES (:to, :from, :filename, :fileval, :date, :thumbnail, :comment)';
-
+      const insertDataQuery = "INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, CUST_THUMB, CUST_COMMENT) VALUES (:to, :from, :filename, :fileval, :date, :thumbnail, :comment)";
       final params = {
         'to': receiverUsername!,
         'from': userData.username,
@@ -43,7 +40,7 @@ class ShareFileData {
         'comment': comment ?? '',
       };
 
-      await crud.insert(query: insertSharingData, params: params);
+      await crud.insert(query: insertDataQuery, params: params);
 
     } catch (err, st) {
       Logger().e("Exception from startSharing {share_file}", err, st);

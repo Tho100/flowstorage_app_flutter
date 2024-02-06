@@ -66,9 +66,9 @@ class Crud {
 
   Future<int> countUserTableRow(String tableName) async {
 
-    final userData = GetIt.instance<UserDataProvider>();
-
     final conn = await SqlConnection.initializeConnection();
+
+    final userData = GetIt.instance<UserDataProvider>();
 
     final countRowQuery = "SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username";
     final params = {'username': userData.username};

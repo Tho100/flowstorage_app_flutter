@@ -85,8 +85,8 @@ class RegisterUser {
     }
 
     const List<String> insertExtraInfoQuery = [
-      "INSERT INTO cust_type(CUST_USERNAME,CUST_EMAIL,ACC_TYPE) VALUES (:username,:email,:type)",
-      "INSERT INTO sharing_info(CUST_USERNAME,DISABLED,SET_PASS,PASSWORD_DISABLED) VALUES (:username,:disabled,:pass,:pass_disabled)"
+      "INSERT INTO cust_type(CUST_USERNAME, CUST_EMAIL, ACC_TYPE) VALUES (:username, :email, :type)",
+      "INSERT INTO sharing_info(CUST_USERNAME, DISABLED, SET_PASS, PASSWORD_DISABLED) VALUES (:username, :disabled, :pass, :pass_disabled)"
     ];
 
     final params = [
@@ -147,8 +147,8 @@ class RegisterUser {
       await LocalStorageModel()
         .setupLocalAccountPlans("Basic");
 
-    } catch (dupeUsernameErr, st) {
-      Logger().e(dupeUsernameErr, st);
+    } catch (err, st) {
+      Logger().e(err, st);
     } 
     
   }

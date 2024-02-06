@@ -3,19 +3,28 @@ import 'package:mysql_client/mysql_client.dart';
 
 class FileDateGetter {
 
+  final formatDate = FormatDate();
+
   Future<List<String>> retrieveParams(MySQLConnectionPool conn, String username, String tableName) async {
     
-    final selectUploadDate =
-        "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
-    final params = {'username': username};
-    
-    final retrievedDate = await conn.execute(selectUploadDate, params);
+    try {
 
-    return retrievedDate.rows.map((row) {
-      final dateValue = row.assoc()['UPLOAD_DATE']!;
-      return FormatDate().formatDifference(dateValue);
+      final selectUploadDate =
+          "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
+      final params = {'username': username};
+      
+      final retrievedDate = await conn.execute(selectUploadDate, params);
 
-    }).toList();
+      return retrievedDate.rows.map((row) {
+        final dateValue = row.assoc()['UPLOAD_DATE']!;
+        return formatDate.formatDifference(dateValue);
+
+      }).toList();
+
+    } catch (err) {
+      return <String>[];
+    }
 
   }
+  
 }
