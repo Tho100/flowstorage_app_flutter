@@ -75,29 +75,17 @@ class FileDataGetter {
 
     final getByteValue = <Uint8List>{};
 
-    Future<void> retrieveValue(String iconName) async {
-
-      final retrieveCountQuery = 'SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username';
-      final params = {'username': username};
-      final countTotalRows = await crud.count(query: retrieveCountQuery, params: params);
-
-      final loadAssetImage = await Future.wait(List.generate(countTotalRows, (_) => GetAssets().loadAssetsData(iconName)));
-      getByteValue.addAll(loadAssetImage);
-
-    }
-
     if (tableName == GlobalsTable.homeVideo) {
 
-      if(storageData.homeThumbnailBytesList.isEmpty) {
+      if (storageData.homeThumbnailBytesList.isEmpty) {
         
         final thumbnailBytes = await thumbnailGetter.getThumbnails(conn);
-
         storageData.setHomeThumbnailBytes(thumbnailBytes);
         getByteValue.addAll(thumbnailBytes);
 
       } else {
         getByteValue.addAll(storageData.homeThumbnailBytesList);
-
+        
       }
 
     } else if (tableName == GlobalsTable.directoryInfoTable) {
@@ -106,12 +94,24 @@ class FileDataGetter {
       getByteValue.addAll(dirImage);
 
     } else {
-      await retrieveValue(tableNameToAssetsImage[tableName]!);
+      await generateAssetsImage(conn, username, tableName, getByteValue, tableNameToAssetsImage[tableName]!);
 
     }
 
     return getByteValue.toList();
 
   }
+
+  Future<void> generateAssetsImage(MySQLConnectionPool conn, String username, String tableName, Set<Uint8List> getByteValue, String iconName) async {
+
+    final retrieveCountQuery = 'SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username';
+    final params = {'username': username};
+    final countTotalRows = await crud.count(query: retrieveCountQuery, params: params);
+
+    final loadAssetImage = await Future.wait(List.generate(countTotalRows, (_) => GetAssets().loadAssetsData(iconName)));
+    getByteValue.addAll(loadAssetImage);
+
+  }
+
   
 }
