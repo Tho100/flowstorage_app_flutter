@@ -32,7 +32,6 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
   Widget _buildTextField(String hintText, TextEditingController controller, BuildContext context, bool isSecured, bool isPin) {
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
@@ -74,7 +73,6 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
   Widget _buildBody(BuildContext context) {
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         
         const Padding(

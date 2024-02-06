@@ -80,7 +80,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildBody() {
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
         Padding(

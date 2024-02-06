@@ -256,7 +256,6 @@ class PreviewVideoState extends State<PreviewVideo> {
         padding: const EdgeInsets.only(bottom: 25.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildSeekSlider(),
             Padding(
