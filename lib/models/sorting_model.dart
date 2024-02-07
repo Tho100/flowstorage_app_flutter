@@ -1,5 +1,4 @@
 import 'package:flowstorage_fsc/helper/date_parser.dart';
-import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +7,6 @@ import 'package:intl/intl.dart';
 class SortingModel {
 
   final storageData = GetIt.instance<StorageDataProvider>();
-  final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   String _formatDateTime(DateTime dateTime) {
 
