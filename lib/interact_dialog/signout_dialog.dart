@@ -16,8 +16,8 @@ class SignOutDialog {
           ),
           backgroundColor: ThemeColor.darkGrey,
           content: const Text(
-            'Logout from your Flowstorage account? Your offline files will be deleted.',
-            style: TextStyle(color: Colors.white),
+            'Are you sure you want to sign out from your Flowstorage account?',
+            style: TextStyle(color: ThemeColor.justWhite),
           ),
           actions: <Widget>[
             TextButton(
@@ -26,7 +26,7 @@ class SignOutDialog {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: ThemeColor.justWhite),
               ),
             ),
             ElevatedButton(

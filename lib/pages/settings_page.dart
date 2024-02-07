@@ -264,7 +264,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
 
             _buildButtons(
               "App Settings", 
-              "Cache, rating and more", 
+              "Permissions, cache and more", 
               Icons.info_outline, () {
                 NavigatePage.goToPageSettingsAppSettings();
               }

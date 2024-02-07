@@ -323,8 +323,8 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildKeepPlaying() {
     return SizedBox(
-      width: 45,
-      height: 45,
+      width: 100,
+      height: 100,
       child: SplashWidget(
         child: ValueListenableBuilder(
           valueListenable: isKeepPlayingEnabledNotifier,
@@ -343,7 +343,6 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   Widget buildHeader() {
-    
     return Column(
       children: [
         Text(
@@ -410,18 +409,19 @@ class PreviewAudioState extends State<PreviewAudio> {
 
           const SizedBox(height: 10),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              const SizedBox(width: 42),
-
-              buildFastBackward(),
-              buildPlayPauseButton(),
-              buildFastForward(),
-              buildKeepPlaying(),
-
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 105),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+          
+                buildFastBackward(),
+                buildPlayPauseButton(),
+                buildFastForward(),
+                buildKeepPlaying(),
+          
+              ],
+            ),
           ),
           
           const SizedBox(height: 48),
