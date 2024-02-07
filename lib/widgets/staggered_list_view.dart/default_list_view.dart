@@ -31,6 +31,7 @@ class DefaultStaggeredListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery.of(context).size;
     
     final actualFileType = fileType.split('.').last;
@@ -43,30 +44,31 @@ class DefaultStaggeredListView extends StatelessWidget {
       children: [
         
         const SizedBox(height: 14),
-
+  
         Expanded(
           child: Stack(
             children: [
               Container(
-              width: size.width-95,
-              height: 145,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: ThemeColor.lightGrey,
-                  width: 1.2,
-                )
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Image.memory(imageBytes, 
-                  cacheHeight: isMakeImageSmaller ? 40 : null, 
-                  cacheWidth: isMakeImageSmaller ? 40 : null, 
-                  fit: isMakeImageSmaller ? BoxFit.scaleDown : BoxFit.cover),
+                width: size.width - 95,
+                height: 145,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: ThemeColor.lightGrey,
+                    width: 1.2,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: Image.memory(
+                    imageBytes,
+                    cacheHeight: isMakeImageSmaller ? 40 : null,
+                    cacheWidth: isMakeImageSmaller ? 40 : null,
+                    fit: isMakeImageSmaller ? BoxFit.scaleDown : BoxFit.cover,
+                  ),
                 ),
               ),
-              
-              if(Globals.videoType.contains(actualFileType))
+              if (Globals.videoType.contains(actualFileType))
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -76,13 +78,13 @@ class DefaultStaggeredListView extends StatelessWidget {
                     color: ThemeColor.mediumGrey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
+                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25),
+                ),
               ),
-            
             ],
           ),
         ),
-
+  
         const SizedBox(height: 10),
         
         Align(
@@ -122,8 +124,9 @@ class DefaultStaggeredListView extends StatelessWidget {
         ),
         
         const SizedBox(height: 10) 
-
+  
       ],
+
     );
   }
 
