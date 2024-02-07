@@ -159,6 +159,20 @@ class PreviewAudioState extends State<PreviewAudio> {
     });
   }
 
+  Future<void> onReplayPressed() async {
+
+    callNotificationOnAudioPlaying();
+
+    await audioPlayerController.seek(Duration.zero);
+    audioPlayerController.play();
+    iconPausePlayNotifier.value = Icons.pause;
+  }
+
+  void callNotificationOnAudioPlaying() async {
+    await CallNotify()
+      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
+  }
+
   String toTwoDigits(int n) {
     if (n >= 10) return "$n";
     return "0$n";
@@ -273,20 +287,6 @@ class PreviewAudioState extends State<PreviewAudio> {
         },
       ),
     );
-  }
-
-  Future<void> onReplayPressed() async {
-
-    callNotificationOnAudioPlaying();
-
-    await audioPlayerController.seek(Duration.zero);
-    audioPlayerController.play();
-    iconPausePlayNotifier.value = Icons.pause;
-  }
-
-  void callNotificationOnAudioPlaying() async {
-    await CallNotify()
-      .audioNotification(audioName: tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4));
   }
 
   Widget buildFastBackward() {
