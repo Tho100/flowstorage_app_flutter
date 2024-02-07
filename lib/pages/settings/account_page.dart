@@ -1,5 +1,4 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog/verify_account_deletion_dialog.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -107,8 +106,7 @@ class SettingsAccountPage extends StatelessWidget {
             topText: "Remove account", 
             bottomText: "Delete all your account data and informations", 
             onPressed: () {
-              VerifyAccountDeletionDialog()
-                .buildVerifyAccountDeletionDialog();
+              NavigatePage.goToPageDeleteAccount();
             }
           ),
 

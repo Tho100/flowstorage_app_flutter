@@ -88,7 +88,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
         const Padding(
           padding: EdgeInsets.only(left: 28.0),
-          child: HeaderText(title: "Change Password", subTitle: "Update your Flowstorage password"),
+          child: HeaderText(title: "Change Password", subTitle: "Update your account password"),
         ),
         
         const SizedBox(height: 35),

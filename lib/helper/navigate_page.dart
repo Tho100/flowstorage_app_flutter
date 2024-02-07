@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/pages/passcode/add_passcode_page.dart';
 import 'package:flowstorage_fsc/user_settings/backup_recovery_page.dart';
 import 'package:flowstorage_fsc/pages/my_plan_page.dart';
+import 'package:flowstorage_fsc/user_settings/delete_account_page.dart';
 import 'package:flowstorage_fsc/user_settings/update_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -172,7 +173,14 @@ class NavigatePage {
   static void goToPageBackupRecovery() {
     Navigator.push(
       navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => const BackupRecovery())
+      MaterialPageRoute(builder: (context) => BackupRecoveryPage())
+    );
+  }
+
+  static void goToPageDeleteAccount() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => DeleteAccountPage())
     );
   }
 
