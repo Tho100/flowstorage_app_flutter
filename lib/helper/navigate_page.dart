@@ -12,14 +12,12 @@ import 'package:flowstorage_fsc/pages/sharing/configure_sharing_password.dart';
 import 'package:flowstorage_fsc/pages/sharing/share_file_page.dart';
 import 'package:flowstorage_fsc/pages/user_accounts_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/pages/passcode/add_passcode_page.dart';
 import 'package:flowstorage_fsc/user_settings/backup_recovery_page.dart';
 import 'package:flowstorage_fsc/pages/my_plan_page.dart';
 import 'package:flowstorage_fsc/user_settings/update_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 
 import '../pages/main_page.dart';
 import '../pages/passcode/passcode_page.dart';
@@ -151,26 +149,8 @@ class NavigatePage {
     final username = userData.username;
     final accountType = userData.accountType;
 
-    try {
+    _openSettingsPage( username: username,plan: accountType);
 
-      _openSettingsPage(
-        username: username,
-        plan: accountType,
-      );
-
-    } catch (err, st) {
-
-      SnakeAlert.errorSnake("No internet connection.");
-      Logger().e("Exception on goToPageSettings (NavigatePage)", err, st);
-      
-      await Future.delayed(const Duration(milliseconds: 990));
-
-      _openSettingsPage(
-        username: username,
-        plan: accountType,
-      );
-
-    }
   }
 
   static void _openSettingsPage({
