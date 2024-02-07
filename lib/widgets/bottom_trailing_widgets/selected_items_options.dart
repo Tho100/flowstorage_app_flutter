@@ -11,6 +11,8 @@ import 'package:get_it/get_it.dart';
 
 class BottomTrailingSelectedItems {
 
+  final tempData = GetIt.instance<TempDataProvider>();
+
   Future buildTrailing({
     required BuildContext context,
     required VoidCallback makeAoOnPressed,
@@ -19,9 +21,6 @@ class BottomTrailingSelectedItems {
     required VoidCallback moveOnPressed,
     required Set<String> itemsName
   }) {
-
-    final tempData = GetIt.instance<TempDataProvider>();
-
     return BottomTrailing().buildTrailing(
       context: context,
       childrens: <Widget>[
