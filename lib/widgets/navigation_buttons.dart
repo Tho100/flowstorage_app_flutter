@@ -1,7 +1,6 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
-import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,6 @@ class NavigationButtons extends StatelessWidget {
   }) : super(key: key);
 
   final tempData = GetIt.instance<TempDataProvider>();
-  final storageData = GetIt.instance<StorageDataProvider>();
 
   @override
   Widget build(BuildContext context) {

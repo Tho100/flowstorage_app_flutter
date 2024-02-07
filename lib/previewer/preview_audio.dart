@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/models/process_audio.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
@@ -292,16 +293,13 @@ class PreviewAudioState extends State<PreviewAudio> {
     return SizedBox(
       width: 100,
       height: 100,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: () async {
-              forwardingImplementation("negative");
-            },
-            icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 50),
-          ),
+      child: SplashWidget(
+        child: IconButton(
+          padding: EdgeInsets.zero,
+          onPressed: () async {
+            forwardingImplementation("negative");
+          },
+          icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 50),
         ),
       ),
     );
@@ -311,18 +309,15 @@ class PreviewAudioState extends State<PreviewAudio> {
     return SizedBox(
       width: 100,
       height: 100,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              forwardingImplementation("positive");
-            },
-            icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 50),
-          ),
+      child: SplashWidget(
+        child: IconButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            forwardingImplementation("positive");
+          },
+          icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 50),
         ),
-      )
+      ),
     );
   }
 
@@ -330,21 +325,18 @@ class PreviewAudioState extends State<PreviewAudio> {
     return SizedBox(
       width: 45,
       height: 45,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: ValueListenableBuilder(
-            valueListenable: isKeepPlayingEnabledNotifier,
-            builder: (context, value, child) {
-              return IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value;
-                },
-                icon: Icon(Icons.autorenew_rounded, size: 35, color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite),
-              );
-            },
-          ),
+      child: SplashWidget(
+        child: ValueListenableBuilder(
+          valueListenable: isKeepPlayingEnabledNotifier,
+          builder: (context, value, child) {
+            return IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value;
+              },
+              icon: Icon(Icons.autorenew_rounded, size: 35, color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite),
+            );
+          },
         ),
       ),
     );

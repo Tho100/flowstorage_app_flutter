@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
+import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,43 +136,37 @@ class PreviewVideoState extends State<PreviewVideo> {
       child: Padding(
         padding: const EdgeInsets.only(right: 12.0, top: 95.0),
         child: ClipOval(
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              child: Ink(
-                color: ThemeColor.darkBlack,
-                child: SizedBox(
-                  height: 38,
-                  width: 38,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ThemeColor.lightGrey.withOpacity(0.5),
-                      border: Border.all(
-                        color: Colors.transparent,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(65),
-                    ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        setState(() {
-                          isLandscapeMode = !isLandscapeMode;
-                        });
-                        if (isLandscapeMode) {
-                          toLandscapeMode();
-                          PreviewFileState.bottomBarVisibleNotifier.value = false;
-                        } else {
-                          toPortraitMode();
-                          PreviewFileState.bottomBarVisibleNotifier.value = true;
-                          videoIsTappedNotifier.value = true;
-                        }
-                      },
-                      icon: isLandscapeMode
-                          ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
-                          : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
-                    ),
+          child: SplashWidget(
+            child: SizedBox(
+              height: 38,
+              width: 38,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ThemeColor.lightGrey.withOpacity(0.5),
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 2.0,
                   ),
+                  borderRadius: BorderRadius.circular(65),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    setState(() {
+                      isLandscapeMode = !isLandscapeMode;
+                    });
+                    if (isLandscapeMode) {
+                      toLandscapeMode();
+                      PreviewFileState.bottomBarVisibleNotifier.value = false;
+                    } else {
+                      toPortraitMode();
+                      PreviewFileState.bottomBarVisibleNotifier.value = true;
+                      videoIsTappedNotifier.value = true;
+                    }
+                  },
+                  icon: isLandscapeMode
+                      ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
+                      : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
                 ),
               ),
             ),
@@ -183,31 +178,25 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   Widget buildSkipForward() {
     return ClipOval(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: Ink(
-            color: ThemeColor.darkBlack,
-            child: SizedBox(
-              height: 45,
-              width: 45,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: ThemeColor.lightGrey.withOpacity(0.5),
-                  border: Border.all(
-                    color: Colors.transparent,
-                    width: 2.0,
-                  ),
-                  borderRadius: BorderRadius.circular(65),
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    forwardingImplementation("positive");
-                  },
-                  icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
-                ),
+      child: SplashWidget(
+        child: SizedBox(
+          height: 45,
+          width: 45,
+          child: Container(
+            decoration: BoxDecoration(
+              color: ThemeColor.lightGrey.withOpacity(0.5),
+              border: Border.all(
+                color: Colors.transparent,
+                width: 2.0,
               ),
+              borderRadius: BorderRadius.circular(65),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                forwardingImplementation("positive");
+              },
+              icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),
         ),
@@ -217,31 +206,25 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   Widget buildSkipPrevious() {
     return ClipOval(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          child: Ink(
-            color: ThemeColor.darkBlack,
-            child: SizedBox(
-              height: 45,
-              width: 45,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: ThemeColor.lightGrey.withOpacity(0.5),
-                  border: Border.all(
-                    color: Colors.transparent,
-                    width: 2.0,
-                  ),
-                  borderRadius: BorderRadius.circular(65),
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    forwardingImplementation("negative");
-                  },
-                  icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
-                ),
+      child: SplashWidget(
+        child: SizedBox(
+          height: 45,
+          width: 45,
+          child: Container(
+            decoration: BoxDecoration(
+              color: ThemeColor.lightGrey.withOpacity(0.5),
+              border: Border.all(
+                color: Colors.transparent,
+                width: 2.0,
               ),
+              borderRadius: BorderRadius.circular(65),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                forwardingImplementation("negative");
+              },
+              icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),
         ),
@@ -268,60 +251,54 @@ class PreviewVideoState extends State<PreviewVideo> {
                   buildSkipPrevious(),
                   const SizedBox(width: 18),
                   ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        child: Ink(
-                          color: ThemeColor.darkBlack,
-                          child: SizedBox(
-                            height: 63,
-                            width: 63,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: ThemeColor.lightGrey.withOpacity(0.5),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(65),
-                              ),
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {
-                                  
-                                  buttonPlayPausePressed = !buttonPlayPausePressed;
+                    child: SplashWidget(
+                      child: SizedBox(
+                        height: 63,
+                        width: 63,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ThemeColor.lightGrey.withOpacity(0.5),
+                            border: Border.all(
+                              color: Colors.transparent,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(65),
+                          ),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
                               
-                                  if(videoIsEnded) {
-                                    iconPausePlayNotifier.value = Icons.pause;
-                                    videoPlayerController.play();
-                                    videoIsEnded = false;
-                                  } else {
-                                    iconPausePlayNotifier.value = buttonPlayPausePressed 
-                                    ? Icons.play_arrow
-                                    : Icons.pause;
-                                  }
-                                  
-                                  if (buttonPlayPausePressed) {
-                                    videoPlayerController.pause();
-                                  } else {                
-                                    iconPausePlayNotifier.value = Icons.pause;
-                                    videoPlayerController.play();
-                                  }
+                              buttonPlayPausePressed = !buttonPlayPausePressed;
+                          
+                              if(videoIsEnded) {
+                                iconPausePlayNotifier.value = Icons.pause;
+                                videoPlayerController.play();
+                                videoIsEnded = false;
+                              } else {
+                                iconPausePlayNotifier.value = buttonPlayPausePressed 
+                                ? Icons.play_arrow
+                                : Icons.pause;
+                              }
                               
-                                  Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
-                              
-                                },
-                                icon: ValueListenableBuilder(
-                                  valueListenable: iconPausePlayNotifier,
-                                  builder: (context, value, child) {
-                                    return Icon(
-                                      value,
-                                      size: 40,
-                                      color: ThemeColor.secondaryWhite,
-                                    );
-                                  }
-                                ),
-                              ),
+                              if (buttonPlayPausePressed) {
+                                videoPlayerController.pause();
+                              } else {                
+                                iconPausePlayNotifier.value = Icons.pause;
+                                videoPlayerController.play();
+                              }
+                          
+                              Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
+                          
+                            },
+                            icon: ValueListenableBuilder(
+                              valueListenable: iconPausePlayNotifier,
+                              builder: (context, value, child) {
+                                return Icon(
+                                  value,
+                                  size: 40,
+                                  color: ThemeColor.secondaryWhite,
+                                );
+                              }
                             ),
                           ),
                         ),
