@@ -409,19 +409,18 @@ class PreviewAudioState extends State<PreviewAudio> {
 
           const SizedBox(height: 10),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 105),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-          
-                buildFastBackward(),
-                buildPlayPauseButton(),
-                buildFastForward(),
-                buildKeepPlaying(),
-          
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+        
+              const SizedBox(width: 105),
+
+              buildFastBackward(),
+              buildPlayPauseButton(),
+              buildFastForward(),
+              buildKeepPlaying(),
+        
+            ],
           ),
           
           const SizedBox(height: 48),
