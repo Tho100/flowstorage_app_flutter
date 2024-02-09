@@ -195,7 +195,13 @@ class PsStaggeredListView extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    child: Image.memory(imageBytes, fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover) 
+                    child: Image.memory(
+                      imageBytes, 
+                      cacheHeight: Globals.generalFileTypes.contains(fileType) ? 55 : null,
+                      cacheWidth: Globals.generalFileTypes.contains(fileType) ? 55 : null,
+                      fit: Globals.generalFileTypes.contains(fileType) 
+                      ? BoxFit.scaleDown : BoxFit.cover
+                    ) 
                   ),
                 ), 
                  

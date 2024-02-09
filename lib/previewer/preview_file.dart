@@ -127,13 +127,9 @@ class PreviewFileState extends State<PreviewFile> {
     if (tempData.origin == OriginFile.home) {
       currentTable = Globals.fileTypesToTableNames[fileType]!;
 
-    } else {
-      currentTable = Globals.fileTypesToTableNamesPs[fileType]!;
-
-    }
+    } 
   
-    if ([OriginFile.public, OriginFile.publicSearching, 
-        OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) {
+    if ([OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) {
       _initializeUploaderName();
     }
 

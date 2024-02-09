@@ -58,7 +58,10 @@ class RecentPsListView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(
                     Radius.circular(12)
                   ),
-                  child: Image.memory(imageBytes, 
+                  child: Image.memory(
+                    imageBytes, 
+                    cacheHeight: Globals.generalFileTypes.contains(fileType) ? 45 : null,
+                    cacheWidth: Globals.generalFileTypes.contains(fileType) ? 45 : null,
                     fit: Globals.generalFileTypes.contains(fileType) 
                         ? BoxFit.scaleDown : BoxFit.cover
                     ),
