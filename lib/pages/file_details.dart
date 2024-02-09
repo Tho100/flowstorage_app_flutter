@@ -357,6 +357,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
   Future<void> initializeUploaderName() async {
 
+    const placeholder = "Unknown";
+
     final index = tempData.origin == OriginFile.publicSearching 
       ? psStorageData.psSearchNameList.indexOf(widget.fileName)
       : storageData.fileNamesFilteredList.indexOf(widget.fileName);
@@ -368,24 +370,24 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       OriginFile.offline: "${userData.username} (You)",
 
       OriginFile.publicSearching: (index < 0 || index >= psStorageData.psSearchUploaderList.length)
-      ? "(NULL)"
+      ? placeholder
       : (psStorageData.psSearchUploaderList[index] == userData.username
           ? "${psStorageData.psSearchUploaderList[index]} (You)"
           : psStorageData.psSearchUploaderList[index]),
       
       OriginFile.public: (index < 0 || index >= psStorageData.psUploaderList.length)
-      ? "(NULL)"
+      ? placeholder
       : (psStorageData.psUploaderList[index] == userData.username
           ? "${psStorageData.psUploaderList[index]} (You)"
           : psStorageData.psUploaderList[index]), 
 
       OriginFile.sharedMe: (tempStorageData.sharedNameList.isNotEmpty && index >= 0 && index < tempStorageData.sharedNameList.length)
         ? tempStorageData.sharedNameList[index]
-        : "(NULL)",
+        : placeholder,
         
       OriginFile.sharedOther: (tempStorageData.sharedNameList.isNotEmpty && index >= 0 && index < tempStorageData.sharedNameList.length)
         ? tempStorageData.sharedNameList[index]
-        : "(NULL)", 
+        : placeholder, 
     };
     uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
 

@@ -81,7 +81,7 @@ class PreviewImageState extends State<PreviewImage> {
 
   Widget buildImageOnCondition() {
 
-    if (tempData.origin == OriginFile.publicSearching) {
+    if (tempData.origin == OriginFile.publicSearching || tempData.origin == OriginFile.public) {
       return buildImageWidget(currentSelectedIndex);
 
     } else {
