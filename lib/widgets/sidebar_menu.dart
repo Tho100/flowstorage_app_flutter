@@ -292,30 +292,34 @@ class CustomSideBarMenu extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0, top: 8.0),
                 child: Container(
-                  height: 10,
+                  height: 12,
                   width: 265,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: ThemeColor.darkBlack,
+                      color: Colors.transparent,
                       width: 2.0,
                     ),
                   ),
-                  child: FutureBuilder<int>(
-                    future: usageProgress,
-                    builder: (context, storageUsageSnapshot) {
-                      if (storageUsageSnapshot.connectionState == ConnectionState.waiting) {
-                        return const LinearProgressIndicator(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6)
+                    ),
+                    child: FutureBuilder<int>(
+                      future: usageProgress,
+                      builder: (context, storageUsageSnapshot) {
+                        if (storageUsageSnapshot.connectionState == ConnectionState.waiting) {
+                          return const LinearProgressIndicator(
+                            backgroundColor: ThemeColor.lightGrey,
+                          );
+                        }
+                        final progressValue = storageUsageSnapshot.data! / 100.0;
+                        return LinearProgressIndicator(
                           backgroundColor: ThemeColor.lightGrey,
+                          valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
+                          value: progressValue,
                         );
-                      }
-                      final progressValue = storageUsageSnapshot.data! / 100.0;
-                      return LinearProgressIndicator(
-                        backgroundColor: ThemeColor.lightGrey,
-                        valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
-                        value: progressValue,
-                      );
-                    },
+                      },
+                    ),
                   ),
                 ),
               ),

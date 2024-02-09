@@ -18,13 +18,11 @@ class BottomTrailingFilter {
     IconData icon, 
     String filterType,
   ) {
-    return ElevatedButton.icon(
-      onPressed: () { 
+    return ElevatedButton(
+      onPressed: () {
         filterTypeFunctionality(filterType);  
         Navigator.pop(context);
       },
-      icon: Icon(icon),
-      label: Text(filterName),
       style: ElevatedButton.styleFrom(
         elevation: 0,
         fixedSize: const Size(112,42),
@@ -33,6 +31,13 @@ class BottomTrailingFilter {
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.whiteGrey),
         ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 8),
+          Text(filterName),
+        ],
       ),
     );
   }
@@ -82,7 +87,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
+                        _buildFilterTypeButtons("Images", Icons.photo, '.png,.jpg,.jpeg'),
               
                         const SizedBox(height: 3),
 
@@ -98,7 +103,7 @@ class BottomTrailingFilter {
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
+                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, '.mp4,.avi,.mov,.wmv'),
               
                         ],
                       ),
@@ -119,9 +124,9 @@ class BottomTrailingFilter {
                         Row(
                           children: [
 
-                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf'),
+                            _buildFilterTypeButtons("PDFs", Icons.picture_as_pdf, '.pdf'),
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx'),
+                            _buildFilterTypeButtons("Sheets", Icons.table_chart, '.xls,.xlsx'),
 
                           ]
                         ),
@@ -132,15 +137,15 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc'),
+                            _buildFilterTypeButtons("DOCs", Icons.text_snippet_outlined, '.docx,.doc'),
               
                             const SizedBox(width: 8),
               
-                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv'),
+                            _buildFilterTypeButtons("CSV", Icons.insert_chart_outlined, '.csv'),
                   
                             const SizedBox(width: 8),
 
-                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' '),
+                            _buildFilterTypeButtons("All", Icons.shape_line_rounded,' '),
                                     
                           ],
                         ),

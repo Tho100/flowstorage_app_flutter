@@ -150,6 +150,7 @@ class DeleteAccountPage extends StatelessWidget {
         deleteOnPressed: () async {
           final isAccountDeleted = await deleteOnPressed();
           if(isAccountDeleted) {
+            Navigator.pop(navigatorKey.currentContext!);
             NavigatePage.permanentPageMain(
               navigatorKey.currentContext!
             );
@@ -175,6 +176,7 @@ class DeleteAccountPage extends StatelessWidget {
     try {
 
       await DeleteData().deleteAccount();
+
       await LocalStorageModel()
         .deleteAutoLoginAndOfflineFiles(userData.username, true);
 
