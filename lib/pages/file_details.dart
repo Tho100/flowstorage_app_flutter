@@ -379,8 +379,13 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           ? "${psStorageData.psUploaderList[index]} (You)"
           : psStorageData.psUploaderList[index]), 
 
-      OriginFile.sharedMe: tempStorageData.sharedNameList[index],
-      OriginFile.sharedOther: tempStorageData.sharedNameList[index], 
+      OriginFile.sharedMe: (tempStorageData.sharedNameList.isNotEmpty && index >= 0 && index < tempStorageData.sharedNameList.length)
+        ? tempStorageData.sharedNameList[index]
+        : "(NULL)",
+        
+      OriginFile.sharedOther: (tempStorageData.sharedNameList.isNotEmpty && index >= 0 && index < tempStorageData.sharedNameList.length)
+        ? tempStorageData.sharedNameList[index]
+        : "(NULL)", 
     };
     uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
 
