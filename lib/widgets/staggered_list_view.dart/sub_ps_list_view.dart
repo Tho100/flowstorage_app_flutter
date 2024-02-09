@@ -60,9 +60,12 @@ class SubPsListView extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      child: Image.memory(imageBytes, 
-                      fit: Globals.generalFileTypes.contains(fileType) 
-                          ? BoxFit.scaleDown : BoxFit.cover
+                      child: Image.memory(
+                        imageBytes, 
+                        cacheHeight: Globals.generalFileTypes.contains(fileType) ? 55 : null,
+                        cacheWidth: Globals.generalFileTypes.contains(fileType) ? 55 : null,
+                        filterQuality: FilterQuality.high,
+                        fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover
                       ),
                     ),
                   ),

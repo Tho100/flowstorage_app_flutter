@@ -216,7 +216,9 @@ class AcitivtyPageState extends State<ActivityPage> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.memory(mostUploadedImageBytes[index]!,
+              child: Image.memory(
+                mostUploadedImageBytes[index]!,
+                filterQuality: FilterQuality.high,
                 fit: Globals.generalFileTypes.contains(fileType) 
                 ? BoxFit.scaleDown : BoxFit.cover,
               ),

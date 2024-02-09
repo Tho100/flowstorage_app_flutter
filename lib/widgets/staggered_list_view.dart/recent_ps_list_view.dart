@@ -62,6 +62,7 @@ class RecentPsListView extends StatelessWidget {
                     imageBytes, 
                     cacheHeight: Globals.generalFileTypes.contains(fileType) ? 45 : null,
                     cacheWidth: Globals.generalFileTypes.contains(fileType) ? 45 : null,
+                    filterQuality: FilterQuality.high,
                     fit: Globals.generalFileTypes.contains(fileType) 
                         ? BoxFit.scaleDown : BoxFit.cover
                     ),
