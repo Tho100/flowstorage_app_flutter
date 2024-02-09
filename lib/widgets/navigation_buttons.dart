@@ -146,10 +146,11 @@ class NavigationButtons extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        const SizedBox(width: 2),
                         ValueListenableBuilder(
                           valueListenable: ascendingDescendingCaret, 
                           builder: (context, value, child) {
-                            return Icon(value, color: Colors.white);
+                            return Icon(value, size: 20, color: Colors.white);
                           }
                         ),
                       ],

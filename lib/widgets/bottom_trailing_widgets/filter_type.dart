@@ -18,13 +18,11 @@ class BottomTrailingFilter {
     IconData icon, 
     String filterType,
   ) {
-    return ElevatedButton.icon(
-      onPressed: () { 
+    return ElevatedButton(
+      onPressed: () {
         filterTypeFunctionality(filterType);  
         Navigator.pop(context);
       },
-      icon: Icon(icon),
-      label: Text(filterName),
       style: ElevatedButton.styleFrom(
         elevation: 0,
         fixedSize: const Size(112,42),
@@ -33,6 +31,13 @@ class BottomTrailingFilter {
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.whiteGrey),
         ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 8),
+          Text(filterName),
+        ],
       ),
     );
   }
@@ -82,7 +87,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
+                        _buildFilterTypeButtons("Images", Icons.photo,'.png,.jpg,.jpeg'),
               
                         const SizedBox(height: 3),
 
