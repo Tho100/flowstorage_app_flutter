@@ -33,7 +33,7 @@ class FileDetailsPage extends StatefulWidget {
 
 class FileDetailsPageState extends State<FileDetailsPage> {
 
-  final uploaderNameNotifier = ValueNotifier<String>("(NULL)");
+  final uploaderNameNotifier = ValueNotifier<String>("Unknown");
 
   final storageData = GetIt.instance<StorageDataProvider>();
 
@@ -141,7 +141,11 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       builder: (context, snapshot) {
 
         if(snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+          return const SizedBox(
+            width: 15,
+            height: 15,
+            child: CircularProgressIndicator(color: ThemeColor.darkPurple)
+          );
 
         } else {
           return Text(snapshot.data!,
@@ -165,7 +169,11 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       builder: (context, snapshot) {
 
         if(snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+          return const SizedBox(
+            width: 15,
+            height: 15,
+            child: CircularProgressIndicator(color: ThemeColor.darkPurple),
+          );
 
         } else {
           return Text("${snapshot.data!}Mb",

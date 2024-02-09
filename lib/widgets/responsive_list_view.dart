@@ -64,8 +64,8 @@ class ResponsiveListView extends StatelessWidget {
                           child: Image(
                             image: setLeadingImage.image,
                             fit: BoxFit.cover,
-                            height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
-                            width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 31 : 35,
+                            height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 33 : 35,
+                            width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 33 : 35,
                           ),
                         ),
                       )

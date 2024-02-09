@@ -144,8 +144,8 @@ class Globals {
     "xlsx": "exl0.jpg",
     "xls": "exl0.jpg",
 
-    "pptx": "ptx0.jpg",
-    "ptx": "ptx0.jpg",
+    "pptx": "pptx0.jpg",
+    "ptx": "pptx0.jpg",
 
     "exe": "exe0.jpg",
     "msi": "exe0.jpg",

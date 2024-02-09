@@ -63,6 +63,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     GlobalsTable.psAudio, 
     GlobalsTable.psExcel, 
     GlobalsTable.psWord, 
+    GlobalsTable.psPtx,
     GlobalsTable.psExe, 
     GlobalsTable.psApk
   };
@@ -75,6 +76,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     GlobalsTable.psWord: "doc0.jpg",
     GlobalsTable.psExe: "exe0.jpg",
     GlobalsTable.psApk: "apk0.jpg",
+    GlobalsTable.psPtx: "pptx0.jpg",
   };
 
   Widget buildBody() {

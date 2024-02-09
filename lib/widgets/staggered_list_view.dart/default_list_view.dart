@@ -62,8 +62,8 @@ class DefaultStaggeredListView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: Image.memory(
                     imageBytes,
-                    cacheHeight: isMakeImageSmaller ? 40 : null,
-                    cacheWidth: isMakeImageSmaller ? 40 : null,
+                    cacheHeight: isMakeImageSmaller ? 55 : null,
+                    cacheWidth: isMakeImageSmaller ? 55 : null,
                     fit: isMakeImageSmaller ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
