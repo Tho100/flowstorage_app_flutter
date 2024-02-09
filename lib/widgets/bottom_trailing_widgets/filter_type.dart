@@ -87,7 +87,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images", Icons.photo,'.png,.jpg,.jpeg'),
+                        _buildFilterTypeButtons("Images", Icons.photo, '.png,.jpg,.jpeg'),
               
                         const SizedBox(height: 3),
 
@@ -103,7 +103,7 @@ class BottomTrailingFilter {
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
+                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, '.mp4,.avi,.mov,.wmv'),
               
                         ],
                       ),
@@ -124,9 +124,9 @@ class BottomTrailingFilter {
                         Row(
                           children: [
 
-                            _buildFilterTypeButtons("PDFs",Icons.picture_as_pdf,'.pdf'),
+                            _buildFilterTypeButtons("PDFs", Icons.picture_as_pdf, '.pdf'),
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets",Icons.table_chart,'.xls,.xlsx'),
+                            _buildFilterTypeButtons("Sheets", Icons.table_chart, '.xls,.xlsx'),
 
                           ]
                         ),
@@ -137,15 +137,15 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs",Icons.text_snippet_outlined,'.docx,.doc'),
+                            _buildFilterTypeButtons("DOCs", Icons.text_snippet_outlined, '.docx,.doc'),
               
                             const SizedBox(width: 8),
               
-                            _buildFilterTypeButtons("CSV",Icons.insert_chart_outlined,'.csv'),
+                            _buildFilterTypeButtons("CSV", Icons.insert_chart_outlined, '.csv'),
                   
                             const SizedBox(width: 8),
 
-                            _buildFilterTypeButtons("All",Icons.shape_line_rounded,' '),
+                            _buildFilterTypeButtons("All", Icons.shape_line_rounded,' '),
                                     
                           ],
                         ),

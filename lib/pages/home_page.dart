@@ -2226,16 +2226,7 @@ class HomePageState extends State<HomePage> {
       itemOnLongPress: _callBottomTrailling,
       itemOnTap: _navigateToPreviewFile,
       childrens: (int index) {
-        final isOffline = tempStorageData.offlineFileNameList
-                      .contains(fileNamesFilteredList[index]);
-  
         return [
-  
-          if (isOffline) ... [
-            const Icon(Icons.offline_bolt_rounded, color: ThemeColor.justWhite, size: 21),
-            const SizedBox(width: 8),
-          ],
-  
           GestureDetector(
             onTap: () => _callBottomTrailling(index),
             child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
@@ -2246,7 +2237,20 @@ class HomePageState extends State<HomePage> {
         final originalDateValues = fileDateFilteredList[index];
         final psFilesCategoryTags = originalDateValues.split(' ').sublist(0, originalDateValues.split(' ').length - 1).join(' ');
   
+        final isOffline = tempStorageData.offlineFileNameList
+                      .contains(fileNamesFilteredList[index]);
+
         return [
+
+          if (isOffline) ... [
+            const WidgetSpan(
+              child: Padding(
+                padding: EdgeInsets.only(right: 5.0),
+                child: Icon(Icons.offline_bolt_rounded, color: ThemeColor.justWhite, size: 16),
+              )
+            ),
+          ],
+          
           if([OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) 
           WidgetSpan(
             child: Transform.translate(
