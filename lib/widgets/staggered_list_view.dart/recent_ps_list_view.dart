@@ -35,6 +35,8 @@ class RecentPsListView extends StatelessWidget {
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: fileOnPressed,
@@ -60,10 +62,10 @@ class RecentPsListView extends StatelessWidget {
                   ),
                   child: Image.memory(
                     imageBytes, 
-                    cacheHeight: Globals.generalFileTypes.contains(fileType) ? 45 : null,
-                    cacheWidth: Globals.generalFileTypes.contains(fileType) ? 45 : null,
-                    fit: Globals.generalFileTypes.contains(fileType) 
-                        ? BoxFit.scaleDown : BoxFit.cover
+                    cacheHeight: isGeneralFile ? 45 : null,
+                    cacheWidth: isGeneralFile ? 45 : null,
+                    filterQuality: FilterQuality.high,
+                    fit: isGeneralFile ? BoxFit.scaleDown : BoxFit.cover
                     ),
                 ),
               ),

@@ -35,6 +35,8 @@ class SubPsListView extends StatelessWidget {
     final fileName = storageData.fileNamesFilteredList[index];
     final fileType = fileName.split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: fileOnPressed,
@@ -60,9 +62,12 @@ class SubPsListView extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      child: Image.memory(imageBytes, 
-                      fit: Globals.generalFileTypes.contains(fileType) 
-                          ? BoxFit.scaleDown : BoxFit.cover
+                      child: Image.memory(
+                        imageBytes, 
+                        cacheHeight: isGeneralFile ? 55 : null,
+                        cacheWidth: isGeneralFile ? 55 : null,
+                        filterQuality: FilterQuality.high,
+                        fit: isGeneralFile ? BoxFit.scaleDown : BoxFit.cover
                       ),
                     ),
                   ),

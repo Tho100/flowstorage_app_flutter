@@ -24,7 +24,7 @@ class ByteGetterPs {
     GlobalsTable.psPdf: "pdf0.jpg",
     GlobalsTable.psAudio: "music0.jpg",
     GlobalsTable.psExcel: "exl0.jpg",
-    GlobalsTable.psPtx: "ptx0.jpg",
+    GlobalsTable.psPtx: "pptx0.jpg",
     GlobalsTable.psExe: "exe0.jpg",
     GlobalsTable.psWord: "doc0.jpg",
     GlobalsTable.psMsi: "exe0.jpg",
