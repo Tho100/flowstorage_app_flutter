@@ -111,7 +111,7 @@ class DataCaller {
         imageBytes = await getAssets.loadAssetsData("apk0.jpg");
 
       } else if (Globals.ptxType.contains(fileType)) {
-        imageBytes = await getAssets.loadAssetsData("pptx0.jpg");
+        imageBytes = await getAssets.loadAssetsData("ppptx0.jpg");
 
       } else {
         continue;

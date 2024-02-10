@@ -323,8 +323,8 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildKeepPlaying() {
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: 45,
+      height: 45,
       child: SplashWidget(
         child: ValueListenableBuilder(
           valueListenable: isKeepPlayingEnabledNotifier,
@@ -373,59 +373,59 @@ class PreviewAudioState extends State<PreviewAudio> {
     final mediaQuery = MediaQuery.of(context).size;
 
     return Column(
-        children: [
+      children: [
 
-          Padding(
-            padding: const EdgeInsets.only(top: 172.0),
-            child: SizedBox(
-              width: mediaQuery.width-90,
-              height: mediaQuery.height-570,
-              child: ValueListenableBuilder(
-                valueListenable: currentGradientIndexNotifier,
-                builder: (context, value, child) {
-                  return AnimatedContainer(
-                    duration: const Duration(seconds: 1),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: gradientColors[value],
-                      ),
+        Padding(
+          padding: const EdgeInsets.only(top: 172.0),
+          child: SizedBox(
+            width: mediaQuery.width-90,
+            height: mediaQuery.height-570,
+            child: ValueListenableBuilder(
+              valueListenable: currentGradientIndexNotifier,
+              builder: (context, value, child) {
+                return AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: gradientColors[value],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
+        ),
 
-          const Spacer(),
+        const Spacer(),
 
-          buildHeader(),
+        buildHeader(),
 
-          const SizedBox(height: 10),
+        const SizedBox(height: 10),
 
-          buildSlider(),
+        buildSlider(),
 
-          const SizedBox(height: 10),
+        const SizedBox(height: 10),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-        
-              const SizedBox(width: 105),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-              buildFastBackward(),
-              buildPlayPauseButton(),
-              buildFastForward(),
-              buildKeepPlaying(),
-        
-            ],
-          ),
-          
-          const SizedBox(height: 48),
+            const SizedBox(width: 42),
 
-        ],
+            buildFastBackward(),
+            buildPlayPauseButton(),
+            buildFastForward(),
+            buildKeepPlaying(),
+
+          ],
+        ),
+
+        const SizedBox(height: 48),
+
+      ],
       
     );
   }
