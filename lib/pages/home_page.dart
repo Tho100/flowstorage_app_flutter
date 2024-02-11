@@ -2242,7 +2242,7 @@ class HomePageState extends State<HomePage> {
 
         return [
 
-          if (isOffline) ... [
+          if (isOffline && ![OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) ... [
             const WidgetSpan(
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0),

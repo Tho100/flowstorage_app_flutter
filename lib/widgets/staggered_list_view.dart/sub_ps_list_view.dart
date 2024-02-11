@@ -66,7 +66,6 @@ class SubPsListView extends StatelessWidget {
                         imageBytes, 
                         cacheHeight: isGeneralFile ? 55 : null,
                         cacheWidth: isGeneralFile ? 55 : null,
-                        filterQuality: FilterQuality.high,
                         fit: isGeneralFile ? BoxFit.scaleDown : BoxFit.cover
                       ),
                     ),
