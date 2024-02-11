@@ -40,6 +40,7 @@ class ResponsiveListView extends StatelessWidget {
               
               const titleOffset = Offset(-3, -6);
               const subtitleOffset = Offset(-2, -4);
+              const trailingOffset = Offset(0, -4);
 
               final fileName = storageData.fileNamesFilteredList[index];
               final fileType = fileName.split('.').last;
@@ -78,14 +79,14 @@ class ResponsiveListView extends StatelessWidget {
                       )
                       : const SizedBox(),
                     trailing: Transform.translate(
-                      offset: titleOffset,
+                      offset: trailingOffset,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: childrens(index),
                       ),
                     ),
                     title: Transform.translate(
-                      offset: subtitleOffset,
+                      offset: titleOffset,
                       child: Text(
                         fileName,
                         style: const TextStyle(
@@ -95,8 +96,8 @@ class ResponsiveListView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    subtitle: Transform.translate (
-                      offset: const Offset(-2, -4),
+                    subtitle: Transform.translate(
+                      offset: subtitleOffset,
                       child: RichText(
                         text: TextSpan(
                           style: DefaultTextStyle.of(context).style,
