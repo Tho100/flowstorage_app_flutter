@@ -199,7 +199,6 @@ class PsStaggeredListView extends StatelessWidget {
                       imageBytes, 
                       cacheHeight: Globals.generalFileTypes.contains(fileType) ? 55 : null,
                       cacheWidth: Globals.generalFileTypes.contains(fileType) ? 55 : null,
-                      filterQuality: FilterQuality.high,
                       fit: Globals.generalFileTypes.contains(fileType) 
                       ? BoxFit.scaleDown : BoxFit.cover
                     ) 

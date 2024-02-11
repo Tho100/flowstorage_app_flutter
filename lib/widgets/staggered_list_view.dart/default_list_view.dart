@@ -64,7 +64,6 @@ class DefaultStaggeredListView extends StatelessWidget {
                     imageBytes,
                     cacheHeight: isMakeImageSmaller ? 55 : null,
                     cacheWidth: isMakeImageSmaller ? 55 : null,
-                    filterQuality: FilterQuality.high,
                     fit: isMakeImageSmaller ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
