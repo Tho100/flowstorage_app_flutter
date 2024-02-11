@@ -38,7 +38,14 @@ class ResponsiveListView extends StatelessWidget {
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (context, index) {
               
-              final fileTitleSearchedValue = storageData.fileNamesFilteredList[index];
+              const titleOffset = Offset(-3, -6);
+              const subtitleOffset = Offset(-2, -4);
+
+              final fileName = storageData.fileNamesFilteredList[index];
+              final fileType = fileName.split('.').last;
+
+              final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
               final setLeadingImage = storageData.imageBytesFilteredList.isNotEmpty
                   ? Image.memory(storageData.imageBytesFilteredList[index]!)
                   : null;
@@ -56,31 +63,31 @@ class ResponsiveListView extends StatelessWidget {
                     leading: setLeadingImage != null
                       ? Transform.translate(
                         offset: Offset(
-                          Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 2 : 0, 
+                          isGeneralFile ? 2 : 0, 
                           0
                         ),
                         child: ClipRRect(
-                          borderRadius: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? BorderRadius.circular(4) : BorderRadius.circular(6),
+                          borderRadius: isGeneralFile ? BorderRadius.circular(4) : BorderRadius.circular(6),
                           child: Image(
                             image: setLeadingImage.image,
                             fit: BoxFit.cover,
-                            height: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 33 : 35,
-                            width: Globals.generalFileTypes.contains(fileTitleSearchedValue.split('.').last) ? 33 : 35,
+                            height: isGeneralFile ? 33 : 35,
+                            width: isGeneralFile ? 33 : 35,
                           ),
                         ),
                       )
                       : const SizedBox(),
                     trailing: Transform.translate(
-                      offset: const Offset(0, -4),
+                      offset: titleOffset,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: childrens(index),
                       ),
                     ),
                     title: Transform.translate(
-                      offset: const Offset(-3, -6),
+                      offset: subtitleOffset,
                       child: Text(
-                        fileTitleSearchedValue,
+                        fileName,
                         style: const TextStyle(
                           color: ThemeColor.justWhite,
                           overflow: TextOverflow.ellipsis,
@@ -88,7 +95,7 @@ class ResponsiveListView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    subtitle: Transform.translate(
+                    subtitle: Transform.translate (
                       offset: const Offset(-2, -4),
                       child: RichText(
                         text: TextSpan(
