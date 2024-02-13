@@ -33,13 +33,23 @@ class CustomSideBarMenu extends StatelessWidget {
 
     try {
 
-      final picData = await ProfilePictureModel().loadProfilePic();
+      if(!userData.profilePictureEnabled) {
 
-      if(picData == null) {
-        profilePictureNotifier.value = Uint8List(0);
+        final picData = await ProfilePictureModel().loadProfilePic();
+
+        if(picData == null) {
+          profilePictureNotifier.value = Uint8List(0);
+
+        } else {
+          profilePictureNotifier.value = picData;   
+          userData.setProfilePicture(picData);
+
+        }
+
+        userData.setProfilePictureEnabled(true);
 
       } else {
-        profilePictureNotifier.value = picData;
+        profilePictureNotifier.value = userData.profilePicture;
 
       }
 
@@ -86,6 +96,61 @@ class CustomSideBarMenu extends StatelessWidget {
     );
   }
 
+  Widget _buildProfilePicture() {
+    return FutureBuilder<ValueNotifier<Uint8List?>>(
+      future: initializeProfilePic(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ProfilePicture(
+            notifierValue: snapshot.data,
+            customBackgroundColor: ThemeColor.justWhite,
+            customOnEmpty: Center(
+              child: Text(
+                userData.username != "" ? userData.username.substring(0, 2) : "",
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: ThemeColor.darkPurple,
+                ),
+              ),
+            ),
+          );
+
+        } else {
+          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+
+        }
+      },
+    );
+  }
+
+  Widget _buildAccountDetails() {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            userData.username,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            userData.email,
+            style: const TextStyle(
+              color: Color.fromARGB(255,185,185,185),
+              fontSize: 16,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -99,58 +164,13 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    FutureBuilder<ValueNotifier<Uint8List?>>(
-                      future: initializeProfilePic(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return ProfilePicture(
-                            notifierValue: snapshot.data,
-                            customBackgroundColor: ThemeColor.justWhite,
-                            customOnEmpty: Center(
-                              child: Text(
-                                userData.username != "" ? userData.username.substring(0, 2) : "",
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  color: ThemeColor.darkPurple,
-                                ),
-                              ),
-                            ),
-                          );
 
-                        } else {
-                          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
-
-                        }
-                      },
-                    ),
+                    _buildProfilePicture(),
                   
                     const SizedBox(width: 15),
   
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            userData.username,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            userData.email,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255,185,185,185),
-                              fontSize: 16,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _buildAccountDetails(),
+                    
                   ],
                 ),
               ),
@@ -331,4 +351,5 @@ class CustomSideBarMenu extends StatelessWidget {
     
     );
   }
+
 }
