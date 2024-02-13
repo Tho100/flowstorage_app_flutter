@@ -7,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
@@ -103,7 +102,6 @@ class HomePageState extends State<HomePage> {
   final deleteData = DeleteData();
   final functionModel = FunctionModel();
 
-  final crud = Crud();
   final logger = Logger();
 
   final sidebarMenuScaffoldKey = GlobalKey<ScaffoldState>();
