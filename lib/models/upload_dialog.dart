@@ -507,7 +507,7 @@ class UploadDialog {
     for(final images in imagePath) {
 
       File compressedDocImage = await CompressorApi
-        .processImageCompression(path: images,quality: 65); 
+        .processImageCompression(path: images, quality: 65); 
 
       await scannerPdf.convertImageToPdf(imagePath: compressedDocImage);
       

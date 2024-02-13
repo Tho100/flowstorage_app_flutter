@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:image_picker_plus/image_picker_plus.dart';
@@ -48,8 +49,12 @@ class ProfilePictureModel {
         final fileExtension = fileName.split('.').last;
 
         if(Globals.imageType.contains(fileExtension)) {
-          final fileBytes = await File(pathToString).readAsBytes();
-          await _saveProfilePic(fileBytes);
+          final compressedImage = await CompressorApi
+            .compressedByteImage(path: pathToString, quality: 18);
+
+          final decodedImage = Uint8List.fromList(compressedImage);
+
+          await _saveProfilePic(decodedImage);
           
         }
 
