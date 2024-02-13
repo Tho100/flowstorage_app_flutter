@@ -52,8 +52,14 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
         .createProfilePicture();
 
     if(isProfileSelected) {
-      profilePicNotifier.value = await ProfilePictureModel()
+      final profilePicture = await ProfilePictureModel()
         .loadProfilePic();
+
+      profilePicNotifier.value = profilePicture;
+
+      userData.setProfilePictureEnabled(false);
+      userData.setProfilePicture(profilePicture!);
+
     }
 
   }
@@ -302,13 +308,23 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     
     try {
 
-      final picData = await ProfilePictureModel().loadProfilePic();
+      if(!userData.profilePictureEnabled) {
 
-      if(picData == null) {
-        profilePicNotifier.value = Uint8List(0);
+        final picData = await ProfilePictureModel().loadProfilePic();
+
+        if(picData == null) {
+          profilePicNotifier.value = Uint8List(0);
+
+        } else {
+          profilePicNotifier.value = picData;
+          userData.setProfilePicture(picData);
+
+        }
+
+        userData.setProfilePictureEnabled(true);
 
       } else {
-        profilePicNotifier.value = picData;
+        profilePicNotifier.value = userData.profilePicture;
 
       }
 
