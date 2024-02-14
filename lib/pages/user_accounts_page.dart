@@ -126,13 +126,20 @@ class UserAccountsPageState extends State<UserAccountsPage> {
     
     try {
 
-      final picData = await ProfilePictureModel().loadProfilePic();
+      if(!userData.profilePictureEnabled) {
 
-      if(picData == null) {
-        profilePicNotifier.value = Uint8List(0);
-        
-      } else {
-        profilePicNotifier.value = picData;
+        final picData = await ProfilePictureModel().loadProfilePic();
+
+        if(picData == null) {
+          profilePicNotifier.value = Uint8List(0);
+          
+        } else {
+          profilePicNotifier.value = picData;
+
+        }
+
+      } else { 
+        profilePicNotifier.value = userData.profilePicture;
 
       }
 
