@@ -57,7 +57,7 @@ class SettingsSharingPage extends StatelessWidget {
                       onChanged: (switchValue) async {
                         sharingDisabledStatusNotifier.value = !sharingDisabledStatusNotifier.value;
 
-                        if(switchValue == false) {
+                        if(!switchValue) {
                           await SharingOptions.disableSharing(userData.username);
                           userData.setSharingStatus("1");
 
