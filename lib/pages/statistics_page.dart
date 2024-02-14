@@ -424,7 +424,8 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildLegendUsage() {
 
-    final totalUpload = storageData.fileNamesList.length;
+    final totalUpload = tempData.origin == OriginFile.offline 
+      ? 0 : storageData.fileNamesList.length;
 
     return Row(
       children: [
@@ -454,7 +455,9 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildLegendLimit() {
 
-    final totalUpload = storageData.fileNamesList.length;
+    final totalUpload = tempData.origin == OriginFile.offline 
+      ? 0 : storageData.fileNamesList.length;
+      
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
 
     final numberOfUploadLeft = (totalUpload-maxValue).abs();
@@ -489,7 +492,9 @@ class StatsPageState extends State<StatisticsPage> {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-    final totalUpload = storageData.fileNamesList.length;
+    final totalUpload = tempData.origin == OriginFile.offline 
+      ? 0 : storageData.fileNamesList.length;
+
     final percentage = ((totalUpload/maxValue) * 100).toInt();
 
     usageProgress = percentage/100.0;
