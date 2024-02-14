@@ -50,9 +50,12 @@ class FolderDialog {
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: tempStorageData.folderNameList.length,
-                  separatorBuilder: (context, index) => const Divider(
-                    color: ThemeColor.whiteGrey,
-                    height: 1,
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 6, top: 2),
+                    child: Divider(
+                      color: ThemeColor.whiteGrey,
+                      height: 1,
+                    ),
                   ),
                   itemBuilder: (context, index) {
                     return InkWell(
