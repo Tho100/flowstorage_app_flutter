@@ -42,7 +42,7 @@ class SettingsButton extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const Spacer(),
-                      if(hideCaret == false)
+                      if(!hideCaret!)
                       Transform.translate(
                         offset: const Offset(0, 10),
                         child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20,)
