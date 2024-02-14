@@ -1457,15 +1457,30 @@ class HomePageState extends State<HomePage> {
   }
 
   Future _callBottomTrailingShared() {
+
+    final loading = SingleTextLoading();
+
     return BottomTrailingShared().buildTrailing(
       context: context, 
       sharedToMeOnPressed: () async {
         Navigator.pop(context);
+
+        loading.startLoading(title: "Please wait...", context: context);
+
         await _callSharingData("sharedToMe");
+
+        loading.stopLoading();
+
       }, 
       sharedToOthersOnPressed: () async {
         Navigator.pop(context);
+
+        loading.startLoading(title: "Please wait...", context: context);
+
         await _callSharingData("sharedFiles");
+
+        loading.stopLoading();
+        
       }
     );
   }
