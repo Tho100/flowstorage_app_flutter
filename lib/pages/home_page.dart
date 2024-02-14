@@ -2142,9 +2142,9 @@ class HomePageState extends State<HomePage> {
 
     final fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
-    EdgeInsetsGeometry paddingValue = tempData.origin == OriginFile.public 
-    ? const EdgeInsets.only(top: 2.0, left: 0.0, right: 0.0) 
-    : const EdgeInsets.only(top: 2.0, left: 14.0, right: 14.0);
+    final paddingValue = tempData.origin == OriginFile.public 
+    ? const EdgeInsets.only(top: 2.0) 
+    : const EdgeInsets.only(top: 2.0, left: 14.0, right: 14.0, bottom: 2.2);
 
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
