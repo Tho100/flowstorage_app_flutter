@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
+import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker_plus/image_picker_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -78,6 +80,43 @@ class ProfilePictureModel {
 
     } catch (err) {
       return null;
+    }
+
+  }
+
+  Future<Uint8List?> getProfilePicData() async {
+    
+    late Uint8List profilePicData = Uint8List(0);
+    
+    final userData = GetIt.instance<UserDataProvider>();
+
+    try {
+
+      if(!userData.profilePictureEnabled) {
+
+        final picData = await ProfilePictureModel().loadProfilePic();
+
+        if(picData == null) {
+          profilePicData = Uint8List(0);
+
+        } else {
+          profilePicData = picData;   
+          userData.setProfilePicture(picData);
+
+        }
+
+        userData.setProfilePictureEnabled(true);
+
+      } else {
+        profilePicData = userData.profilePicture;
+
+      }
+
+      return profilePicData;
+
+    } catch (err) {
+      return profilePicData;
+
     }
 
   }
