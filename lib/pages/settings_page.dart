@@ -308,25 +308,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
     
     try {
 
-      if(!userData.profilePictureEnabled) {
-
-        final picData = await ProfilePictureModel().loadProfilePic();
-
-        if(picData == null) {
-          profilePicNotifier.value = Uint8List(0);
-
-        } else {
-          profilePicNotifier.value = picData;
-          userData.setProfilePicture(picData);
-
-        }
-
-        userData.setProfilePictureEnabled(true);
-
-      } else {
-        profilePicNotifier.value = userData.profilePicture;
-
-      }
+      profilePicNotifier.value = await ProfilePictureModel().getProfilePicData();
 
     } catch (err) {
       profilePicNotifier.value = Uint8List(0);

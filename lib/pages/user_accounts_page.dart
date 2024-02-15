@@ -27,6 +27,8 @@ class UserAccountsPageState extends State<UserAccountsPage> {
 
   final userData = GetIt.instance<UserDataProvider>();
 
+  final localStorageModel = LocalStorageModel();
+
   Widget _buildLocalAccountListView() {
     return ListView.builder(
       shrinkWrap: true,
@@ -113,7 +115,6 @@ class UserAccountsPageState extends State<UserAccountsPage> {
   }
 
   Future<void> _readLocalAccountData() async {
-    final localStorageModel = LocalStorageModel();
     final usernames = await localStorageModel.readLocalAccountUsernames();
     final emails = await localStorageModel.readLocalAccountEmails();
     final plans = await localStorageModel.readLocalAccountPlans();
@@ -126,22 +127,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
     
     try {
 
-      if(!userData.profilePictureEnabled) {
-
-        final picData = await ProfilePictureModel().loadProfilePic();
-
-        if(picData == null) {
-          profilePicNotifier.value = Uint8List(0);
-          
-        } else {
-          profilePicNotifier.value = picData;
-
-        }
-
-      } else { 
-        profilePicNotifier.value = userData.profilePicture;
-
-      }
+      profilePicNotifier.value = await ProfilePictureModel().getProfilePicData();
 
     } catch (error) {
       profilePicNotifier.value = Uint8List(0);
