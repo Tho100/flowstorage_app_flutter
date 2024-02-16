@@ -163,7 +163,7 @@ class BottomTrailingFilter {
     );
   }
 
-  Future buildFilterTypePhotos() {
+  Future buildFilterTypePhotos(bool isFromStaggered) {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -197,16 +197,14 @@ class BottomTrailingFilter {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-              
                   crossAxisAlignment: CrossAxisAlignment.start,
-          
                   children: [
                     
-                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
+                    _buildFilterTypeButtons("Images", Icons.photo, '.png,.jpg,.jpeg'),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, '.mp4,.avi,.mov,.wmv'),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("All", Icons.shape_line_rounded, isFromStaggered ? '' : '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
                   ],
                 ),
