@@ -627,32 +627,43 @@ class HomePageState extends State<HomePage> {
   }
 
   void _sortUploadDate() {
+
     sortingIsAscendingUploadDate = !sortingIsAscendingUploadDate;
-    ascendingDescendingIconNotifier.value = sortingIsAscendingUploadDate ? Icons.expand_less : Icons.expand_more;
+    ascendingDescendingIconNotifier.value = sortingIsAscendingUploadDate 
+      ? Icons.expand_less : Icons.expand_more;
+      
     sortingText.value = tempData.origin == OriginFile.public 
       ? "Default" : "Upload Date";
 
     setState(() {
       SortingModel().uploadDate(sortingIsAscendingUploadDate: sortingIsAscendingUploadDate);
     });
+
   }
 
   void _sortItemName() {
+
     sortingIsAscendingItemName = !sortingIsAscendingItemName;
-    ascendingDescendingIconNotifier.value = sortingIsAscendingItemName ? Icons.expand_less : Icons.expand_more;
+    ascendingDescendingIconNotifier.value = sortingIsAscendingItemName 
+      ? Icons.expand_less : Icons.expand_more;
+
     sortingText.value = "Item Name";
     
     setState((){
       SortingModel().fileName(sortingIsAscendingItemName: sortingIsAscendingItemName);
     });
+
   }
 
   void _sortDefault() async {
+
     sortingText.value = "Default";
     sortingIsAscendingItemName = false;
     sortingIsAscendingUploadDate = false;
     ascendingDescendingIconNotifier.value = Icons.expand_more;
+
     await _refreshListViewData();
+
   }
 
   void _editAllOnPressed() {
@@ -1733,7 +1744,8 @@ class HomePageState extends State<HomePage> {
 
   PreferredSizeWidget _buildCustomAppBar() {
 
-    final appBarTitleValue = tempData.appBarTitle == '' ? 'Home' : tempData.appBarTitle;
+    final appBarTitleValue = tempData.appBarTitle == '' 
+      ? 'Home' : tempData.appBarTitle;
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(65),
@@ -2339,8 +2351,8 @@ class HomePageState extends State<HomePage> {
           }
 
           psButtonTextNotifier.value == "Back" 
-          ? await _refreshPublicStorage()
-          : await _callMyPublicStorageData();
+            ? await _refreshPublicStorage()
+            : await _callMyPublicStorageData();
 
         },
         style: GlobalsStyle.btnNavigationBarStyle,
