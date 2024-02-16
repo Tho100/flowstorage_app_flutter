@@ -138,10 +138,11 @@ class FunctionModel {
     required Set<String> checkedItemsName
   }) async {
 
-    try {
+    final loadingDialog = SingleTextLoading();    
 
-      final loadingDialog = SingleTextLoading();      
-      loadingDialog.startLoading(title: "Saving...", context: navigatorKey.currentContext!);
+    loadingDialog.startLoading(title: "Saving...", context: navigatorKey.currentContext!);
+
+    try {
 
       for(int i=0; i<count; i++) {
 
@@ -181,6 +182,7 @@ class FunctionModel {
 
     } catch (err, st) {
       logger.e('Exception from multipleFilesDownload {function_model}', err, st);
+      loadingDialog.stopLoading();
       SnakeAlert.errorSnake("Failed to save files.");
     }
 
