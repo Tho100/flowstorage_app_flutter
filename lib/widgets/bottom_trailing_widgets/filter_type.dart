@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
@@ -12,6 +13,17 @@ class BottomTrailingFilter {
     required this.context,
     required this.filterTypeFunctionality
   });
+
+  static String _joinFileTypes(Set<String> fileTypes) {
+    return fileTypes.map((type) => '.$type').join(',');
+  }
+
+  final imageTypes = _joinFileTypes(Globals.imageType);
+  final videoTypes = _joinFileTypes(Globals.videoType);
+  final textTypes = _joinFileTypes(Globals.textType);
+  final audioTypes = _joinFileTypes(Globals.audioType);
+  final excelTypes = _joinFileTypes(Globals.excelType);
+  final docTypes = _joinFileTypes(Globals.wordType);
 
   Widget _buildFilterTypeButtons(
     String filterName, 
@@ -87,7 +99,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images", Icons.photo, '.png,.jpg,.jpeg'),
+                        _buildFilterTypeButtons("Images", Icons.photo, imageTypes),
               
                         const SizedBox(height: 3),
 
@@ -95,15 +107,15 @@ class BottomTrailingFilter {
       
                           children: [
 
-                          _buildFilterTypeButtons("Text", Icons.text_snippet_rounded, '.txt,.html'),
+                          _buildFilterTypeButtons("Text", Icons.text_snippet_rounded, textTypes),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Audio", Icons.music_note_rounded, '.mp3,.wav'),
+                          _buildFilterTypeButtons("Audio", Icons.music_note_rounded, audioTypes),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, '.mp4,.avi,.mov,.wmv'),
+                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, videoTypes),
               
                         ],
                       ),
@@ -126,7 +138,7 @@ class BottomTrailingFilter {
 
                             _buildFilterTypeButtons("PDFs", Icons.picture_as_pdf, '.pdf'),
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets", Icons.table_chart, '.xls,.xlsx'),
+                            _buildFilterTypeButtons("Sheets", Icons.table_chart, excelTypes),
 
                           ]
                         ),
@@ -137,7 +149,7 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs", Icons.text_snippet_outlined, '.docx,.doc'),
+                            _buildFilterTypeButtons("DOCs", Icons.text_snippet_outlined, docTypes),
               
                             const SizedBox(width: 8),
               
@@ -163,7 +175,7 @@ class BottomTrailingFilter {
     );
   }
 
-  Future buildFilterTypePhotos() {
+  Future buildFilterTypePhotos(bool isFromStaggered) {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkGrey,
       context: context,
@@ -197,16 +209,14 @@ class BottomTrailingFilter {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-              
                   crossAxisAlignment: CrossAxisAlignment.start,
-          
                   children: [
                     
-                    _buildFilterTypeButtons("Images",Icons.photo,'.png,.jpg,.jpeg'),
+                    _buildFilterTypeButtons("Images", Icons.photo, imageTypes),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("Videos",Icons.video_collection_rounded,'.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, videoTypes),
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All",Icons.shape_line_rounded,'.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("All", Icons.shape_line_rounded, isFromStaggered ? '' : '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
                   ],
                 ),

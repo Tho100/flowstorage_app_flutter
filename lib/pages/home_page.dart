@@ -143,6 +143,8 @@ class HomePageState extends State<HomePage> {
   Set<int> selectedPhotosIndex = {};
   Set<String> checkedItemsName = {};
 
+  bool filterPhotosTypeVisible = false;
+
   bool sortingIsAscendingItemName = false;
   bool sortingIsAscendingUploadDate = false;
   
@@ -494,7 +496,7 @@ class HomePageState extends State<HomePage> {
     _addItemButtonVisibility(true);
 
     _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv,.avi');
-
+    
   }
 
   void _deactivatePhotosView() {
@@ -503,6 +505,8 @@ class HomePageState extends State<HomePage> {
 
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
+
+    filterPhotosTypeVisible = false;
     selectedItemIsChecked = false;
 
     selectedPhotosIndex.clear();
@@ -554,6 +558,8 @@ class HomePageState extends State<HomePage> {
 
     selectedItemIsChecked = false;
     togglePhotosPressed = false;
+    filterPhotosTypeVisible = false;
+
     searchBarVisibileNotifier.value = true;
     staggeredListViewSelected.value = false;
     
@@ -836,6 +842,8 @@ class HomePageState extends State<HomePage> {
     psButtonTextNotifier.value = "My Files";
     searchBarVisibileNotifier.value = false;
     staggeredListViewSelected.value = true;
+
+    filterPhotosTypeVisible = false;
 
     searchBarController.text = '';
 
@@ -1567,7 +1575,12 @@ class HomePageState extends State<HomePage> {
           context: context, 
           filterTypeFunctionality: _itemSearchingImplementation
         ).buildFilterTypeAll();
-      }
+      },
+      filterPhotosTypeVisibleOnPressed: () {
+        setState(() {
+          filterPhotosTypeVisible = !filterPhotosTypeVisible;
+        });
+      },
     );
   }
 
@@ -1695,7 +1708,7 @@ class HomePageState extends State<HomePage> {
         BottomTrailingFilter(          
           filterTypeFunctionality: _itemSearchingImplementation, 
           context: context
-        ).buildFilterTypePhotos();
+        ).buildFilterTypePhotos(filterPhotosTypeVisible);
       },
       icon: const Icon(Icons.tune_outlined, 
         color: Colors.white, size: 26),
@@ -1738,13 +1751,13 @@ class HomePageState extends State<HomePage> {
             if(selectedPhotosIndex.isNotEmpty)
             _buildDeselectAllPhotosButton(),
 
-            if(tempData.origin != OriginFile.public && !togglePhotosPressed)
+            if(tempData.origin != OriginFile.public && !togglePhotosPressed && !filterPhotosTypeVisible)
             _buildSelectAll(),  
 
             if(selectedItemIsChecked)
             _buildMoreOptionsOnSelectButton(),
 
-            if(togglePhotosPressed && checkedItemsName.isEmpty)
+            if((togglePhotosPressed && checkedItemsName.isEmpty) || filterPhotosTypeVisible)
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
@@ -2365,15 +2378,6 @@ class HomePageState extends State<HomePage> {
       },
     );
   }
-
-  /*void _initializeProvider() {
-    userData = _locator<UserDataProvider>();
-    storageData = _locator<StorageDataProvider>();
-    tempData = _locator<TempDataProvider>();
-    tempStorageData = _locator<TempStorageProvider>();
-    psUploadData = _locator<PsUploadDataProvider>();
-    psStorageData = _locator<PsStorageDataProvider>();
-  }*/
 
   void _initializeOfflineFileNames() async {
 

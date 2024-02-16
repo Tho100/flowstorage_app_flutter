@@ -20,6 +20,7 @@ class NavigationButtons extends StatelessWidget {
   final VoidCallback createDirectoryOnPressed;
   final VoidCallback sortingOnPressed;
   final VoidCallback filterTypePsOnPressed;
+  final VoidCallback filterPhotosTypeVisibleOnPressed;
 
   NavigationButtons({
     required this.isVisible,
@@ -32,6 +33,7 @@ class NavigationButtons extends StatelessWidget {
     required this.createDirectoryOnPressed,
     required this.sortingOnPressed,
     required this.filterTypePsOnPressed,
+    required this.filterPhotosTypeVisibleOnPressed,
     Key? key,
   }) : super(key: key);
 
@@ -165,20 +167,17 @@ class NavigationButtons extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   isStaggeredListViewSelected.value = !isStaggeredListViewSelected.value;
+                  filterPhotosTypeVisibleOnPressed();
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   backgroundColor: ThemeColor.darkBlack,
                 ),
-                child: Row(
-                  children: [
-                    ValueListenableBuilder<bool>(
-                      valueListenable: isStaggeredListViewSelected,
-                      builder: (context, isSelected, child) {
-                        return !isSelected ? const Icon(Icons.grid_view,size: 21) : const Icon(Icons.format_list_bulleted_outlined, size: 22);
-                      }
-                    ),
-                  ],
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: isStaggeredListViewSelected,
+                  builder: (context, isSelected, child) {
+                    return !isSelected ? const Icon(Icons.grid_view, size: 21) : const Icon(Icons.format_list_bulleted_outlined, size: 22);
+                  }
                 ),
               ),
             ]
