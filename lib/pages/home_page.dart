@@ -1776,7 +1776,7 @@ class HomePageState extends State<HomePage> {
             if(selectedItemIsChecked)
             _buildMoreOptionsOnSelectButton(),
 
-            if ((togglePhotosPressed && checkedItemsName.isEmpty) || (!togglePhotosPressed && checkedItemsName.isNotEmpty && !filterPhotosTypeVisible))
+            if (togglePhotosPressed && checkedItemsName.isEmpty && !filterPhotosTypeVisible)
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
