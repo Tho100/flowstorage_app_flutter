@@ -76,7 +76,7 @@ class FolderDialog {
                           ),
                           trailing: GestureDetector(
                             onTap: () => trailingOnPressed(index),
-                            child: const Icon(Icons.more_vert, color: Colors.white)),
+                            child: const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite)),
                         ),
                       ),
                     );
@@ -84,12 +84,15 @@ class FolderDialog {
                   },
                 ),
               )
-              : const Center(
-                child: Text("(Empty)",
-                  style: TextStyle(
-                    color: ThemeColor.thirdWhite,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600
+              : const SizedBox(
+                height: 255,
+                child: Center(
+                  child: Text("No folder yet",
+                    style: TextStyle(
+                      color: ThemeColor.thirdWhite,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600
+                    ),
                   ),
                 ),
               ),
