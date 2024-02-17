@@ -95,7 +95,7 @@ class AcitivtyPageState extends State<ActivityPage> {
           const SizedBox(height: 18),
 
           if(directoriesList.isNotEmpty || foldersList.isNotEmpty) ... [
-            buildHeader("Directories", Icons.folder_outlined),
+            buildHeader("Directory / Folder", Icons.folder_outlined),
             const SizedBox(height: 18),
           ],
 
@@ -116,7 +116,7 @@ class AcitivtyPageState extends State<ActivityPage> {
           if(photoOfTheDayFileName.isNotEmpty) ... [
           const SizedBox(height: 18),
 
-          buildHeader("Photo of The Day", Icons.star_outline),
+          buildHeader("Photo you may like", Icons.star_outline),
 
           const SizedBox(height: 18),
 
