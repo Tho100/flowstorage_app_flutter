@@ -236,14 +236,6 @@ class UploadDialog {
 
         final filePath = item.path.toString();
         final fileName = item.name;
-        final fileType = fileName.split('.').last;
-
-        if (!Globals.supportedFileTypes.contains(fileType)) {
-          CustomFormDialog.startDialog("Couldn't upload $fileName", "File type is not supported.");
-          await NotificationApi.stopNotification(0);
-          continue;
-    
-        }
 
         if (storageData.fileNamesList.contains(fileName)) {
           CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
@@ -329,7 +321,7 @@ class UploadDialog {
 
       if (!(Globals.imageType.contains(fileExtension))) {
         final compressedFileBytes = await CompressorApi.compressFile(filePath);
-        fileBase64 = base64.encode(compressedFileBytes);
+        fileBase64 = base64.encode(compressedFileBytes); 
       }
 
       if (Globals.imageType.contains(fileExtension)) {
@@ -399,12 +391,13 @@ class UploadDialog {
           publicStorageUploadPage(
             filePath: filePath, fileName: selectedFileName, 
             tableName: getFileTable, base64Encoded: fileBase64!, 
-            previewData: newFileToDisplayPath);
+            previewData: newFileToDisplayPath
+          );
           return;
         }
 
         await UpdateListView()
-          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: newFileToDisplayPath);
 
       }
 

@@ -706,6 +706,19 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  void _deselectAllPhotosOnPressed() {
+
+    setState(() {
+      checkedItemsName.clear();
+      selectedPhotosIndex.clear();
+      selectedItemIsChecked = false;
+    });
+
+    tempData.setAppBarTitle("Photos");
+    _addItemButtonVisibility(true);
+
+  }
+
   void _itemSearchingImplementation(String value) async {
 
     debounceSearchingTimer?.cancel();
@@ -1719,7 +1732,7 @@ class HomePageState extends State<HomePage> {
         BottomTrailingFilter(          
           filterTypeFunctionality: _itemSearchingImplementation, 
           context: context
-        ).buildFilterTypePhotos(filterPhotosTypeVisible);
+        ).buildFilterTypePhotos();
       },
       icon: const Icon(Icons.tune_outlined, 
         color: Colors.white, size: 26),
@@ -1729,13 +1742,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildDeselectAllPhotosButton() {
     return IconButton(
       onPressed: () {
-        setState(() {
-          checkedItemsName.clear();
-          selectedPhotosIndex.clear();
-          selectedItemIsChecked = false;
-        });
-        tempData.setAppBarTitle("Photos");
-        _addItemButtonVisibility(true);
+        _deselectAllPhotosOnPressed();
       },
       icon: const Icon(Icons.check, 
         color: Colors.white, size: 26),
@@ -1769,7 +1776,7 @@ class HomePageState extends State<HomePage> {
             if(selectedItemIsChecked)
             _buildMoreOptionsOnSelectButton(),
 
-            if((togglePhotosPressed && checkedItemsName.isEmpty) || !filterPhotosTypeVisible)
+            if (togglePhotosPressed && checkedItemsName.isEmpty && !filterPhotosTypeVisible)
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [

@@ -23,7 +23,7 @@ class FileDataGetter {
     GlobalsTable.homePdf: "pdf0.jpg",
     GlobalsTable.homeAudio: "music0.jpg",
     GlobalsTable.homeExcel: "exl0.jpg",
-    GlobalsTable.homePtx: "ppptx0.jpg",
+    GlobalsTable.homePtx: "pptx0.jpg",
     GlobalsTable.homeWord: "doc0.jpg",
     GlobalsTable.homeExe: "exe0.jpg",
     GlobalsTable.homeMsi: "exe0.jpg",
@@ -113,6 +113,5 @@ class FileDataGetter {
     getByteValue.addAll(loadAssetImage);
 
   }
-
   
 }
