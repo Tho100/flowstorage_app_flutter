@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -749,9 +750,42 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   void initializeRecentData() {
 
-    recentFilesName = filterNamesByType('.', 5);
-    recentDate = filterDatesByType('.', 5);
-    recentImageBytes = filterImagesByType('.', 5);
+    final removedDirectoryDateList = storageData.fileDateFilteredList.where((type) => type.contains(GlobalsStyle.dotSeperator)).toList();
+
+    final filteredFileName = filterNamesByType('.', removedDirectoryDateList.length);
+    
+    List<Map<String, dynamic>> itemList = [];
+
+    for (int i = 0; i < filteredFileName.length; i++) {
+      itemList.add({
+        'file_name': storageData.fileNamesFilteredList[i],
+        'image_byte': storageData.imageBytesFilteredList[i],
+        'upload_date': DateParser(date: storageData.fileDateFilteredList[i]).parse(),
+      });
+    }
+
+    itemList = itemList.where((item) => item['file_name'].contains('.')).toList();
+
+    itemList.sort((a, b) => b['upload_date'].compareTo(a['upload_date']));
+
+    for (final item in itemList) {
+      recentFilesName.add(item['file_name']);
+      recentImageBytes.add(item['image_byte']);
+      recentDate.add(formatDateTime(item['upload_date']));
+    }
+
+    itemList.clear();
+
+  }
+
+  String formatDateTime(DateTime dateTime) {
+
+    final now = DateTime.now();
+
+    final difference = now.difference(dateTime).inDays;
+    final adjustedDateTime = difference.isNegative ? dateTime.add(const Duration(days: 1)) : dateTime;
+
+    return DateFormat('MMM dd yyyy').format(adjustedDateTime);
 
   }
 
