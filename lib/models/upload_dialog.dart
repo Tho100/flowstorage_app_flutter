@@ -236,14 +236,6 @@ class UploadDialog {
 
         final filePath = item.path.toString();
         final fileName = item.name;
-        final fileType = fileName.split('.').last;
-
-        if (!Globals.supportedFileTypes.contains(fileType)) {
-          CustomFormDialog.startDialog("Couldn't upload $fileName", "File type is not supported.");
-          await NotificationApi.stopNotification(0);
-          continue;
-    
-        }
 
         if (storageData.fileNamesList.contains(fileName)) {
           CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
