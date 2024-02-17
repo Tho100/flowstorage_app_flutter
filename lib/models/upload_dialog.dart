@@ -321,7 +321,7 @@ class UploadDialog {
 
       if (!(Globals.imageType.contains(fileExtension))) {
         final compressedFileBytes = await CompressorApi.compressFile(filePath);
-        fileBase64 = base64.encode(compressedFileBytes);
+        fileBase64 = base64.encode(compressedFileBytes); 
       }
 
       if (Globals.imageType.contains(fileExtension)) {
@@ -391,12 +391,13 @@ class UploadDialog {
           publicStorageUploadPage(
             filePath: filePath, fileName: selectedFileName, 
             tableName: getFileTable, base64Encoded: fileBase64!, 
-            previewData: newFileToDisplayPath);
+            previewData: newFileToDisplayPath
+          );
           return;
         }
 
         await UpdateListView()
-          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName,tableName: getFileTable,fileBase64Encoded: fileBase64!,newFileToDisplay: newFileToDisplayPath);
+          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: newFileToDisplayPath);
 
       }
 
