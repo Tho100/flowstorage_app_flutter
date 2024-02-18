@@ -320,40 +320,56 @@ class FunctionModel {
 
   Future<void> makeMultipleFilesAvailableOffline({
     required Set<String> checkedFilesName,
-    required int count,
-    required BuildContext context
   }) async {
 
     final offlineMode = OfflineModel();
     final singleLoading = SingleTextLoading();
 
-    singleLoading.startLoading(title: "Preparing...", context: context);
+    for(final fileName in checkedFilesName) {
 
-    for(int i=0; i<count; i++) {
-      
+      final fileType = fileName.split('.').last;
+
+      final isAlreadyOffline = tempStorageData.offlineFileNameList.contains(fileName);
+      final isFileTypeUnsupported = Globals.unsupportedOfflineModeTypes.contains(fileType);
+
+      if(isAlreadyOffline) {
+        CustomFormDialog.startDialog("Something went wrong", "Selected file is already available for offline mode.");
+        return;
+      }
+
+      if(isFileTypeUnsupported) {
+        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
+        return;
+      }
+
+    }
+
+    singleLoading.startLoading(title: "Preparing...", context: navigatorKey.currentContext!);
+
+    for(final fileName in checkedFilesName) {
+
       late final Uint8List fileData;
 
-      final fileType = checkedFilesName.elementAt(i).split('.').last;
+      final fileType = fileName.split('.').last;
 
       if(Globals.supportedFileTypes.contains(fileType)) {
 
         final tableName = Globals.fileTypesToTableNames[fileType]!;
 
         if(Globals.imageType.contains(fileType)) {
-          fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(checkedFilesName.elementAt(i))]!;
+          fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(fileName)]!;
           
         } else {
-          fileData = CompressorApi.compressByte(await _callFileByteData(checkedFilesName.elementAt(i), tableName));
+          fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
 
         }
 
         await offlineMode.saveOfflineFile(
-          fileName: checkedFilesName.elementAt(i), 
+          fileName: fileName, 
           fileData: fileData
         );
 
-        tempStorageData.addOfflineFileName(
-          checkedFilesName.elementAt(i));
+        tempStorageData.addOfflineFileName(fileName);
           
       } 
 
@@ -361,10 +377,9 @@ class FunctionModel {
 
     singleLoading.stopLoading();
 
-    SnakeAlert.okSnake(message: "$count Item(s) now available offline.", icon: Icons.check);
+    SnakeAlert.okSnake(message: "${checkedFilesName.length} Item(s) now available offline.", icon: Icons.check);
 
-    await CallNotify().customNotification(title: "Offline", subMesssage: "$count Item(s) now available offline");
-
+    await CallNotify().customNotification(title: "Offline", subMesssage: "${checkedFilesName.length} Item(s) now available offline");
 
   }
 
@@ -380,12 +395,15 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
       final tableName = Globals.fileTypesToTableNames[fileType]!;
 
-      if(tempStorageData.offlineFileNameList.contains(fileName)) {
+      final isAlreadyoffline = tempStorageData.offlineFileNameList.contains(fileName);
+      final isFileTypeUnsupported = Globals.unsupportedOfflineModeTypes.contains(fileType);
+
+      if(isAlreadyoffline) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
         return;
       }
 
-      if(Globals.unsupportedOfflineModeTypes.contains(fileType)) {
+      if(isFileTypeUnsupported) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
         return;
       } 
