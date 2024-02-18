@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -151,7 +152,24 @@ class AcitivtyPageState extends State<ActivityPage> {
             width: width-18,
             child: buildLegacy()
           ),
+
           ],
+
+          const SizedBox(height: 12),
+
+          const Padding(
+            padding: EdgeInsets.only(left: 22, right: 22),
+            child: Divider(color: ThemeColor.lightGrey)
+          ),
+
+          const SizedBox(height: 15),
+
+          buildLastBottomContainers(width),
+
+          const SizedBox(height: 10),
+
+          buildGetSupremeContainer(width),
+
           ],
 
           const SizedBox(height: 40),
@@ -268,6 +286,128 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   }
   
+  Widget buildGetSupremeContainer(double width) {
+
+    final linearGradient = const LinearGradient(
+      colors: <Color>[ThemeColor.secondaryPurple, ThemeColor.darkPurple, ThemeColor.justWhite],
+    ).createShader(const Rect.fromLTWH(55.0, 0.0, 200.0, 70.0));
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              NavigatePage.goToPageUpgrade();
+            },
+            child: Container(
+              width: width-35,
+              height: 125,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(12)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text("Get more storage & features with",
+                          style: GoogleFonts.poppins(
+                            color: ThemeColor.justWhite,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
+                      ],
+                    ),
+                    Text("Supreme",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600,
+                        foreground: Paint()..shader = linearGradient,
+                        fontSize: 28,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildLastBottomContainers(double width) {
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+    
+          Container(
+            width: width-255,
+            height: 95,
+            decoration: BoxDecoration(
+              color: ThemeColor.secondaryPurple,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text("Last upload on \n${recentDate[0]}",
+                style: GoogleFonts.poppins(
+                  color: ThemeColor.justWhite,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 19
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
+          GestureDetector(
+            onTap: () {
+              NavigatePage.goToPageStatistics();
+            },
+            child: Container(
+              width: width-270,
+              height: 95,
+              decoration: BoxDecoration(
+                color: ThemeColor.justWhite,
+                borderRadius: BorderRadius.circular(12)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Go to \nstatistics",
+                      style: GoogleFonts.poppins(
+                        color: ThemeColor.secondaryPurple,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 19
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(Icons.chevron_right, color: ThemeColor.secondaryPurple)
+                  ],
+                ),
+              ),
+            ),
+          ),
+    
+        ],
+      ),
+    );
+
+  } 
   Widget buildMostUploaded(double width) {
 
     return Padding(
