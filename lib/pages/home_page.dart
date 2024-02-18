@@ -32,7 +32,7 @@ import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
-import 'package:flowstorage_fsc/models/upload_dialog.dart';
+import 'package:flowstorage_fsc/models/upload_dialog_model.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
@@ -183,7 +183,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: _showUpgradeExceededDialog,
       ).galleryDialog();
 
@@ -205,7 +205,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: _showUpgradeExceededDialog,
       ).filesDialog(_openPsUploadPage);
 
@@ -227,7 +227,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: _showUpgradeExceededDialog,
       ).foldersDialog();
 
@@ -241,7 +241,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: _showUpgradeExceededDialog,
       ).scannerUpload();
 
@@ -257,7 +257,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: _showUpgradeExceededDialog,
       ).photoUpload();
 
@@ -1029,8 +1029,6 @@ class HomePageState extends State<HomePage> {
 
       await functionModel.makeMultipleFilesAvailableOffline(
         checkedFilesName: checkedItemsName,
-        count: count,
-        context: context
       );
       
       _clearItemSelection();

@@ -32,11 +32,11 @@ import 'package:image_picker_plus/image_picker_plus.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-class UploadDialog {
+class UploadDialogModel {
 
   final VoidCallback upgradeExceededDialog;
 
-  UploadDialog({
+  UploadDialogModel({
     required this.upgradeExceededDialog,
   });
 

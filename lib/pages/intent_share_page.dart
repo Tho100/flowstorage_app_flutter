@@ -10,7 +10,7 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
-import 'package:flowstorage_fsc/models/upload_dialog.dart';
+import 'package:flowstorage_fsc/models/upload_dialog_model.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -176,7 +176,7 @@ class IntentSharingPage extends StatelessWidget {
         return;
       }
 
-      await UploadDialog(
+      await UploadDialogModel(
         upgradeExceededDialog: exceededUploadDialog
       ).intentShareUpload(fileName: fileName, filePath: filePath);
 
