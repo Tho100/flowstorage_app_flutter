@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
 class PhotosStaggeredListView extends StatelessWidget {
@@ -40,15 +41,12 @@ class PhotosStaggeredListView extends StatelessWidget {
               ),
                 
               if(Globals.videoType.contains(fileType))
-              Center(
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: ThemeColor.mediumGrey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25)),
+              const Center(
+                child: VideoPlaceholderWidget(
+                  customWidth: 35, 
+                  customHeight: 35, 
+                  customIconSize: 24
+                ),
               ),
             
               if(isPhotosSelected)

@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -206,16 +207,13 @@ class PsStaggeredListView extends StatelessWidget {
                 ), 
                  
                 if (Globals.videoType.contains(fileType))
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 8),
-                  child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: ThemeColor.mediumGrey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 30)),
+                const Padding(
+                  padding: EdgeInsets.only(left: 10, top: 8),
+                  child: VideoPlaceholderWidget(
+                    customHeight: 40,
+                    customWidth: 40,
+                    customIconSize: 30,
+                  )
                 ),
         
               ],

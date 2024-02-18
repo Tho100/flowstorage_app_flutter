@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -69,16 +70,12 @@ class DefaultStaggeredListView extends StatelessWidget {
                 ),
               ),
               if (Globals.videoType.contains(actualFileType))
-              Align(
+              const Align(
                 alignment: Alignment.center,
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: ThemeColor.mediumGrey.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 25),
+                child: VideoPlaceholderWidget(
+                  customHeight: 35,
+                  customWidth: 35,
+                  customIconSize: 24,
                 ),
               ),
             ],
