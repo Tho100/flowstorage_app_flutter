@@ -319,7 +319,7 @@ class AcitivtyPageState extends State<ActivityPage> {
                           style: GoogleFonts.poppins(
                             color: ThemeColor.justWhite,
                             fontWeight: FontWeight.w600,
-                            fontSize: 18
+                            fontSize: 17
                           ),
                         ),
                         const Spacer(),
@@ -351,20 +351,21 @@ class AcitivtyPageState extends State<ActivityPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
     
-          Container(
-            width: width-255,
-            height: 95,
-            decoration: BoxDecoration(
-              color: ThemeColor.secondaryPurple,
-              borderRadius: BorderRadius.circular(12)
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text("Last upload on \n${recentDate[0]}",
-                style: GoogleFonts.poppins(
-                  color: ThemeColor.justWhite,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 19
+          Expanded(
+            child: Container(
+              height: 95,
+              decoration: BoxDecoration(
+                color: ThemeColor.secondaryPurple,
+                borderRadius: BorderRadius.circular(12)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text("Last upload on \n${recentDate[0]}",
+                  style: GoogleFonts.poppins(
+                    color: ThemeColor.justWhite,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19
+                  ),
                 ),
               ),
             ),
@@ -372,32 +373,35 @@ class AcitivtyPageState extends State<ActivityPage> {
 
           const SizedBox(width: 8),
 
-          GestureDetector(
-            onTap: () {
-              NavigatePage.goToPageStatistics();
-            },
-            child: Container(
-              width: width-270,
-              height: 95,
-              decoration: BoxDecoration(
-                color: ThemeColor.justWhite,
-                borderRadius: BorderRadius.circular(12)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Go to \nstatistics",
-                      style: GoogleFonts.poppins(
-                        color: ThemeColor.secondaryPurple,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 19
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                NavigatePage.goToPageStatistics();
+              },
+              child: Container(
+                width: width-280,
+                height: 95,
+                decoration: BoxDecoration(
+                  color: ThemeColor.justWhite,
+                  borderRadius: BorderRadius.circular(12)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Go to \nstatistics",
+                        style: GoogleFonts.poppins(
+                          color: ThemeColor.secondaryPurple,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 19
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    const Icon(Icons.chevron_right, color: ThemeColor.secondaryPurple)
-                  ],
+                      const Spacer(),
+                      const Icon(Icons.chevron_right, color: ThemeColor.secondaryPurple)
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -408,6 +412,7 @@ class AcitivtyPageState extends State<ActivityPage> {
     );
 
   } 
+
   Widget buildMostUploaded(double width) {
 
     return Padding(
