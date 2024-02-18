@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
@@ -66,17 +67,9 @@ class ShareFilePage extends StatelessWidget {
                 ),
 
                 if(Globals.videoType.contains(fileName.split('.').last))
-                Padding(
-                  padding: const EdgeInsets.only(top: 22.0, left: 24.0),
-                  child: Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: ThemeColor.mediumGrey.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: 22)
-                  ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 22.0, left: 24.0),
+                  child: VideoPlaceholderWidget(),
                 ),
               ],
             ),
