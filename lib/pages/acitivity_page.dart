@@ -887,6 +887,19 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   void initializeRecentData() {
 
+    final isCanShowData = tempData.origin != OriginFile.public && tempData.origin != OriginFile.sharedOther && tempData.origin != OriginFile.sharedMe;
+
+    if(!isCanShowData) {
+      return;
+    }
+
+    if(tempData.origin == OriginFile.offline) {
+      recentFilesName = filterNamesByType('.', 5);
+      recentDate = filterDatesByType('.', 5);
+      recentImageBytes = filterImagesByType('.', 5);
+      return;
+    }
+
     final removedDirectoryDateList = storageData.fileDateFilteredList.where((type) => type.contains(GlobalsStyle.dotSeperator)).toList();
 
     final filteredFileName = filterNamesByType('.', removedDirectoryDateList.length);
