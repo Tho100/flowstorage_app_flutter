@@ -49,8 +49,6 @@ class UploadDialogModel {
 
   Future<void> galleryDialog() async {
 
-    late String? fileBase64Encoded;
-
     final details = await PickerModel().galleryPicker(
       source: ImageSource.both, 
       isFromSelectProfilePic: false
@@ -68,10 +66,11 @@ class UploadDialogModel {
     
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
-    if(storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!) {
+    final isFilesMaxUpload = storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!;
+
+    if(isFilesMaxUpload) {
       upgradeExceededDialog();
       return;
-      
     }
 
     if(tempData.origin != OriginFile.public) {
@@ -82,7 +81,8 @@ class UploadDialogModel {
     if(countSelectedFiles > 2) {
       SnakeAlert.uploadingSnake(
         snackState: scaffoldMessenger, 
-        message: "Uploading $countSelectedFiles item(s)...");
+        message: "Uploading $countSelectedFiles item(s)..."
+      );
     }
 
     for(final filesPath in details.selectedFiles) {
@@ -110,18 +110,13 @@ class UploadDialogModel {
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
         SnakeAlert.uploadingSnake(
           snackState: scaffoldMessenger, 
-          message: "Uploading $filesName"); 
+          message: "Uploading $filesName"
+        ); 
       }
 
-      if (!(Globals.imageType.contains(fileExtension))) {
-        final compressedFileByte = await CompressorApi.compressFile(pathToString);
-        fileBase64Encoded = base64.encode(compressedFileByte);
-        
-      } else {
-        final filesBytes = await File(pathToString).readAsBytes();
-        fileBase64Encoded = base64.encode(filesBytes);
-
-      }
+      final fileBase64Encoded = Globals.imageType.contains(fileExtension)
+        ? base64.encode(await File(pathToString).readAsBytes())
+        : base64.encode(await CompressorApi.compressFile(pathToString));
 
       if (Globals.imageType.contains(fileExtension)) {
 
@@ -191,7 +186,6 @@ class UploadDialogModel {
   Future<void> filesDialog(Function publicStorageUploadPage) async {
 
     late String? fileBase64;
-    late File? newFileToDisplayPath;
 
     final resultPicker = await PickerModel().filePicker();
 
@@ -206,15 +200,13 @@ class UploadDialogModel {
     final uploadedPsFilesCount = tempData.psTotalUpload;
     final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
 
-    if (tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads) {
-      upgradeExceededDialog();
-      return;
+    final isFilesMaxUpload = (tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads;
+    final isPsMaxUpload = tempData.origin == OriginFile.public && uploadedPsFilesCount > allowedFileUploads;
 
-    } else if ((tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) && storageData.fileNamesList.length + countSelectedFiles > allowedFileUploads) {
+    if (isFilesMaxUpload || isPsMaxUpload) {
       upgradeExceededDialog();
       return;
-      
-    }
+    } 
 
     if(tempData.origin != OriginFile.public && tempData.origin != OriginFile.offline) {
       await CallNotify()
@@ -314,7 +306,6 @@ class UploadDialogModel {
           snackState: scaffoldMessenger, 
           message: "Uploading $selectedFileName"
         );
-
       }
 
       final filePath = pickedFile.path.toString();
@@ -356,14 +347,14 @@ class UploadDialogModel {
         final thumbnailBytes = generatedThumbnail[0] as Uint8List;
         final thumbnailFile = generatedThumbnail[1] as File;
 
-        newFileToDisplayPath = thumbnailFile;
+        final thumbnailPreviewImage = thumbnailFile;
 
         if(tempData.origin == OriginFile.public) {
 
           publicStorageUploadPage(
             filePath: filePath, fileName: selectedFileName, 
             tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
-            previewData: newFileToDisplayPath, thumbnail: thumbnailBytes
+            previewData: thumbnailPreviewImage, thumbnail: thumbnailBytes
           );
 
           return;
@@ -373,7 +364,7 @@ class UploadDialogModel {
         await UpdateListView().processUpdateListView(
           filePathVal: filePath, selectedFileName: selectedFileName, 
           tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
-          newFileToDisplay: newFileToDisplayPath, thumbnailBytes: thumbnailBytes
+          newFileToDisplay: thumbnailPreviewImage, thumbnailBytes: thumbnailBytes
         );
 
         await thumbnailFile.delete();
@@ -384,20 +375,20 @@ class UploadDialogModel {
           ? Globals.fileTypesToTableNames[fileExtension]! 
           : Globals.fileTypesToTableNamesPs[fileExtension]!;
 
-        newFileToDisplayPath = await GetAssets()
+        final assetsPreviewImage = await GetAssets()
           .loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
 
         if(tempData.origin == OriginFile.public) {
           publicStorageUploadPage(
             filePath: filePath, fileName: selectedFileName, 
             tableName: getFileTable, base64Encoded: fileBase64!, 
-            previewData: newFileToDisplayPath
+            previewData: assetsPreviewImage
           );
           return;
         }
 
         await UpdateListView()
-          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: newFileToDisplayPath);
+          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: assetsPreviewImage);
 
       }
 
