@@ -203,7 +203,7 @@ class AcitivtyPageState extends State<ActivityPage> {
 
   Widget buildOnEmpty(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height-265,
+      height: MediaQuery.of(context).size.height-285,
       child: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
