@@ -75,7 +75,7 @@ class AcitivtyPageState extends State<ActivityPage> {
           const SizedBox(height: 4),
 
           if(recentFilesName.isEmpty || tempData.origin == OriginFile.public || tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe)
-          buildOnEmpty(),
+          buildOnEmpty(context),
 
           if(recentFilesName.isNotEmpty && isCanShowData) ... [
           buildHeader("Recent", Icons.schedule_outlined),
@@ -201,15 +201,25 @@ class AcitivtyPageState extends State<ActivityPage> {
     );
   }
 
-  Widget buildOnEmpty() {
-    return const Center(
-      child: Text("No activity to see here",
-        style: TextStyle(
-          color: ThemeColor.secondaryWhite,
-          fontWeight: FontWeight.w600,
-          fontSize: 16
-        ),
-      )
+  Widget buildOnEmpty(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height-285,
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.rocket_outlined, size: 115, color: ThemeColor.secondaryWhite),
+            SizedBox(height: 12),
+            Text("No activity to see here",
+              style: TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 16
+              ),
+            ),
+          ],
+        )
+      ),
     );
   }
 
