@@ -312,7 +312,9 @@ class FunctionModel {
       return base64.decode(psStorageData.psSearchImageBytesList[index]);
 
     } else {
-      return psStorageData.psImageBytesList[originalIndex];
+      return psStorageData.isFromMyPs 
+        ? psStorageData.myPsImageBytesList[originalIndex]
+        : psStorageData.psImageBytesList[originalIndex];
 
     }
 

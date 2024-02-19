@@ -14,6 +14,8 @@ class PsStorageDataProvider extends ChangeNotifier {
   final List<String> _psSearchNameList = [];
   final List<String> _psSearchImageBytesList = [];
   
+  bool _isFromMyPs = false;
+
   List<Uint8List> _psImageBytesList = <Uint8List>[];
   List<Uint8List> _psThumbnailBytesList = <Uint8List>[];
 
@@ -35,6 +37,13 @@ class PsStorageDataProvider extends ChangeNotifier {
   List<String> get psSearchImageBytesList => _psSearchImageBytesList;
   List<String> get psSearchTitleList => _psSearchTitleList;
   List<String> get psSearchUploaderList => _psSearchUploaderList;
+
+  bool get isFromMyPs => _isFromMyPs;
+  
+  void setFromMyPs(bool value) {
+    _isFromMyPs = value;
+    notifyListeners();
+  }
 
   void setPsSearchTitle(String titles) {
     _psSearchTitleList.add(titles);

@@ -226,6 +226,8 @@ class DataCaller {
     psStorageData.psUploaderList.addAll(uploaderList);
     psStorageData.psTitleList.addAll(titleList);
 
+    psStorageData.setFromMyPs(false);
+
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);
     storageData.setImageBytes(byteList);
@@ -266,6 +268,8 @@ class DataCaller {
     psStorageData.psTagsList.addAll(getTagsValue);
     psStorageData.psUploaderList.addAll(uploaderList);
     psStorageData.psTitleList.addAll(titleList);
+
+    psStorageData.setFromMyPs(true);
 
     storageData.setFilesName(nameList);
     storageData.setFilesDate(fileDateList);

@@ -75,7 +75,6 @@ class ByteGetterPs {
     final IResultSet results;
 
     if(isFromMyPs) {
-
       query = 'SELECT CUST_FILE FROM ${GlobalsTable.psImage} WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
       final params = {'username': userData.username};
 
