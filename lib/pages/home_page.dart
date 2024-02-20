@@ -608,14 +608,13 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Future<void> _selectDirectoryOnMultipleDownload(int count) async {
+  Future<void> _selectDirectoryOnMultipleDownload() async {
 
     String? directoryPath = await FilePicker.platform.getDirectoryPath();
 
     if (directoryPath!.isNotEmpty) {
 
       await functionModel.multipleFilesDownload(
-        count: count, 
         checkedItemsName: checkedItemsName, 
         directoryPath: directoryPath
       );
@@ -1021,9 +1020,7 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Future<void> _makeMultipleSelectedFilesOffline({
-    required int count
-  }) async {
+  Future<void> _makeMultipleSelectedFilesOffline() async {
 
     try {
 
@@ -1217,20 +1214,13 @@ class HomePageState extends State<HomePage> {
   }
 
   Future _callSelectedItemsBottomTrailing() {
-
-    final length = togglePhotosPressed 
-      ? selectedPhotosIndex.length
-      : checkedItemsName.length;
-
     return BottomTrailingSelectedItems().buildTrailing(
       context: context, 
       makeAoOnPressed: () async {
-        await _makeMultipleSelectedFilesOffline(
-          count: length);
+        await _makeMultipleSelectedFilesOffline();
       }, 
       saveOnPressed: () async {
-        await _selectDirectoryOnMultipleDownload(
-          length);
+        await _selectDirectoryOnMultipleDownload();
       }, 
       deleteOnPressed: () {
         _openDeleteSelectionDialog();
@@ -1854,9 +1844,9 @@ class HomePageState extends State<HomePage> {
 
     List<String> fileBase64 = [];
 
-    for(int i=0; i<fileNames.length; i++) {
+    for(final fileName in fileNames)  {
       final fileData = await functionModel.retrieveFileData(
-        fileName: fileNames[i], isCompressed: true);
+        fileName: fileName, isCompressed: true);
 
       final base64Data = base64.encode(fileData);
       fileBase64.add(base64Data);

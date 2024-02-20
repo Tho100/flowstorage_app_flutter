@@ -157,11 +157,11 @@ class StatsPageState extends State<StatisticsPage> {
 
       final fileTypeList = <String>[];
 
-      for(int i=0; i<dataOrigin.length; i++) {
-        final fileType = dataOrigin.elementAt(i).split('.').last;
+      for(final data in dataOrigin) {
+        final fileType = data.split('.').last;
         fileTypeList.add(fileType);
       }
-      
+
       int uploadCount = 0;
 
       for (String fileType in fileTypeList) {

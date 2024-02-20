@@ -133,7 +133,6 @@ class FunctionModel {
   }
 
   Future<void> multipleFilesDownload({
-    required int count,
     required String directoryPath,
     required Set<String> checkedItemsName
   }) async {
@@ -144,33 +143,21 @@ class FunctionModel {
 
     try {
 
-      for(int i=0; i<count; i++) {
+      for(final fileName in checkedItemsName) {
 
-        late Uint8List getBytes;
-
-        final fileType = checkedItemsName.elementAt(i).split('.').last;
+        final fileType = fileName.split('.').last;
         final tableName = Globals.fileTypesToTableNames[fileType];
 
-        if(Globals.imageType.contains(fileType)) {
-          final fileIndex = storageData.fileNamesFilteredList.indexOf(checkedItemsName.elementAt(i));
-          getBytes = storageData.imageBytesFilteredList.elementAt(fileIndex)!;
-
-        } else {
-
-          if(tempData.origin == OriginFile.offline) {
-            getBytes = await OfflineModel().loadOfflineFileByte(checkedItemsName.elementAt(i));
-
-          } else {
-            getBytes = await _callFileByteData(
-              checkedItemsName.elementAt(i), tableName!);
-
-          }
-
-        }
+        final getBytes = Globals.imageType.contains(fileType)
+            ? storageData.imageBytesFilteredList.elementAt(
+                storageData.fileNamesFilteredList.indexOf(fileName))!
+            : (tempData.origin == OriginFile.offline
+                ? await OfflineModel().loadOfflineFileByte(fileName)
+                : await _callFileByteData(fileName, tableName!));
 
         await SaveApi().saveMultipleFiles(
           directoryPath: directoryPath, 
-          fileName: checkedItemsName.elementAt(i), 
+          fileName: fileName, 
           fileData: getBytes
         );
 
@@ -178,7 +165,7 @@ class FunctionModel {
 
       loadingDialog.stopLoading();
 
-      SnakeAlert.okSnake(message: "$count item(s) has been saved.", icon: Icons.check);
+      SnakeAlert.okSnake(message: "${checkedItemsName.length} item(s) has been saved.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from multipleFilesDownload {function_model}', err, st);

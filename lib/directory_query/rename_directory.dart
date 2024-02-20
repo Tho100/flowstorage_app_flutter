@@ -24,18 +24,16 @@ class RenameDirectory {
       "UPDATE upload_info_directory SET DIR_NAME = :newname WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username"
     ];
 
-    final params = [
-      {'newname': encryption.encrypt(newDirectoryName), 'dirname': encryption.encrypt(oldDirectoryName),'username': userData.username},
-    ];
+    final params = {
+      'newname': encryption.encrypt(newDirectoryName),
+      'dirname': encryption.encrypt(oldDirectoryName),
+      'username': userData.username,
+    };
 
-    for(int i=0; i<updateDirectoryQueries.length; i++) {
-
-      final query = updateDirectoryQueries[i];
-      final param = params[0];
-
-      await crud.update(query: query, params: param);
-
+    for (final query in updateDirectoryQueries) {
+      await crud.update(query: query, params: params);
     }
 
   }
+
 }
