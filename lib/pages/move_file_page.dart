@@ -255,18 +255,21 @@ class MoveFilePageState extends State<MoveFilePage> {
 
     final encryptedDirectoryName = encryption.encrypt(selectedDirectory);
 
+    final fileName = widget.fileNames;
+    final fileData = widget.fileBase64Data;
+
     for(int i=0; i<widget.fileNames.length; i++) {
       
-      final fileType = widget.fileNames[i].split('.').last;
+      final fileType = fileName[i].split('.').last;
 
       final encryptedData = specialFile.ignoreEncryption(fileType) 
-        ? widget.fileBase64Data[i] 
-        : encryption.encrypt(widget.fileBase64Data[i]);
+        ? fileData[i] 
+        : encryption.encrypt(fileData[i]);
         
-      final encryptedFileName = encryption.encrypt(widget.fileNames[i]);
+      final encryptedFileName = encryption.encrypt(fileName[i]);
 
       if(Globals.videoType.contains(fileType)) {
-        final thumbnailIndex = storageData.fileNamesFilteredList.indexOf(widget.fileNames[i]);
+        final thumbnailIndex = storageData.fileNamesFilteredList.indexOf(fileName[i]);
         final thumbnailBytes = storageData.imageBytesFilteredList.elementAt(thumbnailIndex);
         final thumbnail = base64.encode(thumbnailBytes!);
         await conn.prepare(query)
@@ -297,23 +300,25 @@ class MoveFilePageState extends State<MoveFilePage> {
 
       bool hasDuplicatedFileName = false;
 
-      for(int i=0; i<widget.fileNames.length; i++) {
-        const verifyFileName = "SELECT COUNT(CUST_FILE_PATH) FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dir_name AND CUST_FILE_PATH = :file_name";
+      const verifyFileName = "SELECT COUNT(CUST_FILE_PATH) FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dir_name AND CUST_FILE_PATH = :file_name";
+
+      for(final fileName in widget.fileNames) {
+
         final params = {
           'username': userData.username,
           'dir_name': encryption.encrypt(selectedDirectory),
-          'file_name': encryption.encrypt(widget.fileNames[i])
+          'file_name': encryption.encrypt(fileName)
         };
 
         final countDuplicatedFileName = await Crud().count(
-          query: verifyFileName, params: params);
+          query: verifyFileName, params: params
+        );
 
         if(countDuplicatedFileName >= 1) {
           hasDuplicatedFileName = true;
-
         }
 
-      }
+      } 
 
       if(hasDuplicatedFileName) {
         CustomAlertDialog.alertDialogTitle("Failed to move this file", "Cannot move duplicated file");

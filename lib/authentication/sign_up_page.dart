@@ -58,7 +58,7 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
 
       final valueCase0 = AuthModel().computeAuth(auth0);
       final valueCase1 = AuthModel().computeAuth(auth1);
-            
+
       await RegisterUser().insertParams(
         userName: username,
         auth0: valueCase0,

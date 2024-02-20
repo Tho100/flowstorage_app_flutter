@@ -20,22 +20,15 @@ class DeleteDirectory {
       "DELETE FROM upload_info_directory WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username"
     ];
 
-    final params = [
-      {'dirname': encryption.encrypt(name),'username': userData.username},
-      {'dirname': encryption.encrypt(name),'username': userData.username}
-    ];
+    final params = {
+      'dirname': encryption.encrypt(name),
+      'username': userData.username
+    };
 
-    for(int i=0; i<deleteDirectoryQueries.length; i++) {
-
-      final query = deleteDirectoryQueries[i];
-      final param = params[i];
-
-      await crud.delete(
-        query: query, 
-        params: param
-      );
-
+    for(final query in deleteDirectoryQueries) {
+      await crud.delete(query: query, params: params);
     }
 
   }
+
 }
