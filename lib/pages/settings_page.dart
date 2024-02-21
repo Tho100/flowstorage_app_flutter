@@ -141,7 +141,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
               width: MediaQuery.of(context).size.width-25,
               height: 85,
               decoration: BoxDecoration(
-                color: ThemeColor.mediumGrey,
+                color: ThemeColor.darkGrey,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
