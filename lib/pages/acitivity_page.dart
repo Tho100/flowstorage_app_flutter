@@ -302,6 +302,10 @@ class AcitivtyPageState extends State<ActivityPage> {
       colors: <Color>[ThemeColor.secondaryPurple, ThemeColor.darkPurple, ThemeColor.justWhite],
     ).createShader(const Rect.fromLTWH(55.0, 0.0, 200.0, 70.0));
 
+    const linearGradientBorder = LinearGradient(
+      colors: <Color>[ThemeColor.secondaryPurple, ThemeColor.darkPurple, ThemeColor.justWhite],
+    );
+
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Row(
@@ -311,41 +315,56 @@ class AcitivtyPageState extends State<ActivityPage> {
             onTap: () {
               NavigatePage.goToPageUpgrade();
             },
-            child: Container(
-              width: width-35,
-              height: 125,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("Get more storage & features with",
-                          style: GoogleFonts.poppins(
-                            color: ThemeColor.justWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17
-                          ),
-                        ),
-                        const Spacer(),
-                        const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
-                      ],
+            child: Stack(
+              children: [
+                Container(
+                  width: width-35,
+                  height: 125,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: linearGradientBorder, // Use your linear gradient here
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Container(
+                    width: width- 35 - 4,
+                    height: 125 - 4,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Text("Supreme",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        foreground: Paint()..shader = linearGradient,
-                        fontSize: 28,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("Get more storage & features with",
+                                style: GoogleFonts.poppins(
+                                  color: ThemeColor.justWhite,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17
+                                ),
+                              ),
+                              const Spacer(),
+                              const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
+                            ],
+                          ),
+                          Text("Supreme",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              foreground: Paint()..shader = linearGradient,
+                              fontSize: 28,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
