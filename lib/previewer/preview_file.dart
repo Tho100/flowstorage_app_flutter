@@ -528,7 +528,7 @@ class PreviewFileState extends State<PreviewFile> {
 
               ],
             )
-          : Text(value, style: GlobalsStyle.appBarTextStyle);
+          : Text(value, style: GlobalsStyle.previewAppBarTextStyle);
       },
     );
   }

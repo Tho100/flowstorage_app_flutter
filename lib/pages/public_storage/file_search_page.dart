@@ -683,7 +683,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         height: 48.0,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: ThemeColor.mediumGrey, 
+          color: ThemeColor.darkGrey, 
         ),
         child: const Center(
           child: Icon(
@@ -753,7 +753,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         height: 48.0,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: ThemeColor.mediumGrey, 
+          color: ThemeColor.darkGrey, 
         ),
         child: const Center(
           child: Icon(

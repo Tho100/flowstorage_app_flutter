@@ -29,6 +29,13 @@ class GlobalsStyle {
 
   static const appBarTextStyle = TextStyle(
     overflow: TextOverflow.ellipsis,
+    color: Color.fromARGB(255,236,236,236),
+    fontWeight: FontWeight.w600,
+    fontSize: 19,          
+  );
+
+  static const previewAppBarTextStyle = TextStyle(
+    overflow: TextOverflow.ellipsis,
     color: Color.fromARGB(255,232,232,232),
     fontWeight: FontWeight.w500,
     fontSize: 19,          
@@ -71,7 +78,7 @@ class GlobalsStyle {
   );
 
   static final btnNavigationBarStyle = ElevatedButton.styleFrom(
-    backgroundColor: ThemeColor.mediumGrey,
+    backgroundColor: ThemeColor.darkGrey,
     elevation: 0,
     padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 14),
     shape: RoundedRectangleBorder(

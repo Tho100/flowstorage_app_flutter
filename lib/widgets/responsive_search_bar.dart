@@ -54,7 +54,7 @@ class ResponsiveSearchBar extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),
-                color: ThemeColor.mediumGrey,
+                color: ThemeColor.darkGrey,
               ),
               height: customHeight ?? defaultHeight,
               child: FractionallySizedBox(
@@ -75,11 +75,11 @@ class ResponsiveSearchBar extends StatelessWidget {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(borderRadius),
                             borderSide: const BorderSide(
-                              color: ThemeColor.mediumGrey,
+                              color: ThemeColor.darkGrey,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: ThemeColor.mediumGrey),
+                            borderSide: const BorderSide(color: ThemeColor.darkGrey),
                             borderRadius: BorderRadius.circular(borderRadius),
                           ),
                           hintText: hintText,

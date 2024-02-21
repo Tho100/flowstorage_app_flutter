@@ -186,13 +186,13 @@ class AcitivtyPageState extends State<ActivityPage> {
         padding: const EdgeInsets.only(top: 8.0, left: 18.0),
         child: Row(
           children: [
-            Icon(icon, color: ThemeColor.justWhite, size: 25),
+            Icon(icon, color: ThemeColor.justWhite, size: 20),
             const SizedBox(width: 8),
             Text(headerMessage, 
               style: const TextStyle(
+                fontSize: 18, 
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w500,
-                fontSize: 18
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -302,6 +302,10 @@ class AcitivtyPageState extends State<ActivityPage> {
       colors: <Color>[ThemeColor.secondaryPurple, ThemeColor.darkPurple, ThemeColor.justWhite],
     ).createShader(const Rect.fromLTWH(55.0, 0.0, 200.0, 70.0));
 
+    const linearGradientBorder = LinearGradient(
+      colors: <Color>[ThemeColor.secondaryPurple, ThemeColor.darkPurple, ThemeColor.justWhite],
+    );
+
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Row(
@@ -311,41 +315,56 @@ class AcitivtyPageState extends State<ActivityPage> {
             onTap: () {
               NavigatePage.goToPageUpgrade();
             },
-            child: Container(
-              width: width-35,
-              height: 125,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("Get more storage & features with",
-                          style: GoogleFonts.poppins(
-                            color: ThemeColor.justWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17
-                          ),
-                        ),
-                        const Spacer(),
-                        const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
-                      ],
+            child: Stack(
+              children: [
+                Container(
+                  width: width-35,
+                  height: 125,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: linearGradientBorder, // Use your linear gradient here
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Container(
+                    width: width- 35 - 4,
+                    height: 125 - 4,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    Text("Supreme",
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        foreground: Paint()..shader = linearGradient,
-                        fontSize: 28,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("Get more storage & features with",
+                                style: GoogleFonts.poppins(
+                                  color: ThemeColor.justWhite,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17
+                                ),
+                              ),
+                              const Spacer(),
+                              const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
+                            ],
+                          ),
+                          Text("Supreme",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              foreground: Paint()..shader = linearGradient,
+                              fontSize: 28,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -495,8 +514,11 @@ class AcitivtyPageState extends State<ActivityPage> {
                       width: 145,
                       height: 225,
                       decoration: BoxDecoration(
-                        color: ThemeColor.mediumGrey,
-                        borderRadius: BorderRadius.circular(12)
+                        color: ThemeColor.darkBlack,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: ThemeColor.mediumGrey
+                        )
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
@@ -564,8 +586,11 @@ class AcitivtyPageState extends State<ActivityPage> {
     return Container(
       height: 62,
       decoration: BoxDecoration(
-        color: ThemeColor.darkGrey,
+        color: ThemeColor.darkBlack,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: ThemeColor.mediumGrey
+        ),
       ),
       constraints: const BoxConstraints(
         minWidth: 165,
@@ -657,8 +682,11 @@ class AcitivtyPageState extends State<ActivityPage> {
     return Container(
       height: 90,
       decoration: BoxDecoration(
-        color: ThemeColor.darkGrey,
+        color: ThemeColor.darkBlack,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: ThemeColor.mediumGrey
+        )
       ),
       constraints: const BoxConstraints(
         minWidth: 205,
@@ -1041,7 +1069,7 @@ class AcitivtyPageState extends State<ActivityPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
-        title: const Text("Activity",
+        title: const Text("Explore",
           style: GlobalsStyle.appBarTextStyle
         ),
       ),
