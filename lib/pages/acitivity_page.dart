@@ -1069,7 +1069,7 @@ class AcitivtyPageState extends State<ActivityPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
-        title: const Text("Explore",
+        title: const Text("Activity",
           style: GlobalsStyle.appBarTextStyle
         ),
       ),
