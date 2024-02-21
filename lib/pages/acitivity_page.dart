@@ -186,13 +186,13 @@ class AcitivtyPageState extends State<ActivityPage> {
         padding: const EdgeInsets.only(top: 8.0, left: 18.0),
         child: Row(
           children: [
-            Icon(icon, color: ThemeColor.justWhite, size: 25),
+            Icon(icon, color: ThemeColor.justWhite, size: 20),
             const SizedBox(width: 8),
             Text(headerMessage, 
               style: const TextStyle(
+                fontSize: 18, 
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w500,
-                fontSize: 18
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -514,8 +514,11 @@ class AcitivtyPageState extends State<ActivityPage> {
                       width: 145,
                       height: 225,
                       decoration: BoxDecoration(
-                        color: ThemeColor.mediumGrey,
-                        borderRadius: BorderRadius.circular(12)
+                        color: ThemeColor.darkBlack,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: ThemeColor.mediumGrey
+                        )
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
@@ -583,8 +586,11 @@ class AcitivtyPageState extends State<ActivityPage> {
     return Container(
       height: 62,
       decoration: BoxDecoration(
-        color: ThemeColor.darkGrey,
+        color: ThemeColor.darkBlack,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: ThemeColor.mediumGrey
+        ),
       ),
       constraints: const BoxConstraints(
         minWidth: 165,
@@ -676,8 +682,11 @@ class AcitivtyPageState extends State<ActivityPage> {
     return Container(
       height: 90,
       decoration: BoxDecoration(
-        color: ThemeColor.darkGrey,
+        color: ThemeColor.darkBlack,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: ThemeColor.mediumGrey
+        )
       ),
       constraints: const BoxConstraints(
         minWidth: 205,
@@ -1060,7 +1069,7 @@ class AcitivtyPageState extends State<ActivityPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: ThemeColor.darkBlack,
-        title: const Text("Activity",
+        title: const Text("Explore",
           style: GlobalsStyle.appBarTextStyle
         ),
       ),

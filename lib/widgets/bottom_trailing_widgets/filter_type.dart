@@ -38,7 +38,7 @@ class BottomTrailingFilter {
       style: ElevatedButton.styleFrom(
         elevation: 0,
         fixedSize: const Size(112,42),
-        backgroundColor: ThemeColor.darkGrey,
+        backgroundColor: ThemeColor.darkBlack,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.whiteGrey),
@@ -56,7 +56,7 @@ class BottomTrailingFilter {
 
   Future buildFilterTypeAll() {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
+      backgroundColor: ThemeColor.darkBlack,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
@@ -177,7 +177,7 @@ class BottomTrailingFilter {
 
   Future buildFilterTypePhotos() {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
+      backgroundColor: ThemeColor.darkBlack,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {

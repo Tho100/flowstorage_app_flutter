@@ -55,8 +55,7 @@ class DefaultStaggeredListView extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: ThemeColor.lightGrey,
-                    width: 1.2,
+                    color: ThemeColor.mediumGrey,
                   ),
                 ),
                 child: ClipRRect(

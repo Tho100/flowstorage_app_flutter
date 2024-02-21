@@ -29,16 +29,16 @@ class GlobalsStyle {
 
   static const appBarTextStyle = TextStyle(
     overflow: TextOverflow.ellipsis,
-    color: Color.fromARGB(255,232,232,232),
+    color: Color.fromARGB(255,236,236,236),
     fontWeight: FontWeight.w600,
     fontSize: 19,          
   );
 
   static const previewAppBarTextStyle = TextStyle(
-      overflow: TextOverflow.ellipsis,
-      color: Color.fromARGB(255,232,232,232),
-      fontWeight: FontWeight.w500,
-      fontSize: 19,          
+    overflow: TextOverflow.ellipsis,
+    color: Color.fromARGB(255,232,232,232),
+    fontWeight: FontWeight.w500,
+    fontSize: 19,          
   );
 
   static const settingsLeftTextStyle = TextStyle(
