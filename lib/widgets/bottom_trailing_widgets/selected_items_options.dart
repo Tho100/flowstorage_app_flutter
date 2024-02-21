@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -29,20 +30,8 @@ class BottomTrailingSelectedItems {
 
         const BottomsheetBar(),
 
-        Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
-            child: Text(
-              tempData.appBarTitle,
-              style: const TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-        
+        BottomTrailingTitle(title: tempData.appBarTitle),
+
         const Divider(color: ThemeColor.lightGrey),
         
         if(itemsName.every((name) => name.contains('.'))) ... [

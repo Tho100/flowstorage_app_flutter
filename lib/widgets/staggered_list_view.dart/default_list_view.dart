@@ -36,7 +36,7 @@ class DefaultStaggeredListView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     
     final actualFileType = fileType.split('.').last;
-    final isMakeImageSmaller = Globals.generalFileTypes.contains(actualFileType) || !fileType.contains('.');
+    final isGeneralFile = Globals.generalFileTypes.contains(actualFileType) || !fileType.contains('.');
 
     final fileNames = storageData.fileNamesFilteredList[index];
     final fileDates = getProperDate(storageData.fileDateFilteredList[index]);
@@ -62,9 +62,9 @@ class DefaultStaggeredListView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: Image.memory(
                     imageBytes,
-                    cacheHeight: isMakeImageSmaller ? 55 : null,
-                    cacheWidth: isMakeImageSmaller ? 55 : null,
-                    fit: isMakeImageSmaller ? BoxFit.scaleDown : BoxFit.cover,
+                    cacheHeight: isGeneralFile ? 55 : null,
+                    cacheWidth: isGeneralFile ? 55 : null,
+                    fit: isGeneralFile ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
               ),

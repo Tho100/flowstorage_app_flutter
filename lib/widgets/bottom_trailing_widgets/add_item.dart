@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -27,19 +28,7 @@ class BottomTrailingAddItem {
 
         const BottomsheetBar(),
 
-        Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
-            child: Text(
-              headerText,
-              style: const TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
+        BottomTrailingTitle(title: headerText),
         
         const Divider(color: ThemeColor.lightGrey),
 

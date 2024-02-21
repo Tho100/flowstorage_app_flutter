@@ -267,9 +267,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Globals.generalFileTypes.contains(fileType) 
-                        ? ThemeColor.lightGrey 
+                        ? ThemeColor.mediumGrey 
                         : ThemeColor.darkBlack,
-                      width: 2.0
                     ),
                     borderRadius: BorderRadius.circular(16)
                   ),
