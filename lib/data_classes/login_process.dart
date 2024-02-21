@@ -60,7 +60,7 @@ class SignInUser {
     final bytes = <Uint8List>{};
     final dates = <String>[];
 
-    final foldersList = <String>[];
+    final foldersList = <String>{};
 
     for (final result in results) {
       final fileNamesForTable = result[0] as List<String>;
@@ -82,7 +82,7 @@ class SignInUser {
     storageData.setImageBytes(bytes.toList());
     storageData.setFilesDate(dates);
     
-    tempStorageData.setFoldersName(foldersList);
+    tempStorageData.setFoldersName(foldersList.toList());
     tempStorageData.setDirectoriesName(directoriesList);
 
     if (isRememberMeChecked) {

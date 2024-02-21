@@ -79,7 +79,7 @@ class PasscodePageState extends State<PasscodePage> {
       final bytes = <Uint8List>{};
       final dates = <String>[];
 
-      final foldersList = <String>[];
+      final foldersList = <String>{};
 
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
         foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
@@ -99,7 +99,7 @@ class PasscodePageState extends State<PasscodePage> {
       storageData.setImageBytes(bytes.toList());
       storageData.setFilesDate(dates);
 
-      tempStorageData.setFoldersName(foldersList);
+      tempStorageData.setFoldersName(foldersList.toList());
       
       tempData.setOrigin(OriginFile.home);
 
