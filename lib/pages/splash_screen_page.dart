@@ -206,7 +206,7 @@ class SplashScreenState extends State<SplashScreen> {
       final bytes = <Uint8List>{};
       final dates = <String>[];
 
-      final foldersList = <String>[];
+      final foldersList = <String>{};
       
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
         foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
@@ -229,7 +229,7 @@ class SplashScreenState extends State<SplashScreen> {
       storageData.setFilesDate(dates);
 
       tempStorageData.setDirectoriesName(directoriesList);
-      tempStorageData.setFoldersName(foldersList);
+      tempStorageData.setFoldersName(foldersList.toList());
 
     } catch (err) {
       NavigatePage.replacePageMain(context);
