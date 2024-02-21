@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -22,23 +23,10 @@ class BottomTrailingSorting {
 
         const BottomsheetBar(),
 
-        const Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
-            child: Text(
-              "Sort By",
-              style: TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
+        const BottomTrailingTitle(title: "Sort By"),
         
         const Divider(color: ThemeColor.lightGrey),
       
-
         if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe, OriginFile.sharedOther]))
         ElevatedButton(
           onPressed: sortUploadDateOnPressed,

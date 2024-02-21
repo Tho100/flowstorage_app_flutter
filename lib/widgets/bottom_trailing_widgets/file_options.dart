@@ -36,6 +36,8 @@ class BottomTrailingOptions {
 
     final fileType = fileName.split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     return BottomTrailing().buildTrailing(
       context: context,
       childrens: <Widget>[
@@ -45,7 +47,6 @@ class BottomTrailingOptions {
         const BottomsheetBar(),
         
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
 
             Padding(
@@ -53,9 +54,9 @@ class BottomTrailingOptions {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: Image(
-                  width: Globals.generalFileTypes.contains(fileType) 
+                  width: isGeneralFile 
                     ? 36 : 60,
-                  height: Globals.generalFileTypes.contains(fileType) 
+                  height: isGeneralFile
                     ? 36 : 60,
                   fit: BoxFit.cover,
                   image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
