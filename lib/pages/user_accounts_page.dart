@@ -30,6 +30,19 @@ class UserAccountsPageState extends State<UserAccountsPage> {
   final localStorageModel = LocalStorageModel();
 
   Widget _buildLocalAccountListView() {
+
+    const titleTextStyle = TextStyle(
+      color: ThemeColor.secondaryWhite,
+      fontSize: 17,
+      fontWeight: FontWeight.w600
+    );
+
+    const subtitleTextStyle = TextStyle(
+      color: ThemeColor.thirdWhite,
+      fontSize: 14,
+      fontWeight: FontWeight.w500
+    );
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: localAccountUsernamesList.length,
@@ -75,21 +88,24 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               ),
             ),
           ),
-          title: Text(localAccountUsernamesList[index] == userData.username 
-              ? "${localAccountUsernamesList[index]} (Current)" 
-              : localAccountUsernamesList[index],
-            style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 17,
-              fontWeight: FontWeight.w600
-            ),
+          title: localAccountUsernamesList[index] == userData.username 
+          ? Row(
+            children: [
+              Text(localAccountUsernamesList[index],
+                style: titleTextStyle,
+              ),
+              const Spacer(),
+              const Padding( 
+                padding: EdgeInsets.only(right: 12.0),
+                child: Icon(Icons.check_circle_rounded, color: ThemeColor.darkPurple),
+              ),
+            ],
+          )
+          : Text(localAccountUsernamesList[index],
+            style: titleTextStyle,
           ),
           subtitle: Text("${localAccountPlansList[index]} ${GlobalsStyle.dotSeperator} ${localAccountGmailList[index]}", 
-            style: const TextStyle(
-              color: ThemeColor.thirdWhite,
-              fontSize: 14,
-              fontWeight: FontWeight.w500
-            ),
+            style: subtitleTextStyle,
           ),
         );
       },      

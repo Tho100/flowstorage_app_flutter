@@ -60,6 +60,8 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
       userData.setProfilePictureEnabled(false);
       userData.setProfilePicture(profilePicture!);
 
+      CallToast.call(message: "Updated profile picture");
+
     }
 
   }
