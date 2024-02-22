@@ -21,7 +21,7 @@ class BottomTrailingPsSearchFilter {
 
         const SizedBox(height: 12),
 
-        const BottomsheetBar(),
+        const BottomSheetBar(),
 
         const Align(
           alignment: Alignment.center,

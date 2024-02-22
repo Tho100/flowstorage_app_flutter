@@ -21,11 +21,11 @@ class SortingModel {
     final adjustedDifference = adjustedDateTime.difference(now).inDays.abs();
 
     if (adjustedDifference == 0) {
-      return '0 days ago ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
+      return '0 days ago ${GlobalsStyle.dotSeparator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
 
     } else {
       final daysAgoText = '$adjustedDifference days ago';
-      return '$daysAgoText ${GlobalsStyle.dotSeperator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
+      return '$daysAgoText ${GlobalsStyle.dotSeparator} ${DateFormat('MMM dd yyyy').format(adjustedDateTime)}';
       
     }
 

@@ -44,7 +44,7 @@ class BottomTrailingOptions {
 
         const SizedBox(height: 12),
 
-        const BottomsheetBar(),
+        const BottomSheetBar(),
         
         Row(
           children: [
@@ -79,7 +79,7 @@ class BottomTrailingOptions {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [
+                    if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [
                       const SizedBox(height: 2),
                       Text(
                         tempData.origin == OriginFile.public
@@ -175,7 +175,7 @@ class BottomTrailingOptions {
         if(fileName.contains('.'))
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
+        if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context);

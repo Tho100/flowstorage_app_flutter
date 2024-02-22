@@ -62,7 +62,7 @@ class FunctionModel {
         tempStorageData.folderNameList[indexOldFolder] = newFolderName;
       }
 
-      await CallNotify().customNotification(title: "Folder Renamed", subMesssage: "'$oldFolderName' renamed to '$newFolderName'");
+      await CallNotify().customNotification(title: "Folder Renamed", subMessage: "'$oldFolderName' renamed to '$newFolderName'");
 
       SnakeAlert.okSnake(message: "'$oldFolderName' Has been renamed to '$newFolderName'");
 
@@ -236,7 +236,7 @@ class FunctionModel {
 
     } catch (err, st) {
       logger.e('Exception from downloadFileData {function_model}', err, st);
-      await CallNotify().customNotification(title: "Download Failed", subMesssage: "Failed to download $fileName.");
+      await CallNotify().customNotification(title: "Download Failed", subMessage: "Failed to download $fileName.");
       SnakeAlert.errorSnake("Failed to download $fileName.");
     }
 
@@ -368,7 +368,7 @@ class FunctionModel {
 
     SnakeAlert.okSnake(message: "${checkedFilesName.length} Item(s) now available offline.", icon: Icons.check);
 
-    await CallNotify().customNotification(title: "Offline", subMesssage: "${checkedFilesName.length} Item(s) now available offline");
+    await CallNotify().customNotification(title: "Offline", subMessage: "${checkedFilesName.length} Item(s) now available offline");
 
   }
 
@@ -419,7 +419,7 @@ class FunctionModel {
 
       singleLoading.stopLoading();
 
-      await CallNotify().customNotification(title: "Offline", subMesssage: "1 Item now available offline");
+      await CallNotify().customNotification(title: "Offline", subMessage: "1 Item now available offline");
 
     } catch (err, st) {
       logger.e('Exception from makeAvailableOffline {function_model}', err, st); 

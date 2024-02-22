@@ -104,7 +104,7 @@ class SubPsListView extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 17)} ${GlobalsStyle.dotSeperator} $uploadDate",
+                      "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 17)} ${GlobalsStyle.dotSeparator} $uploadDate",
                       style: const TextStyle(
                         color: ThemeColor.secondaryWhite,
                         fontSize: 14,

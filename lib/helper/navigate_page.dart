@@ -144,29 +144,9 @@ class NavigatePage {
   }
 
   static void goToPageSettings() async {
-
-    final userData = GetIt.instance<UserDataProvider>();
-
-    final username = userData.username;
-    final accountType = userData.accountType;
-
-    _openSettingsPage( username: username,plan: accountType);
-
-  }
-
-  static void _openSettingsPage({
-    required String username,
-    required String plan,
-  }) {
     Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-        builder: (context) => 
-          CakeSettingsPage(
-          accountPlan: plan,
-          custUsername: username,
-        ),
-      ),
+      navigatorKey.currentContext!, 
+      MaterialPageRoute(builder: (context) => const SettingsPage())
     );
   }
 

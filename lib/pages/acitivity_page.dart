@@ -943,7 +943,7 @@ class AcitivtyPageState extends State<ActivityPage> {
       return;
     }
 
-    final removedDirectoryDateList = storageData.fileDateFilteredList.where((type) => type.contains(GlobalsStyle.dotSeperator)).toList();
+    final removedDirectoryDateList = storageData.fileDateFilteredList.where((type) => type.contains(GlobalsStyle.dotSeparator)).toList();
 
     final filteredFileName = filterNamesByType('.', removedDirectoryDateList.length);
 

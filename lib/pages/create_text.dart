@@ -169,7 +169,7 @@ class CreateTextPageState extends State<CreateText> {
 
     await CallNotify().customNotification(
       title: "Text File Saved",
-      subMesssage: "${ShortenText().cutText(fileName)} Has been saved",
+      subMessage: "${ShortenText().cutText(fileName)} Has been saved",
     );
 
     SnakeAlert.okSnake(

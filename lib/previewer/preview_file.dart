@@ -74,7 +74,7 @@ class PreviewFileState extends State<PreviewFile> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
-  final uploaderNameNotifer = ValueNotifier<String>('');
+  final uploaderNameNotifier = ValueNotifier<String>('');
 
   final filesWithCustomHeader = {
     GlobalsTable.homeText, GlobalsTable.homeAudio, 
@@ -99,7 +99,7 @@ class PreviewFileState extends State<PreviewFile> {
   @override
   void dispose() {
     appBarTitleNotifier.dispose();
-    uploaderNameNotifer.dispose();
+    uploaderNameNotifier.dispose();
     tempData.clearFileData();
     super.dispose();
   }
@@ -148,25 +148,25 @@ class PreviewFileState extends State<PreviewFile> {
     : storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
     if(localOriginFrom.contains(originFrom)) {
-      uploaderNameNotifer.value = userData.username;
+      uploaderNameNotifier.value = userData.username;
 
     } else if (sharingOriginFrom.contains(originFrom)) {
       final uploaderName = tempStorageData.sharedNameList[widget.tappedIndex];
-      uploaderNameNotifer.value = uploaderName;
+      uploaderNameNotifier.value = uploaderName;
 
     } else if ([OriginFile.public, OriginFile.publicSearching].contains(originFrom)) {
       if(tempData.origin == OriginFile.public) {
         psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
-        uploaderNameNotifer.value = psStorageData.psUploaderList[uploaderNameIndex];
+        uploaderNameNotifier.value = psStorageData.psUploaderList[uploaderNameIndex];
 
       } else {
         psStorageData.psSearchTitleList[widget.tappedIndex] = psStorageData.psSearchTitleList[uploaderNameIndex];
-        uploaderNameNotifer.value = psStorageData.psSearchUploaderList[uploaderNameIndex];
+        uploaderNameNotifier.value = psStorageData.psSearchUploaderList[uploaderNameIndex];
         
       }
       
     } else {
-      uploaderNameNotifer.value = userData.username;
+      uploaderNameNotifier.value = userData.username;
 
     }
 
@@ -320,7 +320,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  Future _callBottomTrailling() {
+  Future _callBottomTrailing() {
   
     final fileName = appBarTitleNotifier.value;
 
@@ -462,7 +462,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildMoreIconButton() {
     return IconButton(
-      onPressed: _callBottomTrailling,
+      onPressed: _callBottomTrailing,
       icon: const Icon(Icons.more_vert_rounded),
     );
   }
@@ -627,7 +627,7 @@ class PreviewFileState extends State<PreviewFile> {
             child: SizedBox(
               width: double.infinity,
               child: ValueListenableBuilder(
-                valueListenable: uploaderNameNotifer,
+                valueListenable: uploaderNameNotifier,
                 builder: (context, value, child) {
                   return Text(
                     value == userData.username ? "$value (You)" : value,
@@ -739,7 +739,7 @@ class PreviewFileState extends State<PreviewFile> {
                   ),
                 ),
               ),
-              if (WidgetVisibility.setVisibileList([OriginFile.public, OriginFile.publicSearching]))
+              if (WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(

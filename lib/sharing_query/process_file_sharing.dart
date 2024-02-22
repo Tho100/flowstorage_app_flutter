@@ -153,7 +153,7 @@ class ProcessFileSharing {
     }
 
     await CallNotify().customNotification(
-      title: "Sharing...", subMesssage: "Sharing to $username");
+      title: "Sharing...", subMessage: "Sharing to $username");
     
     final singleTextLoading = SingleTextLoading();
 

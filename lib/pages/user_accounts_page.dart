@@ -104,7 +104,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
           : Text(localAccountUsernamesList[index],
             style: titleTextStyle,
           ),
-          subtitle: Text("${localAccountPlansList[index]} ${GlobalsStyle.dotSeperator} ${localAccountGmailList[index]}", 
+          subtitle: Text("${localAccountPlansList[index]} ${GlobalsStyle.dotSeparator} ${localAccountGmailList[index]}", 
             style: subtitleTextStyle,
           ),
         );

@@ -218,7 +218,7 @@ class IntentSharingPage extends StatelessWidget {
 
     tempStorageData.addOfflineFileName(fileName);
 
-    await CallNotify().customNotification(title: "Offline", subMesssage: "1 Item now available offline");
+    await CallNotify().customNotification(title: "Offline", subMessage: "1 Item now available offline");
 
   }
 

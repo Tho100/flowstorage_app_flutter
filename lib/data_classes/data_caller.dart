@@ -120,7 +120,7 @@ class DataCaller {
 
       fileValues.add(fileName);
       filteredSearchedFiles.add(fileName);
-      setDateValues.add("$actualFileSize ${GlobalsStyle.dotSeperator} $formattedDate");
+      setDateValues.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");
       imageByteValues.add(imageBytes);
       filteredSearchedBytes.add(imageBytes);
     }
@@ -311,7 +311,7 @@ class DataCaller {
     storageData.setImageBytes(byteList);
 
     final sharedNames = fileDateList.map((string) {
-      final dotIndex = string.indexOf(GlobalsStyle.dotSeperator);
+      final dotIndex = string.indexOf(GlobalsStyle.dotSeparator);
       return dotIndex != -1 ? string.substring(0, dotIndex-1) : string;
     }).toList();
 

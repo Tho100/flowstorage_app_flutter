@@ -111,9 +111,6 @@ class HomePageState extends State<HomePage> {
   final searchBarFocusNode = FocusNode();
   final searchBarController = TextEditingController();
 
-  final focusNodeRedudane = FocusNode();
-  final searchControllerRedudane = TextEditingController();
-
   final sortingText = ValueNotifier<String>('Default');
   final searchHintText = ValueNotifier<String>('Search in Flowstorage');
 
@@ -130,7 +127,7 @@ class HomePageState extends State<HomePage> {
   final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
                                       Icons.expand_more);
 
-  final searchBarVisibileNotifier = ValueNotifier<bool>(true);
+  final searchBarVisibleNotifier = ValueNotifier<bool>(true);
 
   late StreamSubscription intentDataStreamSubscription;
 
@@ -154,7 +151,7 @@ class HomePageState extends State<HomePage> {
     SnakeAlert.upgradeSnake();
     await CallNotify().customNotification(
       title: "Warning", 
-      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage."
+      subMessage: "Storage usage has exceeded 70%. Upgrade for more storage."
     );
   }
 
@@ -336,7 +333,7 @@ class HomePageState extends State<HomePage> {
       message: "Uploading ${ShortenText().cutText(fileName)}"
     );
 
-    await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress");
+    await CallNotify().customNotification(title: "Uploading...", subMessage: "1 File(s) in progress");
 
     await UpdateListView().processUpdateListView(
       filePathVal: filePath, selectedFileName: fileName,
@@ -351,6 +348,7 @@ class HomePageState extends State<HomePage> {
     scaffoldMessenger.hideCurrentSnackBar();
 
     UpdateListView().addItemDetailsToListView(fileName: fileName);
+    
     _scrollEndListView();
 
     SnakeAlert.temporarySnake(
@@ -490,7 +488,7 @@ class HomePageState extends State<HomePage> {
 
     tempData.setAppBarTitle("Photos");
 
-    searchBarVisibileNotifier.value = false;
+    searchBarVisibleNotifier.value = false;
     staggeredListViewSelected.value = true;
 
     _navDirectoryButtonVisibility(false);
@@ -504,7 +502,7 @@ class HomePageState extends State<HomePage> {
 
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
-    searchBarVisibileNotifier.value = true;
+    searchBarVisibleNotifier.value = true;
     staggeredListViewSelected.value = false;
 
     filterPhotosTypeVisible = false;
@@ -561,7 +559,7 @@ class HomePageState extends State<HomePage> {
     togglePhotosPressed = false;
     filterPhotosTypeVisible = false;
 
-    searchBarVisibileNotifier.value = true;
+    searchBarVisibleNotifier.value = true;
     staggeredListViewSelected.value = false;
     
     _itemSearchingImplementation('');
@@ -824,7 +822,7 @@ class HomePageState extends State<HomePage> {
     _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
 
-    searchBarVisibileNotifier.value = true;
+    searchBarVisibleNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
  
   }
@@ -867,7 +865,7 @@ class HomePageState extends State<HomePage> {
     _addItemButtonVisibility(true);
 
     psButtonTextNotifier.value = "My Files";
-    searchBarVisibileNotifier.value = false;
+    searchBarVisibleNotifier.value = false;
     staggeredListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
@@ -910,7 +908,7 @@ class HomePageState extends State<HomePage> {
     _navDirectoryButtonVisibility(false);
     
     searchBarController.text = '';
-    searchBarVisibileNotifier.value = true;
+    searchBarVisibleNotifier.value = true;
     searchHintText.value = "Search in ${ShortenText().cutText(folderTitle)} folder";
     
   }
@@ -968,7 +966,7 @@ class HomePageState extends State<HomePage> {
     }
 
     if(togglePhotosPressed) {
-      searchBarVisibileNotifier.value = false;
+      searchBarVisibleNotifier.value = false;
       
     }
 
@@ -1238,7 +1236,7 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Future _callBottomTrailling(int index) {
+  Future _callBottomTrailing(int index) {
 
     final fileName = storageData.fileNamesFilteredList[index];
 
@@ -1603,7 +1601,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildSearchBar() {
     return ResponsiveSearchBar(
       controller: searchBarController,
-      visibility: searchBarVisibileNotifier, 
+      visibility: searchBarVisibleNotifier, 
       focusNode: searchBarFocusNode, 
       hintText: tempData.origin != OriginFile.public 
         ? searchHintText.value 
@@ -1933,7 +1931,7 @@ class HomePageState extends State<HomePage> {
         _navigateToPreviewFile(index);
       }, 
       fileOnLongPressed: () async {
-        await _callBottomTrailling(index);
+        await _callBottomTrailing(index);
       }
     );
 
@@ -1957,7 +1955,7 @@ class HomePageState extends State<HomePage> {
         _navigateToPreviewFile(index);
       }, 
       fileOnLongPressed: () async {
-        await _callBottomTrailling(index);
+        await _callBottomTrailing(index);
       }
     ); 
 
@@ -1989,7 +1987,7 @@ class HomePageState extends State<HomePage> {
 
           } else {
             if (!isRecent) {
-              _callBottomTrailling(index);
+              _callBottomTrailing(index);
             }
 
           }
@@ -2143,7 +2141,7 @@ class HomePageState extends State<HomePage> {
       uploaderName: uploaderName,
       fileType: fileType,
       originalDateValues: shortFormDate,
-      callBottomTrailing: _callBottomTrailling,
+      callBottomTrailing: _callBottomTrailing,
       downloadOnPressed: functionModel.downloadFileData,
     );
   }
@@ -2260,12 +2258,12 @@ class HomePageState extends State<HomePage> {
     final fileDateFilteredList = storageData.fileDateFilteredList;
 
     return ResponsiveListView(
-      itemOnLongPress: _callBottomTrailling,
+      itemOnLongPress: _callBottomTrailing,
       itemOnTap: _navigateToPreviewFile,
-      childrens: (int index) {
+      children: (int index) {
         return [
           GestureDetector(
-            onTap: () => _callBottomTrailling(index),
+            onTap: () => _callBottomTrailing(index),
             child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
           ),
         ];
@@ -2532,8 +2530,6 @@ class HomePageState extends State<HomePage> {
     debounceSearchingTimer!.cancel();
     searchBarFocusNode.dispose();
     searchBarController.dispose();
-    searchControllerRedudane.dispose();
-    focusNodeRedudane.dispose();
     scrollListViewController.dispose();
     psButtonTextNotifier.dispose();
     intentDataStreamSubscription.cancel();
@@ -2543,7 +2539,7 @@ class HomePageState extends State<HomePage> {
     navDirectoryButtonVisible.dispose();
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
-    searchBarVisibileNotifier.dispose();
+    searchBarVisibleNotifier.dispose();
     searchHintText.dispose();
     
     tempData.clearFileData();

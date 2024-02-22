@@ -53,7 +53,7 @@ class BottomTrailingReport {
 
               const SizedBox(height: 12),
 
-              const BottomsheetBar(),
+              const BottomSheetBar(),
 
               const BottomTrailingTitle(title: "Submit a Report"),
               

@@ -663,7 +663,7 @@ class UpgradePageState extends State<UpradePage> {
 
         singleLoading.stopLoading();
 
-        CallNotify().customNotification(title: "Account Upgraded", subMesssage: "Thank you for subscribing to our service! You subscribed for $userChoosenPlan plan");
+        CallNotify().customNotification(title: "Account Upgraded", subMessage: "Thank you for subscribing to our service! You subscribed for $userChoosenPlan plan");
 
         CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userChoosenPlan account plan.");
 

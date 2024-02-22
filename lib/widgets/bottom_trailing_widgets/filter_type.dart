@@ -68,7 +68,7 @@ class BottomTrailingFilter {
 
               const SizedBox(height: 12),
 
-              const BottomsheetBar(),
+              const BottomSheetBar(),
 
               const BottomTrailingTitle(title: "Filter Type"),
               
@@ -177,7 +177,7 @@ class BottomTrailingFilter {
 
               const SizedBox(height: 12),
 
-              const BottomsheetBar(),
+              const BottomSheetBar(),
 
               const BottomTrailingTitle(title: "Filter Type"),
 
