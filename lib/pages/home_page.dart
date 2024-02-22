@@ -154,7 +154,8 @@ class HomePageState extends State<HomePage> {
     SnakeAlert.upgradeSnake();
     await CallNotify().customNotification(
       title: "Warning", 
-      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage.");
+      subMesssage: "Storage usage has exceeded 70%. Upgrade for more storage."
+    );
   }
 
   void _addItemButtonVisibility(bool visible) {
@@ -598,6 +599,7 @@ class HomePageState extends State<HomePage> {
     }
 
     setState(() {
+      _addItemButtonVisibility(true);
       selectedItemIsChecked = false;
       editAllIsPressed = false;
     });
@@ -668,6 +670,7 @@ class HomePageState extends State<HomePage> {
   void _editAllOnPressed() {
 
     setState(() {
+      _addItemButtonVisibility(false);
       editAllIsPressed = !editAllIsPressed;
     });
 
@@ -679,6 +682,7 @@ class HomePageState extends State<HomePage> {
     if(!editAllIsPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
       setState(() {
+        _addItemButtonVisibility(true);
         selectedItemIsChecked = false;
       });
     }

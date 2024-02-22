@@ -95,7 +95,7 @@ class UpgradePageState extends State<UpradePage> {
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkBlack,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(26),
           )
         ),
         onPressed: getNowOnPressed,

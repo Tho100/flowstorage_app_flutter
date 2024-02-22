@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/pages/public_storage/submit_report_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class BottomTrailingReport {
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: ThemeColor.darkGrey,
+        backgroundColor: ThemeColor.darkBlack,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.whiteGrey),
@@ -41,7 +42,7 @@ class BottomTrailingReport {
 
   Future buildReportType() {
     return showModalBottomSheet(
-      backgroundColor: ThemeColor.darkGrey,
+      backgroundColor: ThemeColor.darkBlack,
       context: context,
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
@@ -54,19 +55,7 @@ class BottomTrailingReport {
 
               const BottomsheetBar(),
 
-              const Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 12.0, top: 25.0),
-                  child: Text(
-                    "Submit a Report",
-                    style: TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
+              const BottomTrailingTitle(title: "Submit a Report"),
               
               const Divider(color: ThemeColor.lightGrey),
               

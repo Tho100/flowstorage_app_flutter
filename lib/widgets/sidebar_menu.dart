@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
+import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -75,19 +76,50 @@ class CustomSideBarMenu extends StatelessWidget {
         child: Ink(
           color: ThemeColor.darkBlack,
           child: ListTile(
-            horizontalTitleGap: 0,
-            contentPadding: const EdgeInsets.only(left: 22),
+            horizontalTitleGap: 1.5,
+            contentPadding: const EdgeInsets.only(left: 26),
             leading: Icon(
               icon,
               color: const Color.fromARGB(255, 215, 215, 215),
-              size: 20,
+              size: 21.5,
             ),
             title: Text(
               title,
               style: const TextStyle(
                 color: Color.fromARGB(255, 216, 216, 216),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+                fontSize: 18.5,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShowAccountsButton() {
+    return Transform.translate(
+      offset: const Offset(4, 0),
+      child: ClipOval(
+        child: SplashWidget(
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: Container(
+              decoration: BoxDecoration(
+                color: ThemeColor.darkGrey.withOpacity(0.8),
+                border: Border.all(
+                  color: Colors.transparent,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(65),
+              ),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  // TODO: Show user accounts bottom trailing
+                }, 
+                icon: const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite, size: 21),
               ),
             ),
           ),
@@ -101,18 +133,24 @@ class CustomSideBarMenu extends StatelessWidget {
       future: initializeProfilePic(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return ProfilePicture(
-            notifierValue: snapshot.data,
-            customBackgroundColor: ThemeColor.justWhite,
-            customOnEmpty: Center(
-              child: Text(
-                userData.username != "" ? userData.username.substring(0, 2) : "",
-                style: const TextStyle(
-                  fontSize: 24,
-                  color: ThemeColor.darkPurple,
+          return Row(
+            children: [
+              ProfilePicture(
+                notifierValue: snapshot.data,
+                customBackgroundColor: ThemeColor.justWhite,
+                customOnEmpty: Center(
+                  child: Text(
+                    userData.username != "" ? userData.username.substring(0, 2) : "",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: ThemeColor.darkPurple,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const Spacer(),
+              _buildShowAccountsButton(),
+            ],
           );
 
         } else {
@@ -163,13 +201,17 @@ class CustomSideBarMenu extends StatelessWidget {
           elevation: 0,
           padding: const EdgeInsets.symmetric(vertical: 20),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(26),
           ),
-          backgroundColor: ThemeColor.darkPurple,
+          backgroundColor: ThemeColor.justWhite,
         ),
         child: const Text(
           'Get more storage',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 17.5, 
+            fontWeight: FontWeight.bold,
+            color: ThemeColor.darkBlack
+          ),
         ),
       ),
     );
@@ -313,7 +355,7 @@ class CustomSideBarMenu extends StatelessWidget {
               final progressValue = storageUsageSnapshot.data! / 100.0;
               return LinearProgressIndicator(
                 backgroundColor: ThemeColor.lightGrey,
-                valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.darkPurple),
+                valueColor: AlwaysStoppedAnimation<Color>(progressValue > 0.70 ? ThemeColor.darkRed : ThemeColor.secondaryWhite),
                 value: progressValue,
               );
             },
@@ -334,30 +376,40 @@ class CustomSideBarMenu extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: ThemeColor.darkBlack,
                 ),
-                child: Row(
-                  children: [
-
-                    _buildProfilePicture(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                   
-                    const SizedBox(width: 15),
+                        _buildProfilePicture(),
   
-                    _buildAccountDetails(),
-                    
-                  ],
+                        const SizedBox(height: 8),
+                
+                        _buildAccountDetails(),        
+                  
+                      ],
+                    ),
+                  ),
                 ),
               ),
-  
+    
               _buildGetMoreStorageButton(),
-  
+    
               const SizedBox(height: 15),
-  
-              const Divider(color: ThemeColor.lightGrey),
-  
+    
+              const Padding(
+                padding: EdgeInsets.only(left: 18, right: 18),
+                child: Divider(color: ThemeColor.lightGrey),
+              ),
+    
               _buildButtons(context),
-  
+    
               if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedOther])) ... [ 
               _buildStorageUsage(),
-  
+    
               _buildProgressBar(),
               
             ],
@@ -365,6 +417,7 @@ class CustomSideBarMenu extends StatelessWidget {
           ],
         ),
       ),
+    
     );
 
   }
