@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class GlobalsStyle {
 
-  static const dotSeperator = " \u{2022} ";
+  static const dotSeparator = " \u{2022} ";
 
   static final psTagsToColor = {
     "Entertainment": Colors.orange,

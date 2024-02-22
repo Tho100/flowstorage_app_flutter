@@ -90,7 +90,7 @@ class PsStaggeredListView extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "$uploaderName ${GlobalsStyle.dotSeperator} $originalDateValues",
+                      "$uploaderName ${GlobalsStyle.dotSeparator} $originalDateValues",
                       style: const TextStyle(
                           color: ThemeColor.secondaryWhite, fontSize: 15, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center,

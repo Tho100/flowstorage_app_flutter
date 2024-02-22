@@ -21,7 +21,7 @@ class DateGetterPs {
 
       final formattedDate = FormatDate().formatDifference(dateValue);
 
-      return '$formattedDate ${GlobalsStyle.dotSeperator} $tagValue';
+      return '$formattedDate ${GlobalsStyle.dotSeparator} $tagValue';
 
     }).toList();
 
@@ -38,7 +38,7 @@ class DateGetterPs {
 
       final formattedDate = FormatDate().formatDifference(dateValue);
 
-      return '$formattedDate ${GlobalsStyle.dotSeperator} $tagValue';
+      return '$formattedDate ${GlobalsStyle.dotSeparator} $tagValue';
 
     }).toList();
 

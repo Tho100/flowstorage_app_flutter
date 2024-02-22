@@ -51,12 +51,12 @@ class CallNotify {
 
   Future<void> customNotification({
     required String title,
-    required String subMesssage
+    required String subMessage
   }) async {
 
     await NotificationApi.showOnfinishTaskNotification(
       title: title,
-      body: subMesssage,
+      body: subMessage,
       payload: 'h_collin1'
     );
   }

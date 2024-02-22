@@ -18,7 +18,7 @@ class BottomTrailingShared {
 
         const SizedBox(height: 12),
 
-        const BottomsheetBar(),
+        const BottomSheetBar(),
 
         const BottomTrailingTitle(title: "Shared"),
         

@@ -14,7 +14,7 @@ class FormatDate {
 
     final formattedDate = DateFormat('MMM d yyyy').format(date);
 
-    return '$difference days ago ${GlobalsStyle.dotSeperator} $formattedDate';
+    return '$difference days ago ${GlobalsStyle.dotSeparator} $formattedDate';
 
   }
 

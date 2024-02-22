@@ -18,7 +18,7 @@ class WidgetVisibility {
     return _tempData.origin == origin;
   }
 
-  static bool setVisibileList(List<OriginFile> origin) {
+  static bool setVisibleList(List<OriginFile> origin) {
     return origin.contains(_tempData.origin);
   }
 

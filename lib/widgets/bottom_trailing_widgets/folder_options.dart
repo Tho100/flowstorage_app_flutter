@@ -20,7 +20,7 @@ class BottomTrailingFolder {
 
         const SizedBox(height: 12),
 
-        const BottomsheetBar(),
+        const BottomSheetBar(),
 
         BottomTrailingTitle(title: folderName.length > 50 ? "${folderName.substring(0,50)}..." : "$folderName Folder"),
 

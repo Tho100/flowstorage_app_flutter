@@ -112,7 +112,7 @@ class SaveFolder {
       loadingDialog.stopLoading();
       SnakeAlert.okSnake(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
       
-      await CallNotify().customNotification(title: "Folder Saved", subMesssage: "${nameList.length} File(s) has been downloaded");
+      await CallNotify().customNotification(title: "Folder Saved", subMessage: "${nameList.length} File(s) has been downloaded");
 
     } catch (err) {
       SnakeAlert.errorSnake("Failed to save folder.");

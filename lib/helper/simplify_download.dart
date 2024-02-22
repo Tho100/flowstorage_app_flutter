@@ -81,7 +81,7 @@ class SimplifyDownload {
 
     } catch (err, st) {
       Logger().e("Exception from downloadFile {SimplifyDownload}", err, st);
-      await CallNotify().customNotification(title: "Something went wrong",subMesssage: "Failed to download $fileNameValue");
+      await CallNotify().customNotification(title: "Something went wrong",subMessage: "Failed to download $fileNameValue");
     } 
    
   }

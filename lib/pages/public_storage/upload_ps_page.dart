@@ -170,7 +170,7 @@ class UploadPsPage extends StatelessWidget {
                   return Visibility(
                     visible: value != "",
                     child: Text(
-                      "${GlobalsStyle.dotSeperator} $value",
+                      "${GlobalsStyle.dotSeparator} $value",
                       style: TextStyle(
                         color: GlobalsStyle.psTagsToColor[value],
                         fontSize: 15,

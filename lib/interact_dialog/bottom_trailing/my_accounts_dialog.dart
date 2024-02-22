@@ -53,7 +53,7 @@ class MyAccountsDialog {
               
               const SizedBox(height: 12),
 
-              const BottomsheetBar(),
+              const BottomSheetBar(),
 
               const BottomTrailingTitle(title: "My Accounts"),
 
@@ -76,7 +76,7 @@ class MyAccountsDialog {
                         style: titleTextStyle,
                       ),
                       
-                      subtitle: Text("${localAccountPlansList[index]} ${GlobalsStyle.dotSeperator} ${localAccountGmailList[index]}", 
+                      subtitle: Text("${localAccountPlansList[index]} ${GlobalsStyle.dotSeparator} ${localAccountGmailList[index]}", 
                         style: subtitleTextStyle,
                       ),
                     );

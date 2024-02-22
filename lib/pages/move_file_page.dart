@@ -239,7 +239,7 @@ class MoveFilePageState extends State<MoveFilePage> {
 
       SnakeAlert.okSnake(message: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
 
-      await CallNotify().customNotification(title: "File Moved", subMesssage: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
+      await CallNotify().customNotification(title: "File Moved", subMessage: "${widget.fileNames.length} File(s) has been moved to ${ShortenText().cutText(selectedDirectory)}.");
 
     }
 

@@ -91,7 +91,7 @@ class RecentPsListView extends StatelessWidget {
                 ),
               ),
               Text(
-                "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12)} ${GlobalsStyle.dotSeperator} $uploadDate",
+                "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12)} ${GlobalsStyle.dotSeparator} $uploadDate",
                 style: const TextStyle(
                   color: ThemeColor.secondaryWhite,
                   fontSize: 14,

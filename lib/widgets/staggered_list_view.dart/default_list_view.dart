@@ -24,7 +24,7 @@ class DefaultStaggeredListView extends StatelessWidget {
   final storageData = GetIt.instance<StorageDataProvider>();
 
   String getProperDate(String date) {
-    final dotIndex = date.indexOf(GlobalsStyle.dotSeperator);
+    final dotIndex = date.indexOf(GlobalsStyle.dotSeparator);
     return dotIndex != -1 
       ? date.substring(dotIndex + 4) 
       : date;

@@ -8,13 +8,13 @@ class ResponsiveListView extends StatelessWidget {
 
   final Function itemOnLongPress;
   final Function itemOnTap;
-  final List<Widget> Function(int index) childrens;
+  final List<Widget> Function(int index) children;
   final List<InlineSpan> Function(int index) inlineSpanWidgets;
 
   const ResponsiveListView({
     required this.itemOnLongPress,
     required this.itemOnTap,
-    required this.childrens,
+    required this.children,
     required this.inlineSpanWidgets,
     Key? key
   }) : super(key: key); 
@@ -82,7 +82,7 @@ class ResponsiveListView extends StatelessWidget {
                       offset: trailingOffset,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: childrens(index),
+                        children: children(index),
                       ),
                     ),
                     title: Transform.translate(

@@ -16,25 +16,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
-class CakeSettingsPage extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
 
-  final String custUsername;
-  final String accountPlan;
-
-  const CakeSettingsPage({
-    Key? key, 
-    required this.custUsername, 
-    required this.accountPlan,
-  }) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  CakeSettingsPageState createState() => CakeSettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
+
 }
 
-class CakeSettingsPageState extends State<CakeSettingsPage> {
-
-  late String custUsername;
-  late String accountPlan;
+class SettingsPageState extends State<SettingsPage> {
 
   final dataCaller = DataCaller();
 
@@ -187,11 +178,11 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Clipboard.setData(ClipboardData(text: custUsername));
+                          Clipboard.setData(ClipboardData(text: userData.username));
                           CallToast.call(message: "Username copied.");
                         },
                         child: Text(
-                          custUsername,
+                          userData.username,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -202,7 +193,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        accountPlan,
+                        userData.accountType,
                         style: const TextStyle(
                           color: Color.fromARGB(255, 185, 185, 185),
                           fontSize: 16,
@@ -236,7 +227,7 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
             
             _buildButtons(
               "Account", 
-              "Account informations and more", 
+              "Account information and more", 
               Icons.person, () {
                 NavigatePage.goToPageSettingsAccount();
               }
@@ -322,8 +313,6 @@ class CakeSettingsPageState extends State<CakeSettingsPage> {
   @override
   void initState() {
     super.initState();
-    custUsername = widget.custUsername;
-    accountPlan = widget.accountPlan;
     initializeProfilePic();
   }
 

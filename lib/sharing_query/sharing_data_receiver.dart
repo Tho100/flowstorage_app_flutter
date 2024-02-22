@@ -100,7 +100,7 @@ class SharingDataReceiver {
 
         final data = {
           'name': decryptedFileNames,
-          'date': '$sharedUsername ${GlobalsStyle.dotSeperator} $formattedDate',
+          'date': '$sharedUsername ${GlobalsStyle.dotSeparator} $formattedDate',
           'file_data': bufferedFileBytes,
         };
         

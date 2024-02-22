@@ -439,7 +439,7 @@ class UploadDialogModel {
       return;
     }
 
-    await CallNotify().customNotification(title: "Uploading folder...", subMesssage: "${ShortenText().cutText(folderName)} In progress");
+    await CallNotify().customNotification(title: "Uploading folder...", subMessage: "${ShortenText().cutText(folderName)} In progress");
 
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
@@ -470,7 +470,7 @@ class UploadDialogModel {
       message: "Added $folderName folder."
     );
 
-    await CallNotify().customNotification(title: "Folder Uploaded", subMesssage: "Folder $folderName has been added");
+    await CallNotify().customNotification(title: "Folder Uploaded", subMessage: "Folder $folderName has been added");
 
   }
 
@@ -486,7 +486,7 @@ class UploadDialogModel {
 
     final generateFileName = Generator.generateRandomString(Generator.generateRandomInt(5,15));
 
-    await CallNotify().customNotification(title: "Uploading...",subMesssage: "1 File(s) in progress") ;
+    await CallNotify().customNotification(title: "Uploading...",subMessage: "1 File(s) in progress") ;
     
     for(final images in imagePath) {
 

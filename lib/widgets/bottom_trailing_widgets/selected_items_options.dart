@@ -28,7 +28,7 @@ class BottomTrailingSelectedItems {
 
         const SizedBox(height: 12),
 
-        const BottomsheetBar(),
+        const BottomSheetBar(),
 
         BottomTrailingTitle(title: tempData.appBarTitle),
 

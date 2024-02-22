@@ -67,7 +67,7 @@ class ShareFileData {
 
       await CallNotify().customNotification(
         title: "File Shared Successfully",
-        subMesssage:
+        subMessage:
         "${ShortenText().cutText(encryption.decrypt(fileName))} Has been shared to $sendTo",
       );
 
@@ -77,7 +77,7 @@ class ShareFileData {
       Logger().e("Exception from insertValuesParam {share_file}", err, st);
       await CallNotify().customNotification(
         title: "Something went wrong",
-        subMesssage: "Failed to share ${{ShortenText().cutText(EncryptionClass().decrypt(fileName))}}",
+        subMessage: "Failed to share ${{ShortenText().cutText(EncryptionClass().decrypt(fileName))}}",
       );
 
     }
