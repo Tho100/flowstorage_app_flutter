@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
+import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/my_accounts_dialog.dart';
+import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -97,7 +99,7 @@ class CustomSideBarMenu extends StatelessWidget {
     );
   }
 
-  Widget _buildShowAccountsButton() {
+  Widget _buildShowAccountsButton(BuildContext context) {
     return Transform.translate(
       offset: const Offset(4, 0),
       child: ClipOval(
@@ -116,8 +118,23 @@ class CustomSideBarMenu extends StatelessWidget {
               ),
               child: IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {
-                  // TODO: Show user accounts bottom trailing
+                onPressed: () async {
+
+                  final localStorageModel = LocalStorageModel();
+
+                  final usernames = await localStorageModel.readLocalAccountUsernames();
+                  final emails = await localStorageModel.readLocalAccountEmails();
+                  final plans = await localStorageModel.readLocalAccountPlans();
+
+                  final profilePic = await initializeProfilePic();
+
+                  MyAccountsDialog(
+                    localAccountUsernamesList: usernames,
+                    localAccountGmailList: emails,
+                    localAccountPlansList: plans,
+                    profilePicNotifier: profilePic
+                  ).buildMyAccountsBottomSheet();
+
                 }, 
                 icon: const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite, size: 21),
               ),
@@ -149,7 +166,7 @@ class CustomSideBarMenu extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              _buildShowAccountsButton(),
+              _buildShowAccountsButton(context),
             ],
           );
 

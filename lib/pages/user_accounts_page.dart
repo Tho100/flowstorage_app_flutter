@@ -97,7 +97,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               const Spacer(),
               const Padding( 
                 padding: EdgeInsets.only(right: 12.0),
-                child: Icon(Icons.check_circle_rounded, color: Colors.green,),
+                child: Icon(Icons.check_circle_rounded, color: ThemeColor.darkPurple),
               ),
             ],
           )
