@@ -26,7 +26,8 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
   final emailController = TextEditingController();
   final recoveryController = TextEditingController();
-  final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
+
+  final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
   Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured) {
 
@@ -40,7 +41,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
               borderRadius: BorderRadius.circular(14),
             ),
             child: ValueListenableBuilder<bool>(
-              valueListenable: sufixIconVisibilityNotifier,
+              valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
@@ -57,7 +58,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                         color: const Color.fromARGB(255, 141, 141, 141),
                       ),
                       onPressed: () {
-                        sufixIconVisibilityNotifier.value = !isVisible;
+                        suffixIconVisibilityNotifier.value = !isVisible;
                       },
                     )
                   : null,
@@ -151,7 +152,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   void dispose() {
     emailController.dispose();
     recoveryController.dispose();
-    sufixIconVisibilityNotifier.dispose();
+    suffixIconVisibilityNotifier.dispose();
     super.dispose();
   }
 

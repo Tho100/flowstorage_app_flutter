@@ -32,7 +32,7 @@ class EmptyBody extends StatelessWidget {
       OriginFile.home: "Add a new item",
       OriginFile.directory: "Add a new item",
       OriginFile.folder: "Add a new item",
-      OriginFile.offline: "Tap 'Make available offline' on file's menu \nto acess them offline",
+      OriginFile.offline: "Tap 'Make available offline' on file's menu \nto access them offline",
       OriginFile.sharedMe: "Files shared to you will be shown here",
       OriginFile.sharedOther: "Shared files will be shown here"
     };

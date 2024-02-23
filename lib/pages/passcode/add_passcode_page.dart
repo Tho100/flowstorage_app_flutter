@@ -68,7 +68,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     try {
 
       CustomAlertDialog.alertDialogCustomOnPressed(
-        messages: "Confrim passcode?", 
+        messages: "Confirm passcode?", 
         oPressedEvent: () async { 
           Navigator.pop(context);
           await addPassCode();

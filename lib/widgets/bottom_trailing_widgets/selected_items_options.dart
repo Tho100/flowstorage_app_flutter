@@ -24,7 +24,7 @@ class BottomTrailingSelectedItems {
   }) {
     return BottomTrailing().buildTrailing(
       context: context,
-      childrens: <Widget>[
+      children: <Widget>[
 
         const SizedBox(height: 12),
 
@@ -73,7 +73,7 @@ class BottomTrailingSelectedItems {
             ),
           ),
         
-          if(WidgetVisibility.setVisibile(OriginFile.home))
+          if(WidgetVisibility.setVisible(OriginFile.home))
           ElevatedButton(
             onPressed: moveOnPressed,
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,

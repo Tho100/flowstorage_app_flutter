@@ -73,6 +73,8 @@ class PsStaggeredListView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final mediaQuery = MediaQuery.of(context).size;
+    
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
 
     return Container(
       width: mediaQuery.width,
@@ -185,8 +187,8 @@ class PsStaggeredListView extends StatelessWidget {
               children: [
                 
                 Container(
-                  width: Globals.generalFileTypes.contains(fileType) ? mediaQuery.width - 33 : mediaQuery.width - 33,
-                  height: Globals.generalFileTypes.contains(fileType) ? 175 : 395,
+                  width: isGeneralFile ? mediaQuery.width - 33 : mediaQuery.width - 33,
+                  height: isGeneralFile ? 175 : 395,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
@@ -198,9 +200,9 @@ class PsStaggeredListView extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     child: Image.memory(
                       imageBytes, 
-                      cacheHeight: Globals.generalFileTypes.contains(fileType) ? 55 : null,
-                      cacheWidth: Globals.generalFileTypes.contains(fileType) ? 55 : null,
-                      fit: Globals.generalFileTypes.contains(fileType) 
+                      cacheHeight: isGeneralFile ? 55 : null,
+                      cacheWidth: isGeneralFile ? 55 : null,
+                      fit: isGeneralFile 
                       ? BoxFit.scaleDown : BoxFit.cover
                     ) 
                   ),

@@ -25,9 +25,10 @@ class ResetPasswordPage extends StatefulWidget {
 
 class ResetAuthenticationState extends State<ResetPasswordPage> {
 
-  final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
   final curPassController = TextEditingController();
   final newPassController = TextEditingController();
+
+  final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
   Widget _buildTextField(String hintText, TextEditingController controller, BuildContext context, bool isSecured, bool isPin) {
 
@@ -41,7 +42,7 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
               borderRadius: BorderRadius.circular(14),
             ),
             child: ValueListenableBuilder<bool>(
-              valueListenable: sufixIconVisibilityNotifier,
+              valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
@@ -57,7 +58,7 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
                         color: const Color.fromARGB(255, 141, 141, 141),
                       ),
                       onPressed: () {
-                        sufixIconVisibilityNotifier.value = !isVisible;
+                        suffixIconVisibilityNotifier.value = !isVisible;
                       },
                     )
                   : null,
@@ -159,7 +160,7 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
   void dispose() {
     newPassController.dispose();
     curPassController.dispose();
-    sufixIconVisibilityNotifier.dispose();
+    suffixIconVisibilityNotifier.dispose();
     super.dispose();
   }
 

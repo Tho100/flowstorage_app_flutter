@@ -33,12 +33,6 @@ class CommentPageState extends State<CommentPage> {
 
   late ValueNotifier<String> commentNotifier = ValueNotifier('');
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeFileComment();
-  }
-
   Future<String> _sharedFileComment() async {
 
     final conn = await SqlConnection.initializeConnection();
@@ -138,7 +132,7 @@ class CommentPageState extends State<CommentPage> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               overflow: TextOverflow.ellipsis,
             )
           ),
@@ -246,6 +240,12 @@ class CommentPageState extends State<CommentPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initializeFileComment();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -261,10 +261,8 @@ class CommentPageState extends State<CommentPage> {
         builder: (context, value, _) {
           if (value.isNotEmpty) {
             return _buildComment(commentValue: value);
-
           } else {
             return _buildNoComment();
-
           }
         },
       ),

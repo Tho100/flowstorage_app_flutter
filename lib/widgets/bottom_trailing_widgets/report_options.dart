@@ -95,7 +95,7 @@ class BottomTrailingReport {
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Prviacy violation", "pv"),
+                          _buildReportTypeButtons("Privacy violation", "pv"),
               
                           const SizedBox(width: 8),
               

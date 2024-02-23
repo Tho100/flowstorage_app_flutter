@@ -24,9 +24,6 @@ class MyPlanPageState extends State<MyPlanPage> {
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  final containerWidth = 35.0;
-  final containerheight = 305.0;
-
   final cardBorderRadius = 25.0;
 
   Future<String> _convertToLocalCurrency(double usdValue) async {
@@ -75,11 +72,14 @@ class MyPlanPageState extends State<MyPlanPage> {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       conversionRate = data['data'][countryCurrency]; 
+      
     } else {
       throw Exception('Failed to load exchange rates');
+
     }
 
     return ("$countryCurrency${usdValue*conversionRate}").toString();
+
   }
 
   Widget _buildSubHeader(String text, {double? customFont}) {

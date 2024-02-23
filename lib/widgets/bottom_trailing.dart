@@ -6,7 +6,7 @@ class BottomTrailing {
 
   Future buildTrailing({
     required BuildContext context,
-    required List<Widget> childrens
+    required List<Widget> children
   }) {
     return showModalBottomSheet(
       backgroundColor: ThemeColor.darkBlack,
@@ -17,7 +17,7 @@ class BottomTrailing {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: childrens
+          children: children
         );
       }
     );
