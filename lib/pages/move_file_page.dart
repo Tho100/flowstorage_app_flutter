@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/special_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -40,7 +41,9 @@ class MoveFilePage extends StatefulWidget {
 
 class MoveFilePageState extends State<MoveFilePage> {
 
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
+
   final userData = GetIt.instance<UserDataProvider>();
 
   final encryption = EncryptionClass();
@@ -159,10 +162,10 @@ class MoveFilePageState extends State<MoveFilePage> {
                 ),
               ),
               trailing: CheckBoxItems(
-                index: index, 
-                updateCheckboxState: _updateCheckboxState,
-                checkedList: checkedDirectory
-                ),              
+                  index: index, 
+                  updateCheckboxState: _updateCheckboxState,
+                  checkedList: checkedDirectory
+                ),            
               ),
             ),
           );
@@ -337,14 +340,15 @@ class MoveFilePageState extends State<MoveFilePage> {
   }
 
   void initializeDirectoriesName() {
-    final getDirectory = storageData.fileNamesFilteredList.where((name) => !name.contains('.'));
+    final getDirectory = tempStorageData.directoryNameList;
     directoriesList.addAll(getDirectory);
   }
 
   void initializeDirectoriesCheckbox() {
-    final getDirectoryLength = storageData.fileNamesFilteredList.where((name) => !name.contains('.')).length;
+    final getDirectoryLength = tempStorageData.directoryNameList.length;
     checkedDirectory = List.generate(
-        getDirectoryLength, (index) => false);
+      getDirectoryLength, (index) => false
+    );
   }
 
   @override
