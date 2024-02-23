@@ -187,8 +187,9 @@ class CustomSideBarMenu extends StatelessWidget {
           Text(
             userData.username,
             style: const TextStyle(
-              color: Colors.white,
+              color: ThemeColor.justWhite,
               fontSize: 20,
+              fontWeight: FontWeight.w500,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -196,8 +197,9 @@ class CustomSideBarMenu extends StatelessWidget {
           Text(
             userData.email,
             style: const TextStyle(
-              color: Color.fromARGB(255, 185, 185, 185),
+              color: ThemeColor.thirdWhite,
               fontSize: 16,
+              fontWeight: FontWeight.w500,
               overflow: TextOverflow.ellipsis,
             ),
           ),
