@@ -109,7 +109,8 @@ class SettingsPageState extends State<SettingsPage> {
                 subheader,
                 style: const TextStyle(
                   fontSize: 14.0,
-                  color: ThemeColor.secondaryWhite, 
+                  fontWeight: FontWeight.w500,
+                  color: ThemeColor.thirdWhite, 
                 ),
               ),
             ],
@@ -134,7 +135,10 @@ class SettingsPageState extends State<SettingsPage> {
               width: MediaQuery.of(context).size.width-25,
               height: 85,
               decoration: BoxDecoration(
-                color: ThemeColor.darkGrey,
+                color: ThemeColor.darkBlack,
+                border: Border.all(
+                  color: ThemeColor.lightGrey
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -184,19 +188,20 @@ class SettingsPageState extends State<SettingsPage> {
                         child: Text(
                           userData.username,
                           style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                            color: ThemeColor.justWhite,
+                            fontSize: 18.5,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w500
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 3),
                       Text(
                         userData.accountType,
                         style: const TextStyle(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                          color: ThemeColor.thirdWhite,
                           fontSize: 16,
+                          fontWeight: FontWeight.w500,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -212,8 +217,18 @@ class SettingsPageState extends State<SettingsPage> {
                       onPressed: () {
                         NavigatePage.goToPageUpgrade();
                       },
-                      style: GlobalsStyle.btnMainStyle,
-                      child: const Text('Upgrade'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        backgroundColor: ThemeColor.justWhite,
+                      ),
+                      child: const Text('Upgrade',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: ThemeColor.darkBlack
+                        ),
+                      ),
                     ),
                   ),
             
@@ -269,7 +284,10 @@ class SettingsPageState extends State<SettingsPage> {
               }
             ),
 
-            const Divider(color: ThemeColor.lightGrey),
+            const Padding(
+              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              child: Divider(color: ThemeColor.lightGrey),
+            ),
 
             _buildButtons(
               "Sign Out", 

@@ -18,14 +18,16 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
-class CakeSignUpPage extends StatefulWidget {
-  const CakeSignUpPage({super.key});
+class SignUpPage extends StatefulWidget {
+
+  const SignUpPage({super.key});
 
   @override
-  CakeSignUpPageState createState() => CakeSignUpPageState();
+  SignUpPageState createState() => SignUpPageState();
+
 }
 
-class CakeSignUpPageState extends State<CakeSignUpPage> {
+class SignUpPageState extends State<SignUpPage> {
 
   final dateNow = DateFormat('yyyy/MM/dd').format(DateTime.now());
 
@@ -37,15 +39,6 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
   final auth1Controller = TextEditingController(); 
 
   final _locator = GetIt.instance;
-
-  @override
-  void dispose() {
-    usernameController.clear();
-    auth0Controller.clear();
-    emailController.clear();
-    auth1Controller.clear();
-    super.dispose();
-  }
 
   Future<void> insertUserRegistrationInformation({
     required String username,
@@ -160,6 +153,15 @@ class CakeSignUpPageState extends State<CakeSignUpPage> {
       auth1: custAuth1Input
     );
 
+  }
+
+  @override
+  void dispose() {
+    usernameController.clear();
+    auth0Controller.clear();
+    emailController.clear();
+    auth1Controller.clear();
+    super.dispose();
   }
 
   @override

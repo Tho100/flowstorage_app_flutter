@@ -68,5 +68,5 @@ class MainRun extends StatelessWidget {
 
 void homePage() => runApp(
   const MaterialApp(
-  home: CakeSignUpPage(),
+  home: SignUpPage(),
 ));

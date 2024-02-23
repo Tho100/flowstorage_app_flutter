@@ -27,10 +27,10 @@ class ActivityPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ActivityPage> createState() => AcitivtyPageState();
+  State<ActivityPage> createState() => ActivityPageState();
 }
 
-class AcitivtyPageState extends State<ActivityPage> {
+class ActivityPageState extends State<ActivityPage> {
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();

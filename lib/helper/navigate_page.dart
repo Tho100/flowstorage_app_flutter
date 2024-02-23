@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/pages/acitivity_page.dart';
+import 'package:flowstorage_fsc/pages/activity_page.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
 import 'package:flowstorage_fsc/pages/home_page.dart';
@@ -64,14 +64,14 @@ class NavigatePage {
     );
   }
 
-  static void goToPageCongfigurePasscode() {
+  static void goToPageConfigurePasscode() {
     Navigator.push(
       navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => const ConfigurePasscodePage()),
     );
   }
 
-  static void goToPageCongfigureSharingPassword() {
+  static void goToPageConfigureSharingPassword() {
     Navigator.push(
       navigatorKey.currentContext!, 
       MaterialPageRoute(builder: (context) => const ConfigureSharingPasswordPage()),
@@ -109,14 +109,14 @@ class NavigatePage {
 
   static void goToPageLogin(BuildContext context) {
      Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => const CakeSignInPage()),
+      MaterialPageRoute(builder: (context) => const SignInPage()),
     );
   }
 
   static void goToPageRegister(BuildContext context) {
     Navigator.push(
       context, 
-      MaterialPageRoute(builder: (context) => const CakeSignUpPage()),
+      MaterialPageRoute(builder: (context) => const SignUpPage()),
     );
   }
   
