@@ -50,7 +50,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   bool isLandscapeMode = false;
 
   late int indexThumbnail; 
-  late Uint8List videoThumbailByte; 
+  late Uint8List videoThumbnailByte; 
   late Size? videoSize;
 
   late Uint8List videoBytes = Uint8List(0);
@@ -407,7 +407,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       visible: !isVideoPlaying,
       replacement: Container(),
       child: Image.memory(
-        videoThumbailByte,
+        videoThumbnailByte,
         fit: BoxFit.contain,
       ),
     );
@@ -477,7 +477,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     indexThumbnail = storageData
       .fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
-    videoThumbailByte = storageData
+    videoThumbnailByte = storageData
       .imageBytesFilteredList[indexThumbnail]!;
       
     videoPlayerController = VideoPlayerController.networkUrl(Uri());

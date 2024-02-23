@@ -36,7 +36,7 @@ class DeleteAccountPage extends StatelessWidget {
     required bool isFromPin
   }) {
 
-    final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
+    final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +48,7 @@ class DeleteAccountPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: ValueListenableBuilder<bool>(
-              valueListenable: sufixIconVisibilityNotifier,
+              valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
@@ -66,7 +66,7 @@ class DeleteAccountPage extends StatelessWidget {
                         color: ThemeColor.thirdWhite,
                       ),
                       onPressed: () {
-                        sufixIconVisibilityNotifier.value = !isVisible;
+                        suffixIconVisibilityNotifier.value = !isVisible;
                       },
                     )
                   : null,
@@ -85,7 +85,7 @@ class DeleteAccountPage extends StatelessWidget {
         
         const Padding(
           padding: EdgeInsets.only(left: 28.0),
-          child: HeaderText(title: "Remove Account", subTitle: "Delete your account data & informations"),
+          child: HeaderText(title: "Remove Account", subTitle: "Delete your account data & information"),
         ),
 
         const SizedBox(height: 35),

@@ -14,7 +14,7 @@ class WidgetVisibility {
     return _tempData.origin != origin;
   }
 
-  static bool setVisibile(OriginFile origin) {
+  static bool setVisible(OriginFile origin) {
     return _tempData.origin == origin;
   }
 

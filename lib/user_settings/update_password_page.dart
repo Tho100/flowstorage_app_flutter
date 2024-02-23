@@ -157,7 +157,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
       await updateAuthPassword(newPasswordAuth: newPasswordAuth);
 
-      CustomAlertDialog.alertDialogTitle("Password updated.","Your pasword has been updated successfully.");
+      CustomAlertDialog.alertDialogTitle("Password updated.","Your password has been updated successfully.");
 
     } else if (passwordIsIncorrect) {
       CustomAlertDialog.alertDialog("Password is incorrect.");
