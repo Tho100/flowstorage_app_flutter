@@ -27,7 +27,7 @@ class SettingsSecurityPage extends StatelessWidget {
             topText: "Configure passcode", 
             bottomText: "Require to enter passcode before allowing to open Flowstorage", 
             onPressed: () async {
-              NavigatePage.goToPageCongfigurePasscode();
+              NavigatePage.goToPageConfigurePasscode();
             }
           ),
 

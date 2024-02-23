@@ -13,15 +13,16 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CakeSignInPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
 
-  const CakeSignInPage({Key? key}) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  CakeSignInPageState createState() => CakeSignInPageState(); 
+  SignInPageState createState() => SignInPageState(); 
+
 }
 
-class CakeSignInPageState extends State<CakeSignInPage> {
+class SignInPageState extends State<SignInPage> {
 
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -75,12 +76,6 @@ class CakeSignInPageState extends State<CakeSignInPage> {
       auth1: custAuth1Input
     );
     
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    visiblePasswordNotifier.value = false;
   }
 
   @override
