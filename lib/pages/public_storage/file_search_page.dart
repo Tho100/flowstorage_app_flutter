@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
+import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -674,21 +675,25 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   Widget buildSearchButton() {
-    return GestureDetector(
-      onTap: () {
-        searchFileOnPressed();
-      },
-      child: Container(
-        width: 48.0,
-        height: 48.0,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: ThemeColor.darkGrey, 
-        ),
-        child: const Center(
-          child: Icon(
-            Icons.search,
-            color: Colors.white, 
+    return ClipOval(
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: SplashWidget(
+          child: Container(
+            decoration: BoxDecoration(
+              color: ThemeColor.lightGrey.withOpacity(0.35),
+              border: Border.all(
+                color: Colors.transparent,
+              ),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                searchFileOnPressed();
+              },
+              icon: const Icon(Icons.search, color: ThemeColor.justWhite),
+            ),
           ),
         ),
       ),
@@ -725,40 +730,44 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   Widget buildMoreOptionsButton() {
-    return GestureDetector(
-      onTap: () {
-        BottomTrailingPsSearchFilter().buildBottomTrailing(
-          context: context, 
-          onTitlePressed: () {
-            selectedFilterSearch = "title";
-            searchBarHintTextNotifier.value = "Search title";
-          }, 
-          onUploaderNamePressed: () {
-            selectedFilterSearch = "uploader_name";
-            searchBarHintTextNotifier.value = "Search uploader name";
-          },
-          onPast24HoursPressed: () {
-            onPast24HoursPressed();
-          },
-          onPastWeekPressed: () {
-            onPastWeekPressed();
-          },
-          onPastMonthPressed: () {
-            onPastMonthPressed();
-          },          
-        );
-      },
-      child: Container(
-        width: 48.0,
-        height: 48.0,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: ThemeColor.darkGrey, 
-        ),
-        child: const Center(
-          child: Icon(
-            Icons.more_vert,
-            color: Colors.white, 
+    return ClipOval(
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: SplashWidget(
+          child: Container(
+            decoration: BoxDecoration(
+              color: ThemeColor.lightGrey.withOpacity(0.35),
+              border: Border.all(
+                color: Colors.transparent,
+              ),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                BottomTrailingPsSearchFilter().buildBottomTrailing(
+                  context: context, 
+                  onTitlePressed: () {
+                    selectedFilterSearch = "title";
+                    searchBarHintTextNotifier.value = "Search title";
+                  }, 
+                  onUploaderNamePressed: () {
+                    selectedFilterSearch = "uploader_name";
+                    searchBarHintTextNotifier.value = "Search uploader name";
+                  },
+                  onPast24HoursPressed: () {
+                    onPast24HoursPressed();
+                  },
+                  onPastWeekPressed: () {
+                    onPastWeekPressed();
+                  },
+                  onPastMonthPressed: () {
+                    onPastMonthPressed();
+                  },          
+                );
+              },
+              icon: const Icon(Icons.more_vert, color: ThemeColor.justWhite),
+            ),
           ),
         ),
       ),

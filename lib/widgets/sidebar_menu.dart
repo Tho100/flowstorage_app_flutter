@@ -112,9 +112,7 @@ class CustomSideBarMenu extends StatelessWidget {
                 color: ThemeColor.darkGrey.withOpacity(0.8),
                 border: Border.all(
                   color: Colors.transparent,
-                  width: 2.0,
                 ),
-                borderRadius: BorderRadius.circular(65),
               ),
               child: IconButton(
                 padding: EdgeInsets.zero,

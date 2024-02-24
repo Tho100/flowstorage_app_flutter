@@ -145,9 +145,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                   color: ThemeColor.lightGrey.withOpacity(0.5),
                   border: Border.all(
                     color: Colors.transparent,
-                    width: 2.0,
                   ),
-                  borderRadius: BorderRadius.circular(65),
                 ),
                 child: IconButton(
                   padding: EdgeInsets.zero,
@@ -187,9 +185,7 @@ class PreviewVideoState extends State<PreviewVideo> {
               color: ThemeColor.lightGrey.withOpacity(0.5),
               border: Border.all(
                 color: Colors.transparent,
-                width: 2.0,
               ),
-              borderRadius: BorderRadius.circular(65),
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
@@ -215,9 +211,7 @@ class PreviewVideoState extends State<PreviewVideo> {
               color: ThemeColor.lightGrey.withOpacity(0.5),
               border: Border.all(
                 color: Colors.transparent,
-                width: 2.0,
               ),
-              borderRadius: BorderRadius.circular(65),
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
@@ -260,9 +254,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                             color: ThemeColor.lightGrey.withOpacity(0.5),
                             border: Border.all(
                               color: Colors.transparent,
-                              width: 2.0,
                             ),
-                            borderRadius: BorderRadius.circular(65),
                           ),
                           child: IconButton(
                             padding: EdgeInsets.zero,
