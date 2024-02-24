@@ -52,7 +52,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                   if (!isPassCodeExists) {
                     isPasscodeEnabled = false;
                     if(mounted) {
-                      NavigatePage.goToAddPasscodePage();
+                      NavigatePage.goToAddPasscodePage(false);
                     }
                           
                   } else {
@@ -75,7 +75,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
             topText: "Edit passcode", 
             bottomText: "Update your current passcode", 
             onPressed: () {
-              NavigatePage.goToAddPasscodePage();
+              NavigatePage.goToAddPasscodePage(true);
             }
           ),
         ),

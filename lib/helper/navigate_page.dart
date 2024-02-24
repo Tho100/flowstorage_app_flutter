@@ -171,10 +171,10 @@ class NavigatePage {
     );
   }
 
-  static void goToAddPasscodePage() {
+  static void goToAddPasscodePage(bool isFromConfigurePasscode) {
     Navigator.push(
       navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => const AddPasscodePage())
+      MaterialPageRoute(builder: (context) => AddPasscodePage(isFromConfigurePasscode: isFromConfigurePasscode))
     );
   }
 
