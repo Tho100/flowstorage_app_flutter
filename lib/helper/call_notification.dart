@@ -11,7 +11,7 @@ class CallNotify {
     count == 1 ? 
     "1 File has been added" : "$count Files has been added";
 
-    await NotificationApi.showOnfinishTaskNotification(
+    await NotificationApi.showOnFinishTaskNotification(
       title: title,
       body: setupBodyMessage,
       payload: 'h_collin001'
@@ -21,8 +21,7 @@ class CallNotify {
   Future<void> downloadedNotification({
     required String fileName,
   }) async {
-
-    await NotificationApi.showOnfinishTaskNotification(
+    await NotificationApi.showOnFinishTaskNotification(
       title: "Download Completed",
       body: "$fileName Has been downloaded",
       payload: 'h_collin01'
@@ -53,8 +52,7 @@ class CallNotify {
     required String title,
     required String subMessage
   }) async {
-
-    await NotificationApi.showOnfinishTaskNotification(
+    await NotificationApi.showOnFinishTaskNotification(
       title: title,
       body: subMessage,
       payload: 'h_collin1'

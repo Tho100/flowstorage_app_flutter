@@ -64,7 +64,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     String countryCurrency = 'USD';
     double conversionRate = 2.0;
 
-    countryCode = await GeographicsApi().countryCode();
+    countryCode = await GeographicApi().countryCode();
     countryCurrency = countryCodeToCurrency[countryCode]!;
 
     final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));

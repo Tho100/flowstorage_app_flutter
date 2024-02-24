@@ -10,10 +10,16 @@ import 'package:logger/logger.dart';
 
 class AddPasscodePage extends StatefulWidget {
 
-  const AddPasscodePage({super.key});
+  final bool isFromConfigurePasscode;
+
+  const AddPasscodePage({
+    required this.isFromConfigurePasscode,
+    Key? key
+  }) : super(key: key);
 
   @override
   State<AddPasscodePage> createState() => AddPasscodePageState();
+
 }
 
 class AddPasscodePageState extends State<AddPasscodePage> {
@@ -93,10 +99,11 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         const SizedBox(height: 100),
 
-        const Center(
+        Center(
           child: Text(
-            "Add new passcode",
-            style: TextStyle(
+            widget.isFromConfigurePasscode 
+            ? "Edit passcode" : "Add new passcode",
+            style: const TextStyle(
               color: ThemeColor.darkPurple,
               fontSize: 22,
               fontWeight: FontWeight.w600

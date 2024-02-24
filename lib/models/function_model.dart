@@ -84,8 +84,8 @@ class FunctionModel {
 
       } 
 
-      final encryptVals = EncryptionClass().encrypt(fileName);
-      await DeleteData().deleteFiles(username: username, fileName: encryptVals, tableName: tableName);
+      final encryptedFileName = EncryptionClass().encrypt(fileName);
+      await DeleteData().deleteFiles(username: username, fileName: encryptedFileName, tableName: tableName);
       
       tempData.clearFileData();
 
@@ -384,10 +384,10 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
       final tableName = Globals.fileTypesToTableNames[fileType]!;
 
-      final isAlreadyoffline = tempStorageData.offlineFileNameList.contains(fileName);
+      final isAlreadyOffline = tempStorageData.offlineFileNameList.contains(fileName);
       final isFileTypeUnsupported = Globals.unsupportedOfflineModeTypes.contains(fileType);
 
-      if(isAlreadyoffline) {
+      if(isAlreadyOffline) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
         return;
       }
@@ -483,7 +483,7 @@ class FunctionModel {
       }
       
     } catch (err, st) {
-      logger.e('Exception from retreiveFileDataPreviewer {function_model}', err, st); 
+      logger.e('Exception from retrieveFileDataPreviewer {function_model}', err, st); 
       return Uint8List(0);
     }
 

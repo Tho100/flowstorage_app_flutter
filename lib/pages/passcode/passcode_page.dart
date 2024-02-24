@@ -194,7 +194,7 @@ class PasscodePageState extends State<PasscodePage> {
 
         const Center(
           child: Text(
-            "Enter Passcode",
+            "Enter passcode",
             style: TextStyle(
               color: ThemeColor.darkPurple,
               fontSize: 22,

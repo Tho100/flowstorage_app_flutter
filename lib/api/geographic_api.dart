@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class GeographicsApi {
+class GeographicApi {
 
   Future<String> countryCode() async {
     

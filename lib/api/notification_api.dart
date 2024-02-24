@@ -65,7 +65,7 @@ class NotificationApi {
         payload: payload,
       );
 
-  static Future showOnfinishTaskNotification({
+  static Future showOnFinishTaskNotification({
     int id = 0,
     String? title,
     String? body,
@@ -77,7 +77,7 @@ class NotificationApi {
         body,
         await _notificationDetails(
           channelId: '001',
-          channelName: 'Onfinish Upload',
+          channelName: 'On finish upload',
           channelDescription: 'Alert user if a task is finished',
         ),
         payload: payload,
