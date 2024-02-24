@@ -132,7 +132,7 @@ class NavigatePage {
   static void goToPageUpgrade() {
     Navigator.push(
       navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => const UpradePage())
+      MaterialPageRoute(builder: (context) => const UpgradePage())
     );
   }
 

@@ -22,16 +22,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-class UpradePage extends StatefulWidget {
-  const UpradePage({super.key});
+class UpgradePage extends StatefulWidget {
+
+  const UpgradePage({super.key});
 
   @override
-  State<UpradePage> createState() => UpgradePageState();
+  State<UpgradePage> createState() => UpgradePageState();
+
 }
 
-class UpgradePageState extends State<UpradePage> {
+class UpgradePageState extends State<UpgradePage> {
 
-  String userChoosenPlan = "";
+  String userSelectedPlan = "";
 
   final userData = GetIt.instance<UserDataProvider>();
   final tempData = GetIt.instance<TempPaymentProvider>();
@@ -247,7 +249,7 @@ class UpgradePageState extends State<UpradePage> {
                     if(_userIsAlreadySubscribed()) {
                       return;
                     }
-                    userChoosenPlan = "Max";
+                    userSelectedPlan = "Max";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const MaxPage()))
                       .then((value) {
@@ -359,7 +361,7 @@ class UpgradePageState extends State<UpradePage> {
                     if(_userIsAlreadySubscribed()) {
                       return;
                     }
-                    userChoosenPlan = "Supreme";
+                    userSelectedPlan = "Supreme";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const SupremePage()))
                       .then((value) {
@@ -469,7 +471,7 @@ class UpgradePageState extends State<UpradePage> {
                     if(_userIsAlreadySubscribed()) {
                       return;
                     }
-                    userChoosenPlan = "Express";
+                    userSelectedPlan = "Express";
                     Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const ExpressPage()))
                       .then((value) {
@@ -597,7 +599,7 @@ class UpgradePageState extends State<UpradePage> {
 
     if(tempData.countryCode.isEmpty && tempData.currencyConversionRate == 0.0) {
 
-      countryCode = await GeographicsApi().countryCode();
+      countryCode = await GeographicApi().countryCode();
       countryCurrency = countryCodeToCurrency[countryCode]!;
 
       tempData.setCountryCode(countryCode);
@@ -628,11 +630,11 @@ class UpgradePageState extends State<UpradePage> {
     final dateToStr = DateFormat('yyyy/MM/dd').format(DateTime.now());
 
     const queryUpdateAccType = "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email AND CUST_USERNAME = :username";
-    final params = {"username": userData.username,"email": userData.email,"type": userChoosenPlan};
+    final params = {"username": userData.username,"email": userData.email,"type": userSelectedPlan};
     await Crud().update(query: queryUpdateAccType, params: params);
 
     const queryInsertBuyer = "INSERT INTO cust_buyer(CUST_USERNAME, CUST_EMAIL, ACC_TYPE, CUST_ID, PURCHASE_DATE) VALUES (:username, :email, :type, :id, :date)";
-    final paramsBuyer = {"username": userData.username,"email": userData.email,"type": userChoosenPlan,"id": customerId,"date": dateToStr};
+    final paramsBuyer = {"username": userData.username,"email": userData.email,"type": userSelectedPlan,"id": customerId,"date": dateToStr};
     await Crud().insert(query: queryInsertBuyer, params: paramsBuyer);
 
   }
@@ -657,15 +659,15 @@ class UpgradePageState extends State<UpradePage> {
       
         await _updateUserAccountPlan(returnedId);
 
-        userData.setAccountType(userChoosenPlan);      
+        userData.setAccountType(userSelectedPlan);      
 
         await _updateLocalDataOnSubscribed();
 
         singleLoading.stopLoading();
 
-        CallNotify().customNotification(title: "Account Upgraded", subMessage: "Thank you for subscribing to our service! You subscribed for $userChoosenPlan plan");
+        CallNotify().customNotification(title: "Account Upgraded", subMessage: "Thank you for subscribing to our service! You subscribed for $userSelectedPlan plan");
 
-        CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userChoosenPlan account plan.");
+        CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userSelectedPlan account plan.");
 
       } else {
         CustomAlertDialog.alertDialogTitle("Payment failed", "No payment has been made.");
@@ -682,7 +684,7 @@ class UpgradePageState extends State<UpradePage> {
   Future<void> _updateLocalDataOnSubscribed() async {
 
     await LocalStorageModel().setupLocalAutoLogin(
-      userData.username, userData.email, userChoosenPlan);
+      userData.username, userData.email, userSelectedPlan);
 
     final readLocalUsernames = await LocalStorageModel()
       .readLocalAccountUsernames();
@@ -690,7 +692,7 @@ class UpgradePageState extends State<UpradePage> {
     final usernameIndex = readLocalUsernames.indexOf(userData.username);
 
     await LocalStorageModel().updateLocalPlans(
-      usernameIndex, userChoosenPlan);
+      usernameIndex, userSelectedPlan);
 
   }
 

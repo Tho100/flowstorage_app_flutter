@@ -1,6 +1,6 @@
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog/delete_account_dialog.dart';
+import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
