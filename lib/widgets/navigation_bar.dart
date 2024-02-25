@@ -96,11 +96,11 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
       children: [
         Container(
           height: 0.6,
-          color: ThemeColor.whiteGrey,
+          color: ThemeColor.lightGrey,
         ),
         Container(
           height: 65,
-          color: ThemeColor.whiteGrey,
+          color: ThemeColor.lightGrey,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             backgroundColor: ThemeColor.darkBlack,

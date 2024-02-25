@@ -11,42 +11,52 @@ class CustomFormDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           content: SizedBox( 
             width: MediaQuery.of(context).size.width*4,
             height: 250,
             child: Center(
               child: Column(
                 children: [
-                    Text(headMessage,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                      textAlign: TextAlign.center,
+                  Text(headMessage,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
                     ),
+                    textAlign: TextAlign.center,
+                  ),
 
-                    const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                    Text(subMessage,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                      ),
-                      textAlign: TextAlign.center,
+                  Text(subMessage,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
                     ),
+                    textAlign: TextAlign.center,
+                  ),
 
-                    const Spacer(),
-                    
-                    TextButton(
+                  const Spacer(),
+                  
+                  SizedBox(
+                    width: 285,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: ThemeColor.mediumBlack,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        )
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('OK',
+                      child: const Text('Close',
                         style: TextStyle(
                           color: ThemeColor.darkPurple,
                           fontSize: 18,
@@ -54,6 +64,7 @@ class CustomFormDialog {
                         ),
                       ),
                     ),
+                  ),
             
                 ],
               ),

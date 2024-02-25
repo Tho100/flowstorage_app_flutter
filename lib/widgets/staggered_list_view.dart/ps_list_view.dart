@@ -261,7 +261,7 @@ class PsStaggeredListView extends StatelessWidget {
           ),
          
           const SizedBox(height: 6),
-          const Divider(color: ThemeColor.whiteGrey),
+          const Divider(color: ThemeColor.lightGrey),
 
         ],
       ),

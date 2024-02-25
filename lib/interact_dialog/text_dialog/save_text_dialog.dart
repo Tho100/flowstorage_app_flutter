@@ -32,14 +32,14 @@ class SaveTextDialog {
           ],
         ),
 
-        const Divider(color: ThemeColor.whiteGrey),
+        const Divider(color: ThemeColor.lightGrey),
 
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+              border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
             ),
             child: TextFormField(
               autofocus: true,

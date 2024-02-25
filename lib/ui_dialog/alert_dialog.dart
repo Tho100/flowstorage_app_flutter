@@ -13,7 +13,7 @@ class CustomAlertDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           content: Text(messages,
             style: const TextStyle(
               color: Colors.white
@@ -42,7 +42,7 @@ class CustomAlertDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           title: Text(title,
             style: const TextStyle(
               color: Colors.white

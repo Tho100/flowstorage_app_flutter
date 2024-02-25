@@ -33,7 +33,7 @@ class BottomTrailingReport {
         backgroundColor: ThemeColor.darkBlack,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
-          side: const BorderSide(color: ThemeColor.whiteGrey),
+          side: const BorderSide(color: ThemeColor.lightGrey),
         ),
       ),
       child: Text(reportName),

@@ -2051,7 +2051,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Divider(color: ThemeColor.whiteGrey),
+              const Divider(color: ThemeColor.lightGrey),
             ],
             if (tempData.origin == OriginFile.public && index == 3) ... [
               Transform.translate(
@@ -2083,7 +2083,7 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const Divider(color: ThemeColor.whiteGrey),
+              const Divider(color: ThemeColor.lightGrey),
             ],
             if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
               if (index == 7)

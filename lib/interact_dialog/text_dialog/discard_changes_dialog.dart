@@ -9,9 +9,9 @@ class DiscardChangesDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           content: const Text("Discard changes?",
             style: TextStyle(
               color: Colors.white
