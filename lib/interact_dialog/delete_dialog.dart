@@ -13,9 +13,9 @@ class DeleteDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           title: Text(fileName,
             style: const TextStyle(
               color: Colors.white,
@@ -37,7 +37,7 @@ class DeleteDialog {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
+                backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
               onPressed: () async {

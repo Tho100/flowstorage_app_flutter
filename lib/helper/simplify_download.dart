@@ -31,15 +31,9 @@ class SimplifyDownload {
 
   Future<void> _videoGallerySaver(Uint8List videoData) async {
 
-    Directory? directory;
-
-    if (Platform.isAndroid) {
-      directory = await getExternalStorageDirectory();
-
-    } else if (Platform.isIOS) {
-      directory = await getApplicationDocumentsDirectory();
-
-    }
+    final directory = Platform.isAndroid 
+      ? await getExternalStorageDirectory()
+      : await getApplicationDocumentsDirectory();
 
     final videoPath = '${directory!.path}/Flowstorage-$fileNameValue';
     final videoFile = File(videoPath);
