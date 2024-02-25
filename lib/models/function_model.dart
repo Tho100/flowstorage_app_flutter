@@ -100,10 +100,10 @@ class FunctionModel {
 
   Future<void> renameFileData(String oldFileName, String newFileName) async {
     
-    final fileType = oldFileName.split('.').last;
-    final tableName = Globals.fileTypesToTableNames[fileType]!;
-
     try {
+      
+      final fileType = oldFileName.split('.').last;
+      final tableName = Globals.fileTypesToTableNames[fileType]!;
       
       tempData.origin != OriginFile.offline
         ? await RenameData().renameFiles(oldFileName, newFileName, tableName) 
@@ -182,8 +182,8 @@ class FunctionModel {
       final fileType = fileName.split('.').last;
 
       final tableName = tempData.origin != OriginFile.home 
-                        ? Globals.fileTypesToTableNamesPs[fileType] 
-                        : Globals.fileTypesToTableNames[fileType];
+        ? Globals.fileTypesToTableNamesPs[fileType]! 
+        : Globals.fileTypesToTableNames[fileType]!;
 
       final isItemDirectory = fileType == fileName;
 
@@ -199,21 +199,14 @@ class FunctionModel {
 
       if(tempData.origin != OriginFile.offline) {
 
-        late Uint8List getBytes;
-
-        if(Globals.imageType.contains(fileType)) {
-          final imageIndex = storageData.fileNamesFilteredList.indexOf(fileName);
-          getBytes = storageData.imageBytesFilteredList[imageIndex]!;
-
-        } else {
-          getBytes = await _callFileByteData(fileName, tableName!);
-
-        }
+        final fileData = Globals.imageType.contains(fileType) 
+          ? storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(fileName)]!
+          : await _callFileByteData(fileName, tableName);
 
         await SimplifyDownload(
           fileName: fileName,
-          currentTable: tableName!,
-          fileData: getBytes
+          currentTable: tableName,
+          fileData: fileData
         ).downloadFile();
 
       } else {
@@ -337,21 +330,17 @@ class FunctionModel {
 
     for(final fileName in checkedFilesName) {
 
-      late final Uint8List fileData;
-
       final fileType = fileName.split('.').last;
 
       if(Globals.supportedFileTypes.contains(fileType)) {
 
         final tableName = Globals.fileTypesToTableNames[fileType]!;
 
-        if(Globals.imageType.contains(fileType)) {
-          fileData = storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexOf(fileName)]!;
-          
-        } else {
-          fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
-
-        }
+        final fileData = Globals.imageType.contains(fileType)
+          ? storageData.imageBytesFilteredList[
+            storageData.fileNamesFilteredList.indexOf(fileName)]!
+          : CompressorApi.compressByte(
+            await _callFileByteData(fileName, tableName));
 
         await offlineMode.saveOfflineFile(
           fileName: fileName, 
@@ -396,23 +385,20 @@ class FunctionModel {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
         return;
       } 
-
-      late final Uint8List fileData;
       
       final indexFile = storageData.fileNamesList.indexOf(fileName);
 
       singleLoading.startLoading(title: "Preparing...", context: navigatorKey.currentContext!);
 
-      if(Globals.imageType.contains(fileType)) {
-        fileData = tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching
-          ? storageData.imageBytesFilteredList[indexFile]! 
-          : returnImageDataForPublic(indexFile);
-        
-      } else {
-        fileData = CompressorApi.compressByte(await _callFileByteData(fileName, tableName));
-        
-      }
-      
+      final isPublicOrigin = tempData.origin == OriginFile.public || tempData.origin == OriginFile.publicSearching;
+
+      final fileData = Globals.imageType.contains(fileType)
+        ? isPublicOrigin
+            ? returnImageDataForPublic(indexFile)
+            : storageData.imageBytesFilteredList[indexFile]!
+        : CompressorApi.compressByte(
+          await _callFileByteData(fileName, tableName));
+
       await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
       tempStorageData.addOfflineFileName(fileName);
@@ -445,9 +431,9 @@ class FunctionModel {
 
         if(tempData.origin != OriginFile.offline) {
           return isCompressed 
-          ? CompressorApi.compressByte(
-            await _callFileByteData(fileName, fileTable))
-          : await _callFileByteData(fileName, fileTable);
+            ? CompressorApi.compressByte(
+              await _callFileByteData(fileName, fileTable))
+            : await _callFileByteData(fileName, fileTable);
           
         } else {
           return await OfflineModel().loadOfflineFileByte(fileName);
@@ -477,8 +463,8 @@ class FunctionModel {
 
       } else {
         return isCompressed 
-        ? CompressorApi.compressByte(tempData.fileByteData)
-        : tempData.fileByteData;
+          ? CompressorApi.compressByte(tempData.fileByteData)
+          : tempData.fileByteData;
 
       }
       
