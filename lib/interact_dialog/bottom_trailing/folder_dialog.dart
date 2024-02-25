@@ -42,7 +42,7 @@ class FolderDialog {
                   separatorBuilder: (context, index) => const Padding(
                     padding: EdgeInsets.only(left: 16, right: 16, bottom: 6, top: 2),
                     child: Divider(
-                      color: ThemeColor.whiteGrey,
+                      color: ThemeColor.lightGrey,
                       height: 1,
                     ),
                   ),

@@ -45,7 +45,7 @@ class AddSharingPassword {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(width: 1.0, color: ThemeColor.darkBlack),
+              border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
             ),
             child: TextFormField(
               style: const TextStyle(color: ThemeColor.justWhite),
@@ -95,7 +95,7 @@ class AddSharingPassword {
 
                 } catch (err, st) {
                   Logger().e("Exception from _buildAddPassword {settings_page}", err, st);
-                  CustomAlertDialog.alertDialogTitle("An error occurred", "Faild to add/update pasword for File Sharing. Please try again later.");
+                  CustomAlertDialog.alertDialogTitle("An error occurred", "Failed to add/update password for File Sharing. Please try again later.");
                 }
 
               },

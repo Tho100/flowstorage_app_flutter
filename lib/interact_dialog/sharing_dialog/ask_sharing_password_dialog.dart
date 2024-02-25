@@ -50,10 +50,10 @@ class SharingPassword {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(width: 1.0, color: ThemeColor.darkGrey),
+              border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
             ),
             child: TextFormField(
-              style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
+              style: const TextStyle(color: ThemeColor.justWhite),
               enabled: true,
               controller: sharingPasswordController,
               decoration: GlobalsStyle.setupTextFieldDecoration("Enter password")

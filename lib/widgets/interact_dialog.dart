@@ -14,9 +14,9 @@ class InteractDialog {
         return Dialog(
           insetPadding: const EdgeInsets.symmetric(horizontal: 22), 
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
-          backgroundColor: ThemeColor.darkBlack,
+          backgroundColor: ThemeColor.mediumBlack,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,

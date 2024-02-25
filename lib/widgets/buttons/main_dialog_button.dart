@@ -19,7 +19,7 @@ class MainDialogButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 2), 
-        backgroundColor: ThemeColor.darkBlack,
+        backgroundColor: ThemeColor.mediumBlack,
         elevation: 0,
       ),
       child: Text(
@@ -35,7 +35,7 @@ class MainDialogButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 5), 
-        backgroundColor: ThemeColor.darkBlack,
+        backgroundColor: ThemeColor.mediumBlack,
         elevation: 0,
       ),
       child: Text(

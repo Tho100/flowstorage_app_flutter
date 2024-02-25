@@ -35,7 +35,7 @@ class CreateDirectoryDialog {
 
         const SizedBox(height: 5),
 
-        const Divider(color: ThemeColor.whiteGrey),
+        const Divider(color: ThemeColor.lightGrey),
 
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
