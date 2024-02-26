@@ -336,7 +336,7 @@ class HomePageState extends State<HomePage> {
     await CallNotify().customNotification(title: "Uploading...", subMessage: "1 File(s) in progress");
 
     await UpdateListView().processUpdateListView(
-      filePathVal: filePath, selectedFileName: fileName,
+      filePath: filePath, fileName: fileName,
       tableName: tableName, fileBase64Encoded: fileData, 
       newFileToDisplay: previewData, thumbnailBytes: videoThumbnail
     );
