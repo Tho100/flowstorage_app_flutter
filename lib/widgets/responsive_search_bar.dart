@@ -68,7 +68,8 @@ class ResponsiveSearchBar extends StatelessWidget {
                         controller: controller,
                         focusNode: focusNode ?? FocusNode(),
                         style: const TextStyle(
-                          color: Color.fromARGB(230, 255, 255, 255)
+                          color: Color.fromARGB(230, 255, 255, 255),
+                          fontSize: 15
                         ),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -85,8 +86,9 @@ class ResponsiveSearchBar extends StatelessWidget {
                           hintText: hintText,
                           hintStyle: const TextStyle(
                             color: ThemeColor.secondaryWhite,
-                            fontSize: 16),
-                          prefixIcon: const Icon(Icons.search,color: Color.fromARGB(255, 200, 200,200),size: 18),
+                            fontSize: 15
+                          ),
+                          prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
                         ),
                       ),
                     ),
