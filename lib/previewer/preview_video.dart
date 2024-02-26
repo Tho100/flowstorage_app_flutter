@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
+import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:video_player/video_player.dart';
 
 class PreviewVideo extends StatefulWidget {
@@ -84,17 +87,32 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   Future<void> playVideoDataAsync() async {
     
-    if (videoBytes.isEmpty) {
-      videoIsLoading = true;
-      videoBytes = await CallPreviewFileData(
-        tableNamePs: GlobalsTable.psVideo, 
-        tableNameHome: GlobalsTable.homeVideo, 
-        fileValues: Globals.videoType
-      ).callData();
+    try {
 
-      tempData.setFileData(videoBytes);
+      if (videoBytes.isEmpty) {
+        videoIsLoading = true;
 
-    } 
+        if(tempData.origin != OriginFile.offline) {
+
+          videoBytes = await CallPreviewFileData(
+            tableNamePs: GlobalsTable.psVideo, 
+            tableNameHome: GlobalsTable.homeVideo, 
+            fileValues: Globals.videoType
+          ).callData();
+
+          tempData.setFileData(videoBytes);
+
+        } else {
+          videoBytes = await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
+
+        }
+
+      } 
+
+    } catch (err, st) {
+      Logger().e("Exception from _callData {PreviewText}", err, st);
+      videoBytes = Uint8List(0);
+    }
 
     final videoUrl = "data:video/mp4;base64,${base64Encode(videoBytes)}";
     await initializeVideoPlayer(videoUrl, autoPlay: false);

@@ -309,18 +309,10 @@ class FunctionModel {
 
     for(final fileName in checkedFilesName) {
 
-      final fileType = fileName.split('.').last;
-
       final isAlreadyOffline = tempStorageData.offlineFileNameList.contains(fileName);
-      final isFileTypeUnsupported = Globals.unsupportedOfflineModeTypes.contains(fileType);
 
       if(isAlreadyOffline) {
         CustomFormDialog.startDialog("Something went wrong", "Selected file is already available for offline mode.");
-        return;
-      }
-
-      if(isFileTypeUnsupported) {
-        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
         return;
       }
 
@@ -374,17 +366,11 @@ class FunctionModel {
       final tableName = Globals.fileTypesToTableNames[fileType]!;
 
       final isAlreadyOffline = tempStorageData.offlineFileNameList.contains(fileName);
-      final isFileTypeUnsupported = Globals.unsupportedOfflineModeTypes.contains(fileType);
 
       if(isAlreadyOffline) {
         CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is already available for offline mode.");
         return;
       }
-
-      if(isFileTypeUnsupported) {
-        CustomFormDialog.startDialog(ShortenText().cutText(fileName, customLength: 36), "This file is unavailable for offline mode.");
-        return;
-      } 
       
       final indexFile = storageData.fileNamesList.indexOf(fileName);
 
