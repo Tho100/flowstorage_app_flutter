@@ -75,6 +75,7 @@ class EmptyBody extends StatelessWidget {
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
         return RefreshIndicator(
+          backgroundColor: ThemeColor.mediumBlack,
           color: ThemeColor.darkPurple,
           onRefresh: refreshList,
           child: SizedBox(

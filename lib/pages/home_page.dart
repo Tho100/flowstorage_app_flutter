@@ -2220,6 +2220,7 @@ class HomePageState extends State<HomePage> {
     }
 
     return RefreshIndicator(
+      backgroundColor: ThemeColor.mediumBlack,
       color: ThemeColor.darkPurple,
       onRefresh: () async {
 
