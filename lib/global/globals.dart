@@ -15,10 +15,6 @@ class Globals {
   static const Set<String> ptxType = {"pptx","ptx"};
   static const Set<String> audioType = {"wav","mp3"};
 
-  static const Set<String> unsupportedOfflineModeTypes = {
-    ...videoType, "exe", "apk", "msi"
-  };
-
   static const Map<String, String> fileTypesToTableNames = {
     'png': GlobalsTable.homeImage,
     'jpg': GlobalsTable.homeImage,

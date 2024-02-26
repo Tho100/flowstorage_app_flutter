@@ -56,7 +56,7 @@ class DataCaller {
     final getAssets = GetAssets();
     final offlineDirPath = await _offlineMode.returnOfflinePath();
 
-    if(!offlineDirPath.existsSync()) { 
+    if(!offlineDirPath.existsSync()) {
       offlineDirPath.createSync();
     }
     
@@ -95,23 +95,26 @@ class DataCaller {
       } else if (Globals.audioType.contains(fileType)) {
         imageBytes = await getAssets.loadAssetsData("music0.jpg");
 
-      } else if (fileType == "pdf") {
-        imageBytes = await getAssets.loadAssetsData("pdf0.jpg");
-
       } else if (Globals.wordType.contains(fileType)) {
         imageBytes = await getAssets.loadAssetsData("doc0.jpg");
 
       } else if (Globals.excelType.contains(fileType)) {
         imageBytes = await getAssets.loadAssetsData("exl0.jpg");
 
-      } else if (fileType == "exe") {
-        imageBytes = await getAssets.loadAssetsData("exe0.jpg");
-
-      } else if (fileType == "apk") {
-        imageBytes = await getAssets.loadAssetsData("apk0.jpg");
-
       } else if (Globals.ptxType.contains(fileType)) {
         imageBytes = await getAssets.loadAssetsData("pptx0.jpg");
+
+      } else if (Globals.videoType.contains(fileType)) {
+        imageBytes = await getAssets.loadAssetsData("vid0.jpg");
+        
+      }  else if (fileType == "apk") {
+        imageBytes = await getAssets.loadAssetsData("apk0.jpg");
+
+      } else if (fileType == "pdf") {
+        imageBytes = await getAssets.loadAssetsData("pdf0.jpg");
+
+      } else if (fileType == "exe" || fileType == "msi") {
+        imageBytes = await getAssets.loadAssetsData("exe0.jpg");
 
       } else {
         continue;
@@ -123,6 +126,7 @@ class DataCaller {
       setDateValues.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");
       imageByteValues.add(imageBytes);
       filteredSearchedBytes.add(imageBytes);
+
     }
 
     storageData.setFilesName(fileValues);

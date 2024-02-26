@@ -53,6 +53,7 @@ class PreviewText extends StatelessWidget {
       Logger().e("Exception from _callData {PreviewText}", err, st);
       return Future.value(Uint8List(0));
     }
+    
   }
 
   Future<bool> discardChangesConfirmation(BuildContext context) async {
