@@ -32,7 +32,7 @@ class BottomTrailingAddItem {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.public]))
+        if(WidgetVisibility.setNotVisible(OriginFile.public))
         ElevatedButton(
           onPressed: galleryOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,

@@ -283,8 +283,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                       width: width - 25,
                       height: 200,
                       fit: Globals.generalFileTypes.contains(fileType) || isOfflineVideo
-                          ? BoxFit.scaleDown
-                          : BoxFit.fitWidth,
+                        ? BoxFit.scaleDown
+                        : BoxFit.fitWidth,
                     ),
                   ),
                 ),
