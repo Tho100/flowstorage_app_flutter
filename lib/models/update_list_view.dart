@@ -118,8 +118,8 @@ class UpdateListView {
   }
 
   Future<void> processUpdateListView({
-    required String filePathVal,
-    required String selectedFileName,
+    required String filePath,
+    required String fileName,
     required String tableName,
     required String fileBase64Encoded,
     File? newFileToDisplay,
@@ -133,12 +133,12 @@ class UpdateListView {
 
     if (tempData.origin != OriginFile.offline) {
       await _insertFileData(
-        table: verifyTableName, filePath: selectedFileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
+        table: verifyTableName, filePath: fileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
 
     } else {
       final fileByteData = base64.decode(fileBase64Encoded);
       await OfflineModel().processSaveOfflineFile(
-        fileName: selectedFileName, fileData: fileByteData);
+        fileName: fileName, fileData: fileByteData);
 
     }
 
@@ -146,8 +146,8 @@ class UpdateListView {
     final fileToDisplay = newFileToDisplay;
 
     if (isHomeImageOrPsImage) {
-      newImageByteValues.add(File(filePathVal).readAsBytesSync());
-      newFilteredSearchedBytes.add(File(filePathVal).readAsBytesSync());
+      newImageByteValues.add(File(filePath).readAsBytesSync());
+      newFilteredSearchedBytes.add(File(filePath).readAsBytesSync());
       
     } else {
       newImageByteValues.add(fileToDisplay!.readAsBytesSync());

@@ -47,6 +47,28 @@ class UploadDialogModel {
 
   final userData = GetIt.instance<UserDataProvider>();
 
+  Future<void> _saveOfflineFile({
+    required String fileName, 
+    required Uint8List fileData,
+    Uint8List? videoThumbnail
+  }) async {
+
+    await OfflineModel().saveOfflineFile(fileName: fileName, fileData: fileData);
+
+    if(videoThumbnail!.isNotEmpty) {
+      storageData.imageBytesList.add(videoThumbnail);
+      storageData.imageBytesFilteredList.add(videoThumbnail);
+
+    } else {
+      storageData.imageBytesList.add(fileData);
+      storageData.imageBytesFilteredList.add(fileData);
+
+    }
+
+    tempStorageData.addOfflineFileName(fileName);
+
+  }
+
   Future<void> galleryDialog() async {
 
     final details = await PickerModel().galleryPicker(
@@ -91,22 +113,22 @@ class UploadDialogModel {
 
     for(final filesPath in details.selectedFiles) {
 
-      final pathToString = filesPath.selectedFile.toString()
+      final filePath = filesPath.selectedFile.toString()
         .split(" ").last.replaceAll("'", "");
       
-      final filesName = pathToString.split("/")
+      final fileName = filePath.split("/")
         .last.replaceAll("'", "");
 
-      final fileExtension = filesName.split('.').last;
+      final fileType = fileName.split('.').last;
 
-      if (!Globals.supportedFileTypes.contains(fileExtension)) {
-        CustomFormDialog.startDialog("Couldn't upload $filesName", "File type is not supported.");
+      if (!Globals.supportedFileTypes.contains(fileType)) {
+        CustomFormDialog.startDialog("Couldn't upload $fileName", "File type is not supported.");
         await NotificationApi.stopNotification(0);
         continue;
       }
 
-      if (storageData.fileNamesList.contains(filesName)) {
-        CustomFormDialog.startDialog("Upload Failed", "$filesName already exists.");
+      if (storageData.fileNamesList.contains(fileName)) {
+        CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
         await NotificationApi.stopNotification(0);
         continue;
       } 
@@ -114,48 +136,58 @@ class UploadDialogModel {
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
         SnakeAlert.uploadingSnake(
           snackState: scaffoldMessenger, 
-          message: "Uploading $filesName"
+          message: "Uploading $fileName"
         ); 
       }
 
-      final fileBase64Encoded = Globals.imageType.contains(fileExtension)
-        ? base64.encode(await File(pathToString).readAsBytes())
-        : base64.encode(await CompressorApi.compressFile(pathToString));
+      final fileBase64Encoded = Globals.imageType.contains(fileType)
+        ? base64.encode(await File(filePath).readAsBytes())
+        : base64.encode(await CompressorApi.compressFile(filePath));
 
-      if (Globals.imageType.contains(fileExtension)) {
+      if (Globals.imageType.contains(fileType)) {
 
         final compressedImageBytes = await CompressorApi
-          .compressedByteImage(path: pathToString, quality: 80);
+          .compressedByteImage(path: filePath, quality: 80);
 
         final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
-        await UpdateListView()
-          .processUpdateListView(filePathVal: pathToString, selectedFileName: filesName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+        if(tempData.origin == OriginFile.offline) {
+          final decodeToBytes = base64.decode(compressedImageBase64Encoded);
+          final imageBytes = Uint8List.fromList(decodeToBytes);
 
-      } else if (Globals.videoType.contains(fileExtension)) {
+          await _saveOfflineFile(fileName: fileName, fileData: imageBytes);
+
+        } else {
+          await UpdateListView()
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+
+        }
+
+      } else if (Globals.videoType.contains(fileType)) {
 
         final generatedThumbnail = await GenerateThumbnail(
-          fileName: filesName, 
-          filePath: pathToString
+          fileName: fileName, 
+          filePath: filePath
         ).generate();
 
         final thumbnailBytes = generatedThumbnail[0] as Uint8List;
         final thumbnailFile = generatedThumbnail[1] as File;
 
-        await UpdateListView().processUpdateListView(
-          filePathVal: pathToString, 
-          selectedFileName: filesName, 
-          tableName: GlobalsTable.homeVideo, 
-          fileBase64Encoded: fileBase64Encoded,
-          newFileToDisplay: thumbnailFile,
-          thumbnailBytes: thumbnailBytes
-        );
+        if(tempData.origin == OriginFile.offline) {
+          final fileData = base64.decode(fileBase64Encoded);
+          await _saveOfflineFile(fileName: fileName, fileData: fileData, videoThumbnail: thumbnailBytes);
+
+        } else {
+          await UpdateListView()
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, newFileToDisplay: thumbnailFile,thumbnailBytes: thumbnailBytes);
+
+        }
 
         await thumbnailFile.delete();
 
       }
 
-      UpdateListView().addItemDetailsToListView(fileName: filesName);
+      UpdateListView().addItemDetailsToListView(fileName: fileName);
 
       scaffoldMessenger.hideCurrentSnackBar();
 
@@ -163,7 +195,7 @@ class UploadDialogModel {
 
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "Added $filesName"
+          message: "Added $fileName"
         );
 
         countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
@@ -224,71 +256,13 @@ class UploadDialogModel {
       );
     } 
 
-    final fileTypes = resultPicker.names.map((name) => name!.split('.').last).toList();
-
-    if(tempData.origin == OriginFile.offline && fileTypes.any((type) => Globals.imageType.contains(type))) {
-
-      for(final item in resultPicker.files) {
-
-        final filePath = item.path.toString();
-        final fileName = item.name;
-
-        if (storageData.fileNamesList.contains(fileName)) {
-          CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
-          await NotificationApi.stopNotification(0);
-          continue;
-
-        }
-
-        final compressQuality = tempData.origin 
-            == OriginFile.public ? 71 : 80;
-
-        final compressedImageBytes = await CompressorApi
-          .compressedByteImage(path: filePath, quality: compressQuality);
-
-        final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
-
-        final decodeToBytes = base64.decode(compressedImageBase64Encoded);
-        final imageBytes = Uint8List.fromList(decodeToBytes);
-
-        await OfflineModel().saveOfflineFile(fileName: fileName, fileData: imageBytes);
-
-        UpdateListView().addItemDetailsToListView(fileName: fileName);
-
-        storageData.imageBytesList.add(imageBytes);
-        storageData.imageBytesFilteredList.add(imageBytes);
-
-        tempStorageData.addOfflineFileName(fileName);
-
-        scaffoldMessenger.hideCurrentSnackBar();
-
-        if(countSelectedFiles < 2) {
-          SnakeAlert.temporarySnake(
-            snackState: scaffoldMessenger, 
-            message: "Added $fileName"
-          );
-        }
-
-      }
-
-      if(countSelectedFiles > 2) {
-        SnakeAlert.temporarySnake(
-          snackState: scaffoldMessenger, 
-          message: "Added ${countSelectedFiles.toString()} item(s)."
-        );
-      }
-
-      return;
-
-    }
-
     for (final pickedFile in resultPicker.files) {
       
-      final selectedFileName = pickedFile.name;
-      final fileExtension = selectedFileName.split('.').last;
+      final fileName = pickedFile.name;
+      final fileType = fileName.split('.').last;
 
-      if (!Globals.supportedFileTypes.contains(fileExtension)) {
-        CustomFormDialog.startDialog("Couldn't upload $selectedFileName","File type is not supported.");
+      if (!Globals.supportedFileTypes.contains(fileType)) {
+        CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
         await NotificationApi.stopNotification(0);
 
         if(tempData.origin == OriginFile.public) 
@@ -296,8 +270,8 @@ class UploadDialogModel {
 
       }
 
-      if (storageData.fileNamesList.contains(selectedFileName)) {
-        CustomFormDialog.startDialog("Upload Failed", "$selectedFileName already exists.");
+      if (storageData.fileNamesList.contains(fileName)) {
+        CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
         await NotificationApi.stopNotification(0);
 
         if(tempData.origin == OriginFile.public) 
@@ -308,21 +282,21 @@ class UploadDialogModel {
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
         SnakeAlert.uploadingSnake(
           snackState: scaffoldMessenger, 
-          message: "Uploading $selectedFileName"
+          message: "Uploading $fileName"
         );
       }
 
       final filePath = pickedFile.path.toString();
       
-      if (!(Globals.imageType.contains(fileExtension))) {
+      if (!(Globals.imageType.contains(fileType))) {
         final compressedFileBytes = await CompressorApi.compressFile(filePath);
         fileBase64 = base64.encode(compressedFileBytes); 
       }
 
-      if (Globals.imageType.contains(fileExtension)) {
+      if (Globals.imageType.contains(fileType)) {
 
-        final compressQuality = tempData.origin 
-            == OriginFile.public ? 71 : 80;
+        final compressQuality = tempData.origin == OriginFile.public 
+          ? 71 : 80;
 
         final compressedImageBytes = await CompressorApi
           .compressedByteImage(path: filePath, quality: compressQuality);
@@ -330,76 +304,72 @@ class UploadDialogModel {
         final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePath: filePath, fileName: selectedFileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
           return;
         }
 
-        await UpdateListView().processUpdateListView(
-          filePathVal: filePath, 
-          selectedFileName: selectedFileName, 
-          tableName: GlobalsTable.homeImage, 
-          fileBase64Encoded: compressedImageBase64Encoded
-        );
+        if(tempData.origin == OriginFile.offline) {
+          final decodeToBytes = base64.decode(compressedImageBase64Encoded);
+          final imageBytes = Uint8List.fromList(decodeToBytes);
 
-      } else if (Globals.videoType.contains(fileExtension)) {
+          await _saveOfflineFile(fileName: fileName, fileData: imageBytes);
+
+        } else {
+          await UpdateListView()
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+
+        }
+
+      } else if (Globals.videoType.contains(fileType)) {
 
         final generatedThumbnail = await GenerateThumbnail(
-          fileName: selectedFileName, 
+          fileName: fileName, 
           filePath: filePath
         ).generate();
 
         final thumbnailBytes = generatedThumbnail[0] as Uint8List;
         final thumbnailFile = generatedThumbnail[1] as File;
 
-        final thumbnailPreviewImage = thumbnailFile;
-
         if(tempData.origin == OriginFile.public) {
-
-          publicStorageUploadPage(
-            filePath: filePath, fileName: selectedFileName, 
-            tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!,
-            previewData: thumbnailPreviewImage, thumbnail: thumbnailBytes
-          );
-
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!, previewData: thumbnailFile, thumbnail: thumbnailBytes);
           return;
-
         }
 
-        await UpdateListView().processUpdateListView(
-          filePathVal: filePath, selectedFileName: selectedFileName, 
-          tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, 
-          newFileToDisplay: thumbnailPreviewImage, thumbnailBytes: thumbnailBytes
-        );
+        if(tempData.origin == OriginFile.offline) {
+          final fileData = base64.decode(fileBase64!);
+          await _saveOfflineFile(fileName: fileName, fileData: fileData, videoThumbnail: thumbnailBytes);
+
+        } else {
+          await UpdateListView()
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, newFileToDisplay: thumbnailFile, thumbnailBytes: thumbnailBytes);
+
+        }
 
         await thumbnailFile.delete();
 
       } else {
 
         final getFileTable = tempData.origin == OriginFile.home 
-          ? Globals.fileTypesToTableNames[fileExtension]! 
-          : Globals.fileTypesToTableNamesPs[fileExtension]!;
+          ? Globals.fileTypesToTableNames[fileType]! 
+          : Globals.fileTypesToTableNamesPs[fileType]!;
 
         final assetsPreviewImage = await GetAssets()
-          .loadAssetsFile(Globals.fileTypeToAssets[fileExtension]!);
+          .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(
-            filePath: filePath, fileName: selectedFileName, 
-            tableName: getFileTable, base64Encoded: fileBase64!, 
-            previewData: assetsPreviewImage
-          );
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: getFileTable, base64Encoded: fileBase64!, previewData: assetsPreviewImage);
           return;
         }
 
         await UpdateListView()
-          .processUpdateListView(filePathVal: filePath, selectedFileName: selectedFileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: assetsPreviewImage);
+          .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: assetsPreviewImage);
 
       }
 
-      UpdateListView().addItemDetailsToListView(fileName: selectedFileName);
+      UpdateListView().addItemDetailsToListView(fileName: fileName);
 
       if(tempData.origin == OriginFile.offline) {
-        tempStorageData.addOfflineFileName(selectedFileName);
+        tempStorageData.addOfflineFileName(fileName);
       }
 
       scaffoldMessenger.hideCurrentSnackBar();
@@ -407,7 +377,7 @@ class UploadDialogModel {
       if(countSelectedFiles < 2) {
         SnakeAlert.temporarySnake(
           snackState: scaffoldMessenger, 
-          message: "Added $selectedFileName"
+          message: "Added $fileName"
         );
       }
 
@@ -503,8 +473,10 @@ class UploadDialogModel {
 
     await scannerPdf.savePdf(fileName: generateFileName);
 
+    final fileNameWithExtension = "$generateFileName.pdf";
+
     final tempDir = await getTemporaryDirectory();
-    final file = File('${tempDir.path}/$generateFileName.pdf');
+    final file = File('${tempDir.path}/$fileNameWithExtension');
 
     final compressedBytes = await CompressorApi.compressFile(file.path.toString());
 
@@ -513,38 +485,26 @@ class UploadDialogModel {
     final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
 
     if (tempData.origin == OriginFile.offline) {
-
       final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
 
       final imageBytes = Uint8List.fromList(decodeToBytes);
-      final decodedBase64String = base64.decode(toBase64Encoded);
+      final fileData = base64.decode(toBase64Encoded);
 
-      await OfflineModel().saveOfflineFile(fileName: "$generateFileName.pdf", fileData: decodedBase64String);
-
-      storageData.imageBytesFilteredList.add(imageBytes);
-      storageData.imageBytesList.add(imageBytes);
-
-      tempStorageData.addOfflineFileName("$generateFileName.pdf");
+      await _saveOfflineFile(fileName: fileNameWithExtension, fileData: fileData, videoThumbnail: imageBytes);
 
     } else {
-      
-      await UpdateListView().processUpdateListView(
-        filePathVal: file.path,
-        selectedFileName: "$generateFileName.pdf",
-        tableName: GlobalsTable.homePdf, 
-        fileBase64Encoded: toBase64Encoded,
-        newFileToDisplay: newFileToDisplay
-      );
+      await UpdateListView()
+        .processUpdateListView(filePath: file.path, fileName: fileNameWithExtension, tableName: GlobalsTable.homePdf, fileBase64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
 
     }
 
-    UpdateListView().addItemDetailsToListView(fileName: "$generateFileName.pdf");
+    UpdateListView().addItemDetailsToListView(fileName: fileNameWithExtension);
 
     await file.delete();
 
     await NotificationApi.stopNotification(0);
 
-    SnakeAlert.okSnake(message: "Added $generateFileName.pdf", icon: Icons.check);
+    SnakeAlert.okSnake(message: "Added $fileNameWithExtension", icon: Icons.check);
 
     await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
@@ -569,9 +529,9 @@ class UploadDialogModel {
       final imageName = imagePath.split("/")
         .last.replaceAll("'", "");
 
-      final fileExtension = imageName.split('.').last;
+      final fileType = imageName.split('.').last;
 
-      if(!(Globals.imageType.contains(fileExtension))) {
+      if(!(Globals.imageType.contains(fileType))) {
         CustomFormDialog.startDialog("Couldn't upload photo","File type is not supported.");
         return;
       }
@@ -587,25 +547,14 @@ class UploadDialogModel {
       }
 
       if (tempData.origin == OriginFile.offline) {
-
         final decodeToBytes = base64.decode(imageBase64Encoded);
         final imageBytes = Uint8List.fromList(decodeToBytes);
         
-        await OfflineModel().saveOfflineFile(fileName: imageName, fileData: imageBytes);
-
-        storageData.imageBytesFilteredList.add(decodeToBytes);
-        storageData.imageBytesList.add(decodeToBytes);
-
-        tempStorageData.addOfflineFileName(imageName);
+        await _saveOfflineFile(fileName: imageName, fileData: imageBytes);
 
       } else {
-
-        await UpdateListView().processUpdateListView(
-          filePathVal: imagePath, 
-          selectedFileName: imageName, 
-          tableName: GlobalsTable.homeImage, 
-          fileBase64Encoded: imageBase64Encoded
-        );
+        await UpdateListView()
+          .processUpdateListView(filePath: imagePath, fileName: imageName, tableName: GlobalsTable.homeImage, fileBase64Encoded: imageBase64Encoded);
         
       }
 
@@ -633,7 +582,8 @@ class UploadDialogModel {
 
     SnakeAlert.uploadingSnake(
       snackState: scaffoldMessenger, 
-      message: "Uploading $fileName");
+      message: "Uploading $fileName"
+    );
 
     final fileType = fileName.split('.').last;
 
@@ -657,7 +607,7 @@ class UploadDialogModel {
       final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
       await UpdateListView()
-        .processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
+        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeImage, fileBase64Encoded: compressedImageBase64Encoded);
 
     } else if (Globals.videoType.contains(fileType)) {
 
@@ -669,14 +619,8 @@ class UploadDialogModel {
       final thumbnailBytes = generatedThumbnail[0] as Uint8List;
       final thumbnailFile = generatedThumbnail[1] as File;
 
-      await UpdateListView().processUpdateListView(
-        filePathVal: filePath, 
-        selectedFileName: fileName, 
-        tableName: GlobalsTable.homeVideo, 
-        fileBase64Encoded: fileBase64Encoded,
-        newFileToDisplay: thumbnailFile,
-        thumbnailBytes: thumbnailBytes
-      );
+      await UpdateListView()
+        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, newFileToDisplay: thumbnailFile, thumbnailBytes: thumbnailBytes);
 
       await thumbnailFile.delete();
 
@@ -688,7 +632,7 @@ class UploadDialogModel {
         .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
 
       await UpdateListView()
-        .processUpdateListView(filePathVal: filePath, selectedFileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
+        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
       
     }
 
