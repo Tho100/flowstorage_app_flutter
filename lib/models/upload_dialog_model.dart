@@ -66,12 +66,16 @@ class UploadDialogModel {
     
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
-    final isFilesMaxUpload = storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!;
+    if(tempData.origin != OriginFile.offline) {
 
-    if(isFilesMaxUpload) {
-      upgradeExceededDialog();
-      return;
-    }
+      final isFilesMaxUpload = storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!;
+
+      if(isFilesMaxUpload) {
+        upgradeExceededDialog();
+        return;
+      }
+
+    } 
 
     if(tempData.origin != OriginFile.public) {
       await CallNotify()
@@ -309,7 +313,7 @@ class UploadDialogModel {
       }
 
       final filePath = pickedFile.path.toString();
-
+      
       if (!(Globals.imageType.contains(fileExtension))) {
         final compressedFileBytes = await CompressorApi.compressFile(filePath);
         fileBase64 = base64.encode(compressedFileBytes); 
