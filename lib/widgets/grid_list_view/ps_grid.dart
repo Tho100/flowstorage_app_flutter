@@ -12,7 +12,7 @@ import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class PsStaggeredListView extends StatelessWidget {
+class PsGridListView extends StatelessWidget {
 
   final Uint8List imageBytes;
   final int index;
@@ -22,7 +22,7 @@ class PsStaggeredListView extends StatelessWidget {
   final Function callBottomTrailing;
   final Function downloadOnPressed;
 
-  PsStaggeredListView({
+  PsGridListView({
     required this.imageBytes,
     required this.index,
     required this.uploaderName,

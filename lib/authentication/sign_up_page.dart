@@ -277,7 +277,7 @@ class SignUpPageState extends State<SignUpPage> {
             onPressed: processRegistration,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
 
           SizedBox(
             height: 35,
@@ -285,34 +285,36 @@ class SignUpPageState extends State<SignUpPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already have an account?  ',
+                  const Text(
+                    'Already have an account?',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 233, 232, 232),
+                      color: ThemeColor.secondaryWhite,
                     ),
                   ),
-
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: ThemeColor.darkBlack,
-                        elevation: 0,
-                        shadowColor: Colors.transparent,
-                        shape: const StadiumBorder(),
-                      ),
-                      onPressed: () {
-                        NavigatePage.goToPageLogin(context);
-                      },
-                      child: const Text("Sign In",
-                        style: TextStyle(
-                          color: ThemeColor.darkPurple,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        )
+                      backgroundColor: ThemeColor.darkBlack,
+                      elevation: 0,
+                      shadowColor: Colors.transparent,
+                      shape: const StadiumBorder(),
+                    ),
+                    onPressed: () {
+                      NavigatePage.goToPageLogin(context);
+                    },
+                    child: const Text(
+                      "Sign In",
+                      style: TextStyle(
+                        color: ThemeColor.darkPurple,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
+
           ],
         ),
       ),      

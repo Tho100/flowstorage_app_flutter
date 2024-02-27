@@ -239,8 +239,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       : storageData.fileNamesFilteredList.indexOf(widget.fileName);
     
     final imageData = tempData.origin == OriginFile.publicSearching 
-    ? base64.decode(psStorageData.psSearchImageBytesList.elementAt(index))
-    : storageData.imageBytesFilteredList.elementAt(index);
+      ? base64.decode(psStorageData.psSearchImageBytesList.elementAt(index))
+      : storageData.imageBytesFilteredList.elementAt(index);
 
     final uploadDate = getProperDate(storageData.fileDateFilteredList.elementAt(index));
   

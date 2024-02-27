@@ -36,7 +36,7 @@ class MultipleTextLoading {
 
   AlertDialog buildLoadingDialog(BuildContext context) {
     
-    const backgroundColor = ThemeColor.darkGrey;
+    const backgroundColor = ThemeColor.mediumBlack;
     const color = ThemeColor.darkPurple;
 
     return AlertDialog(

@@ -5,13 +5,13 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
-class PhotosStaggeredListView extends StatelessWidget {
+class PhotosGridListView extends StatelessWidget {
   
   final bool isPhotosSelected;
   final Uint8List imageBytes;
   final String fileType;
 
-  const PhotosStaggeredListView({
+  const PhotosGridListView({
     required this.imageBytes,
     required this.fileType,
     required this.isPhotosSelected,
@@ -28,14 +28,14 @@ class PhotosStaggeredListView extends StatelessWidget {
               Container(
                 width: 335,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.mediumGrey,
-                    width: isPhotosSelected ? 2.8 : 1.2,
+                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.darkBlack,
+                    width: isPhotosSelected ? 2.8 : 1.0,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.memory(imageBytes, fit: BoxFit.cover),
                 ),
               ),
