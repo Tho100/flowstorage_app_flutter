@@ -8,13 +8,13 @@ import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class DefaultStaggeredListView extends StatelessWidget {
+class DefaultGridListView extends StatelessWidget {
 
   final Uint8List imageBytes;
   final String fileType;
   final int index;
 
-  DefaultStaggeredListView({
+  DefaultGridListView({
     required this.imageBytes,
     required this.fileType,
     required this.index,

@@ -5,13 +5,13 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
-class PhotosStaggeredListView extends StatelessWidget {
+class PhotosGridListView extends StatelessWidget {
   
   final bool isPhotosSelected;
   final Uint8List imageBytes;
   final String fileType;
 
-  const PhotosStaggeredListView({
+  const PhotosGridListView({
     required this.imageBytes,
     required this.fileType,
     required this.isPhotosSelected,

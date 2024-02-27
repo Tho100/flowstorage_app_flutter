@@ -10,7 +10,7 @@ class NavigationButtons extends StatelessWidget {
 
   final bool isVisible;
 
-  final ValueNotifier<bool> isStaggeredListViewSelected;
+  final ValueNotifier<bool> isGridListViewSelected;
   final ValueNotifier<bool> isCreateDirectoryVisible;
   final ValueNotifier<String> sortingText;
   final ValueNotifier<IconData> ascendingDescendingCaret;
@@ -25,7 +25,7 @@ class NavigationButtons extends StatelessWidget {
   NavigationButtons({
     required this.isVisible,
     required this.isCreateDirectoryVisible,
-    required this.isStaggeredListViewSelected,
+    required this.isGridListViewSelected,
     required this.ascendingDescendingCaret, 
     required this.sortingText,
     required this.sharedOnPressed,
@@ -166,7 +166,7 @@ class NavigationButtons extends StatelessWidget {
               if(WidgetVisibility.setNotVisible(OriginFile.public))
               ElevatedButton(
                 onPressed: () {
-                  isStaggeredListViewSelected.value = !isStaggeredListViewSelected.value;
+                  isGridListViewSelected.value = !isGridListViewSelected.value;
                   filterPhotosTypeVisibleOnPressed();
                 },
                 style: ElevatedButton.styleFrom(
@@ -174,7 +174,7 @@ class NavigationButtons extends StatelessWidget {
                   backgroundColor: ThemeColor.darkBlack,
                 ),
                 child: ValueListenableBuilder<bool>(
-                  valueListenable: isStaggeredListViewSelected,
+                  valueListenable: isGridListViewSelected,
                   builder: (context, isSelected, child) {
                     return !isSelected ? const Icon(Icons.grid_view, size: 21) : const Icon(Icons.format_list_bulleted_outlined, size: 22);
                   }

@@ -64,11 +64,11 @@ import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
 import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
-import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/default_list_view.dart';
-import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/photos_list_view.dart';
-import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/ps_list_view.dart';
-import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/recent_ps_list_view.dart';
-import 'package:flowstorage_fsc/widgets/staggered_list_view.dart/sub_ps_list_view.dart';
+import 'package:flowstorage_fsc/widgets/grid_list_view/default_grid.dart';
+import 'package:flowstorage_fsc/widgets/grid_list_view/photos_grid.dart';
+import 'package:flowstorage_fsc/widgets/grid_list_view/ps_grid.dart';
+import 'package:flowstorage_fsc/widgets/grid_list_view/recent_ps_grid.dart';
+import 'package:flowstorage_fsc/widgets/grid_list_view/sub_ps_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
@@ -119,7 +119,7 @@ class HomePageState extends State<HomePage> {
   final navDirectoryButtonVisible = ValueNotifier<bool>(true);
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
 
-  final staggeredListViewSelected = ValueNotifier<bool>(false);
+  final gridListViewSelected = ValueNotifier<bool>(false);
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
 
   final selectAllItemsIconNotifier = ValueNotifier<IconData>(
@@ -489,7 +489,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle("Photos");
 
     searchBarVisibleNotifier.value = false;
-    staggeredListViewSelected.value = true;
+    gridListViewSelected.value = true;
 
     _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
@@ -503,7 +503,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
     searchBarVisibleNotifier.value = true;
-    staggeredListViewSelected.value = false;
+    gridListViewSelected.value = false;
 
     filterPhotosTypeVisible = false;
     selectedItemIsChecked = false;
@@ -560,7 +560,7 @@ class HomePageState extends State<HomePage> {
     filterPhotosTypeVisible = false;
 
     searchBarVisibleNotifier.value = true;
-    staggeredListViewSelected.value = false;
+    gridListViewSelected.value = false;
     
     _itemSearchingImplementation('');
 
@@ -866,7 +866,7 @@ class HomePageState extends State<HomePage> {
 
     psButtonTextNotifier.value = "My Files";
     searchBarVisibleNotifier.value = false;
-    staggeredListViewSelected.value = true;
+    gridListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
 
@@ -1541,7 +1541,7 @@ class HomePageState extends State<HomePage> {
     return NavigationButtons(
       isVisible: isVisibleCondition, 
       isCreateDirectoryVisible: navDirectoryButtonVisible, 
-      isStaggeredListViewSelected: staggeredListViewSelected, 
+      isGridListViewSelected: gridListViewSelected, 
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
       sharedOnPressed: () { 
@@ -1961,7 +1961,7 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Widget _buildStaggeredItems(int index) {
+  Widget _buildGridListViewItems(int index) {
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
 
@@ -1975,7 +1975,6 @@ class HomePageState extends State<HomePage> {
       }
 
       isRecent = index <= 2;
-      
     }
 
     return Padding(
@@ -2108,15 +2107,15 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
 
-              IntrinsicHeight(child: _buildPsStaggeredListView(imageBytes, index, uploaderName)),
+              IntrinsicHeight(child: _buildPsGridListView(imageBytes, index, uploaderName)),
 
             ],
             
             if (tempData.origin != OriginFile.public && !togglePhotosPressed)
-              IntrinsicHeight(child: _buildDefaultStaggeredListView(imageBytes, index)),
+              IntrinsicHeight(child: _buildDefaultGridListView(imageBytes, index)),
 
             if (tempData.origin != OriginFile.public && togglePhotosPressed)
-              IntrinsicHeight(child: _buildPhotosStaggeredListView(index)),
+              IntrinsicHeight(child: _buildPhotosGridListView(index)),
 
           ],
         ),
@@ -2124,7 +2123,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPsStaggeredListView(Uint8List imageBytes, int index, String uploaderName) {
+  Widget _buildPsGridListView(Uint8List imageBytes, int index, String uploaderName) {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final originalDateValues = storageData.fileDateFilteredList[index];
@@ -2135,7 +2134,7 @@ class HomePageState extends State<HomePage> {
       ? "Just now" 
       : DateShortForm(input: inputDate).convert();
 
-    return PsStaggeredListView(
+    return PsGridListView(
       imageBytes: imageBytes,
       index: index,
       uploaderName: uploaderName,
@@ -2144,16 +2143,17 @@ class HomePageState extends State<HomePage> {
       callBottomTrailing: _callBottomTrailing,
       downloadOnPressed: functionModel.downloadFileData,
     );
+
   }
 
-  Widget _buildDefaultStaggeredListView(Uint8List imageBytes, int index) {
+  Widget _buildDefaultGridListView(Uint8List imageBytes, int index) {
 
     final lastDotIndex = storageData.fileNamesFilteredList[index].lastIndexOf('.');
     final fileType = lastDotIndex != -1 
       ? storageData.fileNamesFilteredList[index].substring(lastDotIndex) 
       : storageData.fileNamesFilteredList[index];
 
-    return DefaultStaggeredListView(
+    return DefaultGridListView(
       imageBytes: imageBytes, 
       index: index,
       fileType: fileType
@@ -2161,13 +2161,13 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Widget _buildPhotosStaggeredListView(int index) {
+  Widget _buildPhotosGridListView(int index) {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final imageBytes = storageData.imageBytesFilteredList[index]!;
     final isSelected = selectedPhotosIndex.contains(index);
 
-    return PhotosStaggeredListView(
+    return PhotosGridListView(
       imageBytes: imageBytes, 
       fileType: fileType,
       isPhotosSelected: isSelected,
@@ -2175,7 +2175,7 @@ class HomePageState extends State<HomePage> {
     
   }
 
-  Widget _buildStaggeredListView() {
+  Widget _buildGridListView() {
 
     final fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
@@ -2191,7 +2191,7 @@ class HomePageState extends State<HomePage> {
             controller: scrollListViewController,
             shrinkWrap: true,
             itemCount: storageData.fileNamesFilteredList.length,
-            itemBuilder: (context, index) => _buildStaggeredItems(index),
+            itemBuilder: (context, index) => _buildGridListViewItems(index),
             staggeredTileBuilder: (index) => StaggeredTile.fit(fitSize),
             crossAxisCount: 2,
             mainAxisSpacing: togglePhotosPressed ? 8 : 6.5,
@@ -2237,18 +2237,18 @@ class HomePageState extends State<HomePage> {
       },
       child: SizedBox(
         height: mediaHeight,
-        child: _buildDefaultOrStaggeredListView(),
+        child: _buildDefaultOrGridListView(),
       ),
     );
   }
 
-  Widget _buildDefaultOrStaggeredListView() {
+  Widget _buildDefaultOrGridListView() {
     return ValueListenableBuilder<bool>(
-      valueListenable: staggeredListViewSelected,
+      valueListenable: gridListViewSelected,
       builder: (context, isSelected, child) {
         return !isSelected 
           ? _buildResponsiveListView()
-          : _buildStaggeredListView();
+          : _buildGridListView();
       }
     );
   }
@@ -2535,7 +2535,7 @@ class HomePageState extends State<HomePage> {
     psButtonTextNotifier.dispose();
     intentDataStreamSubscription.cancel();
 
-    staggeredListViewSelected.dispose();
+    gridListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
     navDirectoryButtonVisible.dispose();
     selectAllItemsIconNotifier.dispose();
