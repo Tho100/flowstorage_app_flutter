@@ -15,7 +15,7 @@ class DeleteSelectionDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           title: Text(
             appBarTitle,
             style: const TextStyle(

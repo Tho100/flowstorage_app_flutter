@@ -55,13 +55,13 @@ class UploadDialogModel {
 
     await OfflineModel().saveOfflineFile(fileName: fileName, fileData: fileData);
 
-    if(videoThumbnail!.isNotEmpty) {
-      storageData.imageBytesList.add(videoThumbnail);
-      storageData.imageBytesFilteredList.add(videoThumbnail);
-
-    } else {
+    if(videoThumbnail == null || videoThumbnail.isEmpty) {
       storageData.imageBytesList.add(fileData);
       storageData.imageBytesFilteredList.add(fileData);
+
+    } else {
+      storageData.imageBytesList.add(videoThumbnail);
+      storageData.imageBytesFilteredList.add(videoThumbnail);
 
     }
 
@@ -364,13 +364,13 @@ class UploadDialogModel {
         await UpdateListView()
           .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: assetsPreviewImage);
 
+        if(tempData.origin == OriginFile.offline) {
+          tempStorageData.addOfflineFileName(fileName);
+        }
+
       }
 
       UpdateListView().addItemDetailsToListView(fileName: fileName);
-
-      if(tempData.origin == OriginFile.offline) {
-        tempStorageData.addOfflineFileName(fileName);
-      }
 
       scaffoldMessenger.hideCurrentSnackBar();
 
