@@ -28,14 +28,14 @@ class PhotosGridListView extends StatelessWidget {
               Container(
                 width: 335,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.mediumGrey,
-                    width: isPhotosSelected ? 2.8 : 1.2,
+                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.darkBlack,
+                    width: isPhotosSelected ? 2.8 : 1.0,
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.memory(imageBytes, fit: BoxFit.cover),
                 ),
               ),

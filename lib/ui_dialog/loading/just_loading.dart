@@ -22,7 +22,7 @@ class JustLoading {
 
   AlertDialog buildLoadingDialog() {
     
-    const backgroundColor = ThemeColor.darkGrey;
+    const backgroundColor = ThemeColor.mediumBlack;
     const color = ThemeColor.darkPurple;
 
     return AlertDialog(

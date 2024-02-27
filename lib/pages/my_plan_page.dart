@@ -116,7 +116,7 @@ class MyPlanPageState extends State<MyPlanPage> {
       height: 65,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
+          backgroundColor: ThemeColor.mediumBlack,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           )

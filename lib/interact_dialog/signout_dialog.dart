@@ -14,7 +14,7 @@ class SignOutDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           content: const Text(
             'Are you sure you want to sign out from your Flowstorage account?',
             style: TextStyle(color: ThemeColor.justWhite),

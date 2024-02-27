@@ -1,5 +1,4 @@
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -54,7 +53,7 @@ class BottomTrailingSelectedItems {
             ),
           ),
 
-          if(WidgetVisibility.setNotVisible(OriginFile.offline) && itemsName.every((name) => !Globals.videoType.contains(name.split('.').last)))
+          if(WidgetVisibility.setNotVisible(OriginFile.offline))
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
