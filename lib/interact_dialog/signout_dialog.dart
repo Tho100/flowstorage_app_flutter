@@ -31,12 +31,12 @@ class SignOutDialog {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
+                backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
               onPressed: signOutOnPressed,
               child: const Text(
-                'Logout',
+                'Sign Out',
                 style: TextStyle(color: Colors.red),
               ),
             ),
