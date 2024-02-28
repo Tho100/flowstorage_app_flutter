@@ -102,10 +102,13 @@ class SnackAlert {
               ),
             ),
             const Spacer(),
-            TextButton(
-              onPressed: () async { },
-              child: const Text('Cancel',
-                style: TextStyle(color: ThemeColor.mediumBlack),
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: TextButton(
+                onPressed: () async { },
+                child: const Text('Cancel',
+                  style: TextStyle(color: ThemeColor.mediumBlack),
+                ),
               ),
             ),
           ],
