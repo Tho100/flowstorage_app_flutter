@@ -12,7 +12,7 @@ class SignOutDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
           backgroundColor: ThemeColor.mediumBlack,
           content: const Text(
@@ -31,12 +31,12 @@ class SignOutDialog {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
+                backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
               onPressed: signOutOnPressed,
               child: const Text(
-                'Logout',
+                'Sign Out',
                 style: TextStyle(color: Colors.red),
               ),
             ),

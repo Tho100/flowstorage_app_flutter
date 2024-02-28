@@ -12,7 +12,7 @@ class DeleteAccountDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
           backgroundColor: ThemeColor.darkGrey,
           content: const Text(

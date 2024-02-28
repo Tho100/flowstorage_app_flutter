@@ -2565,13 +2565,26 @@ class HomePageState extends State<HomePage> {
           publicStorageFunction: () async { await _callPublicStorageData(); },
         ),
         appBar: _buildCustomAppBar(),
-        body: storageData.fileNamesList.isEmpty 
-
-        ? Column(
-          children: [_buildSearchBar(), _buildNavigationButtons(), _buildEmptyBody()]) 
-        : Column(
-          children: [_buildSearchBar(), _buildNavigationButtons(), _buildHomeBody()]),
-
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                _buildSearchBar(),
+                _buildNavigationButtons(),
+                storageData.fileNamesList.isEmpty 
+                  ? _buildEmptyBody()
+                  : _buildHomeBody(),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: _buildFloatingAddItemButton(),
+              ),
+            ),
+          ],
+        ),
         bottomNavigationBar: CustomNavigationBar(
           openFolderDialog: _buildFolderBottomSheet, 
           toggleHome: _toggleHome,
@@ -2579,8 +2592,6 @@ class HomePageState extends State<HomePage> {
           togglePublicStorage: _togglePublicStorage, 
           context: context
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: _buildFloatingAddItemButton(),
       ),
     );
   }

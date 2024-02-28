@@ -13,7 +13,7 @@ class DeleteSelectionDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
           backgroundColor: ThemeColor.mediumBlack,
           title: Text(
@@ -38,7 +38,7 @@ class DeleteSelectionDialog {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
+                backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
               onPressed: () {

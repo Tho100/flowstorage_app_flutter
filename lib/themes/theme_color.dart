@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ThemeColor {
 
   static const darkBlack = Color.fromARGB(255, 5, 5, 5);
-  static const mediumBlack = Color.fromARGB(255, 11, 11, 11);
+  static const mediumBlack = Color.fromARGB(255, 14, 14, 14);
 
   static const darkGrey = Color.fromARGB(255, 17, 17, 17);
   static const mediumGrey = Color.fromARGB(255, 26, 26, 26);
