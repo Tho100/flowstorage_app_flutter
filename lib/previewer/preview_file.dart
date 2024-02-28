@@ -297,10 +297,10 @@ class PreviewFileState extends State<PreviewFile> {
         tappedIndex: widget.tappedIndex
       ).update();
 
-      SnakeAlert.okSnake(message: "Changes saved.", icon: Icons.check);
+      SnackAlert.okSnack(message: "Changes saved.", icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to save changes.");
+      SnackAlert.errorSnack("Failed to save changes.");
     }
     
   }

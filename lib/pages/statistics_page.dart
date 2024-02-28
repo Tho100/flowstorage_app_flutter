@@ -141,7 +141,7 @@ class StatsPageState extends State<StatisticsPage> {
       dataIsLoading.value = false;
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("No internet connection.");
+      SnackAlert.errorSnack("No internet connection.");
       logger.e('Exception from _initData {statistics_page}',err,st);
     }
 

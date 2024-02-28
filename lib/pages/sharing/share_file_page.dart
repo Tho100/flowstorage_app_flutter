@@ -221,7 +221,7 @@ class ShareFilePage extends StatelessWidget {
       await file.delete();
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to start sharing.");
+      SnackAlert.errorSnack("Failed to start sharing.");
     }
 
   }

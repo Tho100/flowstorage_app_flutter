@@ -64,11 +64,11 @@ class FunctionModel {
 
       await CallNotify().customNotification(title: "Folder Renamed", subMessage: "'$oldFolderName' renamed to '$newFolderName'");
 
-      SnakeAlert.okSnake(message: "'$oldFolderName' Has been renamed to '$newFolderName'");
+      SnackAlert.okSnack(message: "'$oldFolderName' Has been renamed to '$newFolderName'");
 
     } catch (err, st) {
       logger.e('Exception from renameFolderData {function_model}', err, st);
-      SnakeAlert.errorSnake("Failed to rename this folder.");
+      SnackAlert.errorSnack("Failed to rename this folder.");
     }
 
   }
@@ -79,7 +79,7 @@ class FunctionModel {
 
       if(tempData.origin == OriginFile.offline) {
         await OfflineModel().deleteFile(fileName);
-        SnakeAlert.okSnake(message: "Deleted $fileName", icon: Icons.check);
+        SnackAlert.okSnack(message: "Deleted $fileName", icon: Icons.check);
         return;
 
       } 
@@ -89,11 +89,11 @@ class FunctionModel {
       
       tempData.clearFileData();
 
-      SnakeAlert.okSnake(message: "Deleted $fileName", icon: Icons.check);
+      SnackAlert.okSnack(message: "Deleted $fileName", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from deleteFileData {function_model}', err, st);
-      SnakeAlert.errorSnake("Failed to delete $fileName");
+      SnackAlert.errorSnack("Failed to delete $fileName");
     }
 
   }
@@ -121,13 +121,13 @@ class FunctionModel {
           tempStorageData.offlineFileNameList.add(newFileName);
         }
 
-        SnakeAlert.okSnake(message: "'$oldFileName' renamed to '$newFileName'");
+        SnackAlert.okSnack(message: "'$oldFileName' renamed to '$newFileName'");
         
       }
 
     } catch (err, st) {
       logger.e('Exception from renameFileData {function_model}', err, st);
-      SnakeAlert.errorSnake("Failed to rename this file.");
+      SnackAlert.errorSnack("Failed to rename this file.");
     }
 
   }
@@ -165,12 +165,12 @@ class FunctionModel {
 
       loadingDialog.stopLoading();
 
-      SnakeAlert.okSnake(message: "${checkedItemsName.length} item(s) has been saved.", icon: Icons.check);
+      SnackAlert.okSnack(message: "${checkedItemsName.length} item(s) has been saved.", icon: Icons.check);
 
     } catch (err, st) {
       logger.e('Exception from multipleFilesDownload {function_model}', err, st);
       loadingDialog.stopLoading();
-      SnakeAlert.errorSnake("Failed to save files.");
+      SnackAlert.errorSnack("Failed to save files.");
     }
 
   }
@@ -219,10 +219,10 @@ class FunctionModel {
       await CallNotify().downloadedNotification(fileName: fileName);
 
       if(Globals.imageType.contains(fileType) || Globals.videoType.contains(fileType)) {
-        SnakeAlert.okSnake(message: "$fileName Saved to gallery.", icon: Icons.check);
+        SnackAlert.okSnack(message: "$fileName Saved to gallery.", icon: Icons.check);
 
       } else {
-        SnakeAlert.okSnake(message: "$fileName Has been downloaded.", icon: Icons.check);
+        SnackAlert.okSnack(message: "$fileName Has been downloaded.", icon: Icons.check);
 
       }
 
@@ -230,7 +230,7 @@ class FunctionModel {
     } catch (err, st) {
       logger.e('Exception from downloadFileData {function_model}', err, st);
       await CallNotify().customNotification(title: "Download Failed", subMessage: "Failed to download $fileName.");
-      SnakeAlert.errorSnake("Failed to download $fileName.");
+      SnackAlert.errorSnack("Failed to download $fileName.");
     }
 
   }
@@ -255,10 +255,10 @@ class FunctionModel {
 
         tempStorageData.directoryNameList.add(directoryName);
 
-        SnakeAlert.okSnake(message: "Directory $directoryName has been created.", icon: Icons.check);
+        SnackAlert.okSnack(message: "Directory $directoryName has been created.", icon: Icons.check);
 
       } else {
-        SnakeAlert.errorSnake("Failed to create directory.");
+        SnackAlert.errorSnack("Failed to create directory.");
         
       }
 
@@ -276,11 +276,11 @@ class FunctionModel {
     
       tempStorageData.directoryNameList.remove(directoryName);
       
-      SnakeAlert.okSnake(message: "Directory `$directoryName` has been deleted.");
+      SnackAlert.okSnack(message: "Directory `$directoryName` has been deleted.");
 
     } catch (err, st) {
       logger.e('Exception from deleteDirectoryData {function_model}',err,st);
-      SnakeAlert.errorSnake("Failed to delete $directoryName");
+      SnackAlert.errorSnack("Failed to delete $directoryName");
     }
 
   }
@@ -347,7 +347,7 @@ class FunctionModel {
 
     singleLoading.stopLoading();
 
-    SnakeAlert.okSnake(message: "${checkedFilesName.length} Item(s) now available offline.", icon: Icons.check);
+    SnackAlert.okSnack(message: "${checkedFilesName.length} Item(s) now available offline.", icon: Icons.check);
 
     await CallNotify().customNotification(title: "Offline", subMessage: "${checkedFilesName.length} Item(s) now available offline");
 

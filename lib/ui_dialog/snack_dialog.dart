@@ -3,11 +3,12 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
-class SnakeAlert {
+class SnackAlert {
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> errorSnake(String message) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> errorSnack(String message) {
 
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -21,19 +22,21 @@ class SnakeAlert {
               width: 320,
               child: Text(message, 
                 overflow: TextOverflow.ellipsis
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       )
     );
   }
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> okSnake({
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> okSnack({
     required String message,
     IconData? icon
   }) {
+
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -56,7 +59,7 @@ class SnakeAlert {
     );
   }
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> upgradeSnake() {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> upgradeSnack() {
 
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
@@ -64,6 +67,7 @@ class SnakeAlert {
       SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: const Color.fromARGB(255, 216, 142, 46),
+        duration: const Duration(seconds: 6),
         content: Row(
           children: [
             const Text("(Warning) Storage usage exceeded 70%."), 
@@ -76,13 +80,11 @@ class SnakeAlert {
             ),
           ],
         ),
-        duration: const Duration(seconds: 6),
       ),
     );
-    
   } 
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> uploadingSnake({
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> uploadingSnack({
     required ScaffoldMessengerState snackState, 
     required String message
   }) {
@@ -100,10 +102,13 @@ class SnakeAlert {
               ),
             ),
             const Spacer(),
-            TextButton(
-              onPressed: () async { },
-              child: const Text('Cancel',
-                style: TextStyle(color: ThemeColor.mediumBlack),
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: TextButton(
+                onPressed: () async { },
+                child: const Text('Cancel',
+                  style: TextStyle(color: ThemeColor.mediumBlack),
+                ),
               ),
             ),
           ],
@@ -112,7 +117,7 @@ class SnakeAlert {
     );
   }
 
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> temporarySnake({
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> temporarySnack({
     required ScaffoldMessengerState snackState, 
     required String message
   }) {

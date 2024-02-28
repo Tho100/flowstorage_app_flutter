@@ -141,7 +141,7 @@ class MyPlanPageState extends State<MyPlanPage> {
                 );
 
               } catch (er) {
-                SnakeAlert.errorSnake("Subscription cancellation failed.");
+                SnackAlert.errorSnack("Subscription cancellation failed.");
                 return;
               }
 
