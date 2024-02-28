@@ -11,7 +11,7 @@ class CustomAlertDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(14)
           ),
           backgroundColor: ThemeColor.mediumBlack,
           content: Text(messages,
@@ -40,7 +40,7 @@ class CustomAlertDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
           backgroundColor: ThemeColor.mediumBlack,
           title: Text(title,
