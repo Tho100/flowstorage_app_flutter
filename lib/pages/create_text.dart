@@ -172,7 +172,7 @@ class CreateTextPageState extends State<CreateText> {
       subMessage: "${ShortenText().cutText(fileName)} Has been saved",
     );
 
-    SnakeAlert.okSnake(
+    SnackAlert.okSnack(
       message: "'${fileNameController.text.replaceAll(".txt", "")}.txt' Has been saved${isFromOffline ? " as an offline file." : "."}",
       icon: Icons.check,
     );

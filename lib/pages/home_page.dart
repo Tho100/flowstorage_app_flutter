@@ -148,7 +148,7 @@ class HomePageState extends State<HomePage> {
   Timer? debounceSearchingTimer;
 
   void _callStorageUsageWarning() async {
-    SnakeAlert.upgradeSnake();
+    SnackAlert.upgradeSnack();
     await CallNotify().customNotification(
       title: "Warning", 
       subMessage: "Storage usage has exceeded 70%. Upgrade for more storage."
@@ -173,7 +173,7 @@ class HomePageState extends State<HomePage> {
 
   void _callOnUploadFailed(String message, Object err, StackTrace stackTrace) {
     logger.e(message, err, stackTrace);
-    SnakeAlert.errorSnake("Upload failed.");
+    SnackAlert.errorSnack("Upload failed.");
     NotificationApi.stopNotification(0);
   }
 
@@ -246,7 +246,7 @@ class HomePageState extends State<HomePage> {
       _itemSearchingImplementation('');
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to start scanner.");
+      SnackAlert.errorSnack("Failed to start scanner.");
     }
     
   }
@@ -262,7 +262,7 @@ class HomePageState extends State<HomePage> {
       _itemSearchingImplementation('');
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to start the camera.");
+      SnackAlert.errorSnack("Failed to start the camera.");
     }
 
   }
@@ -328,7 +328,7 @@ class HomePageState extends State<HomePage> {
 
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-    SnakeAlert.uploadingSnake(
+    SnackAlert.uploadingSnack(
       snackState: scaffoldMessenger, 
       message: "Uploading ${ShortenText().cutText(fileName)}"
     );
@@ -351,7 +351,7 @@ class HomePageState extends State<HomePage> {
     
     _scrollEndListView();
 
-    SnakeAlert.temporarySnake(
+    SnackAlert.temporarySnack(
       snackState: scaffoldMessenger, 
       message: "Added ${ShortenText().cutText(fileName)}."
     );
@@ -793,10 +793,10 @@ class HomePageState extends State<HomePage> {
         Navigator.pop(context);
       }
 
-      SnakeAlert.okSnake(message: "Deleted $folderName folder.", icon: Icons.check);
+      SnackAlert.okSnack(message: "Deleted $folderName folder.", icon: Icons.check);
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to delete this folder.");
+      SnackAlert.errorSnack("Failed to delete this folder.");
     }
 
   }
@@ -1011,12 +1011,12 @@ class HomePageState extends State<HomePage> {
 
       loadingDialog.stopLoading();
 
-      SnakeAlert.okSnake(message: "Deleted $count item(s).", icon: Icons.check);
+      SnackAlert.okSnack(message: "Deleted $count item(s).", icon: Icons.check);
 
       _clearItemSelection();
 
     } catch(err, st) {
-      SnakeAlert.errorSnake("An error occurred.");
+      SnackAlert.errorSnack("An error occurred.");
       logger.e('Exception from _deleteMultipleSelectedFiles {main}', err, st);
     }
 
@@ -1033,7 +1033,7 @@ class HomePageState extends State<HomePage> {
       _clearItemSelection();
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("An error occurred.");
+      SnackAlert.errorSnack("An error occurred.");
       logger.e('Exception from _makeMultipleFiles', err, st);
     }
     
@@ -1050,7 +1050,7 @@ class HomePageState extends State<HomePage> {
       _clearItemSelection();
 
     } catch (err, st) {
-      SnakeAlert.errorSnake("An error occurred.");
+      SnackAlert.errorSnack("An error occurred.");
       logger.e('Exception from _makeAvailableOfflineOnPressed {main}', err, st);
     }
 
@@ -1180,7 +1180,7 @@ class HomePageState extends State<HomePage> {
       newDirectoryName: newDirName
     ).rename();
 
-    SnakeAlert.okSnake(message: "Directory '$oldDirName' renamed to '$newDirName'.");
+    SnackAlert.okSnack(message: "Directory '$oldDirName' renamed to '$newDirName'.");
     
   }
 

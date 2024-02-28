@@ -105,7 +105,7 @@ class UploadDialogModel {
     }
 
     if(countSelectedFiles > 2) {
-      SnakeAlert.uploadingSnake(
+      SnackAlert.uploadingSnack(
         snackState: scaffoldMessenger, 
         message: "Uploading $countSelectedFiles item(s)..."
       );
@@ -134,7 +134,7 @@ class UploadDialogModel {
       } 
 
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
-        SnakeAlert.uploadingSnake(
+        SnackAlert.uploadingSnack(
           snackState: scaffoldMessenger, 
           message: "Uploading $fileName"
         ); 
@@ -193,7 +193,7 @@ class UploadDialogModel {
 
       if(countSelectedFiles < 2) {
 
-        SnakeAlert.temporarySnake(
+        SnackAlert.temporarySnack(
           snackState: scaffoldMessenger, 
           message: "Added $fileName"
         );
@@ -208,7 +208,7 @@ class UploadDialogModel {
 
     if(countSelectedFiles >= 2) {
 
-      SnakeAlert.temporarySnake(
+      SnackAlert.temporarySnack(
         snackState: scaffoldMessenger, 
         message: "Added ${countSelectedFiles.toString()} item(s)."
       );
@@ -250,7 +250,7 @@ class UploadDialogModel {
     }
 
     if(countSelectedFiles > 2) {
-      SnakeAlert.uploadingSnake(
+      SnackAlert.uploadingSnack(
         snackState: scaffoldMessenger, 
         message: "Uploading $countSelectedFiles item(s)..."
       );
@@ -280,7 +280,7 @@ class UploadDialogModel {
       }
 
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
-        SnakeAlert.uploadingSnake(
+        SnackAlert.uploadingSnack(
           snackState: scaffoldMessenger, 
           message: "Uploading $fileName"
         );
@@ -375,7 +375,7 @@ class UploadDialogModel {
       scaffoldMessenger.hideCurrentSnackBar();
 
       if(countSelectedFiles < 2) {
-        SnakeAlert.temporarySnake(
+        SnackAlert.temporarySnack(
           snackState: scaffoldMessenger, 
           message: "Added $fileName"
         );
@@ -384,7 +384,7 @@ class UploadDialogModel {
     }
 
     if(countSelectedFiles > 2) {
-      SnakeAlert.temporarySnake(
+      SnackAlert.temporarySnack(
         snackState: scaffoldMessenger, 
         message: "Added ${countSelectedFiles.toString()} item(s)."
       );
@@ -417,7 +417,7 @@ class UploadDialogModel {
 
     final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
-    SnakeAlert.uploadingSnake(
+    SnackAlert.uploadingSnack(
       snackState: scaffoldMessenger, 
       message: "Uploading $folderName folder..."
     );
@@ -439,7 +439,7 @@ class UploadDialogModel {
 
     scaffoldMessenger.hideCurrentSnackBar();
 
-    SnakeAlert.temporarySnake(
+    SnackAlert.temporarySnack(
       snackState: scaffoldMessenger,
       message: "Added $folderName folder."
     );
@@ -504,7 +504,7 @@ class UploadDialogModel {
 
     await NotificationApi.stopNotification(0);
 
-    SnakeAlert.okSnake(message: "Added $fileNameWithExtension", icon: Icons.check);
+    SnackAlert.okSnack(message: "Added $fileNameWithExtension", icon: Icons.check);
 
     await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
@@ -564,7 +564,7 @@ class UploadDialogModel {
 
     }
 
-    SnakeAlert.okSnake(message: "Added 1 photo.", icon: Icons.check);
+    SnackAlert.okSnack(message: "Added 1 photo.", icon: Icons.check);
 
     await CallNotify().uploadedNotification(title: "Upload Finished",count: 1);
     
@@ -580,7 +580,7 @@ class UploadDialogModel {
     await CallNotify()
       .uploadingNotification(numberOfFiles: 1);
 
-    SnakeAlert.uploadingSnake(
+    SnackAlert.uploadingSnack(
       snackState: scaffoldMessenger, 
       message: "Uploading $fileName"
     );
@@ -642,7 +642,7 @@ class UploadDialogModel {
 
     await NotificationApi.stopNotification(0);
 
-    SnakeAlert.temporarySnake(
+    SnackAlert.temporarySnack(
       snackState: scaffoldMessenger, 
       message: "Added $fileName"
     );

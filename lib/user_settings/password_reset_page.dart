@@ -128,8 +128,9 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
       CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
 
     } catch (err) {
-      SnakeAlert.errorSnake("Failed to update your password.");
+      SnackAlert.errorSnack("Failed to update your password.");
     }
+    
   }
 
   Future<void> updateAuthPassword(String newAuth,String username) async {

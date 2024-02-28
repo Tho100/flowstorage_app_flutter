@@ -155,10 +155,10 @@ class OfflineModel {
       await saveOfflineFile(
         fileName: fileName, fileData: fileData);
       
-      SnakeAlert.okSnake(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check);
+      SnackAlert.okSnack(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check);
       
     } catch (err) {
-      SnakeAlert.errorSnake("An error occurred.");
+      SnackAlert.errorSnack("An error occurred.");
     }
 
   }
