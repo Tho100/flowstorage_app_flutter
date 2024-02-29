@@ -326,10 +326,8 @@ class HomePageState extends State<HomePage> {
     required dynamic videoThumbnail,
   }) async {
 
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     SnackAlert.uploadingSnack(
-      snackState: scaffoldMessenger, 
       message: "Uploading ${ShortenText().cutText(fileName)}"
     );
 
@@ -345,14 +343,11 @@ class HomePageState extends State<HomePage> {
     psStorageData.psTagsList.add(psUploadData.psTagValue);
     psStorageData.psUploaderList.add(userData.username);
 
-    scaffoldMessenger.hideCurrentSnackBar();
-
     UpdateListView().addItemDetailsToListView(fileName: fileName);
     
     _scrollEndListView();
 
     SnackAlert.temporarySnack(
-      snackState: scaffoldMessenger, 
       message: "Added ${ShortenText().cutText(fileName)}."
     );
 
