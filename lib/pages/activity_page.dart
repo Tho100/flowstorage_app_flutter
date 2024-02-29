@@ -373,7 +373,6 @@ class ActivityPageState extends State<ActivityPage> {
   }
 
   Widget buildLastBottomContainers(double width) {
-
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Row(
@@ -443,7 +442,6 @@ class ActivityPageState extends State<ActivityPage> {
   } 
 
   Widget buildMostUploaded(double width) {
-
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: Row(
@@ -487,13 +485,14 @@ class ActivityPageState extends State<ActivityPage> {
   }
 
   Widget buildRecentListView() {
-
     return ListView.builder(
       itemCount: recentFilesName.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
 
         final fileType = recentFilesName[index].split('.').last;
+
+        final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
 
         return GestureDetector(
           onTap: () {
@@ -523,7 +522,7 @@ class ActivityPageState extends State<ActivityPage> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.memory(recentImageBytes[index]!,
-                          fit: Globals.generalFileTypes.contains(fileType) ? BoxFit.scaleDown : BoxFit.cover, 
+                          fit: Globals.generalFileTypes.contains(fileType) || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover, 
                           height: 225, width: 145
                         ),
                       ),

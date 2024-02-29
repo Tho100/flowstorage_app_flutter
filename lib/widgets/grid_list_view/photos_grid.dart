@@ -1,9 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class PhotosGridListView extends StatelessWidget {
   
@@ -11,15 +14,20 @@ class PhotosGridListView extends StatelessWidget {
   final Uint8List imageBytes;
   final String fileType;
 
-  const PhotosGridListView({
+  PhotosGridListView({
     required this.imageBytes,
     required this.fileType,
     required this.isPhotosSelected,
     Key? key
   }) : super(key: key);
 
+  final tempData = GetIt.instance<TempDataProvider>();
+
   @override
   Widget build(BuildContext context) {
+
+    final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
+
     return Column(
       children: [
         Expanded(
@@ -36,7 +44,9 @@ class PhotosGridListView extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.memory(imageBytes, fit: BoxFit.cover),
+                  child: Image.memory(imageBytes, 
+                    fit: isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover
+                  ),
                 ),
               ),
                 
@@ -61,11 +71,9 @@ class PhotosGridListView extends StatelessWidget {
                   ),
                   child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 17)),
               ),
-              
             ],
           ),
         ),
-
       ],
     );
   }
