@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
@@ -22,6 +24,7 @@ class DefaultGridListView extends StatelessWidget {
   }) : super(key: key);
 
   final storageData = GetIt.instance<StorageDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   String getProperDate(String date) {
     final dotIndex = date.indexOf(GlobalsStyle.dotSeparator);
@@ -36,7 +39,9 @@ class DefaultGridListView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     
     final actualFileType = fileType.split('.').last;
+
     final isGeneralFile = Globals.generalFileTypes.contains(actualFileType) || !fileType.contains('.');
+    final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
 
     final fileNames = storageData.fileNamesFilteredList[index];
     final fileDates = getProperDate(storageData.fileDateFilteredList[index]);
@@ -60,11 +65,10 @@ class DefaultGridListView extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  child: Image.memory(
-                    imageBytes,
-                    cacheHeight: isGeneralFile ? 55 : null,
-                    cacheWidth: isGeneralFile ? 55 : null,
-                    fit: isGeneralFile ? BoxFit.scaleDown : BoxFit.cover,
+                  child: Image.memory(imageBytes,
+                    cacheHeight: isGeneralFile || isOfflineVideo ? 55 : null,
+                    cacheWidth: isGeneralFile || isOfflineVideo ? 55 : null,
+                    fit: isGeneralFile || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
               ),
