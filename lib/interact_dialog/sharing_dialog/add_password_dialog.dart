@@ -19,7 +19,7 @@ class AddSharingPassword {
   Future buildAddPasswordDialog() {
     return InteractDialog().buildDialog(
       context: navigatorKey.currentContext!, 
-      childrenWidgets: <Widget>[
+      children: [
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

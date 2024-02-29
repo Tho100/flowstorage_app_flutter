@@ -19,7 +19,7 @@ class SignOutDialog {
             'Are you sure you want to sign out from your Flowstorage account?',
             style: TextStyle(color: ThemeColor.justWhite),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

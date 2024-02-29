@@ -17,7 +17,7 @@ class BottomTrailingSorting {
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
-      children: <Widget>[
+      children: [
 
         const SizedBox(height: 12),
 
@@ -74,6 +74,6 @@ class BottomTrailingSorting {
 
       ],
     );
-
   }
+
 }

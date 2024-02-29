@@ -5,7 +5,7 @@ class InteractDialog {
 
   Future buildDialog({
     required BuildContext context,
-    required List<Widget> childrenWidgets
+    required List<Widget> children
   }) {
     return showDialog(
       context: context,
@@ -20,7 +20,7 @@ class InteractDialog {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
-            children: childrenWidgets
+            children: children
           )
         );
       }

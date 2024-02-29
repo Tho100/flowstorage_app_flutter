@@ -26,7 +26,7 @@ class DeleteSelectionDialog {
             'Delete these items? Action is permanent.',
             style: TextStyle(color: ThemeColor.secondaryWhite),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

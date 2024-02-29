@@ -22,10 +22,11 @@ class MainDialogButton extends StatelessWidget {
         backgroundColor: ThemeColor.mediumBlack,
         elevation: 0,
       ),
-      child: Text(
-        text,
+      child: Text(text,
         style: const TextStyle(
-          fontSize: 16, color: ThemeColor.secondaryWhite)
+          fontSize: 16, 
+          color: ThemeColor.secondaryWhite
+        )
       ),
     );
   }
@@ -38,10 +39,12 @@ class MainDialogButton extends StatelessWidget {
         backgroundColor: ThemeColor.mediumBlack,
         elevation: 0,
       ),
-      child: Text(
-        text,
+      child: Text(text,
         style: const TextStyle(
-          fontSize: 16, color: ThemeColor.darkPurple, fontWeight: FontWeight.w600),
+          fontSize: 16, 
+          color: ThemeColor.darkPurple, 
+          fontWeight: FontWeight.w600
+        ),
       ),
     );
   }
@@ -51,4 +54,5 @@ class MainDialogButton extends StatelessWidget {
     return isButtonClose 
     ? buildCloseButton() : buildDefaultButton();
   }
+  
 }

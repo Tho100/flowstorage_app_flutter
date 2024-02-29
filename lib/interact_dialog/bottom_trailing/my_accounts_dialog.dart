@@ -49,7 +49,7 @@ class MyAccountsDialog {
           height: MediaQuery.of(context).size.height,  
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               
               const SizedBox(height: 12),
 

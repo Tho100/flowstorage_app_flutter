@@ -23,10 +23,9 @@ class SharingPassword {
     required dynamic thumbnail,
     required BuildContext? context
   }) {
-
     return InteractDialog().buildDialog(
       context: context!, 
-      childrenWidgets: <Widget>[
+      children: [
 
         const Padding(
           padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),

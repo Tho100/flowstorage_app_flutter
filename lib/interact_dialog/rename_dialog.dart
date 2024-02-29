@@ -29,12 +29,14 @@ class RenameDialog {
     final fileNameWithoutExtension = lastDotIndex != -1
       ? fileName.substring(0, lastDotIndex)
       : fileName;
-      
+
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     renameController.text = fileNameWithoutExtension;
 
     return InteractDialog().buildDialog(
       context: context, 
-      childrenWidgets: <Widget>[
+      children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -47,10 +49,8 @@ class RenameDialog {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
-                      width: Globals.generalFileTypes.contains(fileType) 
-                        ? 36 : 55,
-                      height: Globals.generalFileTypes.contains(fileType) 
-                        ? 36 : 55,
+                      width: isGeneralFile ? 36 : 55,
+                      height: isGeneralFile ? 36 : 55,
                       fit: BoxFit.cover,
                       image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),

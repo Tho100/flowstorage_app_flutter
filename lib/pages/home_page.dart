@@ -992,19 +992,18 @@ class HomePageState extends State<HomePage> {
 
       loadingDialog.startLoading(title: "Deleting...", context: context);
 
-      for (int i = 0; i < count; i++) {
+      for(final fileName in checkedItemsName) {
 
-        final fileName = checkedItemsName.elementAt(i);
         await deleteData.deleteOnMultiSelection(fileName: fileName);
 
         await Future.delayed(const Duration(milliseconds: 855));
+        
         _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
 
         if(tempStorageData.offlineFileNameList.contains(fileName)) {
           setState(() {
             tempStorageData.offlineFileNameList.remove(fileName);
           });
-
         }
 
       }

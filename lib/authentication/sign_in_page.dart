@@ -104,7 +104,7 @@ class SignInPageState extends State<SignInPage> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: mediaQuery.size.width * 0.02,
@@ -260,12 +260,10 @@ class SignInPageState extends State<SignInPage> {
                 ],
               )
             ),
-
           ],
         ),
       ),      
     );
-
   }
 
 }

@@ -17,8 +17,9 @@ class CustomAlertDialog {
           content: Text(messages,
             style: const TextStyle(
               color: Colors.white
-            )),
-          actions: <Widget>[
+            )
+          ),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -26,7 +27,8 @@ class CustomAlertDialog {
               child: const Text('OK',
                 style: TextStyle(
                   color: Colors.white
-                )),
+                )
+              ),
             ),
           ],
         );
@@ -46,12 +48,14 @@ class CustomAlertDialog {
           title: Text(title,
             style: const TextStyle(
               color: Colors.white
-          )),
+            )
+          ),
           content: Text(messages,
             style: const TextStyle(
               color: Colors.white
-            )),
-          actions: <Widget>[
+            )
+          ),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -81,12 +85,13 @@ class CustomAlertDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14)
           ),
-          backgroundColor: ThemeColor.darkGrey,
+          backgroundColor: ThemeColor.mediumBlack,
           content: Text(messages,
             style: const TextStyle(
               color: Colors.white
-            )),
-          actions: <Widget>[
+            )
+          ),
+          actions: [
             TextButton(
               onPressed: onCancelPressed,
               child: const Text('Cancel',

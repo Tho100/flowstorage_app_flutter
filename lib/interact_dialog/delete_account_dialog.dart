@@ -19,7 +19,7 @@ class DeleteAccountDialog {
             'Delete your Flowstorage account? This action is irreversible.',
             style: TextStyle(color: Colors.white),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

@@ -25,7 +25,6 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flutter/material.dart';
@@ -193,9 +192,9 @@ class FunctionModel {
         
       }
 
-      final loadingDialog = MultipleTextLoading();
+      final loadingDialog = SingleTextLoading();
       
-      loadingDialog.startLoading(title: "Downloading...", fileName: fileName, context: navigatorKey.currentContext!);
+      loadingDialog.startLoading(title: "Downloading...", context: navigatorKey.currentContext!);
 
       if(tempData.origin != OriginFile.offline) {
 

@@ -113,7 +113,6 @@ class ResponsiveListView extends StatelessWidget {
         );
       },
     );
-
   }
 
 }
