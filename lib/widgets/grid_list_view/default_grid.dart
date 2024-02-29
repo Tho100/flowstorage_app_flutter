@@ -66,8 +66,8 @@ class DefaultGridListView extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: Image.memory(imageBytes,
-                    cacheHeight: isGeneralFile || isOfflineVideo ? 55 : null,
-                    cacheWidth: isGeneralFile || isOfflineVideo ? 55 : null,
+                    cacheHeight: isGeneralFile ? 55 : null,
+                    cacheWidth: isGeneralFile ? 55 : null,
                     fit: isGeneralFile || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
