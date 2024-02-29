@@ -73,7 +73,7 @@ class SettingsButton extends StatelessWidget {
           ),
         ),
       ],
-      
     );
   }
+  
 }

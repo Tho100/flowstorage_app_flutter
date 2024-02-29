@@ -16,7 +16,7 @@ class DiscardChangesDialog {
             style: TextStyle(
               color: Colors.white
             )),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);

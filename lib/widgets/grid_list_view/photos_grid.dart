@@ -38,7 +38,7 @@ class PhotosGridListView extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.darkBlack,
+                    color: isPhotosSelected ? ThemeColor.secondaryWhite : ThemeColor.mediumBlack,
                     width: isPhotosSelected ? 2.8 : 1.0,
                   ),
                 ),

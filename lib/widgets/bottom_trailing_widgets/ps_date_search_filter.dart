@@ -14,7 +14,7 @@ class PsDateSearchFilterBottomTrailing {
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
-      children: <Widget>[
+      children: [
 
         const SizedBox(height: 12),
 

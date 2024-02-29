@@ -13,7 +13,7 @@ class SaveTextDialog {
   }) {
     return InteractDialog().buildDialog(
       context: context, 
-      childrenWidgets: <Widget>[
+      children: [
         const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
-import 'package:flowstorage_fsc/ui_dialog/loading/multiple_text_loading.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:logger/logger.dart';
@@ -17,8 +16,6 @@ class SimplifyDownload {
   String? currentTableValue;
   Uint8List? fileDataValue;
   
-  final loadingDialog = MultipleTextLoading();
-
   SimplifyDownload({
     required String? fileName, 
     required String currentTable,

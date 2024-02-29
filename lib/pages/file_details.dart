@@ -232,6 +232,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
     
     final fileType = widget.fileName.split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
     final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
 
     final index = tempData.origin == OriginFile.publicSearching 
@@ -268,7 +269,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Globals.generalFileTypes.contains(fileType) || isOfflineVideo
+                      color: isGeneralFile || isOfflineVideo
                         ? ThemeColor.mediumGrey 
                         : ThemeColor.darkBlack,
                     ),
@@ -282,7 +283,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                       imageData!,
                       width: width - 25,
                       height: 200,
-                      fit: Globals.generalFileTypes.contains(fileType) || isOfflineVideo
+                      fit: isGeneralFile || isOfflineVideo
                         ? BoxFit.scaleDown
                         : BoxFit.fitWidth,
                     ),

@@ -63,6 +63,8 @@ class SubmitReportPage extends StatelessWidget {
 
     final fileType = fileName.split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     return Column(
       children: [
 
@@ -111,10 +113,8 @@ class SubmitReportPage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
-                      width: Globals.generalFileTypes.contains(fileType) 
-                        ? 38 : 55,
-                      height: Globals.generalFileTypes.contains(fileType) 
-                        ? 38 : 55,
+                      width: isGeneralFile ? 38 : 55,
+                      height: isGeneralFile? 38 : 55,
                       fit: BoxFit.cover, 
                       image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
                     ),
