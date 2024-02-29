@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 
 class SnackAlert {
 
+  static final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
+
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> errorSnack(String message) {
-
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -34,9 +33,6 @@ class SnackAlert {
     required String message,
     IconData? icon
   }) {
-
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -60,9 +56,6 @@ class SnackAlert {
   }
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> upgradeSnack() {
-
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -85,10 +78,9 @@ class SnackAlert {
   } 
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> uploadingSnack({
-    required ScaffoldMessengerState snackState, 
     required String message
   }) {
-    return snackState.showSnackBar(
+    return scaffoldMessenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: ThemeColor.justWhite,
@@ -109,10 +101,9 @@ class SnackAlert {
   }
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> temporarySnack({
-    required ScaffoldMessengerState snackState, 
     required String message
   }) {
-    return snackState.showSnackBar(
+    return scaffoldMessenger.showSnackBar(
       SnackBar(        
         behavior: SnackBarBehavior.floating,
         backgroundColor: ThemeColor.justWhite,

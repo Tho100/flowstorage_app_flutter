@@ -15,7 +15,6 @@ import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/helper/scanner_pdf.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
-import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
@@ -86,8 +85,6 @@ class UploadDialogModel {
       return;
     }
     
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     if(tempData.origin != OriginFile.offline) {
 
       final isFilesMaxUpload = storageData.fileNamesList.length + countSelectedFiles > AccountPlan.mapFilesUpload[userData.accountType]!;
@@ -106,7 +103,6 @@ class UploadDialogModel {
 
     if(countSelectedFiles > 2) {
       SnackAlert.uploadingSnack(
-        snackState: scaffoldMessenger, 
         message: "Uploading $countSelectedFiles item(s)..."
       );
     }
@@ -135,7 +131,6 @@ class UploadDialogModel {
 
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
         SnackAlert.uploadingSnack(
-          snackState: scaffoldMessenger, 
           message: "Uploading $fileName"
         ); 
       }
@@ -189,16 +184,15 @@ class UploadDialogModel {
 
       UpdateListView().addItemDetailsToListView(fileName: fileName);
 
-      scaffoldMessenger.hideCurrentSnackBar();
-
       if(countSelectedFiles < 2) {
 
         SnackAlert.temporarySnack(
-          snackState: scaffoldMessenger, 
           message: "Added $fileName"
         );
 
-        countSelectedFiles > 0 ? await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles) : null;
+        if(countSelectedFiles > 0) {
+          await CallNotify().uploadedNotification(title: "Upload Finished", count: countSelectedFiles);
+        }
 
       }
 
@@ -209,7 +203,6 @@ class UploadDialogModel {
     if(countSelectedFiles >= 2) {
 
       SnackAlert.temporarySnack(
-        snackState: scaffoldMessenger, 
         message: "Added ${countSelectedFiles.toString()} item(s)."
       );
 
@@ -228,8 +221,6 @@ class UploadDialogModel {
     if (resultPicker == null) {
       return;
     }
-
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
 
     final countSelectedFiles = resultPicker.files.length;
 
@@ -251,7 +242,6 @@ class UploadDialogModel {
 
     if(countSelectedFiles > 2) {
       SnackAlert.uploadingSnack(
-        snackState: scaffoldMessenger, 
         message: "Uploading $countSelectedFiles item(s)..."
       );
     } 
@@ -281,7 +271,6 @@ class UploadDialogModel {
 
       if(countSelectedFiles < 2 && tempData.origin != OriginFile.public) {
         SnackAlert.uploadingSnack(
-          snackState: scaffoldMessenger, 
           message: "Uploading $fileName"
         );
       }
@@ -372,11 +361,8 @@ class UploadDialogModel {
 
       UpdateListView().addItemDetailsToListView(fileName: fileName);
 
-      scaffoldMessenger.hideCurrentSnackBar();
-
       if(countSelectedFiles < 2) {
         SnackAlert.temporarySnack(
-          snackState: scaffoldMessenger, 
           message: "Added $fileName"
         );
       }
@@ -385,7 +371,6 @@ class UploadDialogModel {
 
     if(countSelectedFiles > 2) {
       SnackAlert.temporarySnack(
-        snackState: scaffoldMessenger, 
         message: "Added ${countSelectedFiles.toString()} item(s)."
       );
     }
@@ -415,10 +400,7 @@ class UploadDialogModel {
 
     await CallNotify().customNotification(title: "Uploading folder...", subMessage: "${ShortenText().cutText(folderName)} In progress");
 
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     SnackAlert.uploadingSnack(
-      snackState: scaffoldMessenger, 
       message: "Uploading $folderName folder..."
     );
 
@@ -437,10 +419,7 @@ class UploadDialogModel {
 
     await NotificationApi.stopNotification(0);
 
-    scaffoldMessenger.hideCurrentSnackBar();
-
     SnackAlert.temporarySnack(
-      snackState: scaffoldMessenger,
       message: "Added $folderName folder."
     );
 
@@ -575,13 +554,10 @@ class UploadDialogModel {
     required String filePath
   }) async {
     
-    final scaffoldMessenger = ScaffoldMessenger.of(navigatorKey.currentContext!);
-
     await CallNotify()
       .uploadingNotification(numberOfFiles: 1);
 
     SnackAlert.uploadingSnack(
-      snackState: scaffoldMessenger, 
       message: "Uploading $fileName"
     );
 
@@ -638,12 +614,9 @@ class UploadDialogModel {
 
     UpdateListView().addItemDetailsToListView(fileName: fileName);
     
-    scaffoldMessenger.hideCurrentSnackBar();
-
     await NotificationApi.stopNotification(0);
 
     SnackAlert.temporarySnack(
-      snackState: scaffoldMessenger, 
       message: "Added $fileName"
     );
 
