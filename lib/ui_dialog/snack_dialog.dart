@@ -92,26 +92,17 @@ class SnackAlert {
       SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: ThemeColor.justWhite,
-        content: Row(
-          children: [
-            SizedBox(
-              width: 320,
-              child: Text(message,
-                style: const TextStyle(color: ThemeColor.mediumBlack), 
-                overflow: TextOverflow.ellipsis
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: TextButton(
-                onPressed: () async { },
-                child: const Text('Cancel',
-                  style: TextStyle(color: ThemeColor.mediumBlack),
-                ),
-              ),
-            ),
-          ],
+        content: SizedBox(
+          width: 320,
+          child: Text(message,
+            style: const TextStyle(color: ThemeColor.mediumBlack), 
+            overflow: TextOverflow.ellipsis
+          ),
+        ),
+        action: SnackBarAction(
+          textColor: ThemeColor.mediumBlack,
+          label: "Cancel",
+          onPressed: () {}
         ),
       ),
     );
