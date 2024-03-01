@@ -254,10 +254,10 @@ class ShareFilePage extends StatelessWidget {
         actions: [
           TextButton(
             child: const Text("Share",
-                style: TextStyle(
+              style: TextStyle(
                 color: ThemeColor.darkPurple,
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
             ),
             onPressed: () {

@@ -109,7 +109,7 @@ class SettingsPageState extends State<SettingsPage> {
                 subheader,
                 style: const TextStyle(
                   fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: ThemeColor.thirdWhite, 
                 ),
               ),
@@ -191,7 +191,7 @@ class SettingsPageState extends State<SettingsPage> {
                             color: ThemeColor.justWhite,
                             fontSize: 18.5,
                             overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500
+                            fontWeight: FontWeight.w600
                           ),
                         ),
                       ),
@@ -201,7 +201,7 @@ class SettingsPageState extends State<SettingsPage> {
                         style: const TextStyle(
                           color: ThemeColor.thirdWhite,
                           fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

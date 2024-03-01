@@ -59,7 +59,7 @@ class SettingsButton extends StatelessWidget {
                       bottomText,
                       style: const TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: ThemeColor.thirdWhite
                       ),
                     ),

@@ -244,7 +244,7 @@ class IntentSharingPage extends StatelessWidget {
                   style: TextStyle(
                   color: ThemeColor.darkPurple,
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               onPressed: () async {

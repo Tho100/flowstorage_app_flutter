@@ -35,7 +35,7 @@ class SettingsAccountPage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 17,
               color: ThemeColor.thirdWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

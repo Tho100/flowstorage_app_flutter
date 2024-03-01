@@ -274,7 +274,7 @@ class CreateTextPageState extends State<CreateText> {
                       style: TextStyle(
                         color: ThemeColor.darkPurple,
                         fontSize: 17,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
