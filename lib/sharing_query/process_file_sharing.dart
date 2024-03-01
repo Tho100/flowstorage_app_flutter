@@ -80,26 +80,29 @@ class ProcessFileSharing {
     required BuildContext context
   }) async {
 
-    final fileExtension = fileName.split('.').last;
+    final fileType = fileName.split('.').last;
     
     final tableName = tempData.origin != OriginFile.home 
-      ? Globals.fileTypesToTableNamesPs[fileExtension]! 
-      : Globals.fileTypesToTableNames[fileExtension]!;
-
-    String? thumbnailBase64;
+      ? Globals.fileTypesToTableNamesPs[fileType]! 
+      : Globals.fileTypesToTableNames[fileType]!;
 
     final shareToComment = commentInput!.isEmpty ? '' : EncryptionClass().encrypt(commentInput);
     final encryptedFileName = EncryptionClass().encrypt(fileName);
 
     if (username == userData.username) {
-      CustomAlertDialog.alertDialogTitle('Sharing Failed',"You can't share to yourself.");
+      CustomAlertDialog.alertDialogTitle("Sharing Failed", "You can't share to yourself.");
+      return;
+    }
+
+    if (await verifySharing.isOnSharingLimit()) {
+      CustomAlertDialog.alertDialogTitle("Sharing Failed", "You've reached sharing limit.");
       return;
     }
 
     if (await verifySharing.isAlreadyUploaded(encryptedFileName, username, userData.username)) {
       CustomAlertDialog.alertDialogTitle("Sharing Failed", "You've already shared this file.");
       return;
-    }
+    }    
 
     if (await verifySharing.unknownUser(username)) {
       CustomAlertDialog.alertDialogTitle("Sharing Failed", "User `$username` not found.");
@@ -121,7 +124,9 @@ class ProcessFileSharing {
     final getSharingAuth = await SharingOptions.retrievePassword(username);
     final passwordSharingDisabled = await SharingOptions.retrievePasswordStatus(username);
 
-    if(Globals.videoType.contains(fileExtension)) {
+    String? thumbnailBase64;
+
+    if(Globals.videoType.contains(fileType)) {
       thumbnailBase64 = await Future.value(
         ThumbnailGetter().getSingleThumbnail(fileName: fileName)
       );
@@ -129,10 +134,11 @@ class ProcessFileSharing {
 
     if(passwordSharingDisabled == "0") {
       
-      final fileBytesData = await _callFileBytesData(fileName, tableName);
-      final fileData = base64.encode(fileBytesData);
-      final encryptedFileData = SpecialFile().ignoreEncryption(fileExtension) 
-        ? fileData : EncryptionClass().encrypt(fileData);  
+      final fileData = await _processFileData(
+        fileName: fileName, 
+        fileType: fileType, 
+        tableName: tableName
+      );
 
       if(context.mounted) {
 
@@ -140,7 +146,7 @@ class ProcessFileSharing {
           sendTo: username, 
           fileName: encryptedFileName,
           comment: shareToComment,
-          fileData: encryptedFileData,
+          fileData: fileData,
           authInput: getSharingAuth,
           thumbnail: thumbnailBase64 ?? '',
           context: context,
@@ -153,31 +159,48 @@ class ProcessFileSharing {
     }
 
     await CallNotify().customNotification(
-      title: "Sharing...", subMessage: "Sharing to $username");
+      title: "Sharing...", subMessage: "Sharing to $username"
+    );
     
     final singleTextLoading = SingleTextLoading();
 
     if(context.mounted) {
       singleTextLoading.startLoading(
-        title: "Sharing...", context: context);
+        title: "Sharing...", context: context
+      );
     }
 
-    final fileBytesData = await _callFileBytesData(fileName, tableName);
-    final fileData = base64.encode(fileBytesData);
-    final encryptedFileData = SpecialFile().ignoreEncryption(fileExtension) 
-        ? fileData : EncryptionClass().encrypt(fileData);  
+    final fileData = await _processFileData(
+      fileName: fileName, 
+      fileType: fileType, 
+      tableName: tableName
+    );
 
     await _sendFileToShare(
       shareToName: username,
       encryptedFileName: encryptedFileName, 
       shareToComment: shareToComment, 
-      fileData: encryptedFileData,
+      fileData: fileData,
       thumbnail: thumbnailBase64 ?? '',
     );
 
     singleTextLoading.stopLoading();
 
     await NotificationApi.stopNotification(0);
+
+  }
+
+  Future<String> _processFileData({
+    required String fileName, 
+    required String tableName, 
+    required String fileType
+  }) async {
+
+    final fileBytesData = await _callFileBytesData(fileName, tableName);
+    final fileData = base64.encode(fileBytesData);
+
+    return SpecialFile().ignoreEncryption(fileType) 
+        ? fileData : EncryptionClass().encrypt(fileData);  
 
   }
 
@@ -205,4 +228,5 @@ class ProcessFileSharing {
       context: context
     );
   }
+
 }

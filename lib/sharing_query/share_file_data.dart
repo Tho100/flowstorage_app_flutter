@@ -29,12 +29,12 @@ class ShareFileData {
 
       final uploadDate = dateNow.format(DateTime.now());
 
-      const insertDataQuery = "INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, CUST_THUMB, CUST_COMMENT) VALUES (:to, :from, :filename, :fileval, :date, :thumbnail, :comment)";
+      const insertDataQuery = "INSERT INTO cust_sharing(CUST_TO, CUST_FROM, CUST_FILE_PATH, CUST_FILE, UPLOAD_DATE, CUST_THUMB, CUST_COMMENT) VALUES (:to, :from, :file_name, :file_data, :date, :thumbnail, :comment)";
       final params = {
         'to': receiverUsername!,
         'from': userData.username,
-        'fileval': fileValue!,
-        'filename': fileName!,
+        'file_data': fileValue!,
+        'file_name': fileName!,
         'date': uploadDate,
         'thumbnail': thumbnail ?? '',
         'comment': comment ?? '',
@@ -45,6 +45,7 @@ class ShareFileData {
     } catch (err, st) {
       Logger().e("Exception from startSharing {share_file}", err, st);
     }
+
   }
 
   Future<void> insertValuesParams({
@@ -79,7 +80,8 @@ class ShareFileData {
         title: "Something went wrong",
         subMessage: "Failed to share ${{ShortenText().cutText(EncryptionClass().decrypt(fileName))}}",
       );
-
     }
+    
   }
+
 }
