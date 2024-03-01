@@ -1647,16 +1647,19 @@ class HomePageState extends State<HomePage> {
   }
 
   void _onPhotosItemSelected(int index) {
+
     if (selectedPhotosIndex.contains(index)) {
       checkedItemsName.remove(storageData.fileNamesFilteredList[index]);
       setState(() {
         selectedPhotosIndex.remove(index);
       });
+
     } else {
       checkedItemsName.add(storageData.fileNamesFilteredList[index]);
       setState(() {
         selectedPhotosIndex.add(index);
       });
+
     }
 
     tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
@@ -1670,7 +1673,9 @@ class HomePageState extends State<HomePage> {
   }
 
   void _onHoldPhotosItem(int index) {
+
     selectedItemIsChecked = true;
+
     setState(() {
       selectedPhotosIndex.add(index);
     });
@@ -1685,6 +1690,7 @@ class HomePageState extends State<HomePage> {
   void _onSelectAllItemsPressed() {
 
     checkedItemsName.clear();
+    
     final removedDirectoryNames = storageData.fileNamesFilteredList
       .where((name) => name.contains('.'));
 
@@ -1719,7 +1725,8 @@ class HomePageState extends State<HomePage> {
         ).buildFilterTypePhotos();
       },
       icon: const Icon(Icons.tune_outlined, 
-        color: Colors.white, size: 26),
+        color: Colors.white, size: 26
+      ),
     );
   }
 
@@ -1729,7 +1736,8 @@ class HomePageState extends State<HomePage> {
         _deselectAllPhotosOnPressed();
       },
       icon: const Icon(Icons.check, 
-        color: Colors.white, size: 26),
+        color: Colors.white, size: 26
+      ),
     );
   }
 
@@ -1746,8 +1754,16 @@ class HomePageState extends State<HomePage> {
           titleSpacing: 5,
           elevation: 0,
           centerTitle: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: ThemeColor.darkBlack,
           title: Text(appBarTitleValue,
             style: GlobalsStyle.appBarTextStyle,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.menu, size: 28),
+            onPressed: () {
+              sidebarMenuScaffoldKey.currentState?.openDrawer();
+            },
           ),
           actions: [
 
@@ -1766,17 +1782,9 @@ class HomePageState extends State<HomePage> {
             if(tempData.origin == OriginFile.public) ... [
             _buildPsSearchButton(),
             _buildMyPsFilesButton(),
-            ]
 
+            ]
           ],
-          leading: IconButton(
-            icon: const Icon(Icons.menu,size: 28),
-            onPressed: () {
-              sidebarMenuScaffoldKey.currentState?.openDrawer();
-            },
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: ThemeColor.darkBlack,
         ),
       ),
     );
@@ -1786,7 +1794,8 @@ class HomePageState extends State<HomePage> {
     return EmptyBody(
       refreshList: () async {
         await _refreshListViewData();
-    });
+      }
+    );
   }
 
   void _openDirectoryOnSelect() async {
@@ -1809,7 +1818,6 @@ class HomePageState extends State<HomePage> {
   }
 
   void _openGeneralFileOnSelect(int index, String fileType) {
-
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -1820,7 +1828,6 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
-
   }
 
   void _openMoveSingleFilePage(String fileName) async {

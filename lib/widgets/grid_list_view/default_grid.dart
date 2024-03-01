@@ -41,7 +41,7 @@ class DefaultGridListView extends StatelessWidget {
     final actualFileType = fileType.split('.').last;
 
     final isGeneralFile = Globals.generalFileTypes.contains(actualFileType) || !fileType.contains('.');
-    final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
+    final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(actualFileType);
 
     final fileNames = storageData.fileNamesFilteredList[index];
     final fileDates = getProperDate(storageData.fileDateFilteredList[index]);
@@ -66,8 +66,8 @@ class DefaultGridListView extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: Image.memory(imageBytes,
-                    cacheHeight: isGeneralFile ? 55 : null,
-                    cacheWidth: isGeneralFile ? 55 : null,
+                    cacheHeight: isGeneralFile || isOfflineVideo ? 55 : null,
+                    cacheWidth: isGeneralFile || isOfflineVideo ? 55 : null,
                     fit: isGeneralFile || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),

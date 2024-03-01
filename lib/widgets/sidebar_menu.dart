@@ -436,7 +436,6 @@ class CustomSideBarMenu extends StatelessWidget {
       ),
     
     );
-
   }
 
 }
