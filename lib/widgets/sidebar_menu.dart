@@ -424,7 +424,7 @@ class CustomSideBarMenu extends StatelessWidget {
     
               _buildButtons(context),
     
-              if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedOther])) ... [ 
+              if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe])) ... [ 
               _buildStorageUsage(),
     
               _buildProgressBar(),

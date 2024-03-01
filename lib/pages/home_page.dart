@@ -21,6 +21,7 @@ import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/folder_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/upgrade_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/create_directory_dialog.dart';
@@ -2279,7 +2280,7 @@ class HomePageState extends State<HomePage> {
 
         return [
 
-          if (isOffline && ![OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) ... [
+          if (isOffline && WidgetVisibility.setNotVisibleList([OriginFile.sharedMe, OriginFile.sharedOther])) ... [
             const WidgetSpan(
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0),
@@ -2288,7 +2289,7 @@ class HomePageState extends State<HomePage> {
             ),
           ],
           
-          if([OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) 
+          if(WidgetVisibility.setVisibleList([OriginFile.sharedMe, OriginFile.sharedOther])) 
           WidgetSpan(
             child: Transform.translate(
               offset: const Offset(-4, 0),
