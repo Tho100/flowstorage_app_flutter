@@ -34,13 +34,13 @@ class UserAccountsPageState extends State<UserAccountsPage> {
     const titleTextStyle = TextStyle(
       color: ThemeColor.secondaryWhite,
       fontSize: 17,
-      fontWeight: FontWeight.w600
+      fontWeight: FontWeight.bold
     );
 
     const subtitleTextStyle = TextStyle(
       color: ThemeColor.thirdWhite,
       fontSize: 14,
-      fontWeight: FontWeight.w500
+      fontWeight: FontWeight.w600
     );
 
     return ListView.builder(

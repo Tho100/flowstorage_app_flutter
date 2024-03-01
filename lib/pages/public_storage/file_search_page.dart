@@ -122,7 +122,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                         style: TextStyle(
                           color: ThemeColor.secondaryWhite,
                           fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -179,7 +179,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               style: TextStyle(
                 color: ThemeColor.secondaryWhite,
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 15,
               ),
             ),
           ),
@@ -291,6 +291,13 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             itemExtent: itemExtentValue,
             itemCount: storageData.psSearchTitleList.length,
             itemBuilder: (context, index) {
+
+              final imageBytes = base64.decode(psStorageData.psSearchImageBytesList[index]);
+              
+              final title = storageData.psSearchTitleList[index];
+              final uploaderName = storageData.psSearchUploaderList[index];
+              final uploadDate = uploadDateList[index];
+
               return InkWell(
                 onTap: () {
                   final fileType = storageData.psSearchNameList[index].split('.').last;
@@ -301,7 +308,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.memory(base64.decode(psStorageData.psSearchImageBytesList[index]),
+                      child: Image.memory(imageBytes,
                         fit: BoxFit.cover, height: 70, width: 62
                       ),
                     ),
@@ -312,7 +319,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            storageData.psSearchTitleList[index],
+                            title,
                             style: const TextStyle(
                               color: ThemeColor.justWhite,
                               overflow: TextOverflow.ellipsis,
@@ -322,15 +329,16 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                           ),              
                           const SizedBox(height: 3),      
                           Text(
-                            "Uploaded by ${storageData.psSearchUploaderList[index]}",
+                            "Uploaded by $uploaderName",
                             style: const TextStyle(
                               color: ThemeColor.justWhite,
+                              fontWeight: FontWeight.w500,
                               overflow: TextOverflow.ellipsis,
                               fontSize: 14,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(uploadDateList[index],
+                          Text(uploadDate,
                             style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
                           ),
                         ],

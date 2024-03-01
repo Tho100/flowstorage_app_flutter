@@ -30,13 +30,13 @@ class MyAccountsDialog {
   final titleTextStyle = const TextStyle(
     color: ThemeColor.secondaryWhite,
     fontSize: 17,
-    fontWeight: FontWeight.w600
+    fontWeight: FontWeight.bold
   );
 
   final subtitleTextStyle = const TextStyle(
     color: ThemeColor.thirdWhite,
     fontSize: 14,
-    fontWeight: FontWeight.w500
+    fontWeight: FontWeight.w600
   );
 
   Future buildMyAccountsBottomSheet() {

@@ -92,7 +92,7 @@ class UploadPsPage extends StatelessWidget {
                   Text(
                     ShortenText().cutText(fileName),
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
+                      color: ThemeColor.justWhite,
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
@@ -280,10 +280,10 @@ class UploadPsPage extends StatelessWidget {
         actions: [
           TextButton(
             child: const Text("Upload",
-                style: TextStyle(
+              style: TextStyle(
                 color: ThemeColor.darkPurple,
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
             ),
             onPressed: () {
