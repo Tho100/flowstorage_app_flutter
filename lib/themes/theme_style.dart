@@ -37,8 +37,8 @@ class GlobalsStyle {
   static const previewAppBarTextStyle = TextStyle(
     overflow: TextOverflow.ellipsis,
     color: Color.fromARGB(255,232,232,232),
-    fontWeight: FontWeight.w500,
-    fontSize: 19,          
+    fontWeight: FontWeight.w600,
+    fontSize: 18,          
   );
 
   static const settingsLeftTextStyle = TextStyle(

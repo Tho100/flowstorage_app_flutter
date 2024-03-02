@@ -99,9 +99,9 @@ class DefaultGridListView extends StatelessWidget {
                   Text(
                     fileNames,
                     style: const TextStyle(
-                      color: ThemeColor.justWhite,
+                      color: ThemeColor.secondaryWhite,
                       fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis
                     ),
                     maxLines: 1,
@@ -110,9 +110,9 @@ class DefaultGridListView extends StatelessWidget {
                   Text(
                     fileDates,
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
+                      color: ThemeColor.thirdWhite,
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis
                     ),
                     maxLines: 1,

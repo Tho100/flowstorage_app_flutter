@@ -284,9 +284,10 @@ class CustomSideBarMenu extends StatelessWidget {
               FutureBuilder<int>(
                 future: usageProgress,
                 builder: (context, storageUsageSnapshot) {
+
                   const textStyle = TextStyle(
-                    color: Color.fromARGB(255, 216, 216, 216),
-                    fontWeight: FontWeight.w500,
+                    color: ThemeColor.secondaryWhite,
+                    fontWeight: FontWeight.w600,
                   );
 
                   if(storageUsageSnapshot.connectionState == ConnectionState.waiting) {
@@ -333,8 +334,8 @@ class CustomSideBarMenu extends StatelessWidget {
               return Text(
                 "${storageUsageSnapshot.data.toString()}%",
                 style: const TextStyle(
-                  color: Color.fromARGB(255, 218, 218, 218),
-                  fontWeight: FontWeight.w500,
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,
               );

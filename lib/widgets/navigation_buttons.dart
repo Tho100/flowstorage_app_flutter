@@ -146,6 +146,7 @@ class NavigationButtons extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
+                            color: ThemeColor.justWhite
                           ),
                         ),
                         const SizedBox(width: 2),

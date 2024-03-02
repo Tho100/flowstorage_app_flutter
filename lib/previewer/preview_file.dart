@@ -504,8 +504,8 @@ class PreviewFileState extends State<PreviewFile> {
                 Text(value, 
                   style: const TextStyle(
                     color: Color.fromARGB(255,232,232,232),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,   
                   ),   
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -518,7 +518,7 @@ class PreviewFileState extends State<PreviewFile> {
                   : psStorageData.psSearchTitleList[widget.tappedIndex],
                     style: const TextStyle(
                       color: Color.fromARGB(255,232,232,232),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 17
                   ),   
                   overflow: TextOverflow.ellipsis,
@@ -741,7 +741,7 @@ class PreviewFileState extends State<PreviewFile> {
               ),
               if (WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   tempData.origin == OriginFile.public
                       ? psStorageData.psTitleList[widget.tappedIndex]

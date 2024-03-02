@@ -52,7 +52,10 @@ class SharingPassword {
               border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
             ),
             child: TextFormField(
-              style: const TextStyle(color: ThemeColor.justWhite),
+              style: const TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w500,
+              ),
               enabled: true,
               controller: sharingPasswordController,
               decoration: GlobalsStyle.setupTextFieldDecoration("Enter password")

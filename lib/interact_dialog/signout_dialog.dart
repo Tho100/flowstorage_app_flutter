@@ -17,7 +17,10 @@ class SignOutDialog {
           backgroundColor: ThemeColor.mediumBlack,
           content: const Text(
             'Are you sure you want to sign out from your Flowstorage account?',
-            style: TextStyle(color: ThemeColor.justWhite),
+            style: TextStyle(
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500
+            ),
           ),
           actions: [
             TextButton(
@@ -26,7 +29,10 @@ class SignOutDialog {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: ThemeColor.justWhite),
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             ElevatedButton(
@@ -37,7 +43,10 @@ class SignOutDialog {
               onPressed: signOutOnPressed,
               child: const Text(
                 'Sign Out',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: ThemeColor.darkRed,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

@@ -24,11 +24,11 @@ class BottomTrailingReport {
         Navigator.pop(context);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) 
-          => SubmitReportPage(fileName: fileName, reportType: reportType))
+          MaterialPageRoute(builder: (context) => SubmitReportPage(fileName: fileName, reportType: reportType))
         );
       },
       style: ElevatedButton.styleFrom(
+        backgroundColor: ThemeColor.darkBlack,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.lightGrey),

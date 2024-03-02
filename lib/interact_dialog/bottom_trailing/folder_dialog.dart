@@ -59,7 +59,7 @@ class FolderDialog {
                           title: Text(  
                             tempStorageData.folderNameList[index],
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: ThemeColor.justWhite,
                               fontWeight: FontWeight.w500,
                             ),
                           ),

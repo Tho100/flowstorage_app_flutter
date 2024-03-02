@@ -41,7 +41,10 @@ class CreateDirectoryDialog {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
             autofocus: true,
-            style: const TextStyle(color: ThemeColor.justWhite),
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
             enabled: true,
             maxLength: 50,
             controller: directoryNameController,
@@ -84,4 +87,5 @@ class CreateDirectoryDialog {
       ]
     );
   }
+
 }

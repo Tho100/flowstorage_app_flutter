@@ -25,6 +25,7 @@ class MainDialogButton extends StatelessWidget {
       child: Text(text,
         style: const TextStyle(
           fontSize: 16, 
+          fontWeight: FontWeight.bold,
           color: ThemeColor.secondaryWhite
         )
       ),
@@ -43,7 +44,7 @@ class MainDialogButton extends StatelessWidget {
         style: const TextStyle(
           fontSize: 16, 
           color: ThemeColor.darkPurple, 
-          fontWeight: FontWeight.w600
+          fontWeight: FontWeight.bold
         ),
       ),
     );

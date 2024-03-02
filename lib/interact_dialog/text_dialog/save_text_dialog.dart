@@ -43,7 +43,10 @@ class SaveTextDialog {
             ),
             child: TextFormField(
               autofocus: true,
-              style: const TextStyle(color: ThemeColor.justWhite),
+              style: const TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w500,
+              ),
               enabled: true,
               controller: fileNameController,
               decoration: GlobalsStyle.setupTextFieldDecoration("Untitled text file")

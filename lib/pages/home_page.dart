@@ -2297,7 +2297,11 @@ class HomePageState extends State<HomePage> {
 
           TextSpan(
             text: tempData.origin == OriginFile.public ? psFilesCategoryTags : originalDateValues,
-            style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
+            style: const TextStyle(
+              color: ThemeColor.thirdWhite, 
+              fontSize: 12.8,
+              fontWeight: FontWeight.w600,
+            ),
           ),
 
           if (tempData.origin == OriginFile.public)
