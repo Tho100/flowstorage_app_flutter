@@ -21,7 +21,7 @@ class RenameFolderDialog {
           child: Text(
             folderName,
             style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: ThemeColor.justWhite,
               fontSize: 17,
               overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.w500,
@@ -35,7 +35,10 @@ class RenameFolderDialog {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
             autofocus: true,
-            style: const TextStyle(color: ThemeColor.justWhite),
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
             enabled: true,
             controller: folderRenameController,
             decoration: GlobalsStyle.setupTextFieldDecoration("Enter new name"),

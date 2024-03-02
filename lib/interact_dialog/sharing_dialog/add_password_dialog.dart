@@ -48,7 +48,10 @@ class AddSharingPassword {
               border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
             ),
             child: TextFormField(
-              style: const TextStyle(color: ThemeColor.justWhite),
+              style: const TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w500,
+              ),
               enabled: true,
               maxLength: 90,
               controller: addPasswordController,

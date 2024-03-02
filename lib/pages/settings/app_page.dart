@@ -75,6 +75,8 @@ class SettingsAppSettings extends StatelessWidget {
             }
           ),
 
+          const SizedBox(height: 5),
+
           const Row(
             children: [
               Padding(

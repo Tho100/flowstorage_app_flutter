@@ -78,19 +78,13 @@ class ResponsiveListView extends StatelessWidget {
                         ),
                       )
                       : const SizedBox(),
-                    trailing: Transform.translate(
-                      offset: trailingOffset,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: children(index),
-                      ),
-                    ),
                     title: Transform.translate(
                       offset: titleOffset,
                       child: Text(
                         fileName,
                         style: const TextStyle(
-                          color: ThemeColor.justWhite,
+                          color: ThemeColor.secondaryWhite,
+                          fontWeight: FontWeight.w500,
                           overflow: TextOverflow.ellipsis,
                           fontSize: 15,
                         ),
@@ -103,6 +97,13 @@ class ResponsiveListView extends StatelessWidget {
                           style: DefaultTextStyle.of(context).style,
                           children: inlineSpanWidgets(index),
                         ),
+                      ),
+                    ),
+                    trailing: Transform.translate(
+                      offset: trailingOffset,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: children(index),
                       ),
                     ),
                   ),

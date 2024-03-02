@@ -339,7 +339,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                           ),
                           const SizedBox(height: 8),
                           Text(uploadDate,
-                            style: const TextStyle(color: ThemeColor.secondaryWhite, fontSize: 12.8),
+                            style: const TextStyle(
+                              color: ThemeColor.secondaryWhite, 
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.8
+                            ),
                           ),
                         ],
                       ),

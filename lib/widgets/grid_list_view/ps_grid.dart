@@ -91,11 +91,13 @@ class PsGridListView extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 18.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "$uploaderName ${GlobalsStyle.dotSeparator} $originalDateValues",
+                    child: Text("$uploaderName ${GlobalsStyle.dotSeparator} $originalDateValues",
                       style: const TextStyle(
-                          color: ThemeColor.secondaryWhite, fontSize: 15, fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
+                        color: ThemeColor.secondaryWhite, 
+                        fontSize: 15, 
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),
@@ -122,7 +124,7 @@ class PsGridListView extends StatelessWidget {
                   style: const TextStyle(
                     color: ThemeColor.justWhite,
                     fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
                   ),
                   maxLines: 1,
@@ -143,7 +145,7 @@ class PsGridListView extends StatelessWidget {
                 style: const TextStyle(
                   color: ThemeColor.secondaryWhite,
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
                 ),
                 maxLines: 1,
@@ -170,7 +172,10 @@ class PsGridListView extends StatelessWidget {
                     child: Center(
                       child: Text(
                         psStorageData.psTagsList[index],
-                        style: const TextStyle(color: ThemeColor.justWhite, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                          color: ThemeColor.justWhite, 
+                          fontWeight: FontWeight.w500
+                        ),
                         textAlign: TextAlign.start,
                       ),
                     ),

@@ -81,7 +81,7 @@ class UploadPsPage extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
 
               if(Globals.generalFileTypes.contains(fileName.split('.').last))
               const SizedBox(width: 18),
@@ -89,6 +89,7 @@ class UploadPsPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text(
                     ShortenText().cutText(fileName),
                     style: const TextStyle(
@@ -98,16 +99,19 @@ class UploadPsPage extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   const SizedBox(height: 5),
+
                   Text(
                     "${fileSizeInMb()}Mb",
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontSize: 13,
+                      color: ThemeColor.thirdWhite,
+                      fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+
                 ],
               ),
             ],
@@ -123,7 +127,10 @@ class UploadPsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 2.0),
           child: TextFormField(
-            style: const TextStyle(color: ThemeColor.secondaryWhite),
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
             enabled: true,
             controller: titleController,
             maxLines: 1,
@@ -135,7 +142,10 @@ class UploadPsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
-            style: const TextStyle(color: ThemeColor.secondaryWhite),
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
             enabled: true,
             controller: commentController,
             maxLines: 15,
@@ -153,12 +163,12 @@ class UploadPsPage extends StatelessWidget {
           child: Row(
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
-                child:Text("Tags", 
+                padding: EdgeInsets.all(14.0),
+                child:Text("Select Tags", 
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    color: ThemeColor.secondaryWhite,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
                   ),
                   textAlign: TextAlign.left,
                 ),

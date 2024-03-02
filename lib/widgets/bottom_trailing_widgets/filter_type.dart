@@ -191,7 +191,9 @@ class BottomTrailingFilter {
                     
                     _buildFilterTypeButtons("Images", Icons.photo, imageTypes),
                     const SizedBox(width: 8),
+
                     _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, videoTypes),
+
                     const SizedBox(width: 8),
                     _buildFilterTypeButtons("All", Icons.shape_line_rounded, '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
@@ -204,4 +206,5 @@ class BottomTrailingFilter {
       },
     );
   }
+
 }

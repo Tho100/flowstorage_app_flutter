@@ -101,7 +101,10 @@ class ShareFilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
           child: TextFormField(
-            style: const TextStyle(color: ThemeColor.secondaryWhite),
+            style: const TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
             enabled: true,
             controller: shareToController,
             decoration: GlobalsStyle.setupTextFieldDecoration("Enter receiver username"),
@@ -111,7 +114,10 @@ class ShareFilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
             child: TextFormField(
-              style: const TextStyle(color: ThemeColor.secondaryWhite),
+              style: const TextStyle(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w500,
+              ),
               enabled: true,
               controller: commentController,
               maxLines: 12,
@@ -142,7 +148,11 @@ class ShareFilePage extends StatelessWidget {
                   children: [
                     Icon(Icons.share),
                     SizedBox(width: 8),
-                    Text("Apps Share"),
+                    Text("Apps Share",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -232,6 +242,7 @@ class ShareFilePage extends StatelessWidget {
   }
 
   void processFileSharing(String fileName, BuildContext context) {
+
     final shareToInput = shareToController.text;
     final comment = commentController.text;
 
@@ -241,6 +252,7 @@ class ShareFilePage extends StatelessWidget {
       commentInput: comment,
       context: context
     );
+
   }
 
   @override

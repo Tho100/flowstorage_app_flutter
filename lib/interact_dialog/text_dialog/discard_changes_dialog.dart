@@ -14,26 +14,32 @@ class DiscardChangesDialog {
           backgroundColor: ThemeColor.mediumBlack,
           content: const Text("Discard changes?",
             style: TextStyle(
-              color: Colors.white
-            )),
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500
+            )
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
               child: const Text('Cancel',
-              style: TextStyle(
-                color: Colors.white
-              )),
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true); 
               },
               child: const Text('Discard',
-              style: TextStyle(
-                color: ThemeColor.darkPurple
-              )),
+                style: TextStyle(
+                  color: ThemeColor.darkPurple,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
