@@ -2,7 +2,6 @@ import 'package:flowstorage_fsc/interact_dialog/sharing_dialog/add_password_dial
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/add_password_sharing.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/default_switch.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
@@ -10,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class ConfigureSharingPasswordPage extends StatefulWidget {
+
   const ConfigureSharingPasswordPage({super.key});
 
   @override
   State<ConfigureSharingPasswordPage> createState() => ConfigureSharingPasswordState();
+  
 }
 
 class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> {
@@ -113,8 +114,6 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         title: const Text("Configure sharing password",
           style: GlobalsStyle.appBarTextStyle,
         ),

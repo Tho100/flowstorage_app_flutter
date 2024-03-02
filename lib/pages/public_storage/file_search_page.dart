@@ -331,7 +331,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                           Text(
                             "Uploaded by $uploaderName",
                             style: const TextStyle(
-                              color: ThemeColor.justWhite,
+                              color: ThemeColor.secondaryWhite,
                               fontWeight: FontWeight.w500,
                               overflow: TextOverflow.ellipsis,
                               fontSize: 14,

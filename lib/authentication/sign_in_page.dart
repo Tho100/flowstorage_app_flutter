@@ -92,11 +92,8 @@ class SignInPageState extends State<SignInPage> {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
+      appBar: AppBar(),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
-      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: mediaQuery.size.width * 0.05,

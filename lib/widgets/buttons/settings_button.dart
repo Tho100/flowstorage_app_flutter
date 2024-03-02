@@ -31,7 +31,7 @@ class SettingsButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
             
-                  const SizedBox(height: 10),
+                  SizedBox(height: hideCaret! ? 10 : 5),
             
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +60,7 @@ class SettingsButton extends StatelessWidget {
                   ),
                   
                   Transform.translate(
-                    offset: const Offset(0, -4),
+                    offset: Offset(0, hideCaret! ? 4 : -4),
                     child: SizedBox(
                       width: 305,
                       child: Text(
@@ -74,7 +74,7 @@ class SettingsButton extends StatelessWidget {
                     ),
                   ),
             
-                  const SizedBox(height: 15),
+                  SizedBox(height: hideCaret! ? 15 : 10),
             
                 ],
               ),

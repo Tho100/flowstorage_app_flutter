@@ -568,8 +568,6 @@ class MyPlanPageState extends State<MyPlanPage> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         title: const Text(
           "My plan",
           style: GlobalsStyle.appBarTextStyle

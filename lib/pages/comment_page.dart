@@ -249,10 +249,7 @@ class CommentPageState extends State<CommentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
-        title: Text(
-          tempData.selectedFileName,
+        title: Text(tempData.selectedFileName,
         style: GlobalsStyle.appBarTextStyle
       )
     ),

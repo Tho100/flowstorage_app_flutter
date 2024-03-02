@@ -29,8 +29,6 @@ class BottomTrailingReport {
         );
       },
       style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35.0),
           side: const BorderSide(color: ThemeColor.lightGrey),
