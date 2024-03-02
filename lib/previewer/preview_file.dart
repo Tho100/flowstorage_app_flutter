@@ -728,7 +728,7 @@ class PreviewFileState extends State<PreviewFile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(left: 16.0, top: 12.0, bottom: 8),
                 child: Text(
                   displayFileName,
                   style: const TextStyle(
