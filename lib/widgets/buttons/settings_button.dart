@@ -45,22 +45,31 @@ class SettingsButton extends StatelessWidget {
                       if(!hideCaret!)
                       Transform.translate(
                         offset: const Offset(0, 10),
-                        child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20,)
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: ThemeColor.darkGrey.withOpacity(0.8),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20)
+                        )
                       ),
                       const SizedBox(width: 25),
                     ],
                   ),
-
-                  const SizedBox(height: 5),
                   
-                  SizedBox(
-                    width: 305,
-                    child: Text(
-                      bottomText,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: ThemeColor.thirdWhite
+                  Transform.translate(
+                    offset: const Offset(0, -4),
+                    child: SizedBox(
+                      width: 305,
+                      child: Text(
+                        bottomText,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ThemeColor.thirdWhite
+                        ),
                       ),
                     ),
                   ),
