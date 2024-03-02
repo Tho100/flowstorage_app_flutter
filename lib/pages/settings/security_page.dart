@@ -33,13 +33,15 @@ class SettingsSecurityPage extends StatelessWidget {
 
           SettingsButton(
             topText: "Backup recovery key", 
-            bottomText: "Recovery key enables password reset in case of forgotten passwords", 
+            bottomText: "Recovery key enables password reset in case \nof forgotten passwords", 
             onPressed: () async {
               NavigatePage.goToPageBackupRecovery();
             }
+            
           ),
         ],
       ),
     );
   }
+
 }

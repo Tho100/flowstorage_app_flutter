@@ -208,8 +208,6 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         title: const Text(
           "Public Storage",
           style: GlobalsStyle.appBarTextStyle,

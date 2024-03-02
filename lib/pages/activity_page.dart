@@ -1066,8 +1066,6 @@ class ActivityPageState extends State<ActivityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         title: const Text("Activity",
           style: GlobalsStyle.appBarTextStyle
         ),

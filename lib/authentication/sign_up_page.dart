@@ -170,14 +170,7 @@ class SignUpPageState extends State<SignUpPage> {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
-        automaticallyImplyLeading: false,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        )
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false),
       resizeToAvoidBottomInset: false,
       body: Padding(  
         padding: EdgeInsets.symmetric(

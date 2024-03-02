@@ -1,5 +1,4 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/default_switch.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
@@ -7,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ConfigurePasscodePage extends StatefulWidget {
+
   const ConfigurePasscodePage({super.key});
 
   @override
   State<ConfigurePasscodePage> createState() => ConfigurePasscodePageState();
+  
 }
 
 class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
@@ -113,8 +114,6 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         title: const Text("Configure passcode",
           style: GlobalsStyle.appBarTextStyle,
         ),

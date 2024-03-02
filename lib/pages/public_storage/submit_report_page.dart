@@ -371,8 +371,6 @@ class SubmitReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ThemeColor.darkBlack,
         automaticallyImplyLeading: false,
         leading: buildBackIconButton(context),
         actions: [

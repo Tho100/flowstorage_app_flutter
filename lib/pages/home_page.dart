@@ -1753,10 +1753,8 @@ class HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(4.0),
         child: AppBar(
           titleSpacing: 5,
-          elevation: 0,
           centerTitle: false,
           automaticallyImplyLeading: false,
-          backgroundColor: ThemeColor.darkBlack,
           title: Text(appBarTitleValue,
             style: GlobalsStyle.appBarTextStyle,
           ),

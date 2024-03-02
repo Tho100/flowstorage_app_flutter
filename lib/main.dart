@@ -58,6 +58,10 @@ class MainRun extends StatelessWidget {
           titleLarge: TextStyle(
             color: ThemeColor.darkPurple,
           ), 
+        ),
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: ThemeColor.darkBlack,
         )
       ),
       debugShowCheckedModeBanner: false,

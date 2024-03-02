@@ -135,8 +135,8 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
 
   Future<void> updateAuthPassword(String newAuth,String username) async {
 
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
-    final params = {'newauth': AuthModel().computeAuth(newAuth), 'username': username};
+    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :new_auth WHERE CUST_USERNAME = :username"; 
+    final params = {'new_auth': AuthModel().computeAuth(newAuth), 'username': username};
 
     await Crud().update(query: updateAuthQuery, params: params);
 

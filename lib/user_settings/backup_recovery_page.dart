@@ -27,7 +27,7 @@ class BackupRecoveryPage extends StatelessWidget {
     required bool isFromPin
   }) {
 
-    final sufixIconVisibilityNotifier = ValueNotifier<bool>(false);
+    final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +39,7 @@ class BackupRecoveryPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: ValueListenableBuilder<bool>(
-              valueListenable: sufixIconVisibilityNotifier,
+              valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
                 enabled: true,
@@ -57,7 +57,7 @@ class BackupRecoveryPage extends StatelessWidget {
                         color: ThemeColor.thirdWhite,
                       ),
                       onPressed: () {
-                        sufixIconVisibilityNotifier.value = !isVisible;
+                        suffixIconVisibilityNotifier.value = !isVisible;
                       },
                     )
                   : null,
@@ -142,7 +142,7 @@ class BackupRecoveryPage extends StatelessWidget {
         .getRecoveryToken(userData.username);
 
       final saveBackup = await SaveApi()
-        .saveFile(fileName: "FlowstorageRECOVERYKEY.txt", fileData: recoveryToken);
+        .saveFile(fileName: "FlowstorageRecoveryKey.txt", fileData: recoveryToken);
 
       CustomFormDialog.startDialog(
         "Recovery key has been backed up",
