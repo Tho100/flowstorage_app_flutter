@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class DeleteSelectionDialog {
     required VoidCallback deleteOnPressed
   }) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -20,11 +21,15 @@ class DeleteSelectionDialog {
             appBarTitle,
             style: const TextStyle(
               color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500,
             ),
           ),
           content: const Text(
             'Delete these items? Action is permanent.',
-            style: TextStyle(color: ThemeColor.secondaryWhite),
+            style: TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           actions: [
             TextButton(
@@ -33,7 +38,10 @@ class DeleteSelectionDialog {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
             ElevatedButton(
@@ -47,7 +55,10 @@ class DeleteSelectionDialog {
               },
               child: const Text(
                 'Delete',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: ThemeColor.darkRed,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
           ],
@@ -55,4 +66,5 @@ class DeleteSelectionDialog {
       },
     );
   }
+
 }
