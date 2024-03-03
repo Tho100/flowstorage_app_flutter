@@ -174,9 +174,9 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
   Future<void> updateAuthPassword({required String newPasswordAuth}) async {
 
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :newauth WHERE CUST_USERNAME = :username"; 
+    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :new_auth WHERE CUST_USERNAME = :username"; 
 
-    final params = {'newauth': AuthModel().computeAuth(newPasswordAuth), 'username': userData.username};
+    final params = {'new_auth': AuthModel().computeAuth(newPasswordAuth), 'username': userData.username};
     await Crud().update(query: updateAuthQuery, params: params);
 
   }

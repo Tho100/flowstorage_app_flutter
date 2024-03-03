@@ -66,17 +66,17 @@ class BottomTrailingOptions {
 
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 12.0, top: 12.0),
+                padding: const EdgeInsets.only(left: 12.0, bottom: 12.0, top: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       ShortenText().cutText(fileName, customLength: 50),
                       style: const TextStyle(
-                        color: ThemeColor.justWhite,
-                        fontSize: 15,
+                        color: ThemeColor.secondaryWhite,
+                        fontSize: 16,
                         overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [
@@ -90,10 +90,10 @@ class BottomTrailingOptions {
                               ? "Shared to ${tempStorageData.sharedNameList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}"
                               : "Unknown",
                         style: const TextStyle(
-                          color: ThemeColor.secondaryWhite,
+                          color: ThemeColor.thirdWhite,
                           fontSize: 14,
                           overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -249,7 +249,8 @@ class BottomTrailingOptions {
               Text('Delete',
                 style: TextStyle(
                   color: ThemeColor.darkRed,
-                  fontSize: 17,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 )
               ),
             ],
