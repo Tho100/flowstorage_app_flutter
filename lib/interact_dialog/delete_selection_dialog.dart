@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class DeleteSelectionDialog {
   
   Future buildDeleteSelectionDialog({
-    required BuildContext context,
     required String appBarTitle,
     required VoidCallback deleteOnPressed
   }) {

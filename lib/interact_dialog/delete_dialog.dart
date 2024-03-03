@@ -7,7 +7,6 @@ class DeleteDialog {
   Future buildDeleteDialog({
     required String fileName,
     required VoidCallback onDeletePressed,
-    required BuildContext context
   }) {
     return showDialog(
       context: navigatorKey.currentContext!,

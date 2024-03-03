@@ -360,7 +360,6 @@ class HomePageState extends State<HomePage> {
     DeleteDialog().buildDeleteDialog( 
       fileName: fileName, 
       onDeletePressed:() async => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
-      context: context
     );
   }
 
@@ -428,7 +427,6 @@ class HomePageState extends State<HomePage> {
 
   void _openDeleteSelectionDialog() {
     DeleteSelectionDialog().buildDeleteSelectionDialog(
-      context: context, 
       appBarTitle: tempData.appBarTitle, 
       deleteOnPressed: () async {
         final countSelectedItems = togglePhotosPressed
@@ -1467,7 +1465,6 @@ class HomePageState extends State<HomePage> {
           onDeletePressed: () async {
             _deleteFolderOnPressed(folderName);
           }, 
-          context: context
         );
       }
     );
