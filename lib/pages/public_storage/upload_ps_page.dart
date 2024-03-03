@@ -164,7 +164,7 @@ class UploadPsPage extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.all(14.0),
-                child:Text("Select Tags", 
+                child: Text("Select Tags", 
                   style: TextStyle(
                     color: ThemeColor.secondaryWhite,
                     fontWeight: FontWeight.w600,
@@ -239,9 +239,9 @@ class UploadPsPage extends StatelessWidget {
             ],
           ),
         ),
-
       ],
     );
+    
   }
 
   void clearValues() async {

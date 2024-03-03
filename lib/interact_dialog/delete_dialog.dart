@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +7,9 @@ class DeleteDialog {
   Future buildDeleteDialog({
     required String fileName,
     required VoidCallback onDeletePressed,
-    required BuildContext context
   }) {
     return showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -18,12 +18,16 @@ class DeleteDialog {
           backgroundColor: ThemeColor.mediumBlack,
           title: Text(fileName,
             style: const TextStyle(
-              color: Colors.white,
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500,
             ),
           ),
           content: const Text(
             'Delete this item? Action is permanent.',
-            style: TextStyle(color: ThemeColor.secondaryWhite),
+            style: TextStyle(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           actions: [
             TextButton(
@@ -32,7 +36,10 @@ class DeleteDialog {
               },
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             ElevatedButton(
@@ -46,7 +53,10 @@ class DeleteDialog {
               },
               child: const Text(
                 'Delete',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: ThemeColor.darkRed,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -54,4 +64,5 @@ class DeleteDialog {
       },
     );
   }
+  
 }

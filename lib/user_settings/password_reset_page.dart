@@ -44,7 +44,10 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
             child: ValueListenableBuilder<bool>(
               valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
-                style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
+                style: const TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.w500,
+                ),
                 enabled: true,
                 controller: controller,
                 obscureText: isSecured ? !isVisible : true,

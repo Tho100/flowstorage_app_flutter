@@ -273,7 +273,6 @@ class PreviewFileState extends State<PreviewFile> {
     DeleteDialog().buildDeleteDialog(
       fileName: fileName, 
       onDeletePressed: () => _onDeleteItemPressed(fileName), 
-      context: context
     );
   }
 

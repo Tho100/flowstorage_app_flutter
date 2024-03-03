@@ -18,7 +18,10 @@ class MainTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: const TextStyle(color: ThemeColor.secondaryWhite),
+      style: const TextStyle(
+        color: ThemeColor.secondaryWhite,
+        fontWeight: FontWeight.w500,
+      ),
       enabled: true,
       maxLength: maxLength,
       controller: controller,

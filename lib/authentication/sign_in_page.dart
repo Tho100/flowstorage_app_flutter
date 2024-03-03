@@ -132,16 +132,18 @@ class SignInPageState extends State<SignInPage> {
                   valueListenable: visiblePasswordNotifier,
                   builder: (context, value, child) {
                     return TextFormField(
-                      style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
+                      style: const TextStyle(
+                        color: ThemeColor.secondaryWhite,
+                        fontWeight: FontWeight.w500,
+                      ),
                       enabled: true,
                       controller: auth0Controller,
                       obscureText: !value,
                       decoration: GlobalsStyle.setupTextFieldDecoration(
                         "Enter your password", 
                         customSuffix: IconButton(
-                          icon: Icon(
-                            value ? Icons.visibility : Icons.visibility_off,
-                            color: const Color.fromARGB(255, 141, 141, 141),
+                          icon: Icon(value ? Icons.visibility : Icons.visibility_off,
+                            color: ThemeColor.thirdWhite,
                           ), 
                           onPressed: () { 
                             visiblePasswordNotifier.value = !visiblePasswordNotifier.value;
@@ -158,7 +160,10 @@ class SignInPageState extends State<SignInPage> {
               SizedBox(
                 width: mediaQuery.size.width*0.2,
                 child: TextFormField(
-                  style: const TextStyle(color: Color.fromARGB(255, 214, 213, 213)),
+                  style: const TextStyle(
+                    color: ThemeColor.secondaryWhite,
+                    fontWeight: FontWeight.w500,
+                  ),
                   enabled: true,
                   controller: auth1Controller,
                   obscureText: true,
