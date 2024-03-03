@@ -48,9 +48,9 @@ class GlobalsStyle {
   );
 
   static const btnBottomDialogTextStyle = TextStyle(
-    color: Color.fromARGB(255, 215, 215, 215),
+    color: ThemeColor.secondaryWhite,
     fontSize: 16,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   ); 
 
   static final btnBottomDialogBackgroundStyle = ElevatedButton.styleFrom(

@@ -323,7 +323,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                             style: const TextStyle(
                               color: ThemeColor.justWhite,
                               overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               fontSize: 18,
                             ),
                           ),              
@@ -340,8 +340,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                           const SizedBox(height: 8),
                           Text(uploadDate,
                             style: const TextStyle(
-                              color: ThemeColor.secondaryWhite, 
-                              fontWeight: FontWeight.w500,
+                              color: ThemeColor.thirdWhite, 
+                              fontWeight: FontWeight.w600,
                               fontSize: 12.8
                             ),
                           ),

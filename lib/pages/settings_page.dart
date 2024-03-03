@@ -225,7 +225,7 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                       child: const Text('Upgrade',
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                           color: ThemeColor.darkBlack
                         ),
                       ),

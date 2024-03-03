@@ -72,7 +72,8 @@ class BottomTrailingFolder {
               Text('Delete',
                 style: TextStyle(
                   color: ThemeColor.darkRed,
-                  fontSize: 17,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 )
               ),
             ],
