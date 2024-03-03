@@ -231,9 +231,8 @@ class SignUpPageState extends State<SignUpPage> {
                         decoration: GlobalsStyle.setupTextFieldDecoration(
                           "Enter a password",
                           customSuffix: IconButton(
-                            icon: Icon(
-                              value ? Icons.visibility : Icons.visibility_off,
-                              color: const Color.fromARGB(255, 141, 141, 141),
+                            icon: Icon(value ? Icons.visibility : Icons.visibility_off,
+                              color: ThemeColor.thirdWhite,
                             ), 
                             onPressed: () { 
                               visiblePasswordNotifier.value = !visiblePasswordNotifier.value;
@@ -320,4 +319,5 @@ class SignUpPageState extends State<SignUpPage> {
       ),      
     );
   }
+
 }

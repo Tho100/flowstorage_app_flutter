@@ -142,9 +142,8 @@ class SignInPageState extends State<SignInPage> {
                       decoration: GlobalsStyle.setupTextFieldDecoration(
                         "Enter your password", 
                         customSuffix: IconButton(
-                          icon: Icon(
-                            value ? Icons.visibility : Icons.visibility_off,
-                            color: const Color.fromARGB(255, 141, 141, 141),
+                          icon: Icon(value ? Icons.visibility : Icons.visibility_off,
+                            color: ThemeColor.thirdWhite,
                           ), 
                           onPressed: () { 
                             visiblePasswordNotifier.value = !visiblePasswordNotifier.value;
