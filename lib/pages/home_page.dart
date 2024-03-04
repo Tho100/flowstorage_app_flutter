@@ -716,6 +716,25 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  void _selectAllPhotosOnPressed() {
+
+    final fileName = storageData.fileNamesFilteredList;
+    final index = List.generate(fileName.length, (index) => index);
+
+    setState(() {
+      checkedItemsName.clear();
+      selectedPhotosIndex.clear();
+
+      selectedPhotosIndex.addAll(index);
+      checkedItemsName.addAll(fileName);
+
+      selectedItemIsChecked = true;
+    });
+
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+
+  }
+
   void _itemSearchingImplementation(String value) async {
 
     debounceSearchingTimer?.cancel();
@@ -1741,6 +1760,33 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildSelectAllPhotosButton() {
+    return SizedBox(
+      width: 110,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () {
+            _selectAllPhotosOnPressed();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeColor.darkGrey,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            )
+          ),
+          child: const Text("Select All",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   PreferredSizeWidget _buildCustomAppBar() {
 
     final appBarTitleValue = tempData.appBarTitle == '' 
@@ -1765,8 +1811,10 @@ class HomePageState extends State<HomePage> {
           ),
           actions: [
 
-            if(selectedPhotosIndex.isNotEmpty)
-            _buildDeselectAllPhotosButton(),
+            if(selectedPhotosIndex.isNotEmpty) ... [
+              _buildSelectAllPhotosButton(),
+              _buildDeselectAllPhotosButton(),
+            ],
 
             if(tempData.origin != OriginFile.public && !togglePhotosPressed && !filterPhotosTypeVisible)
             _buildSelectAll(),  
@@ -1778,10 +1826,10 @@ class HomePageState extends State<HomePage> {
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
-            _buildPsSearchButton(),
-            _buildMyPsFilesButton(),
+              _buildPsSearchButton(),
+              _buildMyPsFilesButton(),
+            ],
 
-            ]
           ],
         ),
       ),
