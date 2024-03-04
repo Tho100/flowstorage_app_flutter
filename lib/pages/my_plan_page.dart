@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flowstorage_fsc/api/geographic_api.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -654,7 +655,9 @@ class MyPlanPageState extends State<MyPlanPage> {
                           borderRadius: BorderRadius.circular(26),
                         )
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        NavigatePage.goToPageUpgrade();
+                      },
                       child: const Text(
                         'Upgrade Plan',
                         style: TextStyle(
@@ -693,7 +696,7 @@ class MyPlanPageState extends State<MyPlanPage> {
       body: Center(
         child: Column(
           children: [
-            
+
             const SizedBox(height: 35),
 
             if(userData.accountType == "Basic")
