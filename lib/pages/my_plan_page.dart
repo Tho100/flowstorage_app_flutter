@@ -261,8 +261,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     );
   }
 
-  Widget buildMaxPage(double width, double height) {
-
+  Widget buildMaxCard(double width, double height) {
     return SizedBox(
       width: width,
       height: height,
@@ -360,8 +359,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     );
   }
 
-  Widget buildExpressPage(double width, double height) {
-
+  Widget buildExpressCard(double width, double height) {
     return SizedBox(
       width: width,
       height: height,
@@ -459,8 +457,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     );
   }
 
-  Widget buildSupremePage(double width, double height) {
-
+  Widget buildSupremeCard(double width, double height) {
     return SizedBox(
       width: width,
       height: height,
@@ -560,6 +557,126 @@ class MyPlanPageState extends State<MyPlanPage> {
     );
   }
 
+  Widget buildBasicCard(double width, double height) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Column(
+        children: [
+        
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(cardBorderRadius), 
+                topRight: Radius.circular(cardBorderRadius)
+              ),
+              color: ThemeColor.justWhite,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                const SizedBox(height: 30),
+
+                Row(
+                  children: [
+                    const SizedBox(width: 30),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSubHeader("PLAN"),
+                        Text("BASIC",
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: ThemeColor.mediumBlack,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 28
+                            ),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 50),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSubHeader("CHARGED"),
+                        Text("Free",
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Color.fromARGB(255, 15, 15, 15),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 28
+                            ),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 25),
+
+                Row( 
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 30),
+                    Column(  
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSubHeader("FEATURES"),
+                        const SizedBox(height: 5),
+                        _buildFeatures("+ Upload Up To 25 Files"),
+                        const SizedBox(height: 5),
+                        _buildFeatures("+ Upload Up To 3 Folders"),
+                        const SizedBox(height: 5),
+                        _buildFeatures("+ Upload Up To 2 Directories"),
+                      ],
+                    ),
+                  ],
+                ), 
+                
+                const Spacer(),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width-55,
+                    height: 65,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ThemeColor.darkBlack,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26),
+                        )
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Upgrade Plan',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeColor.justWhite,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 35),
+
+              ],
+            ),
+          ),
+        ],
+      ),        
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -576,16 +693,20 @@ class MyPlanPageState extends State<MyPlanPage> {
       body: Center(
         child: Column(
           children: [
+            
             const SizedBox(height: 35),
 
+            if(userData.accountType == "Basic")
+            buildBasicCard(width, height),
+
             if(userData.accountType == "Max") 
-            buildMaxPage(width, height),
+            buildMaxCard(width, height),
 
             if(userData.accountType == "Express") 
-            buildExpressPage(width, height),
+            buildExpressCard(width, height),
 
             if(userData.accountType == "Supreme") 
-            buildSupremePage(width, height),
+            buildSupremeCard(width, height),
 
           ],
         ),
