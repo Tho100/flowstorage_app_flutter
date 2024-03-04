@@ -137,4 +137,8 @@ class SnackAlert {
     );
   }
 
+  static void stop() {
+    scaffoldMessenger.hideCurrentSnackBar();
+  }
+
 }
