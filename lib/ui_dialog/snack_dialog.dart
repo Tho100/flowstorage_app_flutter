@@ -20,6 +20,9 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
                 overflow: TextOverflow.ellipsis
               ),
             ),
@@ -45,7 +48,10 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
-                style: const TextStyle(color: ThemeColor.mediumBlack),
+                style: const TextStyle(
+                  color: ThemeColor.mediumBlack,
+                  fontWeight: FontWeight.w500,
+                ),
                 overflow: TextOverflow.ellipsis
               ),
             ),
@@ -87,7 +93,10 @@ class SnackAlert {
         content: SizedBox(
           width: 320,
           child: Text(message,
-            style: const TextStyle(color: ThemeColor.mediumBlack), 
+            style: const TextStyle(
+              color: ThemeColor.mediumBlack,
+              fontWeight: FontWeight.w500,
+            ), 
             overflow: TextOverflow.ellipsis
           ),
         ),
@@ -115,7 +124,10 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
-                style: const TextStyle(color: ThemeColor.mediumBlack),
+                style: const TextStyle(
+                  color: ThemeColor.mediumBlack,
+                  fontWeight: FontWeight.w500,
+                ),
                 overflow: TextOverflow.ellipsis
               ),
             ),

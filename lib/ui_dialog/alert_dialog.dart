@@ -16,7 +16,8 @@ class CustomAlertDialog {
           backgroundColor: ThemeColor.mediumBlack,
           content: Text(messages,
             style: const TextStyle(
-              color: Colors.white
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500,
             )
           ),
           actions: [
@@ -26,7 +27,8 @@ class CustomAlertDialog {
               },
               child: const Text('OK',
                 style: TextStyle(
-                  color: Colors.white
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
                 )
               ),
             ),
@@ -63,7 +65,8 @@ class CustomAlertDialog {
               child: const Text('OK',
                 style: TextStyle(
                   color: Colors.white
-                )),
+                )
+              ),
             ),
           ],
         );
@@ -88,7 +91,8 @@ class CustomAlertDialog {
           backgroundColor: ThemeColor.mediumBlack,
           content: Text(messages,
             style: const TextStyle(
-              color: Colors.white
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500,
             )
           ),
           actions: [
@@ -96,7 +100,8 @@ class CustomAlertDialog {
               onPressed: onCancelPressed,
               child: const Text('Cancel',
                 style: TextStyle(
-                  color: ThemeColor.secondaryWhite
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
                 )
               ),
             ),
@@ -104,7 +109,8 @@ class CustomAlertDialog {
               onPressed: oPressedEvent,
               child: const Text('Confirm',
                 style: TextStyle(
-                  color: ThemeColor.darkPurple
+                  color: ThemeColor.darkPurple,
+                  fontWeight: FontWeight.bold
                 )
               ),
             ),
