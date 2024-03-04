@@ -186,6 +186,8 @@ class UploadDialogModel {
 
       if(countSelectedFiles < 2) {
 
+        SnackAlert.stop();
+
         SnackAlert.temporarySnack(
           message: "Added $fileName"
         );
@@ -201,6 +203,8 @@ class UploadDialogModel {
     await NotificationApi.stopNotification(0);
 
     if(countSelectedFiles >= 2) {
+
+      SnackAlert.stop();
 
       SnackAlert.temporarySnack(
         message: "Added ${countSelectedFiles.toString()} item(s)."
@@ -362,17 +366,25 @@ class UploadDialogModel {
       UpdateListView().addItemDetailsToListView(fileName: fileName);
 
       if(countSelectedFiles < 2) {
+
+        SnackAlert.stop();
+
         SnackAlert.temporarySnack(
           message: "Added $fileName"
         );
+
       }
 
     }
 
     if(countSelectedFiles > 2) {
+
+      SnackAlert.stop();
+
       SnackAlert.temporarySnack(
         message: "Added ${countSelectedFiles.toString()} item(s)."
       );
+      
     }
 
     await NotificationApi.stopNotification(0);
