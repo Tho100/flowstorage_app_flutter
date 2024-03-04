@@ -149,11 +149,13 @@ class HomePageState extends State<HomePage> {
   Timer? debounceSearchingTimer;
 
   void _callStorageUsageWarning() async {
-    SnackAlert.upgradeSnack();
-    await CallNotify().customNotification(
-      title: "Warning", 
-      subMessage: "Storage usage has exceeded 70%. Upgrade for more storage."
-    );
+    if(tempData.origin != OriginFile.offline) {
+      SnackAlert.upgradeSnack();
+      await CallNotify().customNotification(
+        title: "Warning", 
+        subMessage: "Storage usage has exceeded 70%. Upgrade for more storage."
+      );
+    }
   }
 
   void _addItemButtonVisibility(bool visible) {
