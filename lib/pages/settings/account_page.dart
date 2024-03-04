@@ -87,19 +87,17 @@ class SettingsAccountPage extends StatelessWidget {
             }
           ),
 
-          Visibility(
-            visible: accountType != "Basic",
-            child: Column(
-              children: [                                                
-                SettingsButton(
-                  topText: "My plan", 
-                  bottomText: "See your subscription plan details", 
-                  onPressed: () async {
-                    NavigatePage.goToPageMyPlan();
-                  }
-                ),
-              ],
-            )
+          SettingsButton(
+            topText: "My plan", 
+            bottomText: "See your subscription plan details", 
+            onPressed: () {
+              NavigatePage.goToPageMyPlan();
+            }
+          ),
+              
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Divider(color: ThemeColor.lightGrey),
           ),
 
           SettingsButton(
