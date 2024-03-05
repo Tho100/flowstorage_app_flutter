@@ -11,13 +11,15 @@ import 'package:get_it/get_it.dart';
 class PhotosGridListView extends StatelessWidget {
   
   final bool isPhotosSelected;
+  final bool isSelectionNotEmpty;
   final Uint8List imageBytes;
-  final String fileType;
+  final String fileType;  
 
   PhotosGridListView({
     required this.imageBytes,
     required this.fileType,
     required this.isPhotosSelected,
+    required this.isSelectionNotEmpty,
     Key? key
   }) : super(key: key);
 
@@ -71,6 +73,24 @@ class PhotosGridListView extends StatelessWidget {
                   ),
                   child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 17)),
               ),
+              
+              if(isSelectionNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 10),
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: ThemeColor.darkPurple.withOpacity(0.7),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+              ),
+
             ],
           ),
         ),
