@@ -17,6 +17,20 @@ class LocalStorageModel {
   final _accountPlanFolderName = "FlowStorageAccountInfoPlan";
   final _accountEmailFolderName = "FlowStorageAccountInfoEmail";
 
+  Future<Map<String, List<String>>> readMyAccounts() async {
+
+    final usernames = await readLocalAccountUsernames();
+    final emails = await readLocalAccountEmails();
+    final plans = await readLocalAccountPlans();
+
+    return {
+      "usernames": usernames,
+      "emails": emails,
+      "plans": plans
+    };
+
+  }
+
   Future<List<String>> _readLocalData(String customFolder) async {
 
     try {

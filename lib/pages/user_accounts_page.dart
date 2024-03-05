@@ -131,12 +131,17 @@ class UserAccountsPageState extends State<UserAccountsPage> {
   }
 
   Future<void> _readLocalAccountData() async {
-    final usernames = await localStorageModel.readLocalAccountUsernames();
-    final emails = await localStorageModel.readLocalAccountEmails();
-    final plans = await localStorageModel.readLocalAccountPlans();
+
+    final myAccounts = await LocalStorageModel().readMyAccounts();
+
+    final usernames = myAccounts['usernames']!;
+    final emails = myAccounts['emails']!;
+    final plans = myAccounts['plans']!;
+    
     localAccountUsernamesList.addAll(usernames);
     localAccountGmailList.addAll(emails);
     localAccountPlansList.addAll(plans);
+
   }
 
   Future<void> _initializeProfilePic() async {

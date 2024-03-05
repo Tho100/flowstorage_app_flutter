@@ -118,18 +118,18 @@ class CustomSideBarMenu extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 onPressed: () async {
 
-                  final localStorageModel = LocalStorageModel();
+                  final myAccounts = await LocalStorageModel().readMyAccounts();
 
-                  final usernames = await localStorageModel.readLocalAccountUsernames();
-                  final emails = await localStorageModel.readLocalAccountEmails();
-                  final plans = await localStorageModel.readLocalAccountPlans();
-
+                  final usernames = myAccounts['usernames'];
+                  final emails = myAccounts['emails'];
+                  final plans = myAccounts['plans'];
+                  
                   final profilePic = await initializeProfilePic();
 
                   MyAccountsDialog(
-                    localAccountUsernamesList: usernames,
-                    localAccountGmailList: emails,
-                    localAccountPlansList: plans,
+                    localAccountUsernamesList: usernames!,
+                    localAccountGmailList: emails!,
+                    localAccountPlansList: plans!,
                     profilePicNotifier: profilePic
                   ).buildMyAccountsBottomSheet();
 
