@@ -8,7 +8,6 @@ import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
 import 'package:flowstorage_fsc/data_query/delete_data.dart';
-import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/directory_query/rename_directory.dart';
 import 'package:flowstorage_fsc/folder_query/delete_folder.dart';
 import 'package:flowstorage_fsc/folder_query/save_folder.dart';
@@ -97,7 +96,6 @@ class HomePageState extends State<HomePage> {
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final insertData = InsertData();
   final dataCaller = DataCaller();
   final updateListView = UpdateListView();
   final deleteData = DeleteData();
@@ -328,7 +326,6 @@ class HomePageState extends State<HomePage> {
     required File? previewData,
     required dynamic videoThumbnail,
   }) async {
-
 
     SnackAlert.uploadingSnack(
       message: "Uploading ${ShortenText().cutText(fileName)}"
@@ -699,6 +696,7 @@ class HomePageState extends State<HomePage> {
     });
 
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+
     tempData.setAppBarTitle(setAppBarTitle);
 
   }
@@ -712,7 +710,26 @@ class HomePageState extends State<HomePage> {
     });
 
     tempData.setAppBarTitle("Photos");
+
     _addItemButtonVisibility(true);
+
+  }
+
+  void _selectAllPhotosOnPressed() {
+
+    final index = List.generate(storageData.fileNamesFilteredList.length, (index) => index);
+
+    setState(() {
+      checkedItemsName.clear();
+      selectedPhotosIndex.clear();
+
+      selectedPhotosIndex.addAll(index);
+      checkedItemsName.addAll(storageData.fileNamesFilteredList);
+
+      selectedItemIsChecked = true;
+    });
+
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
 
   }
 
@@ -1154,7 +1171,6 @@ class HomePageState extends State<HomePage> {
       if (storageData.fileNamesList.contains(newRenameValue)) {
         CustomAlertDialog.alertDialogTitle(newRenameValue, "Item with this name already exists.");
         return;
-
       } 
 
       await functionModel.renameFileData(fileName, newRenameValue);
@@ -1207,7 +1223,6 @@ class HomePageState extends State<HomePage> {
       }, 
       context: context
     );
-
   }
 
   Future _callSelectedItemsBottomTrailing() {
@@ -1228,7 +1243,6 @@ class HomePageState extends State<HomePage> {
       },
       itemsName: checkedItemsName
     );
-
   }
 
   Future _callBottomTrailing(int index) {
@@ -1270,7 +1284,7 @@ class HomePageState extends State<HomePage> {
       },
       context: context
     );
-    
+
   }
 
   Future _showUpgradeLimitedDialog(int value)  {
@@ -1741,6 +1755,33 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildSelectAllPhotosButton() {
+    return SizedBox(
+      width: 110,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () {
+            _selectAllPhotosOnPressed();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ThemeColor.darkGrey,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            )
+          ),
+          child: const Text("Select All",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   PreferredSizeWidget _buildCustomAppBar() {
 
     final appBarTitleValue = tempData.appBarTitle == '' 
@@ -1765,8 +1806,10 @@ class HomePageState extends State<HomePage> {
           ),
           actions: [
 
-            if(selectedPhotosIndex.isNotEmpty)
-            _buildDeselectAllPhotosButton(),
+            if(selectedPhotosIndex.isNotEmpty) ... [
+              _buildSelectAllPhotosButton(),
+              _buildDeselectAllPhotosButton(),
+            ],
 
             if(tempData.origin != OriginFile.public && !togglePhotosPressed && !filterPhotosTypeVisible)
             _buildSelectAll(),  
@@ -1778,10 +1821,10 @@ class HomePageState extends State<HomePage> {
             _buildFilterPhotosTypeButton(),
 
             if(tempData.origin == OriginFile.public) ... [
-            _buildPsSearchButton(),
-            _buildMyPsFilesButton(),
+              _buildPsSearchButton(),
+              _buildMyPsFilesButton(),
+            ],
 
-            ]
           ],
         ),
       ),
@@ -2414,7 +2457,6 @@ class HomePageState extends State<HomePage> {
       
     } catch (err) {
       tempStorageData.setOfflineFilesName({});
-      
     }
     
   }
