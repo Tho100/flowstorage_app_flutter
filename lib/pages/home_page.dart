@@ -1757,7 +1757,7 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildSelectAllPhotosButton() {
     return SizedBox(
-      width: 110,
+      width: 105,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
@@ -1773,7 +1773,7 @@ class HomePageState extends State<HomePage> {
           ),
           child: const Text("Select All",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 13.2,
               fontWeight: FontWeight.bold,
             ),
           ),

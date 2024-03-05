@@ -68,7 +68,7 @@ class SettingsAppSettings extends StatelessWidget {
           SettingsButton(
             hideCaret: true,
             topText: "Clear cache", 
-            bottomText: "Clear Flowstorage cache", 
+            bottomText: "Free up storage space by clearing cache", 
             onPressed: () {
               _clearAppCache();
               CallToast.call(message: "Cache cleared.");
@@ -94,7 +94,7 @@ class SettingsAppSettings extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 17,
                     color: ThemeColor.thirdWhite,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

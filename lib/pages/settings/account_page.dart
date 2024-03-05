@@ -89,7 +89,7 @@ class SettingsAccountPage extends StatelessWidget {
 
           SettingsButton(
             topText: "My plan", 
-            bottomText: "See your subscription plan details", 
+            bottomText: "See your plan details", 
             onPressed: () {
               NavigatePage.goToPageMyPlan();
             }

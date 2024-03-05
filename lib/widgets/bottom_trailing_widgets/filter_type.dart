@@ -49,7 +49,11 @@ class BottomTrailingFilter {
         children: [
           Icon(icon),
           const SizedBox(width: 8),
-          Text(filterName),
+          Text(filterName,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600
+            )
+          ),
         ],
       ),
     );
