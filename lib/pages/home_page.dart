@@ -2209,10 +2209,13 @@ class HomePageState extends State<HomePage> {
     final imageBytes = storageData.imageBytesFilteredList[index]!;
     final isSelected = selectedPhotosIndex.contains(index);
 
+    final isSelectionNotEmpty = selectedPhotosIndex.isNotEmpty;
+
     return PhotosGridListView(
       imageBytes: imageBytes, 
       fileType: fileType,
       isPhotosSelected: isSelected,
+      isSelectionNotEmpty: isSelectionNotEmpty,
     );
     
   }
