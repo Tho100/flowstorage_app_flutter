@@ -133,7 +133,8 @@ class OfflineModel {
       await ImageGallerySaver.saveImage(fileDataValue, name: setupName);
 
     } else if (Globals.videoType.contains(fileType)) {
-      await videoGallerySaver(fileDataValue, fileName);
+      final decompressFileData = CompressorApi.decompressFile(fileDataValue);
+      await videoGallerySaver(decompressFileData, fileName);
 
     } else if (Globals.textType.contains(fileType)) {
       final decompressedFile = CompressorApi.decompressFile(fileDataValue);
