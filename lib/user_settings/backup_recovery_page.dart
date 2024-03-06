@@ -138,7 +138,6 @@ class BackupRecoveryPage extends StatelessWidget {
       if(passwordIsIncorrect) {
         CustomAlertDialog.alertDialog("Password is incorrect.");
         return;
-
       } 
 
       final recoveryToken = await UserDataGetter()

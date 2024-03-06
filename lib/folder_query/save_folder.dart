@@ -22,8 +22,8 @@ class SaveFolder {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String folderTitle) async {
 
-    const query = 'SELECT CUST_FILE_PATH, CUST_FILE FROM folder_upload_info WHERE FOLDER_NAME = :foldtitle AND CUST_USERNAME = :username';
-    final params = {'username': userData.username, 'foldtitle': encryption.encrypt(folderTitle)};
+    const query = 'SELECT CUST_FILE_PATH, CUST_FILE FROM folder_upload_info WHERE FOLDER_NAME = :folder_name AND CUST_USERNAME = :username';
+    final params = {'username': userData.username, 'folder_name': encryption.encrypt(folderTitle)};
 
     try {
 

@@ -323,7 +323,6 @@ class SettingsPageState extends State<SettingsPage> {
 
     } catch (err) {
       profilePicNotifier.value = Uint8List(0);
-
     }
 
   }

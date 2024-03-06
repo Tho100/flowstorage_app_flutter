@@ -123,14 +123,14 @@ class RegisterUser {
       final generateRecoveryToken = Generator.generateRandomString(16) + userName!;
       final encryptedRecoveryToken = encryption.encrypt(generateRecoveryToken.replaceAll(RegExp(r'\s'), ''));
 
-      const query = "INSERT INTO information(CUST_USERNAME, CUST_PASSWORD, CREATED_DATE, CUST_EMAIL, CUST_PIN, RECOV_TOK) VALUES (:username, :password, :date, :email, :pin, :recov_tok)";
+      const query = "INSERT INTO information(CUST_USERNAME, CUST_PASSWORD, CREATED_DATE, CUST_EMAIL, CUST_PIN, RECOV_TOK) VALUES (:username, :password, :date, :email, :pin, :recovery_token)";
       final params = {
         "username": userName, 
         "password": passWord, 
         "date": createdDate, 
         "email": email, 
         "pin": pin, 
-        "recov_tok": encryptedRecoveryToken
+        "recovery_token": encryptedRecoveryToken
       };
 
       await conn.execute(query, params);

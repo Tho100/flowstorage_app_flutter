@@ -146,7 +146,6 @@ class DeleteAccountPage extends StatelessWidget {
       if(passwordIsIncorrect) {
         CustomAlertDialog.alertDialog("Password is incorrect.");
         return;
-
       } 
 
       await DeleteAccountDialog().buildDeleteAccountDialog(

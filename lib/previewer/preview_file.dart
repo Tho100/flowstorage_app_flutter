@@ -56,8 +56,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   static final bottomBarVisibleNotifier = ValueNotifier<bool>(true);
 
-  late OriginFile originFrom;
-  late String fileType;
   late String currentTable;
 
   late final ValueNotifier<String> appBarTitleNotifier = 
@@ -89,8 +87,6 @@ class PreviewFileState extends State<PreviewFile> {
   @override
   void initState() {
     super.initState();
-    fileType = widget.fileType;
-    originFrom = tempData.origin;
     appBarTitleNotifier.value = tempData.selectedFileName;
     _initializeTableName();
     _initializeUploaderName();
@@ -106,8 +102,8 @@ class PreviewFileState extends State<PreviewFile> {
 
   void _initializeTableName() {
     currentTable = tempData.origin != OriginFile.home 
-    ? Globals.fileTypesToTableNamesPs[fileType]! 
-    : Globals.fileTypesToTableNames[fileType]!;
+      ? Globals.fileTypesToTableNamesPs[widget.fileType]! 
+      : Globals.fileTypesToTableNames[widget.fileType]!;
   }
 
   void _onSlidingUpdate() async {
@@ -121,12 +117,10 @@ class PreviewFileState extends State<PreviewFile> {
 
     if (Globals.generalFileTypes.contains(fileType) || Globals.videoType.contains(fileType)) {
       _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
-
     } 
 
     if (tempData.origin == OriginFile.home) {
       currentTable = Globals.fileTypesToTableNames[fileType]!;
-
     } 
   
     if ([OriginFile.sharedMe, OriginFile.sharedOther].contains(tempData.origin)) {
@@ -138,23 +132,25 @@ class PreviewFileState extends State<PreviewFile> {
   void _initializeUploaderName() async {
 
     const localOriginFrom = {
-      OriginFile.home, OriginFile.folder, OriginFile.directory};
+      OriginFile.home, OriginFile.folder, OriginFile.directory
+    };
 
     const sharingOriginFrom = {
-      OriginFile.sharedMe, OriginFile.sharedOther};
+      OriginFile.sharedMe, OriginFile.sharedOther
+    };
   
     final uploaderNameIndex = tempData.origin == OriginFile.publicSearching 
-    ? psStorageData.psSearchNameList.indexOf(tempData.selectedFileName)
-    : storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+      ? psStorageData.psSearchNameList.indexOf(tempData.selectedFileName)
+      : storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
-    if(localOriginFrom.contains(originFrom)) {
+    if(localOriginFrom.contains(tempData.origin)) {
       uploaderNameNotifier.value = userData.username;
 
-    } else if (sharingOriginFrom.contains(originFrom)) {
+    } else if (sharingOriginFrom.contains(tempData.origin)) {
       final uploaderName = tempStorageData.sharedNameList[widget.tappedIndex];
       uploaderNameNotifier.value = uploaderName;
 
-    } else if ([OriginFile.public, OriginFile.publicSearching].contains(originFrom)) {
+    } else if ([OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)) {
       if(tempData.origin == OriginFile.public) {
         psStorageData.psTitleList[widget.tappedIndex] = psStorageData.psTitleList[uploaderNameIndex];
         uploaderNameNotifier.value = psStorageData.psUploaderList[uploaderNameIndex];
@@ -314,7 +310,6 @@ class PreviewFileState extends State<PreviewFile> {
       PreviewText.isChangesSaved = true;
       _updateTextChanges(textValue);
       return;
-
     } 
 
   }
@@ -375,13 +370,13 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildFileDataWidget() {
 
-    if(Globals.imageType.contains(fileType)) {
+    if(Globals.imageType.contains(widget.fileType)) {
       return PreviewImage(onPageChanged: _onSlidingUpdate);
 
-    } else if (Globals.videoType.contains(fileType)) {
+    } else if (Globals.videoType.contains(widget.fileType)) {
       return const PreviewVideo();
 
-    } else if (fileType == "pdf") {
+    } else if (widget.fileType == "pdf") {
       return const PreviewPdf();
 
     } else {
@@ -426,8 +421,8 @@ class PreviewFileState extends State<PreviewFile> {
         bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
       },
       icon: bottomBarVisibleNotifier.value 
-      ? const Icon(Icons.import_contacts_outlined, size: 28)
-      : const Icon(Icons.edit_note_outlined, size: 32),
+        ? const Icon(Icons.import_contacts_outlined, size: 28)
+        : const Icon(Icons.edit_note_outlined, size: 32),
     );
   }
 
@@ -469,8 +464,7 @@ class PreviewFileState extends State<PreviewFile> {
   Widget _buildInfoIconButton() {
     return IconButton(
       onPressed: () {
-        NavigatePage.goToPageFileDetails(
-          tempData.selectedFileName);
+        NavigatePage.goToPageFileDetails(tempData.selectedFileName);
       },
       icon: const Icon(Icons.info_outlined),
     );
@@ -541,7 +535,7 @@ class PreviewFileState extends State<PreviewFile> {
     };
 
     return Text(
-      generalOrigin.contains(originFrom) 
+      generalOrigin.contains(tempData.origin) 
       ? "   Uploaded By" : "   Shared To",
       textAlign: TextAlign.start,
       style: const TextStyle(
@@ -570,15 +564,18 @@ class PreviewFileState extends State<PreviewFile> {
             
             if(buttonType == "download") {
               await functionModel.downloadFileData(
-                fileName: tempData.selectedFileName);
+                fileName: tempData.selectedFileName
+              );
 
             } else if (buttonType == "comment") {
               NavigatePage.goToPageFileComment(
-                tempData.selectedFileName);
+                tempData.selectedFileName
+              );
 
             } else if (buttonType == "share") {
               NavigatePage.goToPageSharing(
-                tempData.selectedFileName);
+                tempData.selectedFileName
+              );
 
             } else if (buttonType == "save") {
               _saveTextChangesOnPressed();
@@ -629,7 +626,8 @@ class PreviewFileState extends State<PreviewFile> {
                 valueListenable: uploaderNameNotifier,
                 builder: (context, value, child) {
                   return Text(
-                    value == userData.username ? "$value (You)" : value,
+                    value == userData.username 
+                      ? "$value (You)" : value,
                     textAlign: TextAlign.start,
                     style: const TextStyle(
                       fontSize: 16,
@@ -875,4 +873,5 @@ class PreviewFileState extends State<PreviewFile> {
       ),
     );
   }
+  
 }

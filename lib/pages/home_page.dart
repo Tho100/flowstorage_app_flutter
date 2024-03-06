@@ -382,13 +382,11 @@ class HomePageState extends State<HomePage> {
           CallToast.call(message: "Folder with this name already exists.");
           RenameFolderDialog.folderRenameController.clear();
           return;
-
         } 
 
         if(newFolderName.isEmpty) {
           CallToast.call(message: "Folder name cannot be empty.");
           return;
-
         }
 
         await functionModel.renameFolderData(
@@ -461,13 +459,9 @@ class HomePageState extends State<HomePage> {
 
     togglePhotosPressed = !togglePhotosPressed;
 
-    if (togglePhotosPressed) {
-      _activatePhotosView();
-
-    } else {
-      _deactivatePhotosView();
-      
-    }
+    togglePhotosPressed 
+      ? _activatePhotosView() 
+      : _deactivatePhotosView();
 
     if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: true);
@@ -581,13 +575,9 @@ class HomePageState extends State<HomePage> {
 
   void _clearItemSelection() {
 
-    if(!togglePhotosPressed) {
-      tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
-
-    } else {
-      tempData.setAppBarTitle("Photos");
-
-    }
+    !togglePhotosPressed
+      ? tempData.setAppBarTitle(Globals.originToName[tempData.origin]!)
+      : tempData.setAppBarTitle("Photos");
 
     setState(() {
       _addItemButtonVisibility(true);
@@ -686,13 +676,9 @@ class HomePageState extends State<HomePage> {
       selectedItemsCheckedList[index] = isChecked;
       selectedItemIsChecked = selectedItemsCheckedList.any((item) => item);
 
-      if (isChecked) {
-        checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-
-      } else {
-        checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
-
-      }
+      isChecked 
+        ? checkedItemsName.add(storageData.fileNamesFilteredList[index])
+        : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
 
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
@@ -752,11 +738,12 @@ class HomePageState extends State<HomePage> {
 
       for (final file in filteredFiles) {
         final index = storageData.fileNamesList.indexOf(file);
-        if (index >= 0 && index < storageData.fileDateList.length) {
-          filteredFilesDate.add(storageData.fileDateList[index]);
-        } else {
-          filteredFilesDate.add(''); 
-        }
+        final isFileFound = index >= 0 && index < storageData.fileDateList.length;
+
+        isFileFound 
+          ? filteredFilesDate.add(storageData.fileDateList[index])
+          : filteredFilesDate.add(''); 
+
       }
 
       setState(() {
@@ -1320,17 +1307,13 @@ class HomePageState extends State<HomePage> {
 
     if(tempData.origin == OriginFile.public) {
 
-      final count = psStorageData.psUploaderList
+      final totalPsUpload = psStorageData.psUploaderList
         .where((uploader) => uploader == userData.username)
         .length;
 
-      if (count < limitUpload) {
-        await _openDialogUploadFile();
-
-      } else {
-        _showUpgradeLimitedDialog(limitUpload);
-
-      } 
+      totalPsUpload < limitUpload
+        ? await _openDialogUploadFile()
+        : _showUpgradeLimitedDialog(limitUpload);
 
       return;
       
@@ -1352,11 +1335,11 @@ class HomePageState extends State<HomePage> {
 
         if (tempData.origin == OriginFile.public) {
 
-          final count = psStorageData.psUploaderList
+          final totalPsUpload = psStorageData.psUploaderList
             .where((uploader) => uploader == userData.username)
             .length;
 
-          if (count < limitUpload) {
+          if (totalPsUpload < limitUpload) {
             Navigator.pop(context);
             await _openDialogUploadFile();
 
@@ -1448,6 +1431,7 @@ class HomePageState extends State<HomePage> {
               context: context
             );
           }
+
         } else {
           _showUpgradeLimitedDialog(limitUpload);
         }
@@ -1455,7 +1439,7 @@ class HomePageState extends State<HomePage> {
       }, 
       context: context
     );
-    
+  
   }
 
   Future _callBottomTrailingFolder(String folderName) {
@@ -1471,9 +1455,11 @@ class HomePageState extends State<HomePage> {
             message: "Upgrade your account to any paid plan to download folder.",
             context: context
           );
+          
         } else {
           await SaveFolder().selectDirectoryUserFolder(folderName: folderName, context: context);
         }
+        
       }, 
       onDeletePressed: () async {
         DeleteDialog().buildDeleteDialog(
@@ -1557,35 +1543,28 @@ class HomePageState extends State<HomePage> {
       }, 
       scannerOnPressed: () async {
         final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-        if(storageData.fileNamesList.length < limitFileUploads) {
-          await _initializeDocumentScanner();
-        } else {
-          _showUpgradeLimitedDialog(limitFileUploads);
-        }
+        storageData.fileNamesList.length < limitFileUploads 
+          ? await _initializeDocumentScanner()
+          : _showUpgradeLimitedDialog(limitFileUploads);
       }, 
       createDirectoryOnPressed: () async {
         final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
         final directoryCount = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
         if (storageData.fileNamesList.length < limitFileUploads) {
           if (directoryCount != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
-            if (tempData.origin != OriginFile.offline) {
-              _openCreateDirectoryDialog();
+            tempData.origin == OriginFile.offline
+              ? CustomAlertDialog.alertDialog("Can't create Directory on offline mode.")
+              : _openCreateDirectoryDialog();
 
-            } else {
-              CustomAlertDialog.alertDialog("Can't create Directory on offline mode.");
-
-            }
           } else {
             UpgradeDialog.buildUpgradeBottomSheet(
               message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directories.",
               context: context,
             );
-
           }
 
         } else {
           _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
-          
         }
 
       }, 

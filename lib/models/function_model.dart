@@ -80,7 +80,6 @@ class FunctionModel {
         await OfflineModel().deleteFile(fileName);
         SnackAlert.okSnack(message: "Deleted $fileName", icon: Icons.check);
         return;
-
       } 
 
       final encryptedFileName = EncryptionClass().encrypt(fileName);
@@ -189,7 +188,6 @@ class FunctionModel {
       if(isItemDirectory) {
         await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: navigatorKey.currentContext!);
         return;
-        
       }
 
       final loadingDialog = SingleTextLoading();

@@ -150,6 +150,7 @@ class StripeCustomers {
       } else {
         return;
       }
+      
     } else {      
       return;
     }
