@@ -87,6 +87,8 @@ class BottomTrailingSelectedItems {
             ),
           ),
 
+          const Divider(color: ThemeColor.lightGrey),
+
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);

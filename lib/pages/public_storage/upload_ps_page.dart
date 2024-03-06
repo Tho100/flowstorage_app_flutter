@@ -160,11 +160,12 @@ class UploadPsPage extends StatelessWidget {
 
         Align(
           alignment: Alignment.bottomLeft,
-          child: Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(14.0),
-                child: Text("Select Tags", 
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              children: [
+                
+                const Text("Select Tags ", 
                   style: TextStyle(
                     color: ThemeColor.secondaryWhite,
                     fontWeight: FontWeight.w600,
@@ -172,71 +173,79 @@ class UploadPsPage extends StatelessWidget {
                   ),
                   textAlign: TextAlign.left,
                 ),
-              ),
-              
-              ValueListenableBuilder<String>(
-                valueListenable: selectedTagValue,
-                builder: (context, value, child) {
-                  return Visibility(
-                    visible: value != "",
-                    child: Text(
-                      "${GlobalsStyle.dotSeparator} $value",
-                      style: TextStyle(
-                        color: GlobalsStyle.psTagsToColor[value],
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                
+                ValueListenableBuilder<String>(
+                  valueListenable: selectedTagValue,
+                  builder: (context, value, child) {
+                    return Visibility(
+                      visible: value != "",
+                      child: Text(
+                        "${GlobalsStyle.dotSeparator} $value",
+                        style: TextStyle(
+                          color: GlobalsStyle.psTagsToColor[value],
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  );
-                }
-              ),
-              
-            ],
+                    );
+                  }
+                ),
+                
+              ],
+            ),
           ),
         ),
         
         Container(
-          color: ThemeColor.mediumGrey,
           width: mediaQuery.width,
-          height: 82,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Divider(color: ThemeColor.lightGrey, height: 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
-                child: SizedBox(
-                  height: 55,
-                  child: ListView.builder(
-                    itemCount: tagsItems.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.all(6),
-                      color: Colors.transparent,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
+          height: 90,
+          decoration: const BoxDecoration(
+            color: ThemeColor.mediumGrey,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 4.5, top: 5.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
+                  child: SizedBox(
+                    height: 55,
+                    child: ListView.builder(
+                      itemCount: tagsItems.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.all(6),
+                        color: Colors.transparent,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            backgroundColor: GlobalsStyle.psTagsToColor[tagsItems.elementAt(index)],
                           ),
-                          backgroundColor: GlobalsStyle.psTagsToColor[tagsItems.elementAt(index)],
-                        ),
-                        onPressed: () {
-                          psUploadData.setTagValue(tagsItems.elementAt(index));
-                          selectedTagValue.value = psUploadData.psTagValue;
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.label_outline, color: ThemeColor.justWhite,),
-                            const SizedBox(width: 6), 
-                            Text(tagsItems.elementAt(index)),
-                          ],
+                          onPressed: () {
+                            psUploadData.setTagValue(tagsItems.elementAt(index));
+                            selectedTagValue.value = psUploadData.psTagValue;
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.label_outline, color: ThemeColor.justWhite,),
+                              const SizedBox(width: 6), 
+                              Text(tagsItems.elementAt(index)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],
