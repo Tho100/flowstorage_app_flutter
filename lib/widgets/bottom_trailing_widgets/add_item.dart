@@ -38,7 +38,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.photo_outlined),
+              Icon(Icons.photo_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text(
                 'Upload from gallery',
@@ -53,7 +53,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.upload_file_outlined),
+              Icon(Icons.upload_file_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text(
                 'Upload files',
@@ -69,7 +69,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.folder_outlined),
+              Icon(Icons.folder_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Upload folder',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -86,7 +86,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.camera_alt_outlined),
+              Icon(Icons.camera_alt_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text(
                 'Take a photo',
@@ -103,7 +103,7 @@ class BottomTrailingAddItem {
         style: GlobalsStyle.btnBottomDialogBackgroundStyle,
         child: const Row(
           children: [
-            Icon(Icons.center_focus_strong_outlined),
+            Icon(Icons.center_focus_strong_outlined, color: ThemeColor.secondaryWhite),
             SizedBox(width: 15.0),
             Text(
               'Scan document',
@@ -121,7 +121,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.add_box_outlined),
+                Icon(Icons.add_box_outlined, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text(
                   'Create text file',
@@ -138,7 +138,7 @@ class BottomTrailingAddItem {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.add_box_outlined),
+                Icon(Icons.add_box_outlined, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text(
                   'Create directory',

@@ -112,7 +112,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: Row(
             children: [
-              const Icon(Icons.edit_outlined),
+              const Icon(Icons.edit_outlined, color: ThemeColor.secondaryWhite),
               const SizedBox(width: 15.0),
               Text(
                 fileName.contains('.') ? "Rename file" : "Rename directory",
@@ -128,7 +128,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.open_in_new_outlined),
+              Icon(Icons.open_in_new_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text(
                 "Open with",
@@ -144,7 +144,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
             children: [
-              Icon(Icons.share_outlined),
+              Icon(Icons.share_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Share file',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -162,7 +162,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.offline_bolt_outlined),
+              Icon(Icons.offline_bolt_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Make available offline',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -185,7 +185,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.flag_outlined),
+              Icon(Icons.flag_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Report',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -199,7 +199,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.file_download_outlined),
+              Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Download',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -214,7 +214,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.open_with_outlined),
+              Icon(Icons.open_with_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Move',
                 style: GlobalsStyle.btnBottomDialogTextStyle
@@ -229,7 +229,7 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.info_outlined),
+              Icon(Icons.info_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Details',
                 style: GlobalsStyle.btnBottomDialogTextStyle

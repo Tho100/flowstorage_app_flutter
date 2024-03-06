@@ -43,7 +43,7 @@ class BottomTrailingSelectedItems {
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.file_download_outlined),
+                Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text(
                   'Save to device',
@@ -62,7 +62,7 @@ class BottomTrailingSelectedItems {
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.offline_bolt_outlined),
+                Icon(Icons.offline_bolt_outlined, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text(
                   'Make available offline',
@@ -78,7 +78,7 @@ class BottomTrailingSelectedItems {
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.open_with_outlined),
+                Icon(Icons.open_with_outlined, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text('Move',
                   style: GlobalsStyle.btnBottomDialogTextStyle
