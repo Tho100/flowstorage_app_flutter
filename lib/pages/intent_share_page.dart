@@ -250,13 +250,11 @@ class IntentSharingPage extends StatelessWidget {
                 if (storageData.fileNamesList.contains(fileName)) {
                   CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
                   return;
-          
                 }
           
                 if(!Globals.supportedFileTypes.contains(fileType)) {
                   CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
                   return;
-          
                 }
           
                 final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;

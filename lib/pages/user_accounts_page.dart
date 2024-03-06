@@ -152,7 +152,6 @@ class UserAccountsPageState extends State<UserAccountsPage> {
 
     } catch (error) {
       profilePicNotifier.value = Uint8List(0);
-
     }
 
   }

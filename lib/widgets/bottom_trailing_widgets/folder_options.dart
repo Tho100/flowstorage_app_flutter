@@ -34,7 +34,7 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.edit_outlined),
+              Icon(Icons.edit_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text(
                 'Rename folder',
@@ -49,7 +49,7 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.file_download_outlined),
+              Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Download',
                 style: GlobalsStyle.btnBottomDialogTextStyle

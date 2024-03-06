@@ -48,7 +48,7 @@ class GlobalsStyle {
   );
 
   static const btnBottomDialogTextStyle = TextStyle(
-    color: ThemeColor.secondaryWhite,
+    color: ThemeColor.justWhite,
     fontSize: 16,
     fontWeight: FontWeight.w600,
   ); 
