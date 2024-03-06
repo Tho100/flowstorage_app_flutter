@@ -44,7 +44,7 @@ class BottomTrailingOptions {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
         
         Row(
           children: [
