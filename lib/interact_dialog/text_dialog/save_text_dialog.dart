@@ -39,7 +39,9 @@ class SaveTextDialog {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
+              border: Border.all(
+                color: ThemeColor.mediumBlack
+              ),
             ),
             child: TextFormField(
               autofocus: true,

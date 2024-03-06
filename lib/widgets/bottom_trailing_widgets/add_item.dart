@@ -25,7 +25,7 @@ class BottomTrailingAddItem {
       children: [
 
         const SizedBox(height: 12),
-
+//TODO: Rename bottomsheetbar to bottomtrailingbar
         const BottomSheetBar(),
 
         BottomTrailingTitle(title: headerText),

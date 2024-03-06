@@ -49,7 +49,9 @@ class SharingPassword {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(width: 1.0, color: ThemeColor.mediumBlack),
+              border: Border.all(
+                color: ThemeColor.mediumBlack
+              ),
             ),
             child: TextFormField(
               style: const TextStyle(
