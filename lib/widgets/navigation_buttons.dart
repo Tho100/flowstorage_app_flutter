@@ -144,8 +144,8 @@ class NavigationButtons extends StatelessWidget {
                         Text(
                           '  $value',
                           style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                             color: ThemeColor.justWhite
                           ),
                         ),
@@ -153,7 +153,10 @@ class NavigationButtons extends StatelessWidget {
                         ValueListenableBuilder(
                           valueListenable: ascendingDescendingCaret, 
                           builder: (context, value, child) {
-                            return Icon(value, size: 20, color: Colors.white);
+                            return Icon(value, 
+                              size: 20, 
+                              color: Colors.white
+                            );
                           }
                         ),
                       ],
