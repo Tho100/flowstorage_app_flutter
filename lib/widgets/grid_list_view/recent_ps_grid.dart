@@ -54,7 +54,6 @@ class RecentPsListView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: ThemeColor.lightGrey,
-                    width: 1,
                   ),
                 ),
                 child: ClipRRect(

@@ -20,7 +20,7 @@ class BottomTrailingFolder {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
 
         BottomTrailingTitle(title: folderName.length > 50 ? "${folderName.substring(0,50)}..." : "$folderName Folder"),
 
@@ -67,14 +67,10 @@ class BottomTrailingFolder {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.delete_outline,color: ThemeColor.darkRed),
+              Icon(Icons.delete_outline,color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Delete',
-                style: TextStyle(
-                  color: ThemeColor.darkRed,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                )
+                style: GlobalsStyle.btnBottomDialogTextStyle
               ),
             ],
           ),

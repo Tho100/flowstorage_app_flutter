@@ -57,7 +57,9 @@ class PsGridListView extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(isFromDownload ? 12 : 18),
-                  side: const BorderSide(color: ThemeColor.lightGrey, width: 1),
+                  side: const BorderSide(
+                    color: ThemeColor.lightGrey
+                  ),
                 ),
               ),
             ),
@@ -198,7 +200,6 @@ class PsGridListView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: ThemeColor.lightGrey,
-                      width: 1,
                     ),
                   ),
                   child: ClipRRect(

@@ -44,7 +44,7 @@ class BottomTrailingOptions {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
         
         Row(
           children: [
@@ -244,14 +244,10 @@ class BottomTrailingOptions {
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
-              Icon(Icons.delete_outline, color: ThemeColor.darkRed),
+              Icon(Icons.delete_outline, color: ThemeColor.secondaryWhite),
               SizedBox(width: 15.0),
               Text('Delete',
-                style: TextStyle(
-                  color: ThemeColor.darkRed,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                )
+                style: GlobalsStyle.btnBottomDialogTextStyle
               ),
             ],
           ),

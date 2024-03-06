@@ -1,9 +1,9 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 
-class BottomSheetBar extends StatelessWidget {
+class BottomTrailingBar extends StatelessWidget {
 
-  const BottomSheetBar({Key? key}) : super(key: key);
+  const BottomTrailingBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

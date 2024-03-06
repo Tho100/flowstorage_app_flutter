@@ -22,7 +22,7 @@ class BottomTrailingPsSearchFilter {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
 
         const BottomTrailingTitle(title: "Filter Search"),
         

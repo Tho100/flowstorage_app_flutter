@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -93,6 +94,23 @@ class OfflineModel {
 
   }
 
+  Future<void> videoGallerySaver(Uint8List videoData, String fileName) async {
+
+    final directory = Platform.isAndroid 
+      ? await getExternalStorageDirectory()
+      : await getApplicationDocumentsDirectory();
+
+    final videoPath = '${directory!.path}/Flowstorage-$fileName';
+    final videoFile = File(videoPath);
+    
+    await videoFile.writeAsBytes(videoData);
+
+    await GallerySaver.saveVideo(videoPath);
+    
+    await videoFile.delete();
+
+  }
+
   Future<void> downloadFile(String fileName) async {
 
     await init();    
@@ -111,20 +129,27 @@ class OfflineModel {
     final fileType = fileName.split('.').last;
 
     if(Globals.imageType.contains(fileType)) {
-      await ImageGallerySaver.saveImage(fileDataValue);
+      final setupName = "Flowstorage-$fileName";
+      await ImageGallerySaver.saveImage(fileDataValue, name: setupName);
+
+    } else if (Globals.videoType.contains(fileType)) {
+      await videoGallerySaver(fileDataValue, fileName);
 
     } else if (Globals.textType.contains(fileType)) {
       final decompressedFile = CompressorApi.decompressFile(fileDataValue);
       final textFileContent = utf8.decode(decompressedFile);
 
-      SaveApi().saveFile(fileName: fileName, fileData: textFileContent);
+      await SaveApi().saveFile(
+        fileName: fileName, fileData: textFileContent);
 
     } else if (generalNonTextFileType.contains(fileType)) {
       final decompressFileData = CompressorApi.decompressFile(fileDataValue);
-      SaveApi().saveFile(
+
+      await SaveApi().saveFile(
         fileName: fileName, fileData: decompressFileData);
+
+    }
       
-    } 
   }
 
   Future<Uint8List> loadOfflineFileByte(String fileName) async {
@@ -140,7 +165,7 @@ class OfflineModel {
 
     } else {
       throw Exception('File not found');
-      
+
     }
     
   }
@@ -155,7 +180,8 @@ class OfflineModel {
       await saveOfflineFile(
         fileName: fileName, fileData: fileData);
       
-      SnackAlert.okSnack(message: "${ShortenText().cutText(fileName)} Now available offline.",icon: Icons.check);
+      SnackAlert.okSnack(
+        message: "${ShortenText().cutText(fileName)} Now available offline.", icon: Icons.check);
       
     } catch (err) {
       SnackAlert.errorSnack("An error occurred.");

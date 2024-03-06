@@ -18,7 +18,7 @@ class PsDateSearchFilterBottomTrailing {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
 
         const Align(
           alignment: Alignment.center,

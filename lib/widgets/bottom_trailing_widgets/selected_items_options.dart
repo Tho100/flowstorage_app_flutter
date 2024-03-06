@@ -27,7 +27,7 @@ class BottomTrailingSelectedItems {
 
         const SizedBox(height: 12),
 
-        const BottomSheetBar(),
+        const BottomTrailingBar(),
 
         BottomTrailingTitle(title: tempData.appBarTitle),
 
@@ -87,6 +87,8 @@ class BottomTrailingSelectedItems {
             ),
           ),
 
+          const Divider(color: ThemeColor.lightGrey),
+
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -95,14 +97,10 @@ class BottomTrailingSelectedItems {
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
             child: const Row(
               children: [
-                Icon(Icons.delete_outline,color: ThemeColor.darkRed),
+                Icon(Icons.delete_outline, color: ThemeColor.secondaryWhite),
                 SizedBox(width: 15.0),
                 Text('Delete',
-                  style: TextStyle(
-                    color: ThemeColor.darkRed,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600
-                  )
+                  style: GlobalsStyle.btnBottomDialogTextStyle
                 ),
               ],
             ),

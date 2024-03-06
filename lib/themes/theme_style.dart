@@ -42,15 +42,15 @@ class GlobalsStyle {
   );
 
   static const settingsLeftTextStyle = TextStyle(
-    fontSize: 17,
     color: ThemeColor.secondaryWhite,
     fontWeight: FontWeight.bold,
+    fontSize: 17,
   );
 
   static const btnBottomDialogTextStyle = TextStyle(
-    color: ThemeColor.justWhite,
-    fontSize: 16,
+    color: Color.fromARGB(255,235,235,235),
     fontWeight: FontWeight.w600,
+    fontSize: 16,
   ); 
 
   static final btnBottomDialogBackgroundStyle = ElevatedButton.styleFrom(
@@ -98,7 +98,6 @@ class GlobalsStyle {
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
           color: ThemeColor.lightGrey,
-          width: 1
         ),
       ),
       focusedBorder: OutlineInputBorder(

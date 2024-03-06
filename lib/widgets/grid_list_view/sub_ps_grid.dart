@@ -57,8 +57,7 @@ class SubPsListView extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: ThemeColor.lightGrey,
-                        width: 1,
+                        color: ThemeColor.lightGrey
                       ),
                     ),
                     child: ClipRRect(
