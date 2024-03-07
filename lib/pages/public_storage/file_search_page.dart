@@ -323,7 +323,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                             style: const TextStyle(
                               color: ThemeColor.justWhite,
                               overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               fontSize: 18,
                             ),
                           ),              
