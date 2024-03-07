@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/main.dart';
+import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ActivityImagePreviewer {
@@ -12,6 +15,10 @@ class ActivityImagePreviewer {
   static Future showPreviewer(String fileName, Uint8List? imageBytes) {
 
     final fileType = fileName.split('.').last;
+
+    final tempData = GetIt.instance<TempDataProvider>();
+
+    final isOfflineVideo = Globals.videoType.contains(fileType) && tempData.origin == OriginFile.offline;
 
     return showDialog(
       barrierDismissible: true,
@@ -30,6 +37,7 @@ class ActivityImagePreviewer {
               child: Center(
                 child: Column(
                   children: [
+                    
                     Text(fileName,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
@@ -52,8 +60,8 @@ class ActivityImagePreviewer {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.memory(imageBytes!,
-                          fit: Globals.generalFileTypes.contains(fileType) 
-                          ? BoxFit.scaleDown : BoxFit.cover,
+                          fit: Globals.generalFileTypes.contains(fileType) || isOfflineVideo
+                            ? BoxFit.scaleDown : BoxFit.cover,
                         ),
                       ),
                     ),
