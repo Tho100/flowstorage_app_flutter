@@ -52,7 +52,13 @@ class SettingsAppSettings extends StatelessWidget {
     final cacheSizeInMb = await _getCacheSize() / (1024 * 1024);
     
     await DefaultCacheManager().emptyCache();
-        
+
+    final tempDir = await getTemporaryDirectory();
+
+    if(tempDir.existsSync()) {
+      await tempDir.delete(recursive: true);
+    }
+
     CallToast.call(message: "Cleared ${cacheSizeInMb.toDouble().toStringAsFixed(2)} Mb");
 
   }
