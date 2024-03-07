@@ -1680,6 +1680,28 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  void _onSelectItemLongPress(int index) {
+
+    selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
+
+    selectAllItemsIsPressedNotifier.value = false;
+
+    if(checkedItemsName.isEmpty) {
+      _editAllOnPressed();
+    }
+
+    setState(() {
+      selectedItemsCheckedList[index] = true;
+      selectedItemIsChecked = selectedItemsCheckedList.any((item) => item);
+      checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+    });
+
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+
+    tempData.setAppBarTitle(setAppBarTitle);
+
+  }
+
   void _onSelectAllItemsPressed() {
 
     checkedItemsName.clear();
@@ -2283,12 +2305,12 @@ class HomePageState extends State<HomePage> {
     final fileDateFilteredList = storageData.fileDateFilteredList;
 
     return ResponsiveListView(
-      itemOnLongPress: _callBottomTrailing,
+      itemOnLongPress: _onSelectItemLongPress,
       itemOnTap: _navigateToPreviewFile,
       children: (int index) {
         return [
           GestureDetector(
-            onTap: () => _callBottomTrailing(index),
+            onTap: () =>  _callBottomTrailing(index),
             child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
           ),
         ];
