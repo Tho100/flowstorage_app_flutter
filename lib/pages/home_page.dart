@@ -1616,7 +1616,7 @@ class HomePageState extends State<HomePage> {
     return Row(
       children: [
         IconButton(
-          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(Icons.check_box_outlined,size: 26),
+          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(Icons.check_box_outlined, size: 26),
           onPressed: () {
             checkedItemsName.clear();
             selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
@@ -1684,7 +1684,7 @@ class HomePageState extends State<HomePage> {
 
     selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
 
-    selectAllItemsIsPressedNotifier.value = false;
+    selectAllItemsIsPressedNotifier.value = true;
 
     if(checkedItemsName.isEmpty && !editAllIsPressed) {
       _editAllOnPressed();
