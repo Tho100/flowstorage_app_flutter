@@ -1686,7 +1686,7 @@ class HomePageState extends State<HomePage> {
 
     selectAllItemsIsPressedNotifier.value = false;
 
-    if(checkedItemsName.isEmpty) {
+    if(checkedItemsName.isEmpty && !editAllIsPressed) {
       _editAllOnPressed();
     }
 
