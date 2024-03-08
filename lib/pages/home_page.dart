@@ -2306,7 +2306,7 @@ class HomePageState extends State<HomePage> {
 
     return ResponsiveListView(
       itemOnLongPress: _onSelectItemLongPress,
-      itemOnTap: _navigateToPreviewFile,
+      itemOnTap: editAllIsPressed ? _onSelectItemLongPress : _navigateToPreviewFile,
       children: (int index) {
         return [
           GestureDetector(
