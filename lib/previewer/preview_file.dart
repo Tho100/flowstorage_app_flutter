@@ -334,8 +334,7 @@ class PreviewFileState extends State<PreviewFile> {
       },
       onSharingPressed: () {
         Navigator.pop(context);
-        NavigatePage.goToPageSharing(
-          tempData.selectedFileName);
+        NavigatePage.goToPageSharing(fileName);
       }, 
       onDetailsPressed: () {
         Navigator.pop(context);

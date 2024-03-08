@@ -719,6 +719,21 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  void _onRefreshListView() async {
+
+    if(tempData.origin == OriginFile.home) {
+      storageData.homeImageBytesList.clear();
+      storageData.homeImageBytesList.clear();
+    }
+
+    if(tempData.origin == OriginFile.public) {
+      _clearPublicStorageData(clearImage: true);
+    }
+
+    await _refreshListViewData();
+    
+  }
+
   void _itemSearchingImplementation(String value) async {
 
     debounceSearchingTimer?.cancel();
@@ -1413,7 +1428,7 @@ class HomePageState extends State<HomePage> {
         }
 
       }, 
-      directoryOnPressed: () async {
+      directoryOnPressed: () {
 
         final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
@@ -1538,16 +1553,15 @@ class HomePageState extends State<HomePage> {
       isGridListViewSelected: gridListViewSelected, 
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
-      sharedOnPressed: () { 
-        _callBottomTrailingShared(); 
-      }, 
+      sharedOnPressed: () => _callBottomTrailingShared(),
+      sortingOnPressed: () => _callBottomTrailingSorting(),
       scannerOnPressed: () async {
         final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
         storageData.fileNamesList.length < limitFileUploads 
           ? await _initializeDocumentScanner()
           : _showUpgradeLimitedDialog(limitFileUploads);
       }, 
-      createDirectoryOnPressed: () async {
+      createDirectoryOnPressed: () {
         final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
         final directoryCount = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
         if (storageData.fileNamesList.length < limitFileUploads) {
@@ -1568,9 +1582,6 @@ class HomePageState extends State<HomePage> {
         }
 
       }, 
-      sortingOnPressed: () { 
-        _callBottomTrailingSorting(); 
-      },
       filterTypePsOnPressed: () {
         BottomTrailingFilter(
           context: context, 
@@ -1583,6 +1594,7 @@ class HomePageState extends State<HomePage> {
         });
       },
     );
+
   }
 
   Widget _buildSearchBar() {
@@ -1722,15 +1734,6 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Widget _buildMoreOptionsOnSelectButton() {
-    return IconButton(
-      icon: const Icon(Icons.more_vert),
-      onPressed: () {
-        _callSelectedItemsBottomTrailing();
-      }
-    );
-  }
-
   Widget _buildFilterPhotosTypeButton() {
     return IconButton(
       onPressed: () {
@@ -1745,11 +1748,16 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildMoreOptionsOnSelectButton() {
+    return IconButton(
+      onPressed: () => _callSelectedItemsBottomTrailing(),
+      icon: const Icon(Icons.more_vert),
+    );
+  }
+
   Widget _buildDeselectAllPhotosButton() {
     return IconButton(
-      onPressed: () {
-        _deselectAllPhotosOnPressed();
-      },
+      onPressed: () => _deselectAllPhotosOnPressed(),
       icon: const Icon(Icons.check, 
         color: Colors.white, size: 26
       ),
@@ -1762,9 +1770,7 @@ class HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
-          onPressed: () {
-            _selectAllPhotosOnPressed();
-          },
+          onPressed: () => _selectAllPhotosOnPressed(),
           style: ElevatedButton.styleFrom(
             backgroundColor: ThemeColor.darkGrey,
             elevation: 0,
@@ -1969,12 +1975,8 @@ class HomePageState extends State<HomePage> {
       imageBytes: imageBytes, 
       index: index, 
       uploadDate: shortFormDate,
-      fileOnPressed: () {
-        _navigateToPreviewFile(index);
-      }, 
-      fileOnLongPressed: () async {
-        await _callBottomTrailing(index);
-      }
+      fileOnPressed: () => _navigateToPreviewFile(index),
+      fileOnLongPressed: () => _callBottomTrailing(index),
     );
 
   }
@@ -1993,12 +1995,8 @@ class HomePageState extends State<HomePage> {
       imageBytes: imageBytes, 
       index: index, 
       uploadDate: shortFormDate,
-      fileOnPressed: () {
-        _navigateToPreviewFile(index);
-      }, 
-      fileOnLongPressed: () async {
-        await _callBottomTrailing(index);
-      }
+      fileOnPressed: () => _navigateToPreviewFile(index), 
+      fileOnLongPressed: () => _callBottomTrailing(index),
     ); 
 
   }
@@ -2007,17 +2005,9 @@ class HomePageState extends State<HomePage> {
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
 
-    String uploaderName = "";
-    bool isRecent = false;
-
-    if (tempData.origin == OriginFile.public) {
-      uploaderName = psStorageData.psUploaderList[index];
-      if (uploaderName == userData.username) {
-        uploaderName = "${userData.username} (You)";
-      }
-
-      isRecent = index <= 2;
-    }
+    final isPsRecent = tempData.origin == OriginFile.public
+      ? index <= 2
+      : false;
 
     return Padding(
       padding: EdgeInsets.all(tempData.origin == OriginFile.public ? 0.0 : 2.0),
@@ -2027,7 +2017,7 @@ class HomePageState extends State<HomePage> {
             _onHoldPhotosItem(index);
 
           } else {
-            if (!isRecent) {
+            if (!isPsRecent) {
               _callBottomTrailing(index);
             }
 
@@ -2039,7 +2029,7 @@ class HomePageState extends State<HomePage> {
             _onPhotosItemSelected(index);
 
           } else {
-            if (!isRecent) {
+            if (!isPsRecent) {
               _navigateToPreviewFile(index);
             }
             
@@ -2047,7 +2037,7 @@ class HomePageState extends State<HomePage> {
         },
         child: Column(
           children: [
-            if (isRecent && tempData.origin == OriginFile.public && index == 0) ... [
+            if (isPsRecent && tempData.origin == OriginFile.public && index == 0) ... [
               const Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -2126,7 +2116,7 @@ class HomePageState extends State<HomePage> {
               ),
               const Divider(color: ThemeColor.lightGrey),
             ],
-            if (tempData.origin == OriginFile.public && !isRecent && index > 6) ... [
+            if (tempData.origin == OriginFile.public && !isPsRecent && index > 6) ... [
               if (index == 7)
               Transform.translate(
                 offset: const Offset(0, -12),  
@@ -2149,7 +2139,7 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
 
-              IntrinsicHeight(child: _buildPsGridListView(imageBytes, index, uploaderName)),
+              IntrinsicHeight(child: _buildPsGridListView(imageBytes, index)),
 
             ],
             
@@ -2165,7 +2155,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPsGridListView(Uint8List imageBytes, int index, String uploaderName) {
+  Widget _buildPsGridListView(Uint8List imageBytes, int index) {
 
     final fileType = storageData.fileNamesFilteredList[index].split('.').last;
     final originalDateValues = storageData.fileDateFilteredList[index];
@@ -2175,6 +2165,10 @@ class HomePageState extends State<HomePage> {
     final shortFormDate = inputDate == "Just days" 
       ? "Just now" 
       : DateShortForm(input: inputDate).convert();
+
+    final uploaderName = psStorageData.psUploaderList[index] == userData.username
+        ? "${userData.username} (You)"
+        : psStorageData.psUploaderList[index];
 
     return PsGridListView(
       imageBytes: imageBytes,
@@ -2225,8 +2219,8 @@ class HomePageState extends State<HomePage> {
     final fitSize = tempData.origin == OriginFile.public ? 5 : 1;
 
     final paddingValue = tempData.origin == OriginFile.public 
-    ? const EdgeInsets.only(top: 2.0) 
-    : const EdgeInsets.only(top: 2.0, left: 14.0, right: 14.0, bottom: 2.2);
+      ? const EdgeInsets.only(top: 2.0) 
+      : const EdgeInsets.only(top: 2.0, left: 14.0, right: 14.0, bottom: 2.2);
 
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
@@ -2249,42 +2243,30 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildHomeBody() {
 
-    late double mediaHeight;
+    double mediaHeight = 0.0; 
 
     final mediaQuery = MediaQuery.of(context).size;
 
-    if(tempData.origin == OriginFile.public) {
+    if (tempData.origin == OriginFile.public) {
       mediaHeight = mediaQuery.height - 157;
 
-    } else if (tempData.origin != OriginFile.public && !togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 321;
-
-    } else if (tempData.origin != OriginFile.public && togglePhotosPressed) {
-      mediaHeight = mediaQuery.height - 157;
+    } else {
+      mediaHeight = togglePhotosPressed 
+        ? mediaQuery.height - 157 
+        : mediaQuery.height - 321;
 
     }
 
     return RefreshIndicator(
       backgroundColor: ThemeColor.mediumBlack,
       color: ThemeColor.darkPurple,
-      onRefresh: () async {
-
-        if(tempData.origin == OriginFile.home) {
-          storageData.homeImageBytesList.clear();
-          storageData.homeImageBytesList.clear();
-        }
-
-        if(tempData.origin == OriginFile.public) {
-          _clearPublicStorageData(clearImage: true);
-        }
-
-        await _refreshListViewData();
-      },
+      onRefresh: () async => _onRefreshListView(),
       child: SizedBox(
         height: mediaHeight,
         child: _buildDefaultOrGridListView(),
       ),
     );
+
   }
 
   Widget _buildDefaultOrGridListView() {
@@ -2309,8 +2291,10 @@ class HomePageState extends State<HomePage> {
       children: (int index) {
         return [
           GestureDetector(
-            onTap: () =>  _callBottomTrailing(index),
-            child: editAllIsPressed ? _buildCheckboxItem(index) : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
+            onTap: () => _callBottomTrailing(index),
+            child: editAllIsPressed 
+              ? _buildCheckboxItem(index) 
+              : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
           ),
         ];
       },
@@ -2369,7 +2353,7 @@ class HomePageState extends State<HomePage> {
       padding: const EdgeInsets.only(top: 16.0, right: 8.0),
       child: IconButton(
         icon: const Icon(Icons.search_rounded, size: 26),
-        onPressed: () async {
+        onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -2609,8 +2593,8 @@ class HomePageState extends State<HomePage> {
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(
           usageProgress: _getStorageUsagePercentage(),
-          offlinePageOnPressed: () async { await _callOfflineData(); },
-          publicStorageFunction: () async { await _callPublicStorageData(); },
+          offlinePageOnPressed: () async => await _callOfflineData(),
+          publicStorageFunction: () async => await _callPublicStorageData(),
         ),
         appBar: _buildCustomAppBar(),
         body: Stack(

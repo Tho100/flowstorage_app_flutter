@@ -214,9 +214,7 @@ class SettingsPageState extends State<SettingsPage> {
                     width: 115,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {
-                        NavigatePage.goToPageUpgrade();
-                      },
+                      onPressed: () => NavigatePage.goToPageUpgrade(),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
