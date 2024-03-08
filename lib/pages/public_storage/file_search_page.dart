@@ -300,8 +300,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
               return InkWell(
                 onTap: () {
-                  final fileType = storageData.psSearchNameList[index].split('.').last;
-                  openSearchedFile(index, fileType);
+                  openSearchedFile(index);
                 },
                 child: Ink(
                   color: ThemeColor.darkBlack,
@@ -631,7 +630,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
-  void openSearchedFile(int index, String fileType) {
+  void openSearchedFile(int index) {
 
     final fileName = psStorageData.psSearchNameList[index];
 
@@ -643,7 +642,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       MaterialPageRoute(
         builder: (_) => PreviewFile(
           selectedFilename: fileName,
-          fileType: fileType,
           tappedIndex: index
         ),
       ),

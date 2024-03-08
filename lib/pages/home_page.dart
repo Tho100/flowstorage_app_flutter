@@ -1859,13 +1859,12 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  void _openGeneralFileOnSelect(int index, String fileType) {
+  void _openGeneralFileOnSelect(int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => PreviewFile(
           selectedFilename: tempData.selectedFileName,
-          fileType: fileType,
           tappedIndex: index
         ),
       ),
@@ -1935,7 +1934,7 @@ class HomePageState extends State<HomePage> {
     final fileType = tempData.selectedFileName.split('.').last;    
 
     if (Globals.supportedFileTypes.contains(fileType) && !(externalFileTypes.contains(fileType))) {
-      _openGeneralFileOnSelect(index, fileType);
+      _openGeneralFileOnSelect(index);
       return;
 
     } else if (fileType == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileType)) {
