@@ -1616,7 +1616,7 @@ class HomePageState extends State<HomePage> {
     return Row(
       children: [
         IconButton(
-          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(Icons.check_box_outlined,size: 26),
+          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(Icons.check_box_outlined, size: 26),
           onPressed: () {
             checkedItemsName.clear();
             selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
@@ -1684,7 +1684,7 @@ class HomePageState extends State<HomePage> {
 
     selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
 
-    selectAllItemsIsPressedNotifier.value = false;
+    selectAllItemsIsPressedNotifier.value = true;
 
     if(checkedItemsName.isEmpty && !editAllIsPressed) {
       _editAllOnPressed();
@@ -1859,13 +1859,12 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  void _openGeneralFileOnSelect(int index, String fileType) {
+  void _openGeneralFileOnSelect(int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => PreviewFile(
           selectedFilename: tempData.selectedFileName,
-          fileType: fileType,
           tappedIndex: index
         ),
       ),
@@ -1935,7 +1934,7 @@ class HomePageState extends State<HomePage> {
     final fileType = tempData.selectedFileName.split('.').last;    
 
     if (Globals.supportedFileTypes.contains(fileType) && !(externalFileTypes.contains(fileType))) {
-      _openGeneralFileOnSelect(index, fileType);
+      _openGeneralFileOnSelect(index);
       return;
 
     } else if (fileType == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileType)) {
@@ -2306,7 +2305,7 @@ class HomePageState extends State<HomePage> {
 
     return ResponsiveListView(
       itemOnLongPress: _onSelectItemLongPress,
-      itemOnTap: _navigateToPreviewFile,
+      itemOnTap: editAllIsPressed ? _onSelectItemLongPress : _navigateToPreviewFile,
       children: (int index) {
         return [
           GestureDetector(

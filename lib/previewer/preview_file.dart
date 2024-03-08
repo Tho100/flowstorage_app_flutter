@@ -38,13 +38,11 @@ import 'package:open_file/open_file.dart';
 class PreviewFile extends StatefulWidget {
 
   final String selectedFilename;
-  final String fileType;
   final int tappedIndex;
 
   const PreviewFile({
     Key? key,
     required this.selectedFilename,
-    required this.fileType,
     required this.tappedIndex,
   }) : super(key: key);
 
@@ -101,9 +99,13 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   void _initializeTableName() {
+
+    final fileType = widget.selectedFilename.split('.').last;
+
     currentTable = tempData.origin != OriginFile.home 
-      ? Globals.fileTypesToTableNamesPs[widget.fileType]! 
-      : Globals.fileTypesToTableNames[widget.fileType]!;
+      ? Globals.fileTypesToTableNamesPs[fileType]! 
+      : Globals.fileTypesToTableNames[fileType]!;
+    
   }
 
   void _onSlidingUpdate() async {
@@ -116,7 +118,7 @@ class PreviewFileState extends State<PreviewFile> {
     final fileIndex = storageData.fileNamesFilteredList.indexOf(selectedFileName);
 
     if (Globals.generalFileTypes.contains(fileType) || Globals.videoType.contains(fileType)) {
-      _navigateToPreviewFile(selectedFileName, fileType, fileIndex);
+      _navigateToPreviewFile(selectedFileName, fileIndex);
     } 
 
     if (tempData.origin == OriginFile.home) {
@@ -168,14 +170,13 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  void _navigateToPreviewFile(String selectedFileName, String fileType, int fileIndex) {
+  void _navigateToPreviewFile(String selectedFileName, int fileIndex) {
     Navigator.pop(context);
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => PreviewFile(
           selectedFilename: selectedFileName,
-          fileType: fileType,
           tappedIndex: fileIndex
         ),
         transitionDuration: const Duration(microseconds: 0), 
@@ -370,13 +371,15 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildFileDataWidget() {
 
-    if(Globals.imageType.contains(widget.fileType)) {
+    final fileType = widget.selectedFilename.split('.').last;
+
+    if(Globals.imageType.contains(fileType)) {
       return PreviewImage(onPageChanged: _onSlidingUpdate);
 
-    } else if (Globals.videoType.contains(widget.fileType)) {
+    } else if (Globals.videoType.contains(fileType)) {
       return const PreviewVideo();
 
-    } else if (widget.fileType == "pdf") {
+    } else if (fileType == "pdf") {
       return const PreviewPdf();
 
     } else {
