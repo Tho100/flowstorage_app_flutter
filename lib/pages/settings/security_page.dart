@@ -26,19 +26,15 @@ class SettingsSecurityPage extends StatelessWidget {
           SettingsButton(
             topText: "Configure passcode", 
             bottomText: "Require to enter passcode before allowing to open Flowstorage", 
-            onPressed: () async {
-              NavigatePage.goToPageConfigurePasscode();
-            }
+            onPressed: () => NavigatePage.goToPageConfigurePasscode(),
           ),
 
           SettingsButton(
             topText: "Backup recovery key", 
             bottomText: "Recovery key enables password reset in case \nof forgotten passwords", 
-            onPressed: () async {
-              NavigatePage.goToPageBackupRecovery();
-            }
-            
+            onPressed: () => NavigatePage.goToPageBackupRecovery(),
           ),
+          
         ],
       ),
     );

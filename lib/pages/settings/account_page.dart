@@ -74,25 +74,19 @@ class SettingsAccountPage extends StatelessWidget {
           SettingsButton(
             topText: "Change my password", 
             bottomText: "Update your account password", 
-            onPressed: () {
-              NavigatePage.goToPageChangePass(context);
-            }
+            onPressed: () => NavigatePage.goToPageChangePass(),
           ),
 
           SettingsButton(
             topText: "My accounts", 
             bottomText: "See all your existing accounts", 
-            onPressed: () {
-              NavigatePage.goToPageMyAccounts();
-            }
+            onPressed: () => NavigatePage.goToPageMyAccounts(),
           ),
 
           SettingsButton(
             topText: "My plan", 
             bottomText: "See your plan details", 
-            onPressed: () {
-              NavigatePage.goToPageMyPlan();
-            }
+            onPressed: () => NavigatePage.goToPageMyPlan(),
           ),
               
           const Padding(
@@ -103,9 +97,7 @@ class SettingsAccountPage extends StatelessWidget {
           SettingsButton(
             topText: "Remove account", 
             bottomText: "Delete all your account data and information", 
-            onPressed: () {
-              NavigatePage.goToPageDeleteAccount();
-            }
+            onPressed: () => NavigatePage.goToPageDeleteAccount(),
           ),
 
         ],

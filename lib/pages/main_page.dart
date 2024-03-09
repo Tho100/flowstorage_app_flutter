@@ -16,9 +16,7 @@ class MainPage extends StatelessWidget {
         MainButton(
           text: "Sign In",
           minusWidth: 62,
-          onPressed: () async {
-            NavigatePage.goToPageLogin(context);
-          },
+          onPressed: () => NavigatePage.goToPageLogin(context),
         ),
 
         const SizedBox(height: 15),
@@ -33,9 +31,7 @@ class MainPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),  
           ),
-          onPressed: () async {
-            NavigatePage.goToPageRegister(context);
-          },
+          onPressed: () => NavigatePage.goToPageRegister(context),
           child: const Text("Create Account",
             style: TextStyle(
               color: ThemeColor.darkBlack,

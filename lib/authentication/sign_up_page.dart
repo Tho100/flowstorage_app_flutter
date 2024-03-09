@@ -297,9 +297,7 @@ class SignUpPageState extends State<SignUpPage> {
                       shadowColor: Colors.transparent,
                       shape: const StadiumBorder(),
                     ),
-                    onPressed: () {
-                      NavigatePage.goToPageLogin(context);
-                    },
+                    onPressed: () => NavigatePage.goToPageLogin(context),
                     child: const Text(
                       "Sign In",
                       style: TextStyle(
@@ -313,7 +311,6 @@ class SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-
           ],
         ),
       ),      
