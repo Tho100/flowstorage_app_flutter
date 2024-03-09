@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
@@ -90,25 +89,29 @@ class IntentSharingPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Text(
                     ShortenText().cutText(fileName),
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
+                      color: ThemeColor.justWhite,
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   const SizedBox(height: 5),
+
                   Text(
                     "${fileSizeInMb()}Mb",
                     style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontSize: 13,
+                      color: ThemeColor.thirdWhite,
+                      fontSize: 14,
                       overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+
                 ],
               ),
             ],
@@ -201,15 +204,9 @@ class IntentSharingPage extends StatelessWidget {
       return;
     }
 
-    Uint8List fileBytes = Uint8List(0);
-
-    if(Globals.imageType.contains(fileType)) {
-      fileBytes = base64.decode(fileData);
-
-    } else {
-      fileBytes = CompressorApi.compressByte(base64.decode(fileData));
-
-    }
+    final fileBytes = Globals.imageType.contains(fileType)
+      ? base64.decode(fileData)
+      : CompressorApi.compressByte(base64.decode(fileData));
 
     await OfflineModel().processSaveOfflineFile(
       fileName: fileName, 
