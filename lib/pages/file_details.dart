@@ -30,6 +30,7 @@ class FileDetailsPage extends StatefulWidget {
 
   @override
   State<FileDetailsPage> createState() => FileDetailsPageState();
+
 }
 
 class FileDetailsPageState extends State<FileDetailsPage> {
@@ -37,13 +38,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
   final uploaderNameNotifier = ValueNotifier<String>("Unknown");
 
   final storageData = GetIt.instance<StorageDataProvider>();
-
+  final tempStorageData = GetIt.instance<TempStorageProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
   final tempData = GetIt.instance<TempDataProvider>();
-
-  final tempStorageData = GetIt.instance<TempStorageProvider>();
-
   final userData = GetIt.instance<UserDataProvider>();
 
   final fileTypeMap = {
@@ -92,6 +90,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
   }
 
   Future<String> returnImageSize() async {
+
     final index = storageData.fileNamesFilteredList.indexOf(widget.fileName);
     final imageBytes = storageData.imageBytesFilteredList.elementAt(index);
 
@@ -100,6 +99,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
     final imageHeight = imageSize.height.toInt();
 
     return "${imageWidth}x$imageHeight";
+
   }
 
   Future<String> getFileSize() async {
@@ -131,8 +131,9 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
     }
 
-    double getSizeMB = fileBytes!.lengthInBytes/(1024*1024);
-    return getSizeMB.toDouble().toStringAsFixed(2);
+    final sizeInMb = fileBytes!.lengthInBytes/(1024*1024);
+
+    return sizeInMb.toDouble().toStringAsFixed(2);
     
   }
 
@@ -392,6 +393,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
         ? tempStorageData.sharedNameList[index]
         : placeholder, 
     };
+
     uploaderNameNotifier.value = originToUploaderName[tempData.origin]!;
 
   }
@@ -405,6 +407,12 @@ class FileDetailsPageState extends State<FileDetailsPage> {
   void initState() {
     super.initState();
     initializeUploaderName();
+  }
+
+  @override
+  void dispose() {
+    uploaderNameNotifier.dispose();
+    super.dispose();
   }
 
   @override

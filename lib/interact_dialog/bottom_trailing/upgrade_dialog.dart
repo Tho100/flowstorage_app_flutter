@@ -82,14 +82,12 @@ class UpgradeDialog {
             ),
 
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
+              onPressed: () => Navigator.pop(context),
               child: const Text("No Thanks",
-                  style: TextStyle(
-                    color: ThemeColor.thirdWhite,
-                    fontSize: 16,
-                  ),
+                style: TextStyle(
+                  color: ThemeColor.thirdWhite,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
@@ -167,14 +165,12 @@ class UpgradeDialog {
             ),
 
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              }, 
+              onPressed: () => Navigator.pop(context),
               child: const Text("No Thanks",
-                  style: TextStyle(
-                    color: ThemeColor.thirdWhite,
-                    fontSize: 16,
-                  ),
+                style: TextStyle(
+                  color: ThemeColor.thirdWhite,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],

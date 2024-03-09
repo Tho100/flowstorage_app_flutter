@@ -96,7 +96,7 @@ class SharingPassword {
                   loadingDialog.startLoading(
                     title: "Sharing...", context: context);
 
-                  shareFileData.insertValuesParams(
+                  await shareFileData.insertValuesParams(
                     sendTo: sendTo, 
                     fileName: fileName, 
                     comment: comment, 

@@ -66,7 +66,7 @@ class RenameFolderDialog {
 
             MainDialogButton(
               text: "Rename",
-              onPressed: () async {
+              onPressed: () {
                 renameFolderOnPressed();
                 Navigator.pop(context);
               },

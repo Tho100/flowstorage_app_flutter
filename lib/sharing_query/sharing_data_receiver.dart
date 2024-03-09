@@ -13,7 +13,6 @@ class SharingDataReceiver {
 
   final encryption = EncryptionClass();
   final getAssets = GetAssets();
-  final now = DateTime.now();
   
   Future<String> retrieveFiles({
     required String query,

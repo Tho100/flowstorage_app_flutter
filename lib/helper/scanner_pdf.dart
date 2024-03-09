@@ -34,6 +34,7 @@ class ScannerPdf {
     } catch (err) {
       SnackAlert.errorSnack("Failed to save PDF");
     }
+    
   }
   
 }

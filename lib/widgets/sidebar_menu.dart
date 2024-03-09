@@ -249,7 +249,7 @@ class CustomSideBarMenu extends StatelessWidget {
           _buildSidebarButtons(
             title: "Activity",
             icon: Icons.rocket_outlined,
-            onPressed: () async {
+            onPressed: () {
               Navigator.pop(context);
               NavigatePage.goToPageActivity(publicStorageFunction);
             }
@@ -258,7 +258,7 @@ class CustomSideBarMenu extends StatelessWidget {
           _buildSidebarButtons(
             title: "Settings",
             icon: Icons.settings_outlined,
-            onPressed: () async {
+            onPressed: () {
               Navigator.pop(context);
               NavigatePage.goToPageSettings();
             }
@@ -304,16 +304,16 @@ class CustomSideBarMenu extends StatelessWidget {
                     final storageText = tempData.origin == OriginFile.public ? "Storage (Public)" : "Storage";
 
                     return isStorageFull
-                    ? const Text(
-                      "Storage full",
-                      style: textStyle,
-                      textAlign: TextAlign.center,
-                    )
-                    : Text(
-                      storageText,
-                      style: textStyle,
-                      textAlign: TextAlign.center,
-                    );
+                      ? const Text(
+                        "Storage full",
+                        style: textStyle,
+                        textAlign: TextAlign.center,
+                      )
+                      : Text(
+                        storageText,
+                        style: textStyle,
+                        textAlign: TextAlign.center,
+                      );
 
                   }
 

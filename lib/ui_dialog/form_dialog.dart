@@ -52,7 +52,7 @@ class CustomFormDialog {
                         backgroundColor: ThemeColor.mediumBlack,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
-                        )
+                        ),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Close',

@@ -5,9 +5,9 @@ import 'package:get_it/get_it.dart';
 
 class VerifySharing {
   
-  final crud = Crud();
-
   final userData = GetIt.instance<UserDataProvider>();
+  
+  final crud = Crud();
 
   Future<bool> isOnSharingLimit() async {
 

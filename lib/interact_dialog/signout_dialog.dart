@@ -24,9 +24,7 @@ class SignOutDialog {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Cancel',
                 style: TextStyle(

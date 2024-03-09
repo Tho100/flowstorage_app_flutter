@@ -28,31 +28,6 @@ class PreviewImageState extends State<PreviewImage> {
 
   late final List<String> filteredNames;
   late final List<Uint8List?> filteredImages;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    filteredNames = storageData.fileNamesFilteredList
-      .where((fileName) => fileName.contains('.')).toList();
-
-    filteredImages = storageData.imageBytesFilteredList
-      .asMap()
-      .entries
-      .where((entry) => storageData.fileNamesFilteredList[entry.key].contains('.'))
-      .map((entry) => entry.value)
-      .toList();
-
-    currentSelectedIndex = filteredNames.indexOf(tempData.selectedFileName);
-    pageController = PageController(initialPage: currentSelectedIndex);
-    
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
 
   void handlePageChange(int index) {
     tempData.setCurrentFileName(filteredNames[index]);
@@ -95,6 +70,31 @@ class PreviewImageState extends State<PreviewImage> {
 
     }
 
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+
+    filteredNames = storageData.fileNamesFilteredList
+      .where((fileName) => fileName.contains('.')).toList();
+
+    filteredImages = storageData.imageBytesFilteredList
+      .asMap()
+      .entries
+      .where((entry) => storageData.fileNamesFilteredList[entry.key].contains('.'))
+      .map((entry) => entry.value)
+      .toList();
+
+    currentSelectedIndex = filteredNames.indexOf(tempData.selectedFileName);
+    pageController = PageController(initialPage: currentSelectedIndex);
+    
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   @override

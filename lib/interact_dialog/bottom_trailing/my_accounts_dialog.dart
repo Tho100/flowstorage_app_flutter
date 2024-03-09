@@ -101,7 +101,9 @@ class MyAccountsDialog {
         const Spacer(),
         const Padding( 
           padding: EdgeInsets.only(right: 12.0),
-          child: Icon(Icons.check_circle_rounded, color: ThemeColor.darkPurple),
+          child: Icon(Icons.check_circle_rounded, 
+            color: ThemeColor.darkPurple
+          ),
         ),
       ],
     );

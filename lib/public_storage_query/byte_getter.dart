@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
@@ -16,7 +15,6 @@ class ByteGetterPs {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
-  final crud = Crud();
   final thumbnailGetter = ThumbnailGetterPs();
 
   final tableNameToAssetsImage = {
