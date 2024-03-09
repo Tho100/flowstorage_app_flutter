@@ -17,6 +17,16 @@ class RenameDialog {
 
   static final renameController = TextEditingController();
   
+  void copyOnPressed(String fileName) {
+    
+    final removedFileType = fileName
+      .substring(0, fileName.lastIndexOf('.'));
+
+    Clipboard.setData(ClipboardData(text: removedFileType));
+    CallToast.call(message: "Copied to clipboard.");
+
+  }
+
   Future buildRenameFileDialog({
     required String fileName,
     required VoidCallback onRenamePressed,
@@ -35,7 +45,7 @@ class RenameDialog {
     renameController.text = fileNameWithoutExtension;
 
     return InteractDialog().buildDialog(
-      context: context, 
+      context: context,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,10 +91,10 @@ class RenameDialog {
             ),
 
             IconButton(
-              onPressed: () {
-                copyOnPressed(fileName);
-              },
-              icon: const Icon(Icons.copy,color: ThemeColor.thirdWhite,size: 22),
+              onPressed: () => copyOnPressed(fileName),
+              icon: const Icon(Icons.copy, 
+                color: ThemeColor.thirdWhite, size: 22
+              ),
             ),
 
           ],
@@ -142,14 +152,6 @@ class RenameDialog {
         const SizedBox(height: 12),
       ]
     );  
-  }
-
-  void copyOnPressed(String fileName) {
-    final removedFileType = fileName
-      .substring(0, fileName.lastIndexOf('.'));
-
-    Clipboard.setData(ClipboardData(text: removedFileType));
-    CallToast.call(message: "Copied to clipboard.");
   }
 
 }

@@ -296,9 +296,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: SplashWidget(
         child: IconButton(
           padding: EdgeInsets.zero,
-          onPressed: () async {
-            forwardingImplementation("negative");
-          },
+          onPressed: () => forwardingImplementation("negative"),
           icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 50),
         ),
       ),
@@ -312,9 +310,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: SplashWidget(
         child: IconButton(
           padding: EdgeInsets.zero,
-          onPressed: () {
-            forwardingImplementation("positive");
-          },
+          onPressed: () => forwardingImplementation("positive"),
           icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 50),
         ),
       ),
@@ -331,10 +327,10 @@ class PreviewAudioState extends State<PreviewAudio> {
           builder: (context, value, child) {
             return IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {
-                isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value;
-              },
-              icon: Icon(Icons.autorenew_rounded, size: 35, color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite),
+              onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
+              icon: Icon(Icons.autorenew_rounded, 
+                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 35
+              ),
             );
           },
         ),

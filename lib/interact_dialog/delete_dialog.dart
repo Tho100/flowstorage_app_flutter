@@ -31,9 +31,7 @@ class DeleteDialog {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Cancel',
                 style: TextStyle(
@@ -47,7 +45,7 @@ class DeleteDialog {
                 backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
-              onPressed: () async {
+              onPressed: () {
                 Navigator.pop(context);
                 onDeletePressed();
               },

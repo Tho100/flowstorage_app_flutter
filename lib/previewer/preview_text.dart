@@ -66,22 +66,26 @@ class PreviewText extends StatelessWidget {
     isChangesSaved = false;
   }
 
+  Future<bool> onPageClose(BuildContext context) async {
+
+    final isAskForSave = isChangesMade && !isChangesSaved;
+
+    if(isAskForSave) {
+      resetData();
+      return await discardChangesConfirmation(context);
+
+    } else {
+      resetData();
+      return true;
+      
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-
-        if(isChangesMade && !isChangesSaved) {
-          resetData();
-          return await discardChangesConfirmation(context);
-
-        } else {
-          resetData();
-          return true;
-          
-        }
-
-      },
+      onWillPop: () async => await onPageClose(context),
       child: FutureBuilder<Uint8List>(
         future: callTextDataAsync(),
         builder: (context, snapshot) {

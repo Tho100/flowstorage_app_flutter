@@ -39,11 +39,11 @@ class CommentPageState extends State<CommentPage> {
     
     final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
-    const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename AND CUST_TO = :sharedto";
+    const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_FROM = :from AND CUST_FILE_PATH = :filename AND CUST_TO = :shared_to";
     final params = {
       'from': userData.username, 
       'filename': EncryptionClass().encrypt(tempData.selectedFileName),
-      'sharedto': tempStorageData.sharedNameList[index]
+      'shared_to': tempStorageData.sharedNameList[index]
     };
 
     final results = await conn.execute(query,params);
@@ -61,11 +61,11 @@ class CommentPageState extends State<CommentPage> {
     
     final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
-    const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_TO = :from AND CUST_FILE_PATH = :filename";
+    const query = "SELECT CUST_COMMENT FROM cust_sharing WHERE CUST_TO = :share_to AND CUST_FILE_PATH = :filename AND CUST_FROM = :from";
     final params = {
-      'from': userData.username, 
+      'share_to': userData.username, 
       'filename': EncryptionClass().encrypt(tempData.selectedFileName),
-      'sharedto': tempStorageData.sharedNameList[index]
+      'from': tempStorageData.sharedNameList[index]
     };
 
     final results = await conn.execute(query,params);

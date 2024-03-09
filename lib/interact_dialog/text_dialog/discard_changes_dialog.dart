@@ -20,9 +20,7 @@ class DiscardChangesDialog {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
+              onPressed: () => Navigator.of(context).pop(false),
               child: const Text('Cancel',
                 style: TextStyle(
                   color: ThemeColor.secondaryWhite,
@@ -31,9 +29,7 @@ class DiscardChangesDialog {
               ),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true); 
-              },
+              onPressed: () => Navigator.of(context).pop(true),
               child: const Text('Discard',
                 style: TextStyle(
                   color: ThemeColor.darkPurple,

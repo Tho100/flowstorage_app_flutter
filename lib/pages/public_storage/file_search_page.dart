@@ -198,9 +198,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ElevatedButton(
-        onPressed: () async { 
-          await searchByTagsOnPressed(tagName);
-        },
+        onPressed: () async => await searchByTagsOnPressed(tagName),
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: GlobalsStyle.psTagsToColor[tagName],
@@ -699,9 +697,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {
-                searchFileOnPressed();
-              },
+              onPressed: () => searchFileOnPressed(),
               icon: const Icon(Icons.search, color: ThemeColor.justWhite),
             ),
           ),

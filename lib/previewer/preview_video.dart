@@ -28,10 +28,10 @@ class PreviewVideo extends StatefulWidget {
 
 class PreviewVideoState extends State<PreviewVideo> {
 
+  late VideoPlayerController videoPlayerController;
+
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
-
-  late VideoPlayerController videoPlayerController;
 
   final sliderValueController = StreamController<double>();
   final videoPositionNotifier = ValueNotifier<double>(0.0);

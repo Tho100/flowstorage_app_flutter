@@ -358,7 +358,7 @@ class HomePageState extends State<HomePage> {
   void _openDeleteDialog(String fileName) {
     DeleteDialog().buildDeleteDialog( 
       fileName: fileName, 
-      onDeletePressed:() async => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
+      onDeletePressed:() => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
     );
   }
 
@@ -977,22 +977,18 @@ class HomePageState extends State<HomePage> {
 
     if(tempData.origin == OriginFile.home && togglePhotosPressed) {
       _togglePhotos();
-
     }
 
     if(togglePhotosPressed) {
       searchBarVisibleNotifier.value = false;
-      
     }
 
     if(storageData.fileNamesList.isEmpty) {
       _buildEmptyBody();
-
     }
 
     if(tempData.origin != OriginFile.sharedMe && tempData.origin != OriginFile.sharedOther) {
       tempStorageData.sharedNameList.clear();
-
     }
 
   }
@@ -1277,8 +1273,7 @@ class HomePageState extends State<HomePage> {
         _makeAvailableOfflineOnPressed(fileName: fileName);
       }, 
       onOpenWithPressed: () {
-        _openExternalFileOnSelect(
-          fileName.split('.').last, fileName);
+        _openExternalFileOnSelect(fileName);
       },
       onMovePressed: () {
         Navigator.pop(context);
@@ -1909,7 +1904,7 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  void _openExternalFileOnSelect(String fileType, String fileName) async {
+  void _openExternalFileOnSelect(String fileName) async {
 
     final fileData = await functionModel.retrieveFileData(
       fileName: fileName, isCompressed: false);
@@ -1948,7 +1943,7 @@ class HomePageState extends State<HomePage> {
       return;
 
     } else if (externalFileTypes.contains(fileType)) {
-      _openExternalFileOnSelect(fileType, tempData.selectedFileName);
+      _openExternalFileOnSelect(tempData.selectedFileName);
       return;
 
     } else {

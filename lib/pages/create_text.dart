@@ -222,6 +222,16 @@ class CreateTextPageState extends State<CreateText> {
                       .buildConfirmationDialog(context);
   }
 
+  Future<bool> onPageClose() async {
+
+    final isAskForSave = saveVisibilityNotifier.value && textEditingController.text.isNotEmpty;
+
+    return isAskForSave 
+      ? await discardChangesConfirmation()
+      : true;
+
+  }
+
   @override
   void dispose() {
     saveVisibilityNotifier.dispose();
@@ -234,17 +244,7 @@ class CreateTextPageState extends State<CreateText> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-
-        if(saveVisibilityNotifier.value && textEditingController.text.isNotEmpty) {
-          return await discardChangesConfirmation();
-
-        } else {
-          return true;
-          
-        }
-
-      },
+      onWillPop: () async => onPageClose(),
       child: Scaffold(
         appBar: AppBar(
           actions: [

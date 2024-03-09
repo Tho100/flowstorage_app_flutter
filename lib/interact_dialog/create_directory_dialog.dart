@@ -73,7 +73,7 @@ class CreateDirectoryDialog {
 
             MainDialogButton(
               text: "Create",
-              onPressed: () async {
+              onPressed: () {
                 createOnPressed();
                 Navigator.pop(context);
               },

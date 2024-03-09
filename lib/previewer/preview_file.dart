@@ -54,10 +54,11 @@ class PreviewFileState extends State<PreviewFile> {
 
   static final bottomBarVisibleNotifier = ValueNotifier<bool>(true);
 
-  late String currentTable;
+  late final appBarTitleNotifier = ValueNotifier<String>('');
 
-  late final ValueNotifier<String> appBarTitleNotifier = 
-                                    ValueNotifier<String>('');
+  final uploaderNameNotifier = ValueNotifier<String>('');
+
+  late String currentTable;
 
   final functionModel = FunctionModel();
   final logger = Logger();
@@ -69,8 +70,6 @@ class PreviewFileState extends State<PreviewFile> {
   
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
-
-  final uploaderNameNotifier = ValueNotifier<String>('');
 
   final filesWithCustomHeader = {
     GlobalsTable.homeText, GlobalsTable.homeAudio, 
@@ -465,9 +464,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildInfoIconButton() {
     return IconButton(
-      onPressed: () {
-        NavigatePage.goToPageFileDetails(tempData.selectedFileName);
-      },
+      onPressed: () => NavigatePage.goToPageFileDetails(tempData.selectedFileName),
       icon: const Icon(Icons.info_outlined),
     );
   }
@@ -549,6 +546,30 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
+  Future<void> _bottomButtonsOnPressed(String buttonType) async {
+
+    if(buttonType == "download") {
+      await functionModel.downloadFileData(
+        fileName: tempData.selectedFileName
+      );
+
+    } else if (buttonType == "comment") {
+      NavigatePage.goToPageFileComment(
+        tempData.selectedFileName
+      );
+
+    } else if (buttonType == "share") {
+      NavigatePage.goToPageSharing(
+        tempData.selectedFileName
+      );
+
+    } else if (buttonType == "save") {
+      _saveTextChangesOnPressed();
+
+    }
+
+  }
+
   Widget _buildBottomButtons({
     required Widget textStyle, 
     required Color color, 
@@ -562,28 +583,7 @@ class PreviewFileState extends State<PreviewFile> {
         width: width, 
         height: height, 
         child: ElevatedButton(
-          onPressed: () async {
-            
-            if(buttonType == "download") {
-              await functionModel.downloadFileData(
-                fileName: tempData.selectedFileName
-              );
-
-            } else if (buttonType == "comment") {
-              NavigatePage.goToPageFileComment(
-                tempData.selectedFileName
-              );
-
-            } else if (buttonType == "share") {
-              NavigatePage.goToPageSharing(
-                tempData.selectedFileName
-              );
-
-            } else if (buttonType == "save") {
-              _saveTextChangesOnPressed();
-
-            }
-          },
+          onPressed: () async => await _bottomButtonsOnPressed(buttonType),
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
             elevation: 0,
@@ -853,7 +853,6 @@ class PreviewFileState extends State<PreviewFile> {
     return actions;
     
   }
-
 
   void _copyAppBarTitle() {
     Clipboard.setData(ClipboardData(text: tempData.selectedFileName));

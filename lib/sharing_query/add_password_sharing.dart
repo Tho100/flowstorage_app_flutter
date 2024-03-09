@@ -10,8 +10,8 @@ class UpdatePasswordSharing {
     required String? newAuth, 
   }) async {
 
-    const updateSharingAuth = "UPDATE sharing_info SET SET_PASS = :getval WHERE CUST_USERNAME = :username";
-    final params = {'getval': AuthModel().computeAuth(newAuth!), 'username': username!};
+    const updateSharingAuth = "UPDATE sharing_info SET SET_PASS = :new_pass WHERE CUST_USERNAME = :username";
+    final params = {'new_pass': AuthModel().computeAuth(newAuth!), 'username': username!};
 
     const updateSharingStatus = "UPDATE sharing_info SET PASSWORD_DISABLED = 0 WHERE CUST_USERNAME = :username";
     final paramStatus = {'username': username};

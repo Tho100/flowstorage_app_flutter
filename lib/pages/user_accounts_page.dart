@@ -97,7 +97,9 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               const Spacer(),
               const Padding( 
                 padding: EdgeInsets.only(right: 12.0),
-                child: Icon(Icons.check_circle_rounded, color: ThemeColor.darkPurple),
+                child: Icon(Icons.check_circle_rounded, 
+                  color: ThemeColor.darkPurple
+                ),
               ),
             ],
           )
@@ -116,6 +118,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
     return FutureBuilder<void>(
       future: _readLocalAccountData(),
       builder: (context, snapshot) {
+
         if(snapshot.connectionState == ConnectionState.done) {
           return Padding(
             padding: const EdgeInsets.only(left: 4.0, top: 12),

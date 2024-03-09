@@ -34,7 +34,6 @@ class PreviewPdf extends StatelessWidget {
 
       if(isFromIntentSharing!) {
         return base64.decode(customFileDataBase64!);
-
       }
 
       if(tempData.origin != OriginFile.offline) {
