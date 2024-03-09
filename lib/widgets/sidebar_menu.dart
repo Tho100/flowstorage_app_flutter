@@ -211,9 +211,7 @@ class CustomSideBarMenu extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: ElevatedButton(
-        onPressed: () {
-          NavigatePage.goToPageUpgrade();
-        },
+        onPressed: () => NavigatePage.goToPageUpgrade(),
         style: ElevatedButton.styleFrom(
           elevation: 0,
           padding: const EdgeInsets.symmetric(vertical: 20),

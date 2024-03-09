@@ -655,9 +655,7 @@ class MyPlanPageState extends State<MyPlanPage> {
                           borderRadius: BorderRadius.circular(26),
                         )
                       ),
-                      onPressed: () {
-                        NavigatePage.goToPageUpgrade();
-                      },
+                      onPressed: () => NavigatePage.goToPageUpgrade(),
                       child: const Text(
                         'Upgrade Plan',
                         style: TextStyle(
@@ -716,4 +714,5 @@ class MyPlanPageState extends State<MyPlanPage> {
       ),
     );
   }
+  
 }

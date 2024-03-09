@@ -75,14 +75,11 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
           child: SettingsButton(
             topText: "Edit passcode", 
             bottomText: "Update your current passcode", 
-            onPressed: () {
-              NavigatePage.goToAddPasscodePage(true);
-            }
+            onPressed: () => NavigatePage.goToAddPasscodePage(true),
           ),
         ),
 
       ],
-    
     );
   }
 

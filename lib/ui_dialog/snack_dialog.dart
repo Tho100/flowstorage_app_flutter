@@ -72,9 +72,7 @@ class SnackAlert {
             const Text("(Warning) Storage usage exceeded 70%."), 
             const Spacer(),
             TextButton(
-              onPressed: () {
-                NavigatePage.goToPageUpgrade();
-              },
+              onPressed: () => NavigatePage.goToPageUpgrade(),
               child: const Text('Upgrade'),
             ),
           ],

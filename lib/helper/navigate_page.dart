@@ -178,9 +178,9 @@ class NavigatePage {
     );
   }
 
-  static void goToPageChangePass(BuildContext context) {
+  static void goToPageChangePass() {
     Navigator.push(
-      context,
+      navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const UpdatePasswordPage())
     );
   }

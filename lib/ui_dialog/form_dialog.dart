@@ -20,6 +20,7 @@ class CustomFormDialog {
             child: Center(
               child: Column(
                 children: [
+                  
                   Text(headMessage,
                     style: const TextStyle(
                       color: Colors.white,
@@ -53,9 +54,7 @@ class CustomFormDialog {
                           borderRadius: BorderRadius.circular(16),
                         )
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                       child: const Text('Close',
                         style: TextStyle(
                           color: ThemeColor.darkPurple,
@@ -74,4 +73,5 @@ class CustomFormDialog {
       },
     );
   }
+
 }

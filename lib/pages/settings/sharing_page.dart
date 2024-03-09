@@ -81,9 +81,7 @@ class SettingsSharingPage extends StatelessWidget {
           SettingsButton(
             topText: "Configure password", 
             bottomText: "Require password for file sharing with you", 
-            onPressed: () async {
-              NavigatePage.goToPageConfigureSharingPassword();
-            }
+            onPressed: () => NavigatePage.goToPageConfigureSharingPassword(),
           ),
 
         ],

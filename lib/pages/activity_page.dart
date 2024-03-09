@@ -312,9 +312,7 @@ class ActivityPageState extends State<ActivityPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () {
-              NavigatePage.goToPageUpgrade();
-            },
+            onTap: () => NavigatePage.goToPageUpgrade(),
             child: Stack(
               children: [
                 Container(
@@ -322,7 +320,7 @@ class ActivityPageState extends State<ActivityPage> {
                   height: 125,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    gradient: linearGradientBorder, // Use your linear gradient here
+                    gradient: linearGradientBorder, 
                   ),
                 ),
                 Padding(
@@ -404,9 +402,7 @@ class ActivityPageState extends State<ActivityPage> {
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: GestureDetector(
-              onTap: () {
-                NavigatePage.goToPageStatistics();
-              },
+              onTap: () => NavigatePage.goToPageStatistics(),
               child: Container(
                 width: width-280,
                 height: 95,

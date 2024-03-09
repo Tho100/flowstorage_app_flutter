@@ -49,22 +49,22 @@ class CustomAlertDialog {
           backgroundColor: ThemeColor.mediumBlack,
           title: Text(title,
             style: const TextStyle(
-              color: Colors.white
+              color: ThemeColor.justWhite
             )
           ),
           content: Text(messages,
             style: const TextStyle(
-              color: Colors.white
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w500,
             )
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text('OK',
                 style: TextStyle(
-                  color: Colors.white
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold,
                 )
               ),
             ),

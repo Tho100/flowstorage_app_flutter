@@ -32,7 +32,7 @@ class SingleTextLoading {
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12)
+        borderRadius: BorderRadius.circular(14)
       ),
       backgroundColor: backgroundColor,
       title: Row(
@@ -60,7 +60,6 @@ class SingleTextLoading {
 
         ]
       ),
-      
     );
   }
 
