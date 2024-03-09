@@ -27,7 +27,7 @@ class JustLoading {
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12)
+        borderRadius: BorderRadius.circular(14)
       ),
       backgroundColor: backgroundColor,
       content: const SizedBox(
