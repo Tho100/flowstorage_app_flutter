@@ -36,21 +36,17 @@ class PreviewPdf extends StatelessWidget {
         return base64.decode(customFileDataBase64!);
       }
 
-      if(tempData.origin != OriginFile.offline) {
-        final fileData = await CallPreviewFileData(
-          tableNamePs: GlobalsTable.psPdf, 
-          tableNameHome: GlobalsTable.homePdf, 
-          fileValues: {"pdf"}
-        ).callData();
+      final fileData = tempData.origin != OriginFile.offline
+        ? await CallPreviewFileData(
+            tableNamePs: GlobalsTable.psPdf, 
+            tableNameHome: GlobalsTable.homePdf, 
+            fileValues: {"pdf"}
+          ).callData()
+        : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
-        tempData.setFileData(fileData);
+      tempData.setFileData(fileData);
 
-        return fileData;
-
-      } else {
-        return await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
-
-      }
+      return fileData;
 
     } catch (err, st) {
       Logger().e("Exception from _callData {PreviewPdf}", err, st);

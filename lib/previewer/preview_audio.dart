@@ -62,23 +62,17 @@ class PreviewAudioState extends State<PreviewAudio> {
 
     try {
       
-      if (tempData.origin != OriginFile.offline) {
+      final fileData = tempData.origin != OriginFile.offline
+        ? await CallPreviewFileData(
+            tableNamePs: GlobalsTable.psAudio, 
+            tableNameHome: GlobalsTable.homeAudio, 
+            fileValues: Globals.audioType
+          ).callData()
+        : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
-        final fileData = await CallPreviewFileData(
-          tableNamePs: GlobalsTable.psAudio, 
-          tableNameHome: GlobalsTable.homeAudio, 
-          fileValues: Globals.audioType
-        ).callData();
+      tempData.setFileData(fileData);
 
-        tempData.setFileData(fileData);
-
-        return fileData;
-
-      } else {
-        return await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
-        
-      }
-
+      return fileData;
       
     } catch (err, st) {
       Logger().e("Exception from _callData {PreviewAudio}", err, st);

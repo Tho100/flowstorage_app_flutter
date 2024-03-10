@@ -9,7 +9,7 @@ class UploaderName {
 
   Future<String> getUploaderName({
     required String tableName,
-    required Set fileValues
+    required Set fileTypes
   }) async {
 
     final conn = await SqlConnection.initializeConnection();
@@ -19,15 +19,15 @@ class UploaderName {
 
     return results.rows
       .map((row) => row.assoc()['CUST_USERNAME']!)
-      .toList()[_getUsernameIndex(fileValues)];
+      .toList()[_getUsernameIndex(fileTypes)];
     
   }
 
-  int _getUsernameIndex(Set fileValues) {
+  int _getUsernameIndex(Set fileTypes) {
 
     final getVideoFiles = GetIt.instance<StorageDataProvider>()
     .fileNamesList.where((file) {
-      for (final fileType in fileValues) {
+      for (final fileType in fileTypes) {
         if (file.endsWith('.$fileType')) {
           return true;
 

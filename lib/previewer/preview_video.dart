@@ -90,22 +90,20 @@ class PreviewVideoState extends State<PreviewVideo> {
     try {
 
       if (videoBytes.isEmpty) {
+        
         videoIsLoading = true;
 
-        if(tempData.origin != OriginFile.offline) {
+        final fileData = tempData.origin != OriginFile.offline
+          ? await CallPreviewFileData(
+              tableNamePs: GlobalsTable.psVideo, 
+              tableNameHome: GlobalsTable.homeVideo, 
+              fileValues: Globals.videoType
+            ).callData()
+          : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
-          videoBytes = await CallPreviewFileData(
-            tableNamePs: GlobalsTable.psVideo, 
-            tableNameHome: GlobalsTable.homeVideo, 
-            fileValues: Globals.videoType
-          ).callData();
+        tempData.setFileData(fileData);
 
-          tempData.setFileData(videoBytes);
-
-        } else {
-          videoBytes = await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
-
-        }
+        videoBytes = fileData;
 
       } 
 
