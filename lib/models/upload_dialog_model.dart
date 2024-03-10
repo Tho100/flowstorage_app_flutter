@@ -174,7 +174,7 @@ class UploadDialogModel {
 
         } else {
           await UpdateListView()
-            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, newFileToDisplay: thumbnailFile,thumbnailBytes: thumbnailBytes);
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, previewImage: thumbnailFile, thumbnailImage: thumbnailBytes);
 
         }
 
@@ -297,7 +297,7 @@ class UploadDialogModel {
         final compressedImageBase64Encoded = base64.encode(compressedImageBytes);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psImage, base64Encoded: compressedImageBase64Encoded);
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psImage, fileData: compressedImageBase64Encoded);
           return;
         }
 
@@ -324,7 +324,7 @@ class UploadDialogModel {
         final thumbnailFile = generatedThumbnail[1] as File;
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psVideo, base64Encoded: fileBase64!, previewData: thumbnailFile, thumbnail: thumbnailBytes);
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: GlobalsTable.psVideo, fileData: fileBase64!, previewImage: thumbnailFile, videoThumbnail: thumbnailBytes);
           return;
         }
 
@@ -334,7 +334,7 @@ class UploadDialogModel {
 
         } else {
           await UpdateListView()
-            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, newFileToDisplay: thumbnailFile, thumbnailBytes: thumbnailBytes);
+            .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64!, previewImage: thumbnailFile, thumbnailImage: thumbnailBytes);
 
         }
 
@@ -350,12 +350,12 @@ class UploadDialogModel {
           .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
 
         if(tempData.origin == OriginFile.public) {
-          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: getFileTable, base64Encoded: fileBase64!, previewData: assetsPreviewImage);
+          publicStorageUploadPage(filePath: filePath, fileName: fileName, tableName: getFileTable, fileData: fileBase64!, previewImage: assetsPreviewImage);
           return;
         }
 
         await UpdateListView()
-          .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, newFileToDisplay: assetsPreviewImage);
+          .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable, fileBase64Encoded: fileBase64!, previewImage: assetsPreviewImage);
 
         if(tempData.origin == OriginFile.offline) {
           tempStorageData.addOfflineFileName(fileName);
@@ -473,7 +473,7 @@ class UploadDialogModel {
 
     final toBase64Encoded = base64.encode(compressedBytes);
 
-    final newFileToDisplay = await GetAssets().loadAssetsFile("pdf0.jpg");
+    final previewImage = await GetAssets().loadAssetsFile("pdf0.jpg");
 
     if (tempData.origin == OriginFile.offline) {
       final decodeToBytes = await GetAssets().loadAssetsData("pdf0.jpg");
@@ -485,7 +485,7 @@ class UploadDialogModel {
 
     } else {
       await UpdateListView()
-        .processUpdateListView(filePath: file.path, fileName: fileNameWithExtension, tableName: GlobalsTable.homePdf, fileBase64Encoded: toBase64Encoded, newFileToDisplay: newFileToDisplay);
+        .processUpdateListView(filePath: file.path, fileName: fileNameWithExtension, tableName: GlobalsTable.homePdf, fileBase64Encoded: toBase64Encoded, previewImage: previewImage);
 
     }
 
@@ -608,7 +608,7 @@ class UploadDialogModel {
       final thumbnailFile = generatedThumbnail[1] as File;
 
       await UpdateListView()
-        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, newFileToDisplay: thumbnailFile, thumbnailBytes: thumbnailBytes);
+        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: GlobalsTable.homeVideo, fileBase64Encoded: fileBase64Encoded, previewImage: thumbnailFile, thumbnailImage: thumbnailBytes);
 
       await thumbnailFile.delete();
 
@@ -620,7 +620,7 @@ class UploadDialogModel {
         .loadAssetsFile(Globals.fileTypeToAssets[fileType]!);
 
       await UpdateListView()
-        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, newFileToDisplay: imagePreview);
+        .processUpdateListView(filePath: filePath, fileName: fileName, tableName: getFileTable,fileBase64Encoded: fileBase64Encoded, previewImage: imagePreview);
       
     }
 

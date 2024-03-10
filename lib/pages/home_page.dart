@@ -272,22 +272,22 @@ class HomePageState extends State<HomePage> {
     required String filePath,
     required String fileName,
     required String tableName,
-    required String base64Encoded,
-    File? previewData,
-    dynamic thumbnail,
+    required String fileData,
+    File? previewImage,
+    dynamic videoThumbnail,
   }) async {
 
     await NotificationApi.stopNotification(0);
 
-    late String? imagePreview = "";
-
     final fileType = fileName.split('.').last;
+
+    late String? imagePreview = "";
     
     if(Globals.imageType.contains(fileType)) {
-      imagePreview = base64Encoded;
+      imagePreview = fileData;
 
     } else if (Globals.videoType.contains(fileType)) {
-      imagePreview = base64.encode(thumbnail);
+      imagePreview = base64.encode(videoThumbnail);
 
     } 
 
@@ -298,15 +298,15 @@ class HomePageState extends State<HomePage> {
           builder: (context) => UploadPsPage(
             fileName: fileName,
             imageBase64Encoded: imagePreview,
-            fileBase64Encoded: base64Encoded,
+            fileBase64Encoded: fileData,
             onUploadPressed: () async {
               await _onPsUploadPressed(
                 fileName: fileName,
-                fileData: base64Encoded,
+                fileData: fileData,
                 filePath: filePath,
                 tableName: tableName,
-                previewData: previewData,
-                videoThumbnail: thumbnail
+                previewData: previewImage,
+                videoThumbnail: videoThumbnail
               );
             }, 
           )
@@ -336,7 +336,7 @@ class HomePageState extends State<HomePage> {
     await UpdateListView().processUpdateListView(
       filePath: filePath, fileName: fileName,
       tableName: tableName, fileBase64Encoded: fileData, 
-      newFileToDisplay: previewData, thumbnailBytes: videoThumbnail
+      previewImage: previewData, thumbnailImage: videoThumbnail
     );
 
     psStorageData.psTitleList.add(psUploadData.psTitleValue);
@@ -366,13 +366,11 @@ class HomePageState extends State<HomePage> {
      RenameDialog().buildRenameFileDialog(
       fileName: fileName, 
       onRenamePressed: () => _onRenameItemPressed(fileName), 
-      context: context
     );
   }
 
   void _openRenameFolderDialog(String folderName) {
     RenameFolderDialog().buildRenameFolderDialog(
-      context: context, 
       folderName: folderName, 
       renameFolderOnPressed: () async {
 
@@ -588,23 +586,6 @@ class HomePageState extends State<HomePage> {
     selectAllItemsIsPressedNotifier.value = false;
     selectedPhotosIndex.clear();
     checkedItemsName.clear();
-
-  }
-
-  Future<void> _selectDirectoryOnMultipleDownload() async {
-
-    String? directoryPath = await FilePicker.platform.getDirectoryPath();
-
-    if (directoryPath!.isNotEmpty) {
-
-      await functionModel.multipleFilesDownload(
-        checkedItemsName: checkedItemsName, 
-        directoryPath: directoryPath
-      );
-
-    } else {
-      return;
-    }
 
   }
 
@@ -898,6 +879,7 @@ class HomePageState extends State<HomePage> {
 
     _itemSearchingImplementation('');
     _addItemButtonVisibility(false);
+
     await _sortDataDescendingPs();
 
     psButtonTextNotifier.value = "Back";
@@ -912,6 +894,10 @@ class HomePageState extends State<HomePage> {
     }
 
     _clearGlobalData();
+
+    if(togglePhotosPressed) {
+      _togglePhotos();
+    }
 
     tempData.setCurrentFolder(folderTitle);
 
@@ -997,11 +983,11 @@ class HomePageState extends State<HomePage> {
     required int count
   }) async {
 
+    final loadingDialog = SingleTextLoading();
+
+    loadingDialog.startLoading(title: "Deleting...", context: context);
+
     try {
-
-      final loadingDialog = SingleTextLoading();
-
-      loadingDialog.startLoading(title: "Deleting...", context: context);
 
       for(final fileName in checkedItemsName) {
 
@@ -1027,6 +1013,7 @@ class HomePageState extends State<HomePage> {
 
     } catch(err, st) {
       SnackAlert.errorSnack("An error occurred.");
+      loadingDialog.stopLoading();
       logger.e('Exception from _deleteMultipleSelectedFiles {main}', err, st);
     }
 
@@ -1175,6 +1162,23 @@ class HomePageState extends State<HomePage> {
       
     } catch (err, st) {
       logger.e('Exception from _onRenamedPressed {main}',err,st);
+    }
+
+  }
+
+  Future<void> _selectDirectoryOnMultipleDownload() async {
+
+    final directoryPath = await FilePicker.platform.getDirectoryPath();
+
+    if (directoryPath!.isNotEmpty) {
+      await functionModel.multipleFilesDownload(
+        checkedItemsName: checkedItemsName, 
+        directoryPath: directoryPath
+      );
+
+    } else {
+      return;
+
     }
 
   }

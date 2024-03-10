@@ -136,7 +136,6 @@ class ProcessFileSharing {
       
       final fileData = await _processFileData(
         fileName: fileName, 
-        fileType: fileType, 
         tableName: tableName
       );
 
@@ -172,7 +171,6 @@ class ProcessFileSharing {
 
     final fileData = await _processFileData(
       fileName: fileName, 
-      fileType: fileType, 
       tableName: tableName
     );
 
@@ -193,8 +191,9 @@ class ProcessFileSharing {
   Future<String> _processFileData({
     required String fileName, 
     required String tableName, 
-    required String fileType
   }) async {
+
+    final fileType = fileName.split('.').last;
 
     final fileBytesData = await _callFileBytesData(fileName, tableName);
     final fileData = base64.encode(fileBytesData);

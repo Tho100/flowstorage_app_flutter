@@ -25,12 +25,12 @@ class RetrieveData {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<Uint8List> _retrieveDataModules(
-    MySQLConnectionPool conn,
-    String username,
-    String fileName,
-    String tableName,
-  ) async {
+  Future<Uint8List> _retrieveDataModules({
+    required MySQLConnectionPool conn,
+    required String username,
+    required String fileName,
+    required String tableName,
+  }) async {
 
     final fileType = fileName.split('.').last;
     final encryptedFileName = encryption.encrypt(fileName);
@@ -108,10 +108,10 @@ class RetrieveData {
     final conn = await SqlConnection.initializeConnection();
 
     return await _retrieveDataModules(
-      conn,
-      username,
-      fileName,
-      tableName
+      conn: conn,
+      username: username,
+      fileName: fileName,
+      tableName: tableName
     );
 
   }

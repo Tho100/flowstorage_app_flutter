@@ -276,7 +276,6 @@ class PreviewFileState extends State<PreviewFile> {
     RenameDialog().buildRenameFileDialog(
       fileName: fileName, 
       onRenamePressed: () => _onRenameItemPressed(fileName),
-      context: context
     );
   }
 

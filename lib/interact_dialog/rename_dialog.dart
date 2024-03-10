@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
@@ -30,7 +31,6 @@ class RenameDialog {
   Future buildRenameFileDialog({
     required String fileName,
     required VoidCallback onRenamePressed,
-    required BuildContext context
   }) async {
 
     final fileType = fileName.split('.').last;
@@ -45,7 +45,7 @@ class RenameDialog {
     renameController.text = fileNameWithoutExtension;
 
     return InteractDialog().buildDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,7 +128,7 @@ class RenameDialog {
               text: "Cancel", 
               onPressed: () {
                 renameController.clear();
-                Navigator.pop(context);
+                Navigator.pop(navigatorKey.currentContext!);
               }, 
               isButtonClose: true
             ),
@@ -140,16 +140,18 @@ class RenameDialog {
               onPressed: () {
                 onRenamePressed();
                 renameController.clear();
-                Navigator.pop(context);
+                Navigator.pop(navigatorKey.currentContext!);
               }, 
               isButtonClose: false
             ),
 
             const SizedBox(width: 18),
+            
           ],
         ),
 
         const SizedBox(height: 12),
+
       ]
     );  
   }

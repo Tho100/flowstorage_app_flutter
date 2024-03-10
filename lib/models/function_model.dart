@@ -175,6 +175,8 @@ class FunctionModel {
 
   Future<void> downloadFileData({required String fileName}) async {
 
+    final loadingDialog = SingleTextLoading();
+
     try {
 
       final fileType = fileName.split('.').last;
@@ -189,8 +191,6 @@ class FunctionModel {
         await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: navigatorKey.currentContext!);
         return;
       }
-
-      final loadingDialog = SingleTextLoading();
       
       loadingDialog.startLoading(title: "Downloading...", context: navigatorKey.currentContext!);
 
@@ -226,6 +226,7 @@ class FunctionModel {
 
     } catch (err, st) {
       logger.e('Exception from downloadFileData {function_model}', err, st);
+      loadingDialog.stopLoading();
       await CallNotify().customNotification(title: "Download Failed", subMessage: "Failed to download $fileName.");
       SnackAlert.errorSnack("Failed to download $fileName.");
     }
