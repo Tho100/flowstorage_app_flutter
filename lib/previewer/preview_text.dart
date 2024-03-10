@@ -30,25 +30,19 @@ class PreviewText extends StatelessWidget {
     final tempData = GetIt.instance<TempDataProvider>();
 
     try {
-      
-      if (tempData.origin != OriginFile.offline) {
 
-        final fileData = await CallPreviewFileData(
-          tableNamePs: GlobalsTable.psText, 
-          tableNameHome: GlobalsTable.homeText, 
-          fileValues: Globals.textType
-        ).callData();
-        
-        tempData.setFileData(fileData);
+      final fileData = tempData.origin != OriginFile.offline
+        ? await CallPreviewFileData(
+            tableNamePs: GlobalsTable.psText, 
+            tableNameHome: GlobalsTable.homeText, 
+            fileValues: Globals.textType
+          ).callData()
+        : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
-        return fileData;
+      tempData.setFileData(fileData);
 
-      } else {
-        return await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
+      return fileData;
 
-      }
-
-      
     } catch (err, st) {
       Logger().e("Exception from _callData {PreviewText}", err, st);
       return Future.value(Uint8List(0));
