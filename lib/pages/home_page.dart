@@ -879,6 +879,7 @@ class HomePageState extends State<HomePage> {
 
     _itemSearchingImplementation('');
     _addItemButtonVisibility(false);
+
     await _sortDataDescendingPs();
 
     psButtonTextNotifier.value = "Back";
@@ -893,6 +894,10 @@ class HomePageState extends State<HomePage> {
     }
 
     _clearGlobalData();
+
+    if(togglePhotosPressed) {
+      _togglePhotos();
+    }
 
     tempData.setCurrentFolder(folderTitle);
 
