@@ -63,27 +63,29 @@ class PhotosGridListView extends StatelessWidget {
             
               if(isPhotosSelected)
               Padding(
-                padding: const EdgeInsets.only(left: 10, top: 10),
+                padding: const EdgeInsets.only(left: 12, top: 12),
                 child: Container(
                   width: 26,
                   height: 26,
                   decoration: BoxDecoration(
-                    color: ThemeColor.darkPurple.withOpacity(0.7),
+                    color: ThemeColor.thirdWhite.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(Icons.check, color: ThemeColor.justWhite, size: 17)),
+                  child: const Icon(Icons.check, 
+                    color: ThemeColor.justWhite, size: 18)
+                ),
               ),
               
               if(isSelectionNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(left: 10, top: 10),
+                padding: const EdgeInsets.only(left: 12, top: 12),
                 child: Container(
                   width: 26,
                   height: 26,
                   decoration: BoxDecoration(
-                    color: Colors.transparent,
+                    color: ThemeColor.thirdWhite.withOpacity(0.4),
                     border: Border.all(
-                      color: ThemeColor.darkPurple.withOpacity(0.7),
+                      color: ThemeColor.justWhite.withOpacity(0.7),
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(16),
