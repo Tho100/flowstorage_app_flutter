@@ -97,7 +97,7 @@ class PreviewVideoState extends State<PreviewVideo> {
           ? await CallPreviewFileData(
               tableNamePs: GlobalsTable.psVideo, 
               tableNameHome: GlobalsTable.homeVideo, 
-              fileValues: Globals.videoType
+              fileTypes: Globals.videoType
             ).callData()
           : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 

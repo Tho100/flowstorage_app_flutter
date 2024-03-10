@@ -40,31 +40,27 @@ class FolderDataReceiver {
 
   Future<List<Map<String, dynamic>>> retrieveParams(String username, String folderTitle) async {
 
-    final conn = await SqlConnection.initializeConnection();
-        
     const querySelectThumbnail = "SELECT CUST_THUMB FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldname AND CUST_FILE_PATH = :filename";
     const querySelectImage = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldname AND CUST_FILE_PATH = :filename";
 
     const query = 'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM folder_upload_info WHERE FOLDER_NAME = :foldtitle AND CUST_USERNAME = :username';
-    final params = {'username': username,'foldtitle': encryption.encrypt(folderTitle)};
+    final params = {'username': username, 'foldtitle': encryption.encrypt(folderTitle)};
 
     try {
+
+      final conn = await SqlConnection.initializeConnection();
 
       final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>{};
 
       late Uint8List fileBytes = Uint8List(0);
 
-      late String encryptedFileNames;
-      late String decryptedFileNames;
-      late String fileType;
-
       for (final row in result.rows) {
         
-        encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
-        decryptedFileNames = encryption.decrypt(encryptedFileNames);
+        final encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
+        final decryptedFileNames = encryption.decrypt(encryptedFileNames);
 
-        fileType = decryptedFileNames.split('.').last.toLowerCase();
+        final fileType = decryptedFileNames.split('.').last;
 
         if (Globals.imageType.contains(fileType)) {
           
@@ -91,7 +87,6 @@ class FolderDataReceiver {
           fileBytes = base64.decode(thumbnailBase64);
 
         } else {
-
           fileBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
 
         }

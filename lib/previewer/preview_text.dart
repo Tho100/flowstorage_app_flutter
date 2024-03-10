@@ -35,7 +35,7 @@ class PreviewText extends StatelessWidget {
         ? await CallPreviewFileData(
             tableNamePs: GlobalsTable.psText, 
             tableNameHome: GlobalsTable.homeText, 
-            fileValues: Globals.textType
+            fileTypes: Globals.textType
           ).callData()
         : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 

@@ -66,7 +66,7 @@ class PreviewAudioState extends State<PreviewAudio> {
         ? await CallPreviewFileData(
             tableNamePs: GlobalsTable.psAudio, 
             tableNameHome: GlobalsTable.homeAudio, 
-            fileValues: Globals.audioType
+            fileTypes: Globals.audioType
           ).callData()
         : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 
