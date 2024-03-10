@@ -156,6 +156,12 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  void _callOnUploadFailed(String message, Object err, StackTrace stackTrace) {
+    logger.e(message, err, stackTrace);
+    SnackAlert.errorSnack("Upload failed.");
+    NotificationApi.stopNotification(0);
+  }
+
   void _addItemButtonVisibility(bool visible) {
     floatingActionButtonVisible.value = visible;
   }
@@ -164,18 +170,12 @@ class HomePageState extends State<HomePage> {
     navDirectoryButtonVisible.value = visible;
   }
 
-  void _configureGoBackHome() {
+  void _toggleGoBackHome() {
     searchHintText.value = "Search in Flowstorage";
     tempData.setOrigin(OriginFile.home);
     tempData.setAppBarTitle("Home");
     tempData.setCurrentFolder('');
     tempData.setCurrentDirectory('');
-  }
-
-  void _callOnUploadFailed(String message, Object err, StackTrace stackTrace) {
-    logger.e(message, err, stackTrace);
-    SnackAlert.errorSnack("Upload failed.");
-    NotificationApi.stopNotification(0);
   }
 
   Future<void> _openDialogUploadGallery() async {
@@ -463,7 +463,7 @@ class HomePageState extends State<HomePage> {
 
     if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: true);
-      _configureGoBackHome();
+      _toggleGoBackHome();
       await _refreshListViewData();
     }
     
@@ -479,7 +479,12 @@ class HomePageState extends State<HomePage> {
     _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
 
-    _itemSearchingImplementation('.png,.jpg,.jpeg,.mp4,.mov,.wmv,.avi');
+    final combinedTypes = [
+      ...Globals.imageType.map((type) => '.$type'),
+      ...Globals.videoType.map((type) => '.$type'),
+    ].join(',');
+
+    _itemSearchingImplementation(combinedTypes);
     
   }
 
@@ -529,10 +534,10 @@ class HomePageState extends State<HomePage> {
     }
 
     if (tempData.origin == OriginFile.home && togglePhotosPressed) {
-      _configureGoBackHome();
+      _toggleGoBackHome();
 
     } else {
-      _configureGoBackHome();
+      _toggleGoBackHome();
       await _refreshListViewData();
 
     }
@@ -772,31 +777,6 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  void _deleteFolderOnPressed(String folderName) async {
-    
-    try {
-
-      await DeleteFolder(folderName: folderName).delete();
-
-      tempData.setOrigin(OriginFile.home);
-
-      await _refreshListViewData();
-      
-      _navDirectoryButtonVisibility(true);
-      _addItemButtonVisibility(true);
-
-      if(mounted) {
-        Navigator.pop(context);
-      }
-
-      SnackAlert.okSnack(message: "Deleted $folderName folder.", icon: Icons.check);
-
-    } catch (err) {
-      SnackAlert.errorSnack("Failed to delete this folder.");
-    }
-
-  }
-
   Future<void> _callHomeData() async {
     
     _clearGlobalData();
@@ -1012,9 +992,9 @@ class HomePageState extends State<HomePage> {
       _clearItemSelection();
 
     } catch(err, st) {
-      SnackAlert.errorSnack("An error occurred.");
-      loadingDialog.stopLoading();
       logger.e('Exception from _deleteMultipleSelectedFiles {main}', err, st);
+      loadingDialog.stopLoading();
+      SnackAlert.errorSnack("An error occurred.");
     }
 
   }
@@ -1127,6 +1107,31 @@ class HomePageState extends State<HomePage> {
       
     } catch (err, st) {
       logger.e('Exception from _onDeleteItemPressed {main}', err, st);
+    }
+
+  }
+
+  void _deleteFolderOnPressed(String folderName) async {
+    
+    try {
+
+      await DeleteFolder(folderName: folderName).delete();
+
+      tempData.setOrigin(OriginFile.home);
+
+      await _refreshListViewData();
+      
+      _navDirectoryButtonVisibility(true);
+      _addItemButtonVisibility(true);
+
+      if(mounted) {
+        Navigator.pop(context);
+      }
+
+      SnackAlert.okSnack(message: "Deleted $folderName folder.", icon: Icons.check);
+
+    } catch (err) {
+      SnackAlert.errorSnack("Failed to delete this folder.");
     }
 
   }

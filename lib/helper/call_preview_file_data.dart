@@ -11,12 +11,12 @@ class CallPreviewFileData {
 
   final String tableNamePs;
   final String tableNameHome;
-  final Set<dynamic> fileValues;
+  final Set<String> fileTypes;
 
   CallPreviewFileData({
     required this.tableNameHome,
     required this.tableNamePs,
-    required this.fileValues,
+    required this.fileTypes,
   });
 
   final retrieveData = RetrieveData();
@@ -27,12 +27,12 @@ class CallPreviewFileData {
 
   Future<Uint8List> callData() async {
 
-    final isPublic = [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin);
+    final isPublicStorage = [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin);
 
-    final tableName = isPublic ? tableNamePs : tableNameHome;
+    final tableName = isPublicStorage ? tableNamePs : tableNameHome;
 
-    final uploaderUsername = isPublic
-      ? await uploaderName.getUploaderName(tableName: tableNamePs, fileTypes: fileValues)
+    final uploaderUsername = isPublicStorage
+      ? await uploaderName.getUploaderName(tableName: tableNamePs, fileTypes: fileTypes)
       : userData.username;
 
     return await retrieveData.retrieveDataParams(

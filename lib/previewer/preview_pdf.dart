@@ -40,7 +40,7 @@ class PreviewPdf extends StatelessWidget {
         ? await CallPreviewFileData(
             tableNamePs: GlobalsTable.psPdf, 
             tableNameHome: GlobalsTable.homePdf, 
-            fileValues: {"pdf"}
+            fileTypes: {"pdf"}
           ).callData()
         : await OfflineModel().loadOfflineFileByte(tempData.selectedFileName);
 

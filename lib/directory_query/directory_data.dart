@@ -42,8 +42,6 @@ class DirectoryDataReceiver {
     required String dirName
   }) async {
 
-    final conn = await SqlConnection.initializeConnection();
-
     final encryptedDirectoryName = encryption.encrypt(dirName);
 
     const querySelectMetadata = 'SELECT CUST_FILE_PATH, UPLOAD_DATE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname';
@@ -57,21 +55,19 @@ class DirectoryDataReceiver {
 
     try {
 
-      late Uint8List fileBytes = Uint8List(0);
-
-      late String fileType;
-      late String encryptedFileNames;
-      late String decryptedFileNames;
+      final conn = await SqlConnection.initializeConnection();
 
       final results = await conn.execute(querySelectMetadata, params);
       final dataSet = <Map<String, dynamic>>[];
 
+      late Uint8List fileBytes = Uint8List(0);
+
       for (final row in results.rows) {
 
-        encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
-        decryptedFileNames = encryption.decrypt(encryptedFileNames);
+        final encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
+        final decryptedFileNames = encryption.decrypt(encryptedFileNames);
 
-        fileType = decryptedFileNames.split('.').last;
+        final fileType = decryptedFileNames.split('.').last;
 
         if(Globals.imageType.contains(fileType)) {
 
@@ -127,4 +123,5 @@ class DirectoryDataReceiver {
     }
     
   }
+
 }

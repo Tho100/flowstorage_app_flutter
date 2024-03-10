@@ -9,7 +9,7 @@ class UploaderName {
 
   Future<String> getUploaderName({
     required String tableName,
-    required Set fileTypes
+    required Set<String> fileTypes
   }) async {
 
     final conn = await SqlConnection.initializeConnection();

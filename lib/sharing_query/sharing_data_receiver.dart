@@ -45,7 +45,7 @@ class SharingDataReceiver {
       final result = await conn.execute(query, params);
       final dataSet = <Map<String, dynamic>>[];
 
-      Uint8List fileBytes = Uint8List(0);
+      late Uint8List fileBytes = Uint8List(0);
 
       for (final row in result.rows) {
 
@@ -53,7 +53,8 @@ class SharingDataReceiver {
 
         final encryptedFileNames = row.assoc()['CUST_FILE_PATH']!;
         final decryptedFileNames = encryption.decrypt(encryptedFileNames);
-        final fileType = decryptedFileNames.split('.').last.toLowerCase();
+
+        final fileType = decryptedFileNames.split('.').last;
 
         if(Globals.imageType.contains(fileType)) {
 
