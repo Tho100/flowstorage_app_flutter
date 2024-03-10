@@ -1,3 +1,4 @@
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
@@ -9,12 +10,11 @@ class RenameFolderDialog {
   static final folderRenameController = TextEditingController();
 
   Future<void> buildRenameFolderDialog({
-    required BuildContext context, 
     required String folderName,
     required VoidCallback renameFolderOnPressed
   }) async {
     return InteractDialog().buildDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
@@ -57,7 +57,7 @@ class RenameFolderDialog {
               text: "Cancel",
               onPressed: () {
                 folderRenameController.clear();
-                Navigator.pop(context);
+                Navigator.pop(navigatorKey.currentContext!);
               },
               isButtonClose: true,
             ),
@@ -68,7 +68,7 @@ class RenameFolderDialog {
               text: "Rename",
               onPressed: () {
                 renameFolderOnPressed();
-                Navigator.pop(context);
+                Navigator.pop(navigatorKey.currentContext!);
               },
               isButtonClose: false,
             ),

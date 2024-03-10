@@ -40,8 +40,8 @@ class UpdateListView {
   Future<void> _insertFileData({
     required String table,
     required String filePath,
-    required dynamic fileValue,
-    dynamic vidThumbnail,
+    required dynamic fileData,
+    dynamic videoThumbnail,
   }) async {
 
     List<Future<void>> isolatedFileFutures = [];
@@ -50,11 +50,12 @@ class UpdateListView {
       tableName: table,
       fileName: filePath,
       userName: userData.username,
-      fileValue: fileValue,
-      videoThumbnail: vidThumbnail,
+      fileValue: fileData,
+      videoThumbnail: videoThumbnail,
     ));
 
     await Future.wait(isolatedFileFutures);
+
   }
 
   Future<void> insertFileDataFolder({
@@ -96,7 +97,9 @@ class UpdateListView {
         fileValues.add(base64Encoded);
 
       } else if (Globals.generalFileTypes.contains(getExtension)) {
-        final compressedFileData = await CompressorApi.compressFile(folderFile.path.toString());
+        final compressedFileData = await CompressorApi
+          .compressFile(folderFile.path.toString());
+          
         final base64encoded = base64.encode(compressedFileData);
         fileValues.add(base64encoded);
 
@@ -122,8 +125,8 @@ class UpdateListView {
     required String fileName,
     required String tableName,
     required String fileBase64Encoded,
-    File? newFileToDisplay,
-    dynamic thumbnailBytes,
+    File? previewImage,
+    dynamic thumbnailImage,
   }) async {
 
     List<Uint8List> newImageByteValues = [];
@@ -133,7 +136,7 @@ class UpdateListView {
 
     if (tempData.origin != OriginFile.offline) {
       await _insertFileData(
-        table: verifyTableName, filePath: fileName, fileValue: fileBase64Encoded, vidThumbnail: thumbnailBytes);
+        table: verifyTableName, filePath: fileName, fileData: fileBase64Encoded, videoThumbnail: thumbnailImage);
 
     } else {
       final fileByteData = base64.decode(fileBase64Encoded);
@@ -143,15 +146,14 @@ class UpdateListView {
     }
 
     final isHomeImageOrPsImage = tableName == GlobalsTable.homeImage || tableName == GlobalsTable.psImage;
-    final fileToDisplay = newFileToDisplay;
 
     if (isHomeImageOrPsImage) {
       newImageByteValues.add(File(filePath).readAsBytesSync());
       newFilteredSearchedBytes.add(File(filePath).readAsBytesSync());
       
     } else {
-      newImageByteValues.add(fileToDisplay!.readAsBytesSync());
-      newFilteredSearchedBytes.add(fileToDisplay.readAsBytesSync());
+      newImageByteValues.add(previewImage!.readAsBytesSync());
+      newFilteredSearchedBytes.add(previewImage.readAsBytesSync());
 
     }
 
@@ -162,15 +164,15 @@ class UpdateListView {
       homeImageData.addAll(newFilteredSearchedBytes);
       
     } else if (verifyTableName == GlobalsTable.homeVideo) {
-      homeThumbnailData.add(thumbnailBytes);
+      homeThumbnailData.add(thumbnailImage);
 
     } else if (verifyTableName == GlobalsTable.psImage) {
       psStorageData.psImageBytesList.addAll(newFilteredSearchedBytes);
       psStorageData.myPsImageBytesList.addAll(newFilteredSearchedBytes);
 
     } else if (verifyTableName == GlobalsTable.psVideo) {
-      psStorageData.psThumbnailBytesList.add(thumbnailBytes);
-      psStorageData.myPsThumbnailBytesList.add(thumbnailBytes);
+      psStorageData.psThumbnailBytesList.add(thumbnailImage);
+      psStorageData.myPsThumbnailBytesList.add(thumbnailImage);
 
     }
 
@@ -178,4 +180,5 @@ class UpdateListView {
     storageData.updateFilteredImageBytes(newFilteredSearchedBytes);
 
   }
+
 }
