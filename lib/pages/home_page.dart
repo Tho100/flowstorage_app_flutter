@@ -1707,9 +1707,11 @@ class HomePageState extends State<HomePage> {
     }
 
     setState(() {
-      selectedItemsCheckedList[index] = true;
+      selectedItemsCheckedList[index] = !selectedItemsCheckedList[index]; 
       selectedItemIsChecked = selectedItemsCheckedList.any((item) => item);
-      checkedItemsName.add(storageData.fileNamesFilteredList[index]);
+      checkedItemsName.contains(storageData.fileNamesFilteredList[index]) 
+        ? checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index])
+        : checkedItemsName.add(storageData.fileNamesFilteredList[index]);
     });
 
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
