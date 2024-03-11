@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
@@ -171,10 +172,10 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: ""
+      ).buildAppBar(),
       body: _buildBody(context)
     );
   }

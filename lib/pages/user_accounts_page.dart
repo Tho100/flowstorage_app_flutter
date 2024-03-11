@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/models/profile_picture_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -174,14 +175,12 @@ class UserAccountsPageState extends State<UserAccountsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text("My accounts",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context,
+        title: "My accounts"
+      ).buildAppBar(),
       body: buildBody(),
     );
   }
+  
 }

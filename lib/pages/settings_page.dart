@@ -10,7 +10,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -340,14 +340,10 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text(
-          'Settings',
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context,
+        title: "Settings"
+      ).buildAppBar(),
       body: _buildBody(context),
     );
   }

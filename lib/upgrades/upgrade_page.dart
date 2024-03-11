@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
@@ -15,6 +14,7 @@ import 'package:flowstorage_fsc/upgrades/customers_dashboard.dart';
 import 'package:flowstorage_fsc/upgrades/express_page.dart';
 import 'package:flowstorage_fsc/upgrades/max_page.dart';
 import 'package:flowstorage_fsc/upgrades/supreme_page.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 
 import 'package:flutter/material.dart';
@@ -725,14 +725,12 @@ class UpgradePageState extends State<UpgradePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColor.darkBlack,
-      appBar: AppBar(
-        title: const Text("Upgrade Plan",
-          style: GlobalsStyle.appBarTextStyle
-        ),
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-     ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "Upgrade Plan"
+      ).buildAppBar(),
       body: _buildTabUpgrade(),
     );
   }
+
 }

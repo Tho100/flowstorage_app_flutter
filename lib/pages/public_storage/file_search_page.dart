@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
@@ -853,18 +854,15 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       },
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () async {
+        onTap: () {
           tempData.setOrigin(OriginFile.public);
           psSearchBarFocusNode.unfocus(); 
         },
         child: Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: ThemeColor.darkBlack,
-            title: const Text("Search in Public Storage",
-              style: GlobalsStyle.appBarTextStyle,
-            ),
-          ),
+          appBar: CustomAppBar(
+            context: context,
+            title: "Search in Public Storage"
+          ).buildAppBar(),
           body: buildBody(),
         ),
       ),

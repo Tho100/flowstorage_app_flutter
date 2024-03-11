@@ -726,7 +726,7 @@ class PreviewFileState extends State<PreviewFile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 12.0, bottom: 8),
+                padding: const EdgeInsets.only(left: 18.0, top: 12.0, bottom: 8),
                 child: Text(
                   displayFileName,
                   style: const TextStyle(
@@ -814,6 +814,10 @@ class PreviewFileState extends State<PreviewFile> {
                   ? bottomBarVisibleNotifier.value
                   : true,
               child: AppBar(
+                leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back_ios_new)
+                ),
                 backgroundColor: filesInfrontAppBar.contains(currentTable)
                     ? ThemeColor.darkBlack
                     : const Color(0x44000000),

@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -164,16 +165,6 @@ class ShareFilePage extends StatelessWidget {
     );
   }
 
-  Widget buildBackIconButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.close),
-      onPressed: () {
-        onClosePressed();
-        Navigator.pop(context);
-      },
-    );
-  }
-
   void shareExternalOnPressed() async {
 
     final userData = GetIt.instance<UserDataProvider>();
@@ -258,9 +249,9 @@ class ShareFilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: buildBackIconButton(context),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "Share File",
         actions: [
           TextButton(
             child: const Text("Share",
@@ -275,10 +266,7 @@ class ShareFilePage extends StatelessWidget {
             }
           ),
         ],
-        title: const Text("Share File", 
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+      ).buildAppBar(),
       body: buildBody(context),
     );
   }

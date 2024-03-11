@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/add_password_sharing.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/default_switch.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
@@ -113,11 +114,10 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Configure sharing password",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context,
+        title: "Configure sharing password"
+      ).buildAppBar(),
       body: buildBody(),
     );
   }

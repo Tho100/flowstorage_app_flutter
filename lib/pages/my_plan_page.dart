@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flowstorage_fsc/api/geographic_api.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/upgrades/customers_dashboard.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -685,12 +685,10 @@ class MyPlanPageState extends State<MyPlanPage> {
     final height = MediaQuery.of(context).size.height-115;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "My plan",
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context,
+        title: "My plan"
+      ).buildAppBar(),
       body: Center(
         child: Column(
           children: [

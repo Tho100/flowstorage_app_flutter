@@ -8,7 +8,6 @@ import 'package:flowstorage_fsc/interact_dialog/text_dialog/discard_changes_dial
 import 'package:flowstorage_fsc/interact_dialog/text_dialog/save_text_dialog.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/data_query/insert_data.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
@@ -20,6 +19,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -246,9 +246,10 @@ class CreateTextPageState extends State<CreateText> {
     return WillPopScope(
       onWillPop: () async => onPageClose(),
       child: Scaffold(
-        appBar: AppBar(
+        appBar: CustomAppBar(
+          context: context,
+          title: "New Text File",
           actions: [
-    
             ValueListenableBuilder(
               valueListenable: saveVisibilityNotifier,
               builder: (context, value, child) {
@@ -281,13 +282,8 @@ class CreateTextPageState extends State<CreateText> {
                 );
               },
             ),
-          ],
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
-          title: const Text("New Text File",
-            style: GlobalsStyle.appBarTextStyle
-          ),
-        ),
+          ]
+        ).buildAppBar(),
         body: _buildTxt(context),
       ),
     );

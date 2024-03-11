@@ -13,6 +13,7 @@ import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -421,15 +422,11 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(55.0),
         child: GestureDetector(
-          onTap: () { copyFileName(); },
-          child: AppBar( 
-            elevation: 0,
-            backgroundColor: ThemeColor.darkBlack,
-            title: Text(
-              widget.fileName,
-              style: GlobalsStyle.appBarTextStyle,
-            ),
-          ),
+          onTap: () => copyFileName(),
+          child: CustomAppBar(
+            context: context, 
+            title: widget.fileName
+          ).buildAppBar(),
         ),
       ),
       body: buildBody(context),

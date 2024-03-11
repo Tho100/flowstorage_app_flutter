@@ -12,11 +12,11 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
 import 'package:flutter/material.dart';
@@ -361,16 +361,12 @@ class MoveFilePageState extends State<MoveFilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: Text(
-          widget.fileNames.length == 1 
+      appBar: CustomAppBar(
+        context: context,
+        title: widget.fileNames.length == 1 
           ? "Move ${ShortenText().cutText(widget.fileNames[0])}"
           : "Move ${widget.fileNames.length} item(s)",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      ).buildAppBar(),
       body: buildBody(),
     );
   }

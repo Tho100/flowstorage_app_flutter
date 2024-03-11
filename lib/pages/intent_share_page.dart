@@ -16,9 +16,9 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -229,8 +229,9 @@ class IntentSharingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
+      appBar: CustomAppBar(
+        context: context,
+        title: "Upload to Flowstorage",
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -267,10 +268,7 @@ class IntentSharingPage extends StatelessWidget {
             ),
           ),
         ],
-        title: const Text("Upload to Flowstorage", 
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+      ).buildAppBar(),
       body: buildBody(context),
     );
   }

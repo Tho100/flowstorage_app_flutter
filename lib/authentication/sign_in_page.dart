@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/helper/validate_email.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/user_settings/password_recovery_page.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/main_text_field.dart';
@@ -92,7 +93,10 @@ class SignInPageState extends State<SignInPage> {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CustomAppBar(
+        context: context,
+        title: ""
+      ).buildAppBar(),
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(
