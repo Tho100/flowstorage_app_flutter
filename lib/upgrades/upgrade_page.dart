@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/upgrades/customers_dashboard.dart';
 import 'package:flowstorage_fsc/upgrades/express_page.dart';
 import 'package:flowstorage_fsc/upgrades/max_page.dart';
 import 'package:flowstorage_fsc/upgrades/supreme_page.dart';
+import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -172,7 +173,7 @@ class UpgradePageState extends State<UpgradePage> {
       child: Column(
         children: [
 
-          const SizedBox(height: 52),
+          const SizedBox(height: 34),
         
           Container(
             width: MediaQuery.of(context).size.width,
@@ -283,7 +284,7 @@ class UpgradePageState extends State<UpgradePage> {
       child: Column(
         children: [
 
-          const SizedBox(height: 52),
+          const SizedBox(height: 34),
         
           Container(
             width: width,
@@ -394,7 +395,7 @@ class UpgradePageState extends State<UpgradePage> {
       child: Column(
         children: [
 
-          const SizedBox(height: 52),
+          const SizedBox(height: 34),
         
           Container(
             width: width,
@@ -506,17 +507,25 @@ class UpgradePageState extends State<UpgradePage> {
       length: 3,
       child: Column(
         children: [
-          const TabBar(
-            indicatorColor: ThemeColor.darkPurple,
+          const CustomTabBar(
             tabs: [
               Tab(
-                text: 'Max',
+                child: Text(
+                  'Max',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
               ),
               Tab(
-                text: 'Express',
+                child: Text(
+                  'Express',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
               ),
               Tab(
-                text: 'Supreme',
+                child: Text(
+                  'Supreme',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

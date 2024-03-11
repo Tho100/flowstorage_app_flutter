@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -554,17 +555,30 @@ class StatsPageState extends State<StatisticsPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Statistics",
+          title: const Text(
+            "Statistics",
             style: GlobalsStyle.appBarTextStyle,
           ),
           backgroundColor: ThemeColor.darkBlack,
           elevation: 0,
-          bottom: const TabBar(
-            indicatorColor: ThemeColor.darkPurple,
-            tabs: [
-              Tab(text: 'Details'),
-              Tab(text: 'Storage'),
-            ],
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: CustomTabBar(
+              tabs: [
+                Tab(
+                  child: Text(
+                    'Details',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Storage',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         body: TabBarView(
@@ -574,6 +588,7 @@ class StatsPageState extends State<StatisticsPage> {
           ],
         ),
       ),
+
     );
   }
 }
