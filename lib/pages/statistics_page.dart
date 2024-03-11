@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -375,15 +376,15 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildInfoUsage(String headerText, String subText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 28.0),
+      padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 28.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             headerText,
-            style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 17,
+            style: GoogleFonts.poppins(
+              color: ThemeColor.darkGrey,
+              fontSize: 15,
               fontWeight: FontWeight.w600
             ),
             textAlign: TextAlign.left,
@@ -391,9 +392,9 @@ class StatsPageState extends State<StatisticsPage> {
           const Spacer(),
           Text(
             subText,
-            style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 17,
+            style: GoogleFonts.poppins(
+              color: ThemeColor.darkGrey,
+              fontSize: 15,
               fontWeight: FontWeight.w600
             ),
             textAlign: TextAlign.left,
@@ -406,14 +407,14 @@ class StatsPageState extends State<StatisticsPage> {
   Widget _buildUsageProgressBar(BuildContext context) {
     return Container(
       height: 55,
-      width: MediaQuery.of(context).size.width - 50,
+      width: MediaQuery.of(context).size.width - 75,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: LinearProgressIndicator(
-          backgroundColor: ThemeColor.lightGrey,
+          backgroundColor: ThemeColor.darkBlack,
           valueColor: const AlwaysStoppedAnimation<Color>(ThemeColor.darkPurple),
           value: usageProgress,
         ),
@@ -443,8 +444,8 @@ class StatsPageState extends State<StatisticsPage> {
         ),
         const SizedBox(width: 8),
         Text("$totalUpload Uploads",
-          style: const TextStyle(
-            color: ThemeColor.secondaryWhite,
+          style: GoogleFonts.poppins(
+            color: ThemeColor.darkGrey,
             fontSize: 15,
             fontWeight: FontWeight.w600
           ),
@@ -469,18 +470,18 @@ class StatsPageState extends State<StatisticsPage> {
           height: 26,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
-            color: ThemeColor.lightGrey, 
+            color: ThemeColor.darkBlack, 
             border: Border.all(
-              color: ThemeColor.lightGrey,
+              color: ThemeColor.darkBlack,
               width: 2.0,
             ),
           ),
         ),
         const SizedBox(width: 8),
         Text("$numberOfUploadLeft Uploads left",
-          style: const TextStyle(
-            color: ThemeColor.secondaryWhite,
-            fontSize: 15,
+          style: GoogleFonts.poppins(
+            color: ThemeColor.darkGrey,
+            fontSize: 14,
             fontWeight: FontWeight.w600
           ),
         )
@@ -500,10 +501,14 @@ class StatsPageState extends State<StatisticsPage> {
     usageProgress = percentage/100.0;
 
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height-235,
-        width: MediaQuery.of(context).size.width-25,
+      padding: const EdgeInsets.only(top: 25, left: 8.0, right: 8.0),
+      child: Container(
+        height: 200,
+        width: MediaQuery.of(context).size.width-35,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: ThemeColor.justWhite,
+        ),
         child: Column(
           children: [
             
@@ -514,7 +519,7 @@ class StatsPageState extends State<StatisticsPage> {
             const SizedBox(height: 20),
 
             Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+              padding: const EdgeInsets.only(left: 20.0),
               child: Row(
                 children: [
                   _buildLegendUsage(),
@@ -554,17 +559,30 @@ class StatsPageState extends State<StatisticsPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Statistics",
+          title: const Text(
+            "Statistics",
             style: GlobalsStyle.appBarTextStyle,
           ),
           backgroundColor: ThemeColor.darkBlack,
           elevation: 0,
-          bottom: const TabBar(
-            indicatorColor: ThemeColor.darkPurple,
-            tabs: [
-              Tab(text: 'Details'),
-              Tab(text: 'Storage'),
-            ],
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: CustomTabBar(
+              tabs: [
+                Tab(
+                  child: Text(
+                    'Details',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Storage',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         body: TabBarView(
@@ -574,6 +592,7 @@ class StatsPageState extends State<StatisticsPage> {
           ],
         ),
       ),
+
     );
   }
 }
