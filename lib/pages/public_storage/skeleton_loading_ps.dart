@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class SkeletonLoadingPs extends StatefulWidget {
@@ -207,12 +207,10 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Public Storage",
-          style: GlobalsStyle.appBarTextStyle,
-        )
-      ),
+      appBar: CustomAppBar(
+        context: context,
+        title: "Public Storage"
+      ).buildAppBar(),
       body: buildPublicStorageLoading(context),
     );
   }

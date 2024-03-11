@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -267,16 +268,6 @@ class UploadPsPage extends StatelessWidget {
     commentController.clear();
   }
 
-  Widget buildBackIconButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.close),
-      onPressed: () {
-        clearValues();
-        Navigator.pop(context);
-      },
-    );
-  }
-  
   void setValuesOnUpload() {
     titleController.text.isEmpty 
       ? psUploadData.setTitleValue("Untitled")
@@ -291,9 +282,9 @@ class UploadPsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: buildBackIconButton(context),
+      appBar: CustomAppBar(
+        context: context,
+        title: "Public Storage - Upload",
         actions: [
           TextButton(
             child: const Text("Upload",
@@ -313,10 +304,7 @@ class UploadPsPage extends StatelessWidget {
             }
           ),
         ],
-        title: const Text("Public Storage - Upload", 
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+      ).buildAppBar(),
       body: buildBody(context),
     );
   }

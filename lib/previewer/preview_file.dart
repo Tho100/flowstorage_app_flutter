@@ -814,6 +814,10 @@ class PreviewFileState extends State<PreviewFile> {
                   ? bottomBarVisibleNotifier.value
                   : true,
               child: AppBar(
+                leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.arrow_back_ios_new)
+                ),
                 backgroundColor: filesInfrontAppBar.contains(currentTable)
                     ? ThemeColor.darkBlack
                     : const Color(0x44000000),

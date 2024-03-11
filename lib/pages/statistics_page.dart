@@ -5,13 +5,13 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -558,13 +558,9 @@ class StatsPageState extends State<StatisticsPage> {
      return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Statistics",
-            style: GlobalsStyle.appBarTextStyle,
-          ),
-          backgroundColor: ThemeColor.darkBlack,
-          elevation: 0,
+        appBar: CustomAppBar(
+          context: context,
+          title: "Statistics",
           bottom: const PreferredSize(
             preferredSize: Size.fromHeight(50.0),
             child: CustomTabBar(
@@ -584,7 +580,7 @@ class StatsPageState extends State<StatisticsPage> {
               ],
             ),
           ),
-        ),
+        ).buildAppBar(),
         body: TabBarView(
           children: [
             dataIsLoading.value ? _buildLoading() : _buildStatsDetailsPage(context),

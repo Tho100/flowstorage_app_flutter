@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -66,13 +67,10 @@ class SettingsAppSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text("App Settings",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "App Settings"
+      ).buildAppBar(),
       body: Column(
         children: [
           

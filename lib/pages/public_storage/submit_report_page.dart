@@ -6,9 +6,9 @@ import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -295,15 +295,6 @@ class SubmitReportPage extends StatelessWidget {
     );
   }
 
-  Widget buildBackIconButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.close),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-  }
-
   void removeReportedFile(String uploaderName, String encryptedFileName, String fileType) async {
     final tableName = Globals.fileTypesToTableNamesPs[fileType]!;
 
@@ -370,9 +361,9 @@ class SubmitReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: buildBackIconButton(context),
+      appBar: CustomAppBar(
+        context: context,
+        title: "Submit a Report",
         actions: [
           TextButton(
             child: const Text("Submit",
@@ -394,11 +385,8 @@ class SubmitReportPage extends StatelessWidget {
 
             }
           ),
-        ],
-        title: const Text("Submit a Report", 
-          style: GlobalsStyle.appBarTextStyle
-        ),
-      ),
+        ]
+      ).buildAppBar(),
       body: buildBody(context),
     );
   }

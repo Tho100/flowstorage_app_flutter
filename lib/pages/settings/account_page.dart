@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -46,13 +47,10 @@ class SettingsAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text("Account",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "Account"
+      ).buildAppBar(),
       body: Column(
         children: [
           

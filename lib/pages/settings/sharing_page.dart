@@ -1,8 +1,8 @@
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/sharing_options.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/default_switch.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +25,10 @@ class SettingsSharingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     sharingDisabledStatusNotifier.value = isSharingDisabled;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ThemeColor.darkBlack,
-        elevation: 0,
-        title: const Text("Sharing",
-          style: GlobalsStyle.appBarTextStyle,
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "Sharing"
+      ).buildAppBar(),
       body: Column(
         children: [
           
