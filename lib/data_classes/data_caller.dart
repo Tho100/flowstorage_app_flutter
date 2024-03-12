@@ -48,6 +48,16 @@ class DataCaller {
   final _folderDataReceiver = FolderDataReceiver();
   final _sharingDataRetriever = SharingDataReceiver();
 
+  void _initializeData({
+    required Set<String> fileName, 
+    required Set<Uint8List> fileData, 
+    required List<String> date
+  }) {
+    storageData.setFilesName(fileName.toList());
+    storageData.setImageBytes(fileData.toList());
+    storageData.setFilesDate(date);
+  }
+
   Future<void> offlineData() async {
 
     tempData.setOrigin(OriginFile.offline);
@@ -152,19 +162,18 @@ class DataCaller {
     final dates = <String>[];
 
     for (final result in results) {
-      final fileNamesForTable = result[0] as List<String>;
-      final bytesForTable = result[1] as List<Uint8List>;
-      final datesForTable = result[2] as List<String>;
+      final fileName = result[0] as List<String>;
+      final fileData = result[1] as List<Uint8List>;
+      final uploadDate = result[2] as List<String>;
 
-      fileNames.addAll(fileNamesForTable);
-      bytes.addAll(bytesForTable);
-      dates.addAll(datesForTable);
+      fileNames.addAll(fileName);
+      bytes.addAll(fileData);
+      dates.addAll(uploadDate);
     }
 
-    storageData.setFilesName(fileNames.toList());
-    storageData.setImageBytes(bytes.toList());
-    storageData.setFilesDate(dates);
-        
+    _initializeData(
+      fileName: fileNames, fileData: bytes, date: dates);
+
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();
 
@@ -214,27 +223,41 @@ class DataCaller {
 
     }
 
-    final psDataRetriever = PublicStorageDataRetriever();
-    final dataList = await psDataRetriever.retrieveParams(isFromMyPs: false);
+    final dataList = await PublicStorageDataRetriever()
+      .retrieveParams(isFromMyPs: false);
 
-    final uploaderList = dataList.expand((data) => data['uploader_name'] as List<String>).toList();
-    final nameList = dataList.expand((data) => data['name'] as List<String>).toList();
-    final fileDateList = dataList.expand((data) => data['date'] as List<String>).toList();
-    final byteList = dataList.expand((data) => data['file_data'] as List<Uint8List>).toList();
-    final titleList = dataList.expand((data) => data['titles'] as List<String>).toList();
+    final fileNames = <String>{};
+    final bytes = <Uint8List>{};
+    final dates = <String>[];
 
-    final getTagsValue = fileDateList.
-      map((tags) => tags.split(' ').last).toList();
+    final uploader = <String>[];
+    final titles = <String>[];
+
+    for (final result in dataList) {
+      final fileName = result['name'] as List<String>;
+      final fileData = result['file_data'] as List<Uint8List>;
+      final uploadDate = result['date'] as List<String>;
+
+      final fileUploader = result['uploader_name'] as List<String>;
+      final fileTitle = result['titles'] as List<String>;
+
+      fileNames.addAll(fileName);
+      bytes.addAll(fileData);
+      dates.addAll(uploadDate);
+      uploader.addAll(fileUploader);
+      titles.addAll(fileTitle);
+    }
+
+    final getTagsValue = dates.map((tags) => tags.split(' ').last).toList();
 
     psStorageData.psTagsList.addAll(getTagsValue);
-    psStorageData.psUploaderList.addAll(uploaderList);
-    psStorageData.psTitleList.addAll(titleList);
+    psStorageData.psUploaderList.addAll(uploader);
+    psStorageData.psTitleList.addAll(titles);
 
     psStorageData.setFromMyPs(false);
 
-    storageData.setFilesName(nameList);
-    storageData.setFilesDate(fileDateList);
-    storageData.setImageBytes(byteList);
+    _initializeData(
+      fileName: fileNames, fileData: bytes, date: dates);
 
     tempData.setOrigin(OriginFile.public);
     tempData.setAppBarTitle("Public Storage");
@@ -257,27 +280,41 @@ class DataCaller {
     psStorageData.psTagsColorList.clear();
     psStorageData.psTitleList.clear();
 
-    final psDataRetriever = PublicStorageDataRetriever();
-    final dataList = await psDataRetriever.retrieveParams(isFromMyPs: true);
+    final dataList = await PublicStorageDataRetriever()
+      .retrieveParams(isFromMyPs: true);
 
-    final uploaderList = dataList.expand((data) => data['uploader_name'] as List<String>).toList();
-    final nameList = dataList.expand((data) => data['name'] as List<String>).toList();
-    final fileDateList = dataList.expand((data) => data['date'] as List<String>).toList();
-    final byteList = dataList.expand((data) => data['file_data'] as List<Uint8List>).toList();
-    final titleList = dataList.expand((data) => data['titles'] as List<String>).toList();
+    final fileNames = <String>{};
+    final bytes = <Uint8List>{};
+    final dates = <String>[];
 
-    final getTagsValue = fileDateList.
-      map((tags) => tags.split(' ').last).toList();
+    final uploader = <String>[];
+    final titles = <String>[];
+
+    for (final result in dataList) {
+      final fileName = result['name'] as List<String>;
+      final fileData = result['file_data'] as List<Uint8List>;
+      final uploadDate = result['date'] as List<String>;
+
+      final fileUploader = result['uploader_name'] as List<String>;
+      final fileTitle = result['titles'] as List<String>;
+
+      fileNames.addAll(fileName);
+      bytes.addAll(fileData);
+      dates.addAll(uploadDate);
+      uploader.addAll(fileUploader);
+      titles.addAll(fileTitle);
+    }
+
+    final getTagsValue = dates.map((tags) => tags.split(' ').last).toList();
 
     psStorageData.psTagsList.addAll(getTagsValue);
-    psStorageData.psUploaderList.addAll(uploaderList);
-    psStorageData.psTitleList.addAll(titleList);
+    psStorageData.psUploaderList.addAll(uploader);
+    psStorageData.psTitleList.addAll(titles);
 
     psStorageData.setFromMyPs(true);
 
-    storageData.setFilesName(nameList);
-    storageData.setFilesDate(fileDateList);
-    storageData.setImageBytes(byteList);
+    _initializeData(
+      fileName: fileNames, fileData: bytes, date: dates);
 
     tempData.setOrigin(OriginFile.public);
     tempData.setAppBarTitle("My Public Storage");
@@ -290,13 +327,12 @@ class DataCaller {
 
     final dataList = await _directoryDataReceiver.retrieveParams(dirName: directoryName);
 
-    final nameList = dataList.map((data) => data['name'] as String).toList();
-    final fileDateList = dataList.map((data) => data['date'] as String).toList();
-    final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
+    final nameList = dataList.map((data) => data['name'] as String).toSet();
+    final byteList = dataList.map((data) => data['file_data'] as Uint8List).toSet();
+    final dateList = dataList.map((data) => data['date'] as String).toList();
     
-    storageData.setFilesName(nameList);
-    storageData.setFilesDate(fileDateList);
-    storageData.setImageBytes(byteList);
+    _initializeData(
+      fileName: nameList, fileData: byteList, date: dateList);
 
     tempData.setOrigin(OriginFile.directory);
 
@@ -307,14 +343,14 @@ class DataCaller {
     final dataList = await _sharingDataRetriever.retrieveParams(userData.username,originFrom);
 
     final nameList = dataList.map((data) => data['name'] as String).toList();
-    final fileDateList = dataList.map((data) => data['date'] as String).toList();
+    final dateList = dataList.map((data) => data['date'] as String).toList();
     final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
 
     storageData.setFilesName(nameList);
-    storageData.setFilesDate(fileDateList);
+    storageData.setFilesDate(dateList);
     storageData.setImageBytes(byteList);
 
-    final sharedNames = fileDateList.map((string) {
+    final sharedNames = dateList.map((string) {
       final dotIndex = string.indexOf(GlobalsStyle.dotSeparator);
       return dotIndex != -1 ? string.substring(0, dotIndex-1) : string;
     }).toList();
@@ -337,13 +373,12 @@ class DataCaller {
 
     final dataList = await _folderDataReceiver.retrieveParams(userData.username, folderName);
 
-    final nameList = dataList.map((data) => data['name'] as String).toList();
-    final fileDateList = dataList.map((data) => data['date'] as String).toList();
-    final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
+    final nameList = dataList.map((data) => data['name'] as String).toSet();
+    final byteList = dataList.map((data) => data['file_data'] as Uint8List).toSet();
+    final dateList = dataList.map((data) => data['date'] as String).toList();
 
-    storageData.setFilesName(nameList);
-    storageData.setFilesDate(fileDateList);
-    storageData.setImageBytes(byteList);
+    _initializeData(
+      fileName: nameList, fileData: byteList, date: dateList);
 
     tempData.setOrigin(OriginFile.folder);
     tempData.setAppBarTitle(tempData.folderName);
