@@ -72,6 +72,7 @@ class SaveDirectory {
       Logger().e("Exception from retrieveParams {directory_data}", err, st);
       return <Map<String, dynamic>>[];
     }
+
   }
 
   Future<void> selectDirectoryUserDirectory({
@@ -98,11 +99,11 @@ class SaveDirectory {
     required BuildContext context
   }) async {
 
-    try {
+    final loadingDialog = SingleTextLoading(); 
+          
+    loadingDialog.startLoading(title: "Saving...", context: context);
 
-      final loadingDialog = SingleTextLoading(); 
-           
-      loadingDialog.startLoading(title: "Saving...", context: context);
+    try {
 
       final dataList = await retrieveParams(directoryName);
 
@@ -120,6 +121,7 @@ class SaveDirectory {
       await CallNotify().customNotification(title: "Directory Saved", subMessage: "${nameList.length} File(s) has been downloaded");
 
     } catch (err) {
+      loadingDialog.stopLoading();
       SnackAlert.errorSnack("Failed to save the directory.");
     }
 

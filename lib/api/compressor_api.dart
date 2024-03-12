@@ -50,6 +50,7 @@ class CompressorApi {
     );
     
     return Future.value(compressedFile);
+    
   }
 
   static Future<List<int>> compressedByteImage({
@@ -59,8 +60,7 @@ class CompressorApi {
 
     File? compressedFile = await processImageCompression(path: path, quality: quality);
 
-    List<int> bytes = await compressedFile.readAsBytes();
-    return bytes;
+    return await compressedFile.readAsBytes();
 
   }
   

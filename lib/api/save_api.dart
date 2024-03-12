@@ -11,16 +11,13 @@ class SaveApi {
     required String fileName, 
     required dynamic fileData,
   }) async {
-
-    late String filePath = "";
     
-    String? result = await FilePicker.platform.getDirectoryPath();
+    final result = await FilePicker.platform.getDirectoryPath();
 
-    if (result != null) {
+    if (result != null && result.isNotEmpty) {
 
       final getFilePath = '$result/$fileName';
       final file = File(getFilePath);
-      filePath = file.path;
 
       if (fileData is Uint8List) {
         await file.writeAsBytes(fileData);
@@ -33,9 +30,11 @@ class SaveApi {
 
       }
 
+      return file.path;
+
     }
 
-    return filePath;
+    return "";
     
   }
 

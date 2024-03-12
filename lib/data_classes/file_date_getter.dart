@@ -18,7 +18,6 @@ class FileDateGetter {
       return retrievedDate.rows.map((row) {
         final dateValue = row.assoc()['UPLOAD_DATE']!;
         return formatDate.formatDifference(dateValue);
-
       }).toList();
 
     } catch (err) {
