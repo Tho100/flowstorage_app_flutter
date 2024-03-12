@@ -35,13 +35,12 @@ class SignInPageState extends State<SignInPage> {
   final auth1Controller = TextEditingController();
 
   Future<void> verifyUserSignInInformation({
-    required String email, 
-    required String auth0, 
+    required String email,
+    required String auth0,
     required String auth1
   }) async {
 
-    final loginSetup = SignInUser();
-    await loginSetup.logParams(email, auth0, auth1, isCheckedNotifier.value, context);
+    await SignInUser().logParams(email, auth0, auth1, isCheckedNotifier.value, context);
 
   }
   

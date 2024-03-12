@@ -357,7 +357,6 @@ class FunctionModel {
 
     try {
 
-      final offlineMode = OfflineModel();
       final singleLoading = SingleTextLoading();
 
       final fileType = fileName.split('.').last;
@@ -383,7 +382,7 @@ class FunctionModel {
         : CompressorApi.compressByte(
           await _callFileByteData(fileName, tableName));
 
-      await offlineMode.processSaveOfflineFile(fileName: fileName, fileData: fileData);
+      await OfflineModel().processSaveOfflineFile(fileName: fileName, fileData: fileData);
 
       tempStorageData.addOfflineFileName(fileName);
 

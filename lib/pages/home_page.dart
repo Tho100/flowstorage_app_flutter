@@ -1422,7 +1422,7 @@ class HomePageState extends State<HomePage> {
         }
 
       }, 
-      textOnPressed: () async {
+      textOnPressed: () {
 
         if(storageData.fileNamesList.length < limitUpload) {
           Navigator.pop(context);
@@ -2071,8 +2071,8 @@ class HomePageState extends State<HomePage> {
                     if (storageData.imageBytesFilteredList.length > 1) ... [
                       const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1),
-
                     ],
+
                     if (storageData.imageBytesFilteredList.length > 2) ... [
                       const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2),
