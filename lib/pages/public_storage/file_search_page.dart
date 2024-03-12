@@ -298,9 +298,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               final uploadDate = uploadDateList[index];
 
               return InkWell(
-                onTap: () {
-                  openSearchedFile(index);
-                },
+                onTap: () => openSearchedFile(index),
                 child: Ink(
                   color: ThemeColor.darkBlack,
                   child: ListTile(
@@ -762,15 +760,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                     selectedFilterSearch = "uploader_name";
                     searchBarHintTextNotifier.value = "Search uploader name";
                   },
-                  onPast24HoursPressed: () {
-                    onPast24HoursPressed();
-                  },
-                  onPastWeekPressed: () {
-                    onPastWeekPressed();
-                  },
-                  onPastMonthPressed: () {
-                    onPastMonthPressed();
-                  },          
+                  onPast24HoursPressed: () => onPast24HoursPressed(),
+                  onPastWeekPressed: () => onPastWeekPressed(),
+                  onPastMonthPressed: () => onPastMonthPressed(),
                 );
               },
               icon: const Icon(Icons.more_vert, color: ThemeColor.justWhite),

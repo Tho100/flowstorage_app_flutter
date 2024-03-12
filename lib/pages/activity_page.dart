@@ -658,9 +658,9 @@ class ActivityPageState extends State<ActivityPage> {
 
   Widget buildPhotoOfTheDay(double width) {
     return GestureDetector(
-      onTap: () {
-        ActivityImagePreviewer.showPreviewer(photoOfTheDayFileName, photoOfTheDayImageBytes);
-      },
+      onTap: () => ActivityImagePreviewer.showPreviewer(
+        photoOfTheDayFileName, photoOfTheDayImageBytes
+      ),
       child: SizedBox(
         width: width-45,
         height: 315,

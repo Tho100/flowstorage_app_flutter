@@ -265,17 +265,17 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  void _openDeleteDialog(String fileName) {
+  void _openDeleteDialog() {
     DeleteDialog().buildDeleteDialog(
-      fileName: fileName, 
-      onDeletePressed: () => _onDeleteItemPressed(fileName), 
+      fileName: tempData.selectedFileName, 
+      onDeletePressed: () => _onDeleteItemPressed(tempData.selectedFileName), 
     );
   }
 
-  void _openRenameDialog(String fileName) {
+  void _openRenameDialog() {
     RenameDialog().buildRenameFileDialog(
-      fileName: fileName, 
-      onRenamePressed: () => _onRenameItemPressed(fileName),
+      fileName: tempData.selectedFileName, 
+      onRenamePressed: () => _onRenameItemPressed(tempData.selectedFileName),
     );
   }
 
@@ -314,22 +314,19 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Future _callBottomTrailing() {
-  
-    final fileName = appBarTitleNotifier.value;
+
+    final fileName = tempData.selectedFileName;
 
     return BottomTrailingOptions().buildBottomTrailing(
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
-        _openRenameDialog(fileName);
+        _openRenameDialog();
       }, 
       onDownloadPressed: () async {
         Navigator.pop(context);
         await functionModel.downloadFileData(fileName: fileName);
       }, 
-      onDeletePressed: () {
-        _openDeleteDialog(fileName);
-      },
       onSharingPressed: () {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(fileName);
@@ -338,22 +335,21 @@ class PreviewFileState extends State<PreviewFile> {
         Navigator.pop(context);
         NavigatePage.goToPageFileDetails(fileName);
       },
-      onAOPressed: () async {
+      onAOPressed: () {
         Navigator.pop(context);
         _makeAvailableOfflineOnPressed(fileName);
       }, 
-      onOpenWithPressed: () {
-        _openWithOnPressed();
-      },
       onMovePressed: () {
         Navigator.pop(context);
-        _openMoveFileOnPressed(fileName);
+        _openMoveFileOnPressed();
       },
+      onDeletePressed: () => _openDeleteDialog(),
+      onOpenWithPressed: () => _openWithOnPressed(),
       context: context
     );
   }
 
-  void _openMoveFileOnPressed(String fileName) async {
+  void _openMoveFileOnPressed() async {
 
     final fileByteData = await functionModel
         .retrieveFileDataPreviewer(isCompressed: true);
@@ -361,7 +357,7 @@ class PreviewFileState extends State<PreviewFile> {
     final base64Data = base64.encode(fileByteData);
 
     NavigatePage.goToPageMoveFile(
-      [fileName], [base64Data]
+      [tempData.selectedFileName], [base64Data]
     );
 
   }
@@ -388,9 +384,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildFilePreview() {
     return GestureDetector(
-      onTap: () {
-        bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
-      },
+      onTap: () => bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value,
       child: _buildFileDataWidget(),
     );
   }
@@ -803,9 +797,7 @@ class PreviewFileState extends State<PreviewFile> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
       child: GestureDetector(
-        onTap: () {
-          _copyAppBarTitle();
-        },
+        onTap: () => _copyAppBarTitle(),
         child: ValueListenableBuilder<bool>(
           valueListenable: bottomBarVisibleNotifier,
           builder: (context, value, child) {

@@ -149,9 +149,7 @@ class SignInPageState extends State<SignInPage> {
                           icon: Icon(value ? Icons.visibility : Icons.visibility_off,
                             color: ThemeColor.thirdWhite,
                           ), 
-                          onPressed: () { 
-                            visiblePasswordNotifier.value = !visiblePasswordNotifier.value;
-                          },
+                          onPressed: () => visiblePasswordNotifier.value = !visiblePasswordNotifier.value,
                         ),
                       ),
                     );

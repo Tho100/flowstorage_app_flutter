@@ -22,9 +22,7 @@ class CustomAlertDialog {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text('OK',
                 style: TextStyle(
                   color: ThemeColor.secondaryWhite,

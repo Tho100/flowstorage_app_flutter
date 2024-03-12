@@ -106,9 +106,7 @@ class PsGridListView extends StatelessWidget {
               ),
 
               IconButton(
-                onPressed: () {
-                  callBottomTrailing(index);
-                },
+                onPressed: () => callBottomTrailing(index),
                 icon: const Icon(Icons.more_vert, color: Colors.white, size: 22),
               ),
 

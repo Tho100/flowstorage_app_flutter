@@ -217,9 +217,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
           shape: const CircleBorder(),
         ),
         padding: EdgeInsets.zero,
-        onPressed: () {
-          updateBackSpace();
-        },
+        onPressed: () => updateBackSpace(),
         icon: const Icon(Icons.backspace_rounded, size: 30, color: ThemeColor.justWhite),
       ),
     );

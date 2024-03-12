@@ -142,9 +142,7 @@ class ShareFilePage extends StatelessWidget {
                   ),
                   backgroundColor: ThemeColor.darkBlack,
                 ),
-                onPressed: () {
-                  shareExternalOnPressed();
-                },
+                onPressed: () => shareExternalOnPressed(),
                 child: const Row(
                   children: [
                     Icon(Icons.share),
@@ -261,9 +259,7 @@ class ShareFilePage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            onPressed: () {
-              processFileSharing(fileName, context);
-            }
+            onPressed: () => processFileSharing(fileName, context),
           ),
         ],
       ).buildAppBar(),
