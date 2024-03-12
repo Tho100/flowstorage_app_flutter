@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 
@@ -512,19 +513,19 @@ class UpgradePageState extends State<UpgradePage> {
               Tab(
                 child: Text(
                   'Max',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: GlobalsStyle.tabBarTextStyle,
                 ),
               ),
               Tab(
                 child: Text(
                   'Express',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: GlobalsStyle.tabBarTextStyle,
                 ),
               ),
               Tab(
                 child: Text(
                   'Supreme',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: GlobalsStyle.tabBarTextStyle,
                 ),
               ),
             ],

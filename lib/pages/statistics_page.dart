@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
+import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
@@ -568,13 +569,13 @@ class StatsPageState extends State<StatisticsPage> {
                 Tab(
                   child: Text(
                     'Details',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: GlobalsStyle.tabBarTextStyle,
                   ),
                 ),
                 Tab(
                   child: Text(
                     'Storage',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: GlobalsStyle.tabBarTextStyle,
                   ),
                 ),
               ],

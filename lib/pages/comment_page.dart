@@ -255,11 +255,9 @@ class CommentPageState extends State<CommentPage> {
       body: ValueListenableBuilder<String>(
         valueListenable: commentNotifier,
         builder: (context, value, _) {
-          if (value.isNotEmpty) {
-            return _buildComment(commentValue: value);
-          } else {
-            return _buildNoComment();
-          }
+          return value.isNotEmpty
+            ? _buildComment(commentValue: value)
+            : _buildNoComment();
         },
       ),
     );
