@@ -61,9 +61,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                         isVisible ? Icons.visibility : Icons.visibility_off,
                         color: const Color.fromARGB(255, 141, 141, 141),
                       ),
-                      onPressed: () {
-                        suffixIconVisibilityNotifier.value = !isVisible;
-                      },
+                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
                     )
                   : null,
                 ),

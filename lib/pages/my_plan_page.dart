@@ -147,9 +147,7 @@ class MyPlanPageState extends State<MyPlanPage> {
               }
 
             }, 
-            onCancelPressed: () {
-              Navigator.pop(context);
-            }, 
+            onCancelPressed: () => Navigator.pop(context),
             context: context
           );
         },

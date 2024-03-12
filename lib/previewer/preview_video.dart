@@ -205,9 +205,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {
-                forwardingImplementation("positive");
-              },
+              onPressed: () => forwardingImplementation("positive"),
               icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),
@@ -231,9 +229,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {
-                forwardingImplementation("negative");
-              },
+              onPressed: () => forwardingImplementation("negative"),
               icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),

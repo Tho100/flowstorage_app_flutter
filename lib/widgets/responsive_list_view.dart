@@ -52,12 +52,8 @@ class ResponsiveListView extends StatelessWidget {
                   : null;
 
               return InkWell(
-                onLongPress: () {
-                  itemOnLongPress(index);
-                },
-                onTap: () {
-                  itemOnTap(index);
-                },
+                onLongPress: () => itemOnLongPress(index),
+                onTap: () => itemOnTap(index),
                 child: Ink(
                   color: ThemeColor.darkBlack,
                   child: ListTile(

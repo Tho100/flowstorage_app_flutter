@@ -94,7 +94,7 @@ class OfflineModel {
 
   }
 
-  Future<void> videoGallerySaver(Uint8List videoData, String fileName) async {
+  Future<void> _videoGallerySaver(Uint8List videoData, String fileName) async {
 
     final directory = Platform.isAndroid 
       ? await getExternalStorageDirectory()
@@ -134,7 +134,7 @@ class OfflineModel {
 
     } else if (Globals.videoType.contains(fileType)) {
       final decompressFileData = CompressorApi.decompressFile(fileDataValue);
-      await videoGallerySaver(decompressFileData, fileName);
+      await _videoGallerySaver(decompressFileData, fileName);
 
     } else if (Globals.textType.contains(fileType)) {
       final decompressedFile = CompressorApi.decompressFile(fileDataValue);

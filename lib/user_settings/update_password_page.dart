@@ -71,9 +71,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         isVisible ? Icons.visibility : Icons.visibility_off,
                         color: Colors.grey,
                       ),
-                      onPressed: () {
-                        valueNotifier!.value = !isVisible;
-                      },
+                      onPressed: () => valueNotifier!.value = !isVisible,
                     )
                   : null,
                 ),

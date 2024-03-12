@@ -10,14 +10,12 @@ class AuthVerification {
     final params = {'username': getUsername};
     final result = await conn.execute(que,params);
 
-    String? authString = '';
-
     for(final row in result.rows) {
       final getAuthRows = columnName == "CUST_PASSWORD" ? row.assoc()['CUST_PASSWORD'] : row.assoc()['CUST_PIN'];
-      authString = getAuthRows;
+      return getAuthRows != getAuthString;
     }
     
-    return authString != getAuthString;
+    return true;
 
   }
 

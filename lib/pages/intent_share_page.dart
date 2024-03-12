@@ -134,9 +134,7 @@ class IntentSharingPage extends StatelessWidget {
                   ),
                   backgroundColor: ThemeColor.darkBlack,
                 ),
-                onPressed: () {
-                  previewPdfOnPressed(context);
-                },
+                onPressed: () => previewPdfOnPressed(context),
                 child: const Text("Preview"),
               ),
             ),

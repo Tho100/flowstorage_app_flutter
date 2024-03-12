@@ -46,6 +46,7 @@ class Crud {
     }
 
     return 0;
+    
   }
 
   Future<dynamic> select({

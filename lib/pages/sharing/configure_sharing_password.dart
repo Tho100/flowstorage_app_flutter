@@ -83,9 +83,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
           child: SettingsButton(
             topText: "Edit password", 
             bottomText: "Update your sharing password", 
-            onPressed: () {
-              AddSharingPassword().buildAddPasswordDialog();
-            }
+            onPressed: () => AddSharingPassword().buildAddPasswordDialog(),
           ),
         ),
       ],

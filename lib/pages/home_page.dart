@@ -1241,12 +1241,12 @@ class HomePageState extends State<HomePage> {
       saveOnPressed: () async {
         await _selectDirectoryOnMultipleDownload();
       }, 
-      deleteOnPressed: () {
-        _openDeleteSelectionDialog();
-      },
       moveOnPressed: () {
         Navigator.pop(context);
         _openMoveMultipleFilePage(checkedItemsName.toList());
+      },
+      deleteOnPressed: () {
+        _openDeleteSelectionDialog();
       },
       itemsName: checkedItemsName
     );
@@ -1465,9 +1465,7 @@ class HomePageState extends State<HomePage> {
     return BottomTrailingFolder().buildFolderBottomTrailing(
       folderName: folderName, 
       context: context, 
-      onRenamePressed: () {
-        _openRenameFolderDialog(folderName);
-      }, 
+      onRenamePressed: () => _openRenameFolderDialog(folderName),
       onDownloadPressed: () async {
         if(userData.accountType == "Basic") {
           UpgradeDialog.buildUpgradeBottomSheet(
@@ -1813,9 +1811,7 @@ class HomePageState extends State<HomePage> {
           ),
           leading: IconButton(
             icon: const Icon(Icons.menu, size: 28),
-            onPressed: () {
-              sidebarMenuScaffoldKey.currentState?.openDrawer();
-            },
+            onPressed: () => sidebarMenuScaffoldKey.currentState?.openDrawer(),
           ),
           actions: [
 
@@ -2592,9 +2588,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () {
-        searchBarFocusNode.unfocus();
-      },
+      onTap: () => searchBarFocusNode.unfocus(),
       child: Scaffold(
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(

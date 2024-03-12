@@ -111,5 +111,6 @@ class FolderDataReceiver {
       Logger().e("Exception from retrieveParams {folder_data_retriever}", err, st);
       return <Map<String, dynamic>>[];
     }
+    
   }
 }

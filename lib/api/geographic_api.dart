@@ -10,8 +10,10 @@ class GeographicApi {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return data['countryCode'];
+      
     } else {
       throw Exception('Failed to load user country');
+      
     }
 
   }

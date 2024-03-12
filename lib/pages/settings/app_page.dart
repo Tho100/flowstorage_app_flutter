@@ -79,17 +79,13 @@ class SettingsAppSettings extends StatelessWidget {
           SettingsButton(
             topText: "Configure notification", 
             bottomText: "Configure Flowstorage notification settings", 
-            onPressed: () {
-              AppSettings.openAppSettings(type: AppSettingsType.notification);
-            }
+            onPressed: () => AppSettings.openAppSettings(type: AppSettingsType.notification),
           ),
 
           SettingsButton(
             topText: "Configure permissions", 
             bottomText: "Configure Flowstorage permissions settings", 
-            onPressed: () {
-              AppSettings.openAppSettings(type: AppSettingsType.settings);
-            }
+            onPressed: () => AppSettings.openAppSettings(type: AppSettingsType.settings),
           ),
 
           const Padding(
@@ -109,9 +105,7 @@ class SettingsAppSettings extends StatelessWidget {
             hideCaret: true,
             topText: "Clear cache", 
             bottomText: "Free up storage space by clearing cache", 
-            onPressed: () {
-              _clearAppCache();
-            }
+            onPressed: () => _clearAppCache(),
           ),
 
           const SizedBox(height: 5),

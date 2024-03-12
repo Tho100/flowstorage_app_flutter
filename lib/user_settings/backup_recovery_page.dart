@@ -60,9 +60,7 @@ class BackupRecoveryPage extends StatelessWidget {
                         isVisible ? Icons.visibility : Icons.visibility_off,
                         color: ThemeColor.thirdWhite,
                       ),
-                      onPressed: () {
-                        suffixIconVisibilityNotifier.value = !isVisible;
-                      },
+                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
                     )
                   : null,
                 ),
