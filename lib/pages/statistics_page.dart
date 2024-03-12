@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -410,10 +411,10 @@ class StatsPageState extends State<StatisticsPage> {
       height: 55,
       width: MediaQuery.of(context).size.width - 75,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         child: LinearProgressIndicator(
           backgroundColor: ThemeColor.darkBlack,
           valueColor: const AlwaysStoppedAnimation<Color>(ThemeColor.darkPurple),
@@ -536,6 +537,87 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
+  Widget _buildAccountPlanContainer(BuildContext context) {
+
+    final accountTypeToColor = {
+      'Basic': ThemeColor.darkGrey,
+      'Max': const Color.fromARGB(255, 250, 195, 4),
+      'Express': const Color.fromARGB(255, 40, 100, 169),
+      'Supreme': const Color.fromARGB(255, 74, 3, 164)
+    };
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, left: 8.0, right: 8.0),
+      child: GestureDetector(
+        onTap: () => NavigatePage.goToPageUpgrade(),
+        child: Container(
+          height: 110,
+          width: MediaQuery.of(context).size.width-35,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: ThemeColor.justWhite,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+              children: [
+                
+                Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("PLAN",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ThemeColor.lightGrey,
+                        ),
+                      ),
+                    ),
+      
+                    const Spacer(),
+      
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        children: [
+                          Text("Upgrade",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: ThemeColor.lightGrey,
+                            ),
+                          ),
+                          const Icon(Icons.arrow_forward_ios,
+                            color: ThemeColor.lightGrey,
+                            size: 20,
+                          )
+                        ],
+                      ),
+                    ),
+                    
+                  ],
+                ),
+      
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(userData.accountType,
+                    style: GoogleFonts.poppins(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                      color: accountTypeToColor[userData.accountType],
+                    ),
+                  ),
+                ),
+      
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildUsagePage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
@@ -543,6 +625,7 @@ class StatsPageState extends State<StatisticsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildUsageContainer(context),
+          _buildAccountPlanContainer(context),
         ],
       ),
     );
