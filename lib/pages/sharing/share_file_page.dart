@@ -192,7 +192,7 @@ class ShareFilePage extends StatelessWidget {
               : Globals.fileTypesToTableNames[fileType]!;
 
           if(tempData.fileByteData.isEmpty) {
-            fileBytes = await retrieveData.retrieveDataParams(
+            fileBytes = await retrieveData.getFileData(
               userData.username, fileName, tableName);
 
           } else {

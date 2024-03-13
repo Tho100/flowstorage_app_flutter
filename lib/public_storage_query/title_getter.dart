@@ -6,7 +6,7 @@ class TitleGetterPs {
 
   final userData = GetIt.instance<UserDataProvider>();
   
-  Future<List<String>> myGetTitleParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getMyTitle(MySQLConnectionPool conn, String tableName) async {
 
     try {
 
@@ -25,7 +25,7 @@ class TitleGetterPs {
 
   }
 
-  Future<List<String>> getTitleParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getTitle(MySQLConnectionPool conn, String tableName) async {
 
     try {
 

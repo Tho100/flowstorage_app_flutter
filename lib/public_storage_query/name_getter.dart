@@ -8,7 +8,7 @@ class NameGetterPs {
   final encryption = EncryptionClass();
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<List<String>> myRetrieveParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getMyFileName(MySQLConnectionPool conn, String tableName) async {
 
     try {   
 
@@ -27,7 +27,7 @@ class NameGetterPs {
 
   }
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getFileName(MySQLConnectionPool conn, String tableName) async {
 
     try {   
 

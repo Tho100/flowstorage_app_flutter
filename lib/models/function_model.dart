@@ -45,7 +45,7 @@ class FunctionModel {
 
   Future<Uint8List> _callFileByteData(String selectedFilename, String tableName) async {
     return await RetrieveData()
-      .retrieveDataParams(userData.username, selectedFilename, tableName);
+      .getFileData(userData.username, selectedFilename, tableName);
   }
 
   Future<void> renameFolderData(String oldFolderName, String newFolderName) async {

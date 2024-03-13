@@ -25,7 +25,7 @@ class RetrieveData {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<Uint8List> _retrieveDataModules({
+  Future<Uint8List> _getDataBytes({
     required MySQLConnectionPool conn,
     required String username,
     required String fileName,
@@ -99,7 +99,7 @@ class RetrieveData {
       : tableName;
   }
 
-  Future<Uint8List> retrieveDataParams(
+  Future<Uint8List> getFileData(
     String username,
     String fileName,
     String tableName
@@ -107,7 +107,7 @@ class RetrieveData {
 
     final conn = await SqlConnection.initializeConnection();
 
-    return await _retrieveDataModules(
+    return await _getDataBytes(
       conn: conn,
       username: username,
       fileName: fileName,

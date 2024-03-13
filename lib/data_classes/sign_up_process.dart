@@ -9,7 +9,7 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-class RegisterUser {
+class SignUpUser {
 
   final encryption = EncryptionClass();
   final crud = Crud();

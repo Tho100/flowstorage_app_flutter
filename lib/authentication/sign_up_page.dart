@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/data_classes/register_process.dart';
+import 'package:flowstorage_fsc/data_classes/sign_up_process.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -52,7 +52,7 @@ class SignUpPageState extends State<SignUpPage> {
       final valueCase0 = AuthModel().computeAuth(auth0);
       final valueCase1 = AuthModel().computeAuth(auth1);
 
-      await RegisterUser().insertParams(
+      await SignUpUser().insertParams(
         userName: username,
         auth0: valueCase0,
         email: email,
@@ -216,6 +216,8 @@ class SignUpPageState extends State<SignUpPage> {
                   controller: auth0Controller, 
                   visibility: visiblePasswordNotifier
                 ),
+
+                const SizedBox(width: 6),
 
                 AuthTextField(mediaQuery).pinTextField(
                   controller: auth1Controller

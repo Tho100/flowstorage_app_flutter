@@ -20,7 +20,7 @@ class PublicStorageDataRetriever {
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<List<Map<String, dynamic>>> retrieveParams({
+  Future<List<Map<String, dynamic>>> getFilesInfo({
     required bool isFromMyPs
   }) async {
     
@@ -31,10 +31,10 @@ class PublicStorageDataRetriever {
 
       final futures = tablesToCheck.map((table) async {
 
-        final fileNames = await nameGetter.myRetrieveParams(conn, table);
-        final titles = await titleGetter.myGetTitleParams(conn, table);
-        final bytes = await byteGetter.myGetLeadingParams(conn, table);
-        final dates = await dateGetter.myGetDateParams(conn, table);
+        final fileNames = await nameGetter.getMyFileName(conn, table);
+        final titles = await titleGetter.getMyTitle(conn, table);
+        final bytes = await byteGetter.getMyFileData(conn, table);
+        final dates = await dateGetter.getMyUploadDate(conn, table);
 
         final uploaderNameList = List<String>.generate(fileNames.length, (_) => userData.username);
 
@@ -57,11 +57,11 @@ class PublicStorageDataRetriever {
 
       final futures = tablesToCheck.map((table) async {
 
-        final uploaderName = await uploaderNameGetter.retrieveParams(conn, table);
-        final titles = await titleGetter.getTitleParams(conn, table);
-        final fileNames = await nameGetter.retrieveParams(conn, table);
-        final bytes = await byteGetter.getLeadingParams(conn, table);
-        final dates = await dateGetter.getDateParams(conn, table);
+        final uploaderName = await uploaderNameGetter.getUploaderName(conn, table);
+        final titles = await titleGetter.getTitle(conn, table);
+        final fileNames = await nameGetter.getFileName(conn, table);
+        final bytes = await byteGetter.getFileData(conn, table);
+        final dates = await dateGetter.getUploadDate(conn, table);
     
         return {
           'uploader_name': uploaderName,

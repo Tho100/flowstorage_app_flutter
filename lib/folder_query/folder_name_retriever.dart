@@ -5,10 +5,10 @@ class FolderRetriever {
 
   final encryption = EncryptionClass();
 
-  Future<List<String>> retrieveParams(String? custUsername) async {
+  Future<List<String>> getFolderName(String? username) async {
 
     const query = 'SELECT FOLDER_NAME FROM folder_upload_info WHERE CUST_USERNAME = :username';
-    final params = {'username': custUsername};
+    final params = {'username': username};
 
     try {
 

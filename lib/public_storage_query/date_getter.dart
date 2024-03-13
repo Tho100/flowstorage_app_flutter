@@ -8,7 +8,7 @@ class DateGetterPs {
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<List<String>> myGetDateParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getMyUploadDate(MySQLConnectionPool conn, String tableName) async {
 
     final selectUploadDate = 'SELECT UPLOAD_DATE, CUST_TAG FROM $tableName WHERE CUST_USERNAME = :username ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
 
@@ -27,7 +27,7 @@ class DateGetterPs {
 
   }
 
-  Future<List<String>> getDateParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getUploadDate(MySQLConnectionPool conn, String tableName) async {
     
     final selectUploadDate = 'SELECT UPLOAD_DATE, CUST_TAG FROM $tableName ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
     final results = await conn.execute(selectUploadDate);

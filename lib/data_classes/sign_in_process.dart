@@ -36,23 +36,21 @@ class SignInUser {
   final crud = Crud();
   final logger = Logger();
 
-  String custEmailInit = '';
+  Future<void> _getStartupDataFiles(MySQLConnectionPool conn, bool rememberMeChecked, String email) async {
 
-  Future<void> _callFileData(MySQLConnectionPool conn, bool isRememberMeChecked) async {
-
-    final custUsernameList = await userDataGetter
-      .getAccountTypeAndUsername(email: custEmailInit, conn: conn);
+    final accountInfo = await userDataGetter
+      .getAccountTypeAndUsername(email: email, conn: conn);
       
-    final custUsernameGetter = custUsernameList[0]!;
-    final custTypeGetter = custUsernameList[1]!;
+    final username = accountInfo[0]!;
+    final accountPlan = accountInfo[1]!;
 
     tempData.setOrigin(OriginFile.home);
-    userData.setUsername(custUsernameGetter);
-    userData.setEmail(custEmailInit);
-    userData.setAccountType(custTypeGetter);
+    userData.setUsername(username);
+    userData.setEmail(email);
+    userData.setAccountType(accountPlan);
 
-    final futures = await DataCaller().startupDataCaller(
-      conn: conn, username: custUsernameGetter);
+    final futures = await DataCaller().getStartupData(
+      conn: conn, username: username);
   
     final results = await Future.wait(futures);
 
@@ -73,7 +71,7 @@ class SignInUser {
     }
 
     if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-      foldersList.addAll(await FolderRetriever().retrieveParams(custUsernameGetter));
+      foldersList.addAll(await FolderRetriever().getFolderName(username));
     }
 
     final directoriesList = fileNames.where((fileName) => !fileName.contains('.')).toList();
@@ -85,12 +83,12 @@ class SignInUser {
     tempStorageData.setFoldersName(foldersList.toList());
     tempStorageData.setDirectoriesName(directoriesList);
 
-    if (isRememberMeChecked) {
+    if (rememberMeChecked) {
       await LocalStorageModel()
-        .setupLocalAutoLogin(custUsernameGetter, custEmailInit, custTypeGetter);
+        .setupLocalAutoLogin(username, email, accountPlan);
     }
 
-    custUsernameList.clear();
+    accountInfo.clear();
 
   }
 
@@ -100,15 +98,13 @@ class SignInUser {
 
     try {
 
-      final custUsername = await userDataGetter
+      final username = await userDataGetter
                             .getUsername(email: email, conn: conn);
 
-      if (custUsername.isNotEmpty) {
-
-        custEmailInit = email!;
+      if (username.isNotEmpty) {
 
         final authenticationInformation = await userDataGetter
-          .getAccountAuthentication(username: custUsername, conn: conn);
+          .getAccountAuthentication(username: username, conn: conn);
           
         final case0 = AuthModel().computeAuth(auth0!) == authenticationInformation['password'];
         final case1 = AuthModel().computeAuth(auth1!) == authenticationInformation['pin'];
@@ -121,13 +117,13 @@ class SignInUser {
             justLoading.startLoading(context: context);
           }
 
-          await _callFileData(conn, isRememberMeChecked);
+          await _getStartupDataFiles(conn, isRememberMeChecked, email!);
 
           final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
 
-          if(!localUsernames.contains(custUsername) && isRememberMeChecked) {
-            await LocalStorageModel().setupLocalAccountUsernames(custUsername);
-            await LocalStorageModel().setupLocalAccountEmails(custEmailInit);
+          if(!localUsernames.contains(username) && isRememberMeChecked) {
+            await LocalStorageModel().setupLocalAccountUsernames(username);
+            await LocalStorageModel().setupLocalAccountEmails(email);
             await LocalStorageModel().setupLocalAccountPlans(userData.accountType);
           }
 
