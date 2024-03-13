@@ -217,6 +217,8 @@ class SignUpPageState extends State<SignUpPage> {
                   visibility: visiblePasswordNotifier
                 ),
 
+                const SizedBox(width: 6),
+
                 AuthTextField(mediaQuery).pinTextField(
                   controller: auth1Controller
                 ),

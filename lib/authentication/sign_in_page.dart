@@ -133,6 +133,8 @@ class SignInPageState extends State<SignInPage> {
                   controller: auth0Controller, 
                   visibility: visiblePasswordNotifier
                 ),
+                
+                const SizedBox(width: 6),
 
                 AuthTextField(mediaQuery).pinTextField(
                   controller: auth1Controller
