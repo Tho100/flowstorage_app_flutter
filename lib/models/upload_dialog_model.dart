@@ -18,6 +18,8 @@ import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/picker_model.dart';
 import 'package:flowstorage_fsc/models/update_list_view.dart';
+import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
+import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -634,6 +636,44 @@ class UploadDialogModel {
 
     await CallNotify().
       uploadedNotification(title: "Upload Finished", count: 1);
+
+  }
+
+  Future<void> publicStorageUpload({
+    required String fileName, 
+    required String fileData,
+    required String filePath,
+    required String tableName,
+    required File? previewData,
+    required dynamic videoThumbnail,
+  }) async {
+
+    final psStorageData = GetIt.instance<PsStorageDataProvider>();
+    final psUploadData = GetIt.instance<PsUploadDataProvider>();
+
+    SnackAlert.uploadingSnack(
+      message: "Uploading ${ShortenText().cutText(fileName)}"
+    );
+
+    await CallNotify().customNotification(title: "Uploading...", subMessage: "1 File(s) in progress");
+
+    await UpdateListView().processUpdateListView(
+      filePath: filePath, fileName: fileName,
+      tableName: tableName, fileBase64Encoded: fileData, 
+      previewImage: previewData, thumbnailImage: videoThumbnail
+    );
+
+    psStorageData.psTitleList.add(psUploadData.psTitleValue);
+    psStorageData.psTagsList.add(psUploadData.psTagValue);
+    psStorageData.psUploaderList.add(userData.username);
+
+    UpdateListView().addItemDetailsToListView(fileName: fileName);
+
+    SnackAlert.temporarySnack(
+      message: "Added ${ShortenText().cutText(fileName)}."
+    );
+
+    await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
   }
 
