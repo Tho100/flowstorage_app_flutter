@@ -5,7 +5,7 @@ class FileDateGetter {
 
   final formatDate = FormatDate();
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String username, String tableName) async {
+  Future<List<String>> getUploadDate(MySQLConnectionPool conn, String username, String tableName) async {
     
     try {
 

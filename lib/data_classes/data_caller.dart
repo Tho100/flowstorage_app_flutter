@@ -152,7 +152,7 @@ class DataCaller {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final futures = await startupDataCaller(
+    final futures = await getStartupData(
       conn: conn, username: userData.username);
 
     final results = await Future.wait(futures);
@@ -187,9 +187,9 @@ class DataCaller {
     tablesToCheck.remove(GlobalsTable.directoryUploadTable);
 
     final getFileNames = tablesToCheck.map((table) async {
-        final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);
-        return [fileNames];
-      }).toList();
+      final fileNames = await _fileNameGetterHome.getFileName(conn, userData.username, table);
+      return [fileNames];
+    }).toList();
 
     final futures = await Future.wait(getFileNames);
 
@@ -219,7 +219,7 @@ class DataCaller {
     }
 
     final dataList = await PublicStorageDataRetriever()
-      .retrieveParams(isFromMyPs: false);
+      .getFilesInfo(isFromMyPs: false);
 
     final fileNames = <String>{};
     final bytes = <Uint8List>{};
@@ -276,7 +276,7 @@ class DataCaller {
     psStorageData.psTitleList.clear();
 
     final dataList = await PublicStorageDataRetriever()
-      .retrieveParams(isFromMyPs: true);
+      .getFilesInfo(isFromMyPs: true);
 
     final fileNames = <String>{};
     final bytes = <Uint8List>{};
@@ -380,7 +380,7 @@ class DataCaller {
 
   }
 
-  Future<List<Future<List<List<Object>>>>> startupDataCaller({
+  Future<List<Future<List<List<Object>>>>> getStartupData({
     required MySQLConnectionPool conn,
     required String username,
   }) async {
@@ -398,11 +398,11 @@ class DataCaller {
     ];
 
     return tablesToCheck.map((table) async {
-      final fileNames = await _fileNameGetterHome.retrieveParams(conn, username, table);
+      final fileNames = await _fileNameGetterHome.getFileName(conn, username, table);
       final bytes = await _dataGetterHome.getLeadingParams(conn, username, table);
       final dates = table == GlobalsTable.directoryInfoTable
           ? ["Directory"]
-          : await _dateGetterHome.retrieveParams(conn, username, table);
+          : await _dateGetterHome.getUploadDate(conn, username, table);
       return [fileNames, bytes, dates];
     }).toList();
 

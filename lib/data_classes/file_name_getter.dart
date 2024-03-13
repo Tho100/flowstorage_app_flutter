@@ -6,7 +6,7 @@ class FileNameGetter {
 
   final encryption = EncryptionClass();
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String username, String tableName) async {
+  Future<List<String>> getFileName(MySQLConnectionPool conn, String username, String tableName) async {
 
     try {
       

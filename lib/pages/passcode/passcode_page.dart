@@ -58,7 +58,7 @@ class PasscodePageState extends State<PasscodePage> {
     isButtonsEnabledNotifier.value = false;
   }
 
-  Future<void> callFileData(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType) async {
+  Future<void> getStartupDataFiles(MySQLConnectionPool conn, String savedCustUsername,String savedCustEmail, String savedAccountType) async {
 
     try {
       
@@ -70,7 +70,7 @@ class PasscodePageState extends State<PasscodePage> {
       
       userData.setAccountType(accountType);
 
-      final futures = await DataCaller().startupDataCaller(
+      final futures = await DataCaller().getStartupData(
         conn: conn, username: savedCustUsername);
 
       final results = await Future.wait(futures);
@@ -82,7 +82,7 @@ class PasscodePageState extends State<PasscodePage> {
       final foldersList = <String>{};
 
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-        foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
+        foldersList.addAll(await FolderRetriever().getFolderName(savedCustUsername));
       }
 
       for (final result in results) {
@@ -139,7 +139,7 @@ class PasscodePageState extends State<PasscodePage> {
 
         tempData.origin == OriginFile.offline 
         ? await QuickActionsModel().offline()
-        : await callFileData(
+        : await getStartupDataFiles(
           conn, userData.username, userData.email, userData.accountType);
 
         justLoading.stopLoading();

@@ -35,7 +35,7 @@ class CallPreviewFileData {
       ? await uploaderName.getUploaderName(tableName: tableNamePs, fileTypes: fileTypes)
       : userData.username;
 
-    return await retrieveData.retrieveDataParams(
+    return await retrieveData.getFileData(
       uploaderUsername,
       tempData.selectedFileName,
       tableName

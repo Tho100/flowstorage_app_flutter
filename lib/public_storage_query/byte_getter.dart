@@ -29,7 +29,7 @@ class ByteGetterPs {
     GlobalsTable.psApk: "apk0.jpg"
   };
 
-  Future<List<Uint8List>> getLeadingParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<Uint8List>> getFileData(MySQLConnectionPool conn, String tableName) async {
 
     if (tableName == GlobalsTable.psImage) {
 
@@ -48,7 +48,7 @@ class ByteGetterPs {
 
   }
 
-  Future<List<Uint8List>> myGetLeadingParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<Uint8List>> getMyFileData(MySQLConnectionPool conn, String tableName) async {
     
     if (tableName == GlobalsTable.psImage) {
 
@@ -142,12 +142,12 @@ class ByteGetterPs {
       if(psStorageData.psThumbnailBytesList.isEmpty || psStorageData.myPsThumbnailBytesList.isEmpty) {
 
         final thumbnailBytes = isFromMyPs 
-          ? await thumbnailGetter.myRetrieveParams(conn) 
-          : await thumbnailGetter.retrieveParams(conn);
+          ? await thumbnailGetter.getMyThumbnail(conn) 
+          : await thumbnailGetter.getThumbnail(conn);
 
         isFromMyPs 
-        ? psStorageData.setMyPsThumbnailBytes(thumbnailBytes)
-        : psStorageData.setPsThumbnailBytes(thumbnailBytes);
+          ? psStorageData.setMyPsThumbnailBytes(thumbnailBytes)
+          : psStorageData.setPsThumbnailBytes(thumbnailBytes);
 
         getByteValue.addAll(thumbnailBytes);
 

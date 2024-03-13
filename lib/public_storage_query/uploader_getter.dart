@@ -2,7 +2,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 class UploaderGetterPs {
 
-  Future<List<String>> retrieveParams(MySQLConnectionPool conn, String tableName) async {
+  Future<List<String>> getUploaderName(MySQLConnectionPool conn, String tableName) async {
 
     try {   
 

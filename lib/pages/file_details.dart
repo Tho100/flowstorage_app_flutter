@@ -120,7 +120,8 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
         fileBytes = Globals.imageType.contains(fileType) 
           ? storageData.imageBytesFilteredList[fileIndex] 
-          : await RetrieveData().retrieveDataParams(userData.username, widget.fileName, currentTable);
+          : await RetrieveData().getFileData(
+            userData.username, widget.fileName, currentTable);
 
       }
 

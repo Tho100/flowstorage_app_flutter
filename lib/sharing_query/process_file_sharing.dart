@@ -50,7 +50,7 @@ class ProcessFileSharing {
 
   }
 
-  Future<Uint8List> _callFileBytesData(String selectedFilename, String tableName) async {
+  Future<Uint8List> _getFileBytesData(String selectedFilename, String tableName) async {
     
     final fileType = selectedFilename.split('.').last;
 
@@ -64,7 +64,7 @@ class ProcessFileSharing {
         return CompressorApi.compressByte(tempData.fileByteData);
 
       } else {
-        final decompressedBytesData = await retrieveData.retrieveDataParams(userData.username, selectedFilename, tableName);
+        final decompressedBytesData = await retrieveData.getFileData(userData.username, selectedFilename, tableName);
         return CompressorApi.compressByte(decompressedBytesData);
 
       }
@@ -195,7 +195,7 @@ class ProcessFileSharing {
 
     final fileType = fileName.split('.').last;
 
-    final fileBytesData = await _callFileBytesData(fileName, tableName);
+    final fileBytesData = await _getFileBytesData(fileName, tableName);
     final fileData = base64.encode(fileBytesData);
 
     return SpecialFile().ignoreEncryption(fileType) 

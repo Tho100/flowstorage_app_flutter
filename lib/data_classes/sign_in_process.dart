@@ -36,11 +36,7 @@ class SignInUser {
   final crud = Crud();
   final logger = Logger();
 
-  Future<void> _callFileData({
-    required MySQLConnectionPool conn, 
-    required bool rememberMeChecked, 
-    required String email
-  }) async {
+  Future<void> _getStartupDataFiles(MySQLConnectionPool conn, bool rememberMeChecked, String email) async {
 
     final accountInfo = await userDataGetter
       .getAccountTypeAndUsername(email: email, conn: conn);
@@ -53,7 +49,7 @@ class SignInUser {
     userData.setEmail(email);
     userData.setAccountType(accountPlan);
 
-    final futures = await DataCaller().startupDataCaller(
+    final futures = await DataCaller().getStartupData(
       conn: conn, username: username);
   
     final results = await Future.wait(futures);
@@ -75,7 +71,7 @@ class SignInUser {
     }
 
     if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-      foldersList.addAll(await FolderRetriever().retrieveParams(username));
+      foldersList.addAll(await FolderRetriever().getFolderName(username));
     }
 
     final directoriesList = fileNames.where((fileName) => !fileName.contains('.')).toList();
@@ -121,11 +117,7 @@ class SignInUser {
             justLoading.startLoading(context: context);
           }
 
-          await _callFileData(
-            conn: conn, 
-            rememberMeChecked: isRememberMeChecked, 
-            email: email!
-          );
+          await _getStartupDataFiles(conn, isRememberMeChecked, email!);
 
           final localUsernames = await LocalStorageModel().readLocalAccountUsernames();
 

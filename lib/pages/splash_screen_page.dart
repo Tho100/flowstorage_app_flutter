@@ -49,23 +49,17 @@ class SplashScreenState extends State<SplashScreen> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
+  final storage = const FlutterSecureStorage();
+
   final crud = Crud();
   
   Timer? splashScreenTimer;
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeQuickActions();
-    _startTimer();
-  }
-
   void _initializeQuickActions() async {
 
     const quickActions = QuickActions();
-
-    const storage = FlutterSecureStorage();
-    bool isPassCodeExists = await storage.containsKey(key: "key0015");
+    
+    final isPassCodeExists = await storage.containsKey(key: "key0015");
 
     quickActions.initialize((String shortcutType) async {
 
@@ -141,8 +135,7 @@ class SplashScreenState extends State<SplashScreen> {
 
       } else {
 
-        const storage = FlutterSecureStorage();
-        bool isPassCodeExists = await storage.containsKey(key: "key0015");
+        final isPassCodeExists = await storage.containsKey(key: "key0015");
 
         final isPasscodeEnabled = await storage.read(key: "isEnabled");
 
@@ -168,7 +161,7 @@ class SplashScreenState extends State<SplashScreen> {
                     
           tempData.origin == OriginFile.offline 
           ? await quickActionsModel.offline()
-          : await _callFileData(
+          : await _getStartupDataFiles(
             conn, getLocalUsername, getLocalEmail, getLocalAccountType);
           
           if(mounted) {
@@ -185,7 +178,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   }
 
-  Future<void> _callFileData(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType) async {
+  Future<void> _getStartupDataFiles(MySQLConnectionPool conn, String savedCustUsername, String savedCustEmail, String savedAccountType) async {
 
     try {
 
@@ -197,7 +190,7 @@ class SplashScreenState extends State<SplashScreen> {
       
       userData.setAccountType(accountType);
       
-      final futures = await DataCaller().startupDataCaller(
+      final futures = await DataCaller().getStartupData(
         conn: conn, username: savedCustUsername);
 
       final results = await Future.wait(futures);
@@ -209,7 +202,7 @@ class SplashScreenState extends State<SplashScreen> {
       final foldersList = <String>{};
       
       if (await crud.countUserTableRow(GlobalsTable.folderUploadTable) > 0) {
-        foldersList.addAll(await FolderRetriever().retrieveParams(savedCustUsername));
+        foldersList.addAll(await FolderRetriever().getFolderName(savedCustUsername));
       }
 
       for (final result in results) {
@@ -253,6 +246,13 @@ class SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeQuickActions();
+    _startTimer();
   }
 
   @override

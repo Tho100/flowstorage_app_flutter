@@ -10,7 +10,7 @@ class ThumbnailGetterPs {
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  Future<List<Uint8List>> retrieveParams(MySQLConnectionPool conn) async {
+  Future<List<Uint8List>> getThumbnail(MySQLConnectionPool conn) async {
 
     const query = 'SELECT CUST_THUMB FROM ps_info_video ORDER BY STR_TO_DATE(UPLOAD_DATE, "%d/%m/%Y") DESC';
     
@@ -22,7 +22,7 @@ class ThumbnailGetterPs {
 
   }
 
-  Future<List<Uint8List>> myRetrieveParams(MySQLConnectionPool conn) async {
+  Future<List<Uint8List>> getMyThumbnail(MySQLConnectionPool conn) async {
 
     final conn = await SqlConnection.initializeConnection();
 
