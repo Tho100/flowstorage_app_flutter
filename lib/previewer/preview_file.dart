@@ -107,7 +107,7 @@ class PreviewFileState extends State<PreviewFile> {
     
   }
 
-  void _onSlidingUpdate() async {
+  void _onSlidingUpdate() {
 
     final selectedFileName = tempData.selectedFileName;
     

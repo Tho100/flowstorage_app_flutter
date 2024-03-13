@@ -29,19 +29,10 @@ class InsertData {
     required dynamic videoThumbnail,
   }) async {
 
-    const defaultHomeTables = {
-      GlobalsTable.homeImage, GlobalsTable.homeText, 
-      GlobalsTable.homePdf, GlobalsTable.homePtx, 
-      GlobalsTable.homeExcel, GlobalsTable.homeExe, 
-      GlobalsTable.homeAudio, GlobalsTable.homeWord
-    };
+    final defaultHomeTables = Set<String>.from(GlobalsTable.tableNames);
+    defaultHomeTables.remove(GlobalsTable.directoryUploadTable);
 
-    const defaultPsTables = {
-      GlobalsTable.psImage, GlobalsTable.psText, 
-      GlobalsTable.psPdf, GlobalsTable.psPtx, 
-      GlobalsTable.psExcel, GlobalsTable.psExe, 
-      GlobalsTable.psAudio, GlobalsTable.psWord
-    };
+    const defaultPsTables = GlobalsTable.tableNamesPs;
 
     final conn = await SqlConnection.initializeConnection();
 

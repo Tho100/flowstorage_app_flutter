@@ -88,15 +88,14 @@ class Globals {
 
     'mp3' : GlobalsTable.psAudio,
     'wav': GlobalsTable.psAudio
-    
   };
 
   static const generalFileTypes = {
-    ...Globals.audioType,
-    ...Globals.wordType,
-    ...Globals.textType,
-    ...Globals.ptxType,
-    ...Globals.excelType,
+    ...audioType,
+    ...wordType,
+    ...textType,
+    ...ptxType,
+    ...excelType,
     "apk",
     "exe",
     "pdf",

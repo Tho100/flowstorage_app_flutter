@@ -183,13 +183,8 @@ class DataCaller {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final tablesToCheck = [
-      GlobalsTable.homeImage, GlobalsTable.homeText, 
-      GlobalsTable.homeVideo, GlobalsTable.homePdf,
-      GlobalsTable.homeAudio, GlobalsTable.homeExcel, 
-      GlobalsTable.homePtx, GlobalsTable.homeWord,
-      GlobalsTable.homeExe, GlobalsTable.homeApk
-    ];
+    final tablesToCheck = Set<String>.from(GlobalsTable.tableNames);
+    tablesToCheck.remove(GlobalsTable.directoryUploadTable);
 
     final getFileNames = tablesToCheck.map((table) async {
         final fileNames = await _fileNameGetterHome.retrieveParams(conn, userData.username, table);

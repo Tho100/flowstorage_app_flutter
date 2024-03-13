@@ -422,7 +422,6 @@ class StatsPageState extends State<StatisticsPage> {
         ),
       ),
     );
-
   }
 
   Widget _buildLegendUsage() {

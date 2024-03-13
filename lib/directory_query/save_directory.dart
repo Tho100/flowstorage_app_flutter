@@ -63,7 +63,9 @@ class SaveDirectory {
           'name': fileNames,
           'file_data': bufferedFileBytes,
         };
+        
         dataSet.add(data);
+
       }
 
       return dataSet;
@@ -118,7 +120,10 @@ class SaveDirectory {
       
       SnackAlert.okSnack(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
 
-      await CallNotify().customNotification(title: "Directory Saved", subMessage: "${nameList.length} File(s) has been downloaded");
+      await CallNotify().customNotification(
+        title: "Directory Saved", 
+        subMessage: "${nameList.length} File(s) has been downloaded"
+      );
 
     } catch (err) {
       loadingDialog.stopLoading();
