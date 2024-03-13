@@ -1,12 +1,12 @@
 import 'package:flowstorage_fsc/helper/validate_email.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/user_settings/password_recovery_page.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
-import 'package:flowstorage_fsc/widgets/main_text_field.dart';
-import 'package:flowstorage_fsc/data_classes/login_process.dart';
+import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
+import 'package:flowstorage_fsc/data_classes/sign_in_process.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -40,7 +40,8 @@ class SignInPageState extends State<SignInPage> {
     required String auth1
   }) async {
 
-    await SignInUser().logParams(email, auth0, auth1, isCheckedNotifier.value, context);
+    await SignInUser().processSignIn(
+      email, auth0, auth1, isCheckedNotifier.value, context);
 
   }
   
@@ -88,7 +89,7 @@ class SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
@@ -110,92 +111,53 @@ class SignInPageState extends State<SignInPage> {
                 horizontal: mediaQuery.size.width * 0.02,
                 vertical: mediaQuery.size.height * 0.02,
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderText(title: "Sign In", subTitle: "Sign in to your Flowstorage account"),
-                ],
+              child: const HeaderText(
+                title: "Sign In", 
+                subTitle: "Sign in to your Flowstorage account"
               ),
             ),
 
-          const SizedBox(height: 15),
+            const SizedBox(height: 15),
 
-          MainTextField(
-            hintText: "Enter your email address", 
-            controller: emailController,
-          ),
+            MainTextField(
+              hintText: "Enter your email address", 
+              controller: emailController,
+            ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
             
-          Row(
-            children: [
-              SizedBox(
-                width: mediaQuery.size.width*0.68,
-                child: ValueListenableBuilder(
-                  valueListenable: visiblePasswordNotifier,
-                  builder: (context, value, child) {
-                    return TextFormField(
-                      style: const TextStyle(
-                        color: ThemeColor.secondaryWhite,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      enabled: true,
-                      controller: auth0Controller,
-                      obscureText: !value,
-                      decoration: GlobalsStyle.setupTextFieldDecoration(
-                        "Enter your password", 
-                        customSuffix: IconButton(
-                          icon: Icon(value ? Icons.visibility : Icons.visibility_off,
-                            color: ThemeColor.thirdWhite,
-                          ), 
-                          onPressed: () => visiblePasswordNotifier.value = !visiblePasswordNotifier.value,
-                        ),
-                      ),
-                    );
-                  },
+            Row(
+              children: [
+                
+                AuthTextField(mediaQuery).passwordTextField(
+                  controller: auth0Controller, 
+                  visibility: visiblePasswordNotifier
                 ),
-              ),
-              
-              const SizedBox(width: 6),
 
-              SizedBox(
-                width: mediaQuery.size.width*0.2,
-                child: TextFormField(
-                  style: const TextStyle(
-                    color: ThemeColor.secondaryWhite,
-                    fontWeight: FontWeight.w500,
+                AuthTextField(mediaQuery).pinTextField(
+                  controller: auth1Controller
+                ),
+
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            CheckboxTheme(
+              data: CheckboxThemeData(
+                fillColor: MaterialStateColor.resolveWith(
+                    (states) => ThemeColor.darkGrey,
                   ),
-                  enabled: true,
-                  controller: auth1Controller,
-                  obscureText: true,
-                  maxLength: 3,
-                  keyboardType: TextInputType.number,
-                  decoration: GlobalsStyle.setupTextFieldDecoration(
-                    "PIN",
-                    customCounterStyle: const TextStyle(color: Color.fromARGB(255,199,199,199)),
+                checkColor: MaterialStateColor.resolveWith(
+                    (states) => ThemeColor.secondaryWhite,
                   ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 15),
-
-          CheckboxTheme(
-            data: CheckboxThemeData(
-              fillColor: MaterialStateColor.resolveWith(
-                  (states) => ThemeColor.darkGrey,
-                ),
-              checkColor: MaterialStateColor.resolveWith(
-                  (states) => ThemeColor.secondaryWhite,
-                ),
-              overlayColor: MaterialStateColor.resolveWith(
-                  (states) => ThemeColor.secondaryWhite.withOpacity(0.1),
-                ),
-              side: const BorderSide(
-                  color: ThemeColor.lightGrey,
-                  width: 2.0,
-                ),
+                overlayColor: MaterialStateColor.resolveWith(
+                    (states) => ThemeColor.secondaryWhite.withOpacity(0.1),
+                  ),
+                side: const BorderSide(
+                    color: ThemeColor.lightGrey,
+                    width: 2.0,
+                  ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0),
                 ),
@@ -268,5 +230,6 @@ class SignInPageState extends State<SignInPage> {
       ),      
     );
   }
+
 
 }

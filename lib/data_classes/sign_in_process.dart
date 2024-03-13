@@ -94,8 +94,7 @@ class SignInUser {
 
   }
 
-  Future<void> logParams(
-    String? email, String? auth0, String? auth1, bool isRememberMeChecked, BuildContext context) async {
+  Future<void> processSignIn(String? email, String? auth0, String? auth1, bool isRememberMeChecked, BuildContext context) async {
 
     final conn = await SqlConnection.initializeConnection();
 

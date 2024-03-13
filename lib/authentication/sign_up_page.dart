@@ -4,11 +4,11 @@ import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
-import 'package:flowstorage_fsc/widgets/main_text_field.dart';
+import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
@@ -186,13 +186,9 @@ class SignUpPageState extends State<SignUpPage> {
                 horizontal: mediaQuery.size.width * 0.02,
                 vertical: mediaQuery.size.height * 0.02,
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  HeaderText(title: "Sign Up", subTitle: "Create an account for Flowstorage"),
-
-                ],
+              child: const HeaderText(
+                title: "Sign Up", 
+                subTitle: "Create an account for Flowstorage"
               ),
             ),
 
@@ -215,100 +211,62 @@ class SignUpPageState extends State<SignUpPage> {
 
             Row(
               children: [
-                SizedBox(
-                  width: mediaQuery.size.width*0.68,
-                  child: ValueListenableBuilder(
-                    valueListenable: visiblePasswordNotifier,
-                    builder: (context, value, child) {
-                      return TextFormField(
-                        style: const TextStyle(
-                          color: ThemeColor.secondaryWhite,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        enabled: true,
-                        controller: auth0Controller,
-                        obscureText: !value,
-                        decoration: GlobalsStyle.setupTextFieldDecoration(
-                          "Enter a password",
-                          customSuffix: IconButton(
-                            icon: Icon(value ? Icons.visibility : Icons.visibility_off,
-                              color: ThemeColor.thirdWhite,
-                            ), 
-                            onPressed: () => visiblePasswordNotifier.value = !visiblePasswordNotifier.value,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              
-                const SizedBox(width: 6),
 
-                SizedBox(
-                  width: mediaQuery.size.width*0.2,
-                  child: TextFormField(
-                    style: const TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    enabled: true,
-                    controller: auth1Controller,
-                    obscureText: true,
-                    maxLength: 3,
-                    keyboardType: TextInputType.number,
-                    decoration: GlobalsStyle.setupTextFieldDecoration(
-                      "PIN",
-                      customCounterStyle: const TextStyle(color: Color.fromARGB(255,199,199,199)),
-                    ),
-                  ),
+                AuthTextField(mediaQuery).passwordTextField(
+                  controller: auth0Controller, 
+                  visibility: visiblePasswordNotifier
+                ),
+
+                AuthTextField(mediaQuery).pinTextField(
+                  controller: auth1Controller
                 ),
 
               ],
             ),
           
-          const SizedBox(height: 25),
+            const SizedBox(height: 25),
 
-          MainButton(
-            text: "Sign Up",
-            onPressed: processRegistration,
-          ),
+            MainButton(
+              text: "Sign Up",
+              onPressed: processRegistration,
+            ),
 
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          SizedBox(
-            height: 35,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Already have an account?',
-                    style: TextStyle(
-                      color: ThemeColor.secondaryWhite,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ThemeColor.darkBlack,
-                      elevation: 0,
-                      shadowColor: Colors.transparent,
-                      shape: const StadiumBorder(),
-                    ),
-                    onPressed: () => NavigatePage.goToPageLogin(context),
-                    child: const Text(
-                      "Sign In",
+            SizedBox(
+              height: 35,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Already have an account?',
                       style: TextStyle(
-                        color: ThemeColor.darkPurple,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        color: ThemeColor.secondaryWhite,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                ],
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ThemeColor.darkBlack,
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: () => NavigatePage.goToPageLogin(context),
+                      child: const Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: ThemeColor.darkPurple,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           ],
         ),
       ),      
