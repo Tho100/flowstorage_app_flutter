@@ -37,7 +37,6 @@ import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
-import 'package:flowstorage_fsc/provider/ps_data_provider.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -92,7 +91,6 @@ class HomePageState extends State<HomePage> {
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
-  final psUploadData = GetIt.instance<PsUploadDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
@@ -268,6 +266,36 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  Future<void> _initializeUploadPs({
+    required String filePath,
+    required String fileName,
+    required String tableName,
+    required String fileData,
+    File? previewImage,
+    dynamic videoThumbnail,
+  }) async {
+
+    try {
+
+      await UploadDialogModel(
+        upgradeExceededDialog: _showUpgradeExceededDialog,
+      ).publicStorageUpload(
+        fileName: fileName,
+        fileData: fileData,
+        filePath: filePath,
+        tableName: tableName,
+        previewData: previewImage,
+        videoThumbnail: videoThumbnail
+      );
+
+      _scrollEndListView();
+
+    } catch (err, st) {
+      _callOnUploadFailed('Exception from _initializeUploadPs {main}',err,st);
+    }
+
+  }
+
   void _openPsUploadPage({
     required String filePath,
     required String fileName,
@@ -300,12 +328,12 @@ class HomePageState extends State<HomePage> {
             imageBase64Encoded: imagePreview,
             fileBase64Encoded: fileData,
             onUploadPressed: () async {
-              await _onPsUploadPressed(
+              await _initializeUploadPs(
                 fileName: fileName,
                 fileData: fileData,
                 filePath: filePath,
                 tableName: tableName,
-                previewData: previewImage,
+                previewImage: previewImage,
                 videoThumbnail: videoThumbnail
               );
             }, 
@@ -315,43 +343,6 @@ class HomePageState extends State<HomePage> {
     }
 
     await NotificationApi.stopNotification(0);
-
-  }
-
-  Future<void> _onPsUploadPressed({
-    required String fileName, 
-    required String fileData,
-    required String filePath,
-    required String tableName,
-    required File? previewData,
-    required dynamic videoThumbnail,
-  }) async {
-
-    SnackAlert.uploadingSnack(
-      message: "Uploading ${ShortenText().cutText(fileName)}"
-    );
-
-    await CallNotify().customNotification(title: "Uploading...", subMessage: "1 File(s) in progress");
-
-    await UpdateListView().processUpdateListView(
-      filePath: filePath, fileName: fileName,
-      tableName: tableName, fileBase64Encoded: fileData, 
-      previewImage: previewData, thumbnailImage: videoThumbnail
-    );
-
-    psStorageData.psTitleList.add(psUploadData.psTitleValue);
-    psStorageData.psTagsList.add(psUploadData.psTagValue);
-    psStorageData.psUploaderList.add(userData.username);
-
-    UpdateListView().addItemDetailsToListView(fileName: fileName);
-    
-    _scrollEndListView();
-
-    SnackAlert.temporarySnack(
-      message: "Added ${ShortenText().cutText(fileName)}."
-    );
-
-    await CallNotify().uploadedNotification(title: "Upload Finished", count: 1);
 
   }
 
@@ -1422,7 +1413,7 @@ class HomePageState extends State<HomePage> {
         }
 
       }, 
-      textOnPressed: () async {
+      textOnPressed: () {
 
         if(storageData.fileNamesList.length < limitUpload) {
           Navigator.pop(context);
@@ -2071,8 +2062,8 @@ class HomePageState extends State<HomePage> {
                     if (storageData.imageBytesFilteredList.length > 1) ... [
                       const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1),
-
                     ],
+
                     if (storageData.imageBytesFilteredList.length > 2) ... [
                       const SizedBox(width: 25),
                       _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2),

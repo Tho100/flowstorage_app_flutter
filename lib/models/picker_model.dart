@@ -71,7 +71,7 @@ class PickerModel {
 
       final tempData = GetIt.instance<TempDataProvider>();
 
-      const List<String> fileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf", "apk", "exe"];
+      const fileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf", "apk", "exe"];
 
       return await FilePicker.platform.pickFiles(
         type: FileType.custom,

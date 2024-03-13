@@ -185,7 +185,7 @@ class CreateTextPageState extends State<CreateText> {
     
   }
 
-  Widget _buildTxt(BuildContext context) {
+  Widget _buildTextBody() {
     return Padding(
       padding: const EdgeInsets.only(top: 6.0, bottom: 16.0, right: 16, left: 16),
       child: ValueListenableBuilder(
@@ -284,7 +284,7 @@ class CreateTextPageState extends State<CreateText> {
             ),
           ]
         ).buildAppBar(),
-        body: _buildTxt(context),
+        body: _buildTextBody(),
       ),
     );
   }

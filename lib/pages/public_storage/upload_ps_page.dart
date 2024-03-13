@@ -46,16 +46,13 @@ class UploadPsPage extends StatelessWidget {
   String fileSizeInMb() {
 
     final fileByte = base64.decode(fileBase64Encoded);
+    final getSizeMB = fileByte.lengthInBytes/(1024*1024);
 
-    double getSizeMB = fileByte.lengthInBytes/(1024*1024);
     return getSizeMB.toDouble().toStringAsFixed(2);
-    
+
   }
 
   Widget buildBody(BuildContext context) {
-
-    final mediaQuery = MediaQuery.of(context).size;
-
     return Column(
       children: [
 
@@ -198,7 +195,7 @@ class UploadPsPage extends StatelessWidget {
         ),
         
         Container(
-          width: mediaQuery.width,
+          width: MediaQuery.of(context).size.width,
           height: 90,
           decoration: const BoxDecoration(
             color: ThemeColor.mediumGrey,
