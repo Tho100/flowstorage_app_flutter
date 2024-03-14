@@ -28,29 +28,33 @@ class ResponsiveListView extends StatelessWidget {
     return Consumer<StorageDataProvider>(
       builder: (context, storageData, child) {
         return RawScrollbar(
-          radius: const Radius.circular(38),
           thumbColor: ThemeColor.darkWhite,
           minThumbLength: 2,
           thickness: 2,
           child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics()
+            ),
             padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight, top: topExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (context, index) {
-              
-              const titleOffset = Offset(-3, -6);
-              const subtitleOffset = Offset(-2, -4);
-              const trailingOffset = Offset(0, -4);
 
               final fileName = storageData.fileNamesFilteredList[index];
               final fileType = fileName.split('.').last;
 
               final isGeneralFile = Globals.generalFileTypes.contains(fileType);
 
+              const titleOffset = Offset(-3, -6);
+              const subtitleOffset = Offset(-2, -4);
+              const trailingOffset = Offset(0, -4);
+
+              final leadingXOffset = isGeneralFile ? 2.0 : 0.0;
+              const leadingYOffset = 0.0;
+
               final setLeadingImage = storageData.imageBytesFilteredList.isNotEmpty
-                  ? Image.memory(storageData.imageBytesFilteredList[index]!)
-                  : null;
+                ? Image.memory(storageData.imageBytesFilteredList[index]!)
+                : null;
 
               return InkWell(
                 onLongPress: () => itemOnLongPress(index),
@@ -61,8 +65,8 @@ class ResponsiveListView extends StatelessWidget {
                     leading: setLeadingImage != null
                       ? Transform.translate(
                         offset: Offset(
-                          isGeneralFile ? 2 : 0, 
-                          0
+                          leadingXOffset, 
+                          leadingYOffset
                         ),
                         child: ClipRRect(
                           borderRadius: isGeneralFile ? BorderRadius.circular(4) : BorderRadius.circular(6),

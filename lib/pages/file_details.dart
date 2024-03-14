@@ -162,7 +162,6 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           );
 
         }
-
       }
     );
   }
@@ -190,7 +189,6 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           );
 
         }
-
       }
     );
   }
