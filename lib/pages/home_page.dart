@@ -2164,8 +2164,8 @@ class HomePageState extends State<HomePage> {
       : DateShortForm(input: inputDate).convert();
 
     final uploaderName = psStorageData.psUploaderList[index] == userData.username
-        ? "${userData.username} (You)"
-        : psStorageData.psUploaderList[index];
+      ? "${userData.username} (You)"
+      : psStorageData.psUploaderList[index];
 
     return PsGridListView(
       imageBytes: imageBytes,
@@ -2224,7 +2224,9 @@ class HomePageState extends State<HomePage> {
         return Padding(
           padding: paddingValue,
           child: StaggeredGridView.countBuilder(
-            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics()
+            ),
             controller: scrollListViewController,
             shrinkWrap: true,
             itemCount: storageData.fileNamesFilteredList.length,
