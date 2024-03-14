@@ -1770,7 +1770,7 @@ class HomePageState extends State<HomePage> {
             backgroundColor: ThemeColor.darkGrey,
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
             )
           ),
           child: const Text("Select All",
