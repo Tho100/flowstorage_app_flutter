@@ -214,8 +214,8 @@ class ActivityPageState extends State<ActivityPage> {
             Text("No activity to see here",
               style: TextStyle(
                 color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 16
+                fontWeight: FontWeight.bold,
+                fontSize: 18
               ),
             ),
           ],

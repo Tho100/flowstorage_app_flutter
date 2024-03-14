@@ -109,11 +109,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               child: Column(
                 children: [
 
-                  const SizedBox(height: 16),
-
-                  const Divider(color: ThemeColor.lightGrey, height: 2),
-
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 20),
 
                   const Align(
                     alignment: Alignment.topLeft,
@@ -168,9 +164,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           }
         ),
                  
-        const SizedBox(height: 8),
-
-        const Divider(color: ThemeColor.lightGrey),
+        const SizedBox(height: 15),
 
         const Align(
           alignment: Alignment.topLeft,
@@ -236,7 +230,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             ),
             SizedBox(height: 8),
             Text(
-              "Try broadening your search or checking for typos",
+              "Check the spelling or try different keywords",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: ThemeColor.thirdWhite,

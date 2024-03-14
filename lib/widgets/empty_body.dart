@@ -53,13 +53,13 @@ class EmptyBody extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Text(
                 originToSubMessage[tempData.origin]!,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: ThemeColor.thirdWhite,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
