@@ -34,7 +34,7 @@ class ResponsiveSearchBar extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final borderRadius = 20.0;
+  final borderRadius = 25.0;
   
   final double? defaultWidth = 0.94;
   final double? defaultHeight = 50.0;
