@@ -887,6 +887,10 @@ class HomePageState extends State<HomePage> {
 
   Future<void> _refreshListViewData() async {
 
+    if(togglePhotosPressed) {
+      return;
+    }
+
     switch (tempData.origin) {
       case OriginFile.home:
         await _callHomeData();
