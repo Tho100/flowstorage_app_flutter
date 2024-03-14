@@ -45,7 +45,7 @@ class BottomTrailingFolder {
         ),
 
         ElevatedButton(
-          onPressed: () { onDownloadPressed(); },
+          onPressed: () => onDownloadPressed(),
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
           child: const Row(
             children: [
