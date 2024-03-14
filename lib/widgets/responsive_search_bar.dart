@@ -48,9 +48,7 @@ class ResponsiveSearchBar extends StatelessWidget {
           visible: value,
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
-              focusNode?.unfocus();
-            },
+            onTap: () => focusNode?.unfocus(),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),

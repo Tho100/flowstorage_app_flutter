@@ -32,7 +32,7 @@ class BottomTrailingAddItem {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setNotVisible(OriginFile.public))
+        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
         ElevatedButton(
           onPressed: galleryOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -78,7 +78,7 @@ class BottomTrailingAddItem {
           ),
         ),
 
-        if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
+        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching])) ... [
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(
@@ -97,7 +97,7 @@ class BottomTrailingAddItem {
         ),
       ],
 
-      if(WidgetVisibility.setNotVisible(OriginFile.public))
+      if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
       ElevatedButton(
         onPressed: scannerOnPressed,
         style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -113,7 +113,7 @@ class BottomTrailingAddItem {
         ),
       ),
     
-      if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
+      if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching])) ... [
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(

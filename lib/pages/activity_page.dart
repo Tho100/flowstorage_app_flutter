@@ -206,20 +206,13 @@ class ActivityPageState extends State<ActivityPage> {
     return SizedBox(
       height: MediaQuery.of(context).size.height-285,
       child: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.rocket_outlined, size: 115, color: ThemeColor.secondaryWhite),
-            SizedBox(height: 12),
-            Text("No activity to see here",
-              style: TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.bold,
-                fontSize: 18
-              ),
-            ),
-          ],
-        )
+        child: Text("No activity to see here",
+          style: TextStyle(
+            color: ThemeColor.secondaryWhite,
+            fontWeight: FontWeight.bold,
+            fontSize: 18
+          ),
+        ),
       ),
     );
   }
