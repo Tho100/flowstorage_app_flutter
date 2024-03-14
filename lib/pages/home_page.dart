@@ -2220,6 +2220,7 @@ class HomePageState extends State<HomePage> {
         return Padding(
           padding: paddingValue,
           child: StaggeredGridView.countBuilder(
+            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             controller: scrollListViewController,
             shrinkWrap: true,
             itemCount: storageData.fileNamesFilteredList.length,

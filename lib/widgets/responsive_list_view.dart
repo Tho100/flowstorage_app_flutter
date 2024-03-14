@@ -33,6 +33,7 @@ class ResponsiveListView extends StatelessWidget {
           minThumbLength: 2,
           thickness: 2,
           child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight, top: topExtraSpacesHeight),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
