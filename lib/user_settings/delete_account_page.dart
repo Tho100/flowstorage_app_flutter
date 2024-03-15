@@ -6,16 +6,15 @@ import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/verify_auth.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:get_it/get_it.dart';
 
 class DeleteAccountPage extends StatelessWidget {
@@ -23,91 +22,48 @@ class DeleteAccountPage extends StatelessWidget {
   DeleteAccountPage({Key? key}) : super (key: key);
 
   final pinController = TextEditingController();
-  final passController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final passwordNotifier = ValueNotifier<bool>(false);
 
   final userData = GetIt.instance<UserDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
-  Widget _buildTextField({
-    required String hintText, 
-    required TextEditingController controller, 
-    required BuildContext context, 
-    required bool isSecured, 
-    required bool isFromPin
-  }) {
-
-    final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: suffixIconVisibilityNotifier,
-              builder: (_, isVisible, __) => TextFormField(
-                style: const TextStyle(
-                  color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w500,
-                ),
-                enabled: true,
-                controller: controller,
-                obscureText: isSecured ? !isVisible : false,
-                maxLines: 1,
-                maxLength: isFromPin ? 3 : null,
-                keyboardType: isFromPin ? TextInputType.number : null,
-                decoration: GlobalsStyle.setupTextFieldDecoration(
-                  hintText,
-                  customSuffix: isSecured
-                  ? IconButton(
-                      icon: Icon(
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: ThemeColor.thirdWhite,
-                      ),
-                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
-                    )
-                  : null,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildBody(BuildContext context) {
+
+    final mediaQuery = MediaQuery.of(context);
+
     return Column(
       children: [
         
         const Padding(
           padding: EdgeInsets.only(left: 28.0),
-          child: HeaderText(title: "Remove Account", subTitle: "Delete your account data & information"),
+          child: HeaderText(
+            title: "Remove Account", 
+            subTitle: "Delete your account data & information"
+          ),
         ),
 
         const SizedBox(height: 35),
 
-        _buildTextField(
-          hintText: "Enter your password", 
-          controller: passController, 
-          context: context, 
-          isSecured: true,
-          isFromPin: false
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-        const SizedBox(height: 15),
+            AuthTextField(mediaQuery).passwordTextField(
+              controller: passwordController, 
+              visibility: passwordNotifier,
+              customText: "Enter your password"
+            ),
+            
+            const SizedBox(width: 6),
 
-        _buildTextField(
-          hintText: "Enter your PIN", 
-          controller: pinController, 
-          context: context, 
-          isSecured: true, 
-          isFromPin: true
+            AuthTextField(mediaQuery).pinTextField(
+              controller: pinController
+            ),
+
+          ],
         ),
 
         const SizedBox(height: 20),
@@ -115,7 +71,7 @@ class DeleteAccountPage extends StatelessWidget {
         MainButton(
           text: "Proceed",
           onPressed: () async {
-            await _proceedOnPressed(pinController.text, passController.text);
+            await _proceedOnPressed(pinController.text, passwordController.text);
           },
         ),
 
