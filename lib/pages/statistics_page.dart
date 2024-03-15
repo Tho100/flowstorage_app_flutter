@@ -22,6 +22,13 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
+class ChartData {
+  final String x;
+  final double y;
+
+  ChartData(this.x, this.y);
+}
+
 class ChartUploadCountValue {
 
   ChartUploadCountValue(this.category, this.totalUpload);
@@ -617,6 +624,185 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
+  Widget _buildUsageGaugeContainer(BuildContext context) {
+
+    final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
+
+    final totalUpload = tempData.origin == OriginFile.offline 
+      ? 0 : storageData.fileNamesList.length;
+
+    final percentage = ((totalUpload/maxValue) * 100).toInt();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, left: 8.0, right: 8.0),
+      child: Container(
+        height: 165,
+        width: MediaQuery.of(context).size.width-295,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: ThemeColor.justWhite,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Stack(
+            children: [
+              _buildGaugeChart(
+                maxValue: maxValue.toDouble(), 
+                dataValue: totalUpload.toDouble(),
+                text: "${percentage.toString()}%"
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Center(
+                  child: Text(
+                    "${percentage.toString()}%", 
+                    style: GoogleFonts.poppins(
+                      fontSize: 20, fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUsageGaugeByTypeContainer(BuildContext context) {
+
+    final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
+
+    final isOffline = tempData.origin == OriginFile.offline;
+
+    final fileName = storageData.fileNamesList;
+
+    final totalUploadImage = isOffline
+      ? 0 : fileName.where((fileName) => Globals.imageType.contains(fileName.split('.').last)).length;
+
+    final totalUploadVideo = isOffline
+      ? 0 : fileName.where((fileName) => Globals.videoType.contains(fileName.split('.').last)).length;
+
+    final imageVideoTotalUpload = totalUploadVideo+totalUploadImage;
+
+    final imageVideoPercentage = ((imageVideoTotalUpload/maxValue) * 100).toInt();
+
+    final othersTotalUpload = fileName.length-imageVideoTotalUpload;
+    final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 28, left: 8.0, right: 8.0),
+      child: Container(
+        height: 165,
+        width: MediaQuery.of(context).size.width-245,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: ThemeColor.justWhite,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 75,
+                        height: 75,
+                        child: _buildGaugeChart(
+                          maxValue: maxValue.toDouble(), 
+                          dataValue: imageVideoTotalUpload.toDouble(),
+                          customColor: ThemeColor.darkRed,
+                          text: "$imageVideoPercentage%",
+                          textSize: 12.5
+                        ),
+                      ),
+                      Text(
+                        "Image & Video", 
+                        style: GoogleFonts.poppins(
+                          fontSize: 15, fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 75,
+                        height: 75,
+                        child: _buildGaugeChart(
+                          maxValue: maxValue.toDouble(), 
+                          dataValue: othersTotalUpload.toDouble(),
+                          customColor: ThemeColor.secondaryPurple,
+                          text: "$othersPercentage%",
+                          textSize: 12.5
+                        ),
+                      ),
+                      Text(
+                        "Others", 
+                        style: GoogleFonts.poppins(
+                          fontSize: 15, fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGaugeChart({
+    required double maxValue, 
+    required double dataValue, 
+    required String text,
+    double? textSize,
+    Color? customColor,
+  }) {
+    return Stack(
+      children: [
+        SfCircularChart(
+          series: <CircularSeries>[
+            RadialBarSeries<ChartData, String>(
+              dataSource: <ChartData>[
+                ChartData('Data Point', dataValue), 
+              ],
+              xValueMapper: (ChartData data, _) => data.x,
+              yValueMapper: (ChartData data, _) => data.y,
+              trackColor: ThemeColor.darkGrey,
+              maximumValue: maxValue,
+              innerRadius: '80%',
+              cornerStyle: CornerStyle.bothCurve,
+              gap: '5%',
+              radius: '100%',
+              pointColorMapper: (ChartData data, _) {
+                return customColor ?? ThemeColor.darkPurple;
+              },
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: Center(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                fontSize: textSize ?? 20, fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildUsagePage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
@@ -624,6 +810,12 @@ class StatsPageState extends State<StatisticsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildUsageContainer(context),
+          Row(
+            children: [
+              _buildUsageGaugeContainer(context),
+              _buildUsageGaugeByTypeContainer(context),
+            ],
+          ),
           _buildAccountPlanContainer(context),
         ],
       ),
