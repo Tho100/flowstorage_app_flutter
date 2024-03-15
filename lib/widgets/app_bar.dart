@@ -9,13 +9,15 @@ class CustomAppBar {
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
   final BuildContext? context;
-  
+  final VoidCallback? customBackOnPressed;
+
   const CustomAppBar({
     required this.context,
     required this.title,
     this.actions,
     this.bottom,
     this.backgroundColor,
+    this.customBackOnPressed
   });
 
   PreferredSizeWidget? buildAppBar() {
@@ -27,7 +29,7 @@ class CustomAppBar {
       ),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new),
-        onPressed: () => Navigator.pop(context!),
+        onPressed: customBackOnPressed ?? () => Navigator.pop(context!),
       ),
       backgroundColor: backgroundColor ?? ThemeColor.darkBlack,
       elevation: 0,
