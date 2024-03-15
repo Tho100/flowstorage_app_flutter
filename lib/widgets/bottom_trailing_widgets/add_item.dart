@@ -32,7 +32,6 @@ class BottomTrailingAddItem {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
         ElevatedButton(
           onPressed: galleryOnPressed,
           style: GlobalsStyle.btnBottomDialogBackgroundStyle,
@@ -78,7 +77,6 @@ class BottomTrailingAddItem {
           ),
         ),
 
-        if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching])) ... [
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(
@@ -95,25 +93,22 @@ class BottomTrailingAddItem {
             ],
           ),
         ),
-      ],
 
-      if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
-      ElevatedButton(
-        onPressed: scannerOnPressed,
-        style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-        child: const Row(
-          children: [
-            Icon(Icons.center_focus_strong_outlined, color: ThemeColor.secondaryWhite),
-            SizedBox(width: 15.0),
-            Text(
-              'Scan document',
-              style: GlobalsStyle.btnBottomDialogTextStyle,
-            ),
-          ],
+        ElevatedButton(
+          onPressed: scannerOnPressed,
+          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+          child: const Row(
+            children: [
+              Icon(Icons.center_focus_strong_outlined, color: ThemeColor.secondaryWhite),
+              SizedBox(width: 15.0),
+              Text(
+                'Scan document',
+                style: GlobalsStyle.btnBottomDialogTextStyle,
+              ),
+            ],
+          ),
         ),
-      ),
-    
-      if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching])) ... [
+      
         const Divider(color: ThemeColor.lightGrey),
 
         ElevatedButton(
@@ -130,8 +125,7 @@ class BottomTrailingAddItem {
               ],
             ),
           ),
-        ],    
-
+        
         if(WidgetVisibility.setVisible(OriginFile.home))
         ElevatedButton(
           onPressed: directoryOnPressed,

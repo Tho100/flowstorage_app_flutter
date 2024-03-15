@@ -847,7 +847,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         child: Scaffold(
           appBar: CustomAppBar(
             context: context,
-            title: "Search in Public Storage"
+            title: "Search in Public Storage",
+            customBackOnPressed: () {
+              callOnExit();
+              Navigator.pop(context);
+            }
           ).buildAppBar(),
           body: buildBody(),
         ),
