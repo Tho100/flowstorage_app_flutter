@@ -803,20 +803,13 @@ class PreviewFileState extends State<PreviewFile> {
           builder: (context, value, child) {
             return Visibility(
               visible: hideableAppBarFile.contains(currentTable)
-                  ? bottomBarVisibleNotifier.value
-                  : true,
+                ? bottomBarVisibleNotifier.value
+                : true,
               child: AppBar(
-                leading: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back_ios_new)
-                ),
                 backgroundColor: filesInfrontAppBar.contains(currentTable)
-                    ? ThemeColor.darkBlack
-                    : const Color(0x44000000),
+                  ? ThemeColor.darkBlack
+                  : const Color(0x44000000),
                 actions: _buildAppBarActions(),
-                titleSpacing: 0,
-                elevation: 0,
-                centerTitle: false,
                 title: _buildAppBarTitle(),
               ),
             );
@@ -866,7 +859,7 @@ class PreviewFileState extends State<PreviewFile> {
           return true;
         },
         child: _buildBody()
-      ),
+      )
     );
   }
   

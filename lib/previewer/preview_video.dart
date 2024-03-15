@@ -108,7 +108,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       } 
 
     } catch (err, st) {
-      Logger().e("Exception from _callData {PreviewText}", err, st);
+      Logger().e("Exception from _callData {preview_video}", err, st);
       videoBytes = Uint8List(0);
     }
 

@@ -53,6 +53,9 @@ class MainRun extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       theme: ThemeData(
+        actionIconTheme: ActionIconThemeData(
+          backButtonIconBuilder: (BuildContext context) => const Icon(Icons.arrow_back_ios_new),
+        ),
         scaffoldBackgroundColor: ThemeColor.darkBlack,
         textTheme: const TextTheme(
           titleLarge: TextStyle(
