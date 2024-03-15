@@ -80,16 +80,19 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
         const Padding(
           padding: EdgeInsets.only(left: 28.0),
-          child: HeaderText(title: "Reset Password", subTitle: "Reset password with recovery key"),
+          child: HeaderText(
+            title: "Reset Password", 
+            subTitle: "Reset password with recovery key"
+          ),
         ),
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter your email address",emailController,context,false),
+        _buildTextField("Enter your email address", emailController,context,false),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your Recovery Key",recoveryController,context,false),
+        _buildTextField("Enter your Recovery Key", recoveryController,context,false),
 
         const SizedBox(height: 20),
         

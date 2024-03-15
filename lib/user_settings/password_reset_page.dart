@@ -80,7 +80,10 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
         
         const Padding(
           padding: EdgeInsets.only(left: 28),
-          child: HeaderText(title: "Account Recovery", subTitle: "Reset your account password"),
+          child: HeaderText(
+            title: "Account Recovery", 
+            subTitle: "Reset your account password"
+          ),
         ),
 
         const SizedBox(height: 35),

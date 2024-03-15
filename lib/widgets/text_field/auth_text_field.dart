@@ -8,9 +8,12 @@ class AuthTextField {
 
   const AuthTextField(this.mediaQuery);
 
-  Widget pinTextField({required TextEditingController controller}) {
+  Widget pinTextField({
+    required TextEditingController controller,
+    double? customWidth
+  }) {
     return SizedBox(
-      width: mediaQuery.size.width*0.2,
+      width: customWidth ?? mediaQuery.size.width*0.2,
       child: TextFormField(
         style: const TextStyle(
           color: ThemeColor.secondaryWhite,
@@ -31,10 +34,12 @@ class AuthTextField {
 
   Widget passwordTextField({
     required TextEditingController controller,
-    required ValueNotifier<bool> visibility
+    required ValueNotifier<bool> visibility,
+    double? customWidth,
+    String? customText,    
   }) {
     return SizedBox(
-      width: mediaQuery.size.width*0.68,
+      width: customWidth ?? mediaQuery.size.width*0.68,
       child: ValueListenableBuilder(
         valueListenable: visibility,
         builder: (context, value, child) {
@@ -47,7 +52,7 @@ class AuthTextField {
             controller: controller,
             obscureText: !value,
             decoration: GlobalsStyle.setupTextFieldDecoration(
-              "Enter a password",
+              customText ?? "Enter a password",
               customSuffix: IconButton(
                 icon: Icon(value ? Icons.visibility : Icons.visibility_off,
                   color: ThemeColor.thirdWhite,
