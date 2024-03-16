@@ -86,7 +86,7 @@ class PreviewText extends StatelessWidget {
           if (snapshot.hasData) {        
             textController.text = utf8.decode(snapshot.data!);
             return Padding(
-              padding: const EdgeInsets.only(left: 22.0, right: 14.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 14.0),
               child: TextFormField(
                 onChanged: (text) {
                   isChangesMade = true;
