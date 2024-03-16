@@ -31,7 +31,6 @@ import 'package:flowstorage_fsc/interact_dialog/rename_folder_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/sorting_model.dart';
-import 'package:flowstorage_fsc/models/update_list_view.dart';
 import 'package:flowstorage_fsc/models/upload_dialog_model.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
@@ -95,7 +94,6 @@ class HomePageState extends State<HomePage> {
   final tempData = GetIt.instance<TempDataProvider>();
 
   final dataCaller = DataCaller();
-  final updateListView = UpdateListView();
   final deleteData = DeleteData();
   final functionModel = FunctionModel();
 
@@ -1473,10 +1471,10 @@ class HomePageState extends State<HomePage> {
         }
         
       }, 
-      onDeletePressed: () async {
+      onDeletePressed: () {
         DeleteDialog().buildDeleteDialog(
           fileName: "$folderName folder", 
-          onDeletePressed: () async {
+          onDeletePressed: () {
             _deleteFolderOnPressed(folderName);
           }, 
         );
@@ -2426,8 +2424,7 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      final offlineMode = OfflineModel();
-      final offlineDir = await offlineMode.returnOfflinePath();
+      final offlineDir = await OfflineModel().returnOfflinePath();
 
       final listOfflineFiles = offlineDir.listSync();
 
