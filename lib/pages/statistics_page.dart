@@ -675,7 +675,7 @@ class StatsPageState extends State<StatisticsPage> {
     final totalUploadImage = isOffline
       ? 0 : fileName.where((fileName) => Globals.imageType.contains(fileName.split('.').last)).length;
 
-    final imageVideoPercentage = ((totalUploadImage/maxValue) * 100).toInt();
+    final imagePercentage = ((totalUploadImage/maxValue) * 100).toInt();
 
     final othersTotalUpload = fileName.length-totalUploadImage;
     final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
@@ -704,7 +704,7 @@ class StatsPageState extends State<StatisticsPage> {
                           maxValue: maxValue.toDouble(), 
                           dataValue: totalUploadImage.toDouble(),
                           customColor: ThemeColor.secondaryPurple,
-                          text: "$imageVideoPercentage%",
+                          text: "$imagePercentage%",
                           textSize: 12.5
                         ),
                       ),

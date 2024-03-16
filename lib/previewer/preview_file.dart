@@ -733,11 +733,11 @@ class PreviewFileState extends State<PreviewFile> {
               ),
               if (WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   tempData.origin == OriginFile.public
-                      ? psStorageData.psTitleList[widget.tappedIndex]
-                      : psStorageData.psSearchTitleList[widget.tappedIndex],
+                    ? psStorageData.psTitleList[widget.tappedIndex]
+                    : psStorageData.psSearchTitleList[widget.tappedIndex],
                   style: const TextStyle(
                     color: ThemeColor.justWhite,
                     fontSize: 17,
