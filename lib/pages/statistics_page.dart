@@ -675,14 +675,9 @@ class StatsPageState extends State<StatisticsPage> {
     final totalUploadImage = isOffline
       ? 0 : fileName.where((fileName) => Globals.imageType.contains(fileName.split('.').last)).length;
 
-    final totalUploadVideo = isOffline
-      ? 0 : fileName.where((fileName) => Globals.videoType.contains(fileName.split('.').last)).length;
+    final imageVideoPercentage = ((totalUploadImage/maxValue) * 100).toInt();
 
-    final imageVideoTotalUpload = totalUploadVideo+totalUploadImage;
-
-    final imageVideoPercentage = ((imageVideoTotalUpload/maxValue) * 100).toInt();
-
-    final othersTotalUpload = fileName.length-imageVideoTotalUpload;
+    final othersTotalUpload = fileName.length-totalUploadImage;
     final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
 
     return Padding(
@@ -707,14 +702,14 @@ class StatsPageState extends State<StatisticsPage> {
                         height: 75,
                         child: _buildGaugeChart(
                           maxValue: maxValue.toDouble(), 
-                          dataValue: imageVideoTotalUpload.toDouble(),
+                          dataValue: totalUploadImage.toDouble(),
                           customColor: ThemeColor.secondaryPurple,
                           text: "$imageVideoPercentage%",
                           textSize: 12.5
                         ),
                       ),
                       Text(
-                        "Image & Video", 
+                        "Image", 
                         style: GoogleFonts.poppins(
                           fontSize: 15, fontWeight: FontWeight.bold
                         ),
