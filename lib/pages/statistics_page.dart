@@ -558,7 +558,6 @@ class StatsPageState extends State<StatisticsPage> {
         onTap: () => NavigatePage.goToPageUpgrade(),
         child: Container(
           height: 110,
-          width: MediaQuery.of(context).size.width-35,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: ThemeColor.justWhite,
@@ -633,37 +632,33 @@ class StatsPageState extends State<StatisticsPage> {
 
     final percentage = ((totalUpload/maxValue) * 100).toInt();
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 8.0, right: 8.0),
-      child: Container(
-        height: 165,
-        width: MediaQuery.of(context).size.width-295,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: ThemeColor.justWhite,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Stack(
-            children: [
-              _buildGaugeChart(
-                maxValue: maxValue.toDouble(), 
-                dataValue: totalUpload.toDouble(),
-                text: "${percentage.toString()}%"
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Center(
-                  child: Text(
-                    "${percentage.toString()}%", 
-                    style: GoogleFonts.poppins(
-                      fontSize: 20, fontWeight: FontWeight.bold
-                    ),
+    return Container(
+      height: 165,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: ThemeColor.justWhite,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Stack(
+          children: [
+            _buildGaugeChart(
+              maxValue: maxValue.toDouble(), 
+              dataValue: totalUpload.toDouble(),
+              text: "${percentage.toString()}%"
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Center(
+                child: Text(
+                  "${percentage.toString()}%", 
+                  style: GoogleFonts.poppins(
+                    fontSize: 20, fontWeight: FontWeight.bold
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -680,27 +675,21 @@ class StatsPageState extends State<StatisticsPage> {
     final totalUploadImage = isOffline
       ? 0 : fileName.where((fileName) => Globals.imageType.contains(fileName.split('.').last)).length;
 
-    final totalUploadVideo = isOffline
-      ? 0 : fileName.where((fileName) => Globals.videoType.contains(fileName.split('.').last)).length;
+    final imagePercentage = ((totalUploadImage/maxValue) * 100).toInt();
 
-    final imageVideoTotalUpload = totalUploadVideo+totalUploadImage;
-
-    final imageVideoPercentage = ((imageVideoTotalUpload/maxValue) * 100).toInt();
-
-    final othersTotalUpload = fileName.length-imageVideoTotalUpload;
+    final othersTotalUpload = fileName.length-totalUploadImage;
     final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 28, left: 8.0, right: 8.0),
+      padding: const EdgeInsets.only(right: 8),
       child: Container(
         height: 165,
-        width: MediaQuery.of(context).size.width-245,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: ThemeColor.justWhite,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(6.0),
+          padding: const EdgeInsets.only(left: 6.0, top: 6.0, right: 14.0),
           child: Stack(
             children: [
               Column(
@@ -713,21 +702,21 @@ class StatsPageState extends State<StatisticsPage> {
                         height: 75,
                         child: _buildGaugeChart(
                           maxValue: maxValue.toDouble(), 
-                          dataValue: imageVideoTotalUpload.toDouble(),
-                          customColor: ThemeColor.darkRed,
-                          text: "$imageVideoPercentage%",
+                          dataValue: totalUploadImage.toDouble(),
+                          customColor: ThemeColor.secondaryPurple,
+                          text: "$imagePercentage%",
                           textSize: 12.5
                         ),
                       ),
                       Text(
-                        "Image & Video", 
+                        "Image", 
                         style: GoogleFonts.poppins(
                           fontSize: 15, fontWeight: FontWeight.bold
                         ),
                       ),
                     ],
                   ),
-
+    
                   Row(
                     children: [
                       SizedBox(
@@ -736,7 +725,7 @@ class StatsPageState extends State<StatisticsPage> {
                         child: _buildGaugeChart(
                           maxValue: maxValue.toDouble(), 
                           dataValue: othersTotalUpload.toDouble(),
-                          customColor: ThemeColor.secondaryPurple,
+                          customColor: ThemeColor.thirdWhite,
                           text: "$othersPercentage%",
                           textSize: 12.5
                         ),
@@ -805,16 +794,25 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildUsagePage(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      padding: const EdgeInsets.only(left: 12, right: 8, bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildUsageContainer(context),
-          Row(
-            children: [
-              _buildUsageGaugeContainer(context),
-              _buildUsageGaugeByTypeContainer(context),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, top: 25.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildUsageGaugeContainer(context)
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildUsageGaugeByTypeContainer(context),
+                ),
+              ],
+            ),
           ),
           _buildAccountPlanContainer(context),
         ],

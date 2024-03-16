@@ -137,25 +137,29 @@ class SubmitReportPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text(
                         ShortenText().cutText(fileName, customLength: 42),
                         style: const TextStyle(
                           color: ThemeColor.justWhite,
-                          fontSize: 15,
+                          fontSize: 16,
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(height: 2),
+
+                      const SizedBox(height: 5),
+
                       Text(
                         "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}",
                         style: const TextStyle(
-                          color: ThemeColor.secondaryWhite,
+                          color: ThemeColor.thirdWhite,
                           fontSize: 14,
                           overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
+                      
                     ],
                   ),
                 ),

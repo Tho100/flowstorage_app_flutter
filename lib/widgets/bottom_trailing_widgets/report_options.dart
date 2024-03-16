@@ -19,22 +19,29 @@ class BottomTrailingReport {
     String reportName, 
     String reportType,
   ) {
-    return ElevatedButton(
-      onPressed: () { 
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SubmitReportPage(fileName: fileName, reportType: reportType))
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: ThemeColor.darkBlack,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35.0),
-          side: const BorderSide(color: ThemeColor.lightGrey),
+    return SizedBox(
+      height: 42,
+      child: ElevatedButton(
+        onPressed: () { 
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SubmitReportPage(fileName: fileName, reportType: reportType))
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35.0),
+            side: const BorderSide(color: ThemeColor.lightGrey),
+          ),
+        ),
+        child: Text(reportName,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600
+          ),
         ),
       ),
-      child: Text(reportName),
     );
   }
 
@@ -83,7 +90,7 @@ class BottomTrailingReport {
                           ],
                         ),
               
-                        const SizedBox(height: 3),
+                        const SizedBox(height: 10),
 
                         Row(
       
