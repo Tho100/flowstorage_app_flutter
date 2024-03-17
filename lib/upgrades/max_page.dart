@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -33,14 +33,10 @@ class MaxPageState extends State<MaxPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: ThemeColor.darkBlack,
-        title: const Text(
-          "Upgrade Plan"
-        ),
-      ),
+      appBar: CustomAppBar(
+        context: context, 
+        title: "Upgrade Plan"
+      ).buildAppBar(),
       body: WebViewWidget(
         controller: controller,
       ),
