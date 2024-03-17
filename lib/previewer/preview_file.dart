@@ -811,6 +811,7 @@ class PreviewFileState extends State<PreviewFile> {
                 ? bottomBarVisibleNotifier.value
                 : true,
               child: AppBar(
+                titleSpacing: 2,
                 backgroundColor: filesInfrontAppBar.contains(currentTable)
                   ? ThemeColor.darkBlack
                   : const Color(0x44000000),

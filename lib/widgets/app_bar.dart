@@ -23,6 +23,7 @@ class CustomAppBar {
 
   PreferredSizeWidget? buildAppBar() {
     return AppBar(
+      titleSpacing: 5,
       automaticallyImplyLeading: false,
       title: Text(
         title,
