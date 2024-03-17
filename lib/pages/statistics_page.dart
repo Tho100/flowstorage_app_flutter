@@ -677,7 +677,9 @@ class StatsPageState extends State<StatisticsPage> {
 
     final imagePercentage = ((totalUploadImage/maxValue) * 100).toInt();
 
-    final othersTotalUpload = fileName.length-totalUploadImage;
+    final othersTotalUpload = isOffline 
+      ? 0 : fileName.length-totalUploadImage;
+      
     final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
 
     return Padding(
