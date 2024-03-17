@@ -132,7 +132,8 @@ class UpdateListView {
     List<Uint8List> newImageByteValues = [];
     List<Uint8List> newFilteredSearchedBytes = [];
 
-    final verifyTableName = tempData.origin == OriginFile.directory ? GlobalsTable.directoryUploadTable : tableName;
+    final verifyTableName = tempData.origin == OriginFile.directory 
+      ? GlobalsTable.directoryUploadTable : tableName;
 
     if (tempData.origin != OriginFile.offline) {
       await _insertFileData(

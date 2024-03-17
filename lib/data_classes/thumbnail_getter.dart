@@ -17,10 +17,7 @@ class ThumbnailGetter {
 
   Future<List<Uint8List>> getThumbnails(MySQLConnectionPool conn) async {
     
-    final conn = await SqlConnection.initializeConnection();
-
     String query;
-    Map<String, dynamic> params;
   
     query = "SELECT CUST_THUMB FROM ";
 
@@ -35,14 +32,13 @@ class ThumbnailGetter {
 
       } else if (tempData.origin == OriginFile.sharedMe) {
         query += " AND CUST_FILE_PATH = :filename";
-        params = {'username': userData.username};
 
       }
     }
 
-    params = {'username': userData.username};
+    final param = {'username': userData.username};
 
-    final results = await conn.execute(query, params);
+    final results = await conn.execute(query, param);
 
     return results.rows.map((row) => 
       base64.decode(row.assoc()['CUST_THUMB']!)
