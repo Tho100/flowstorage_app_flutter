@@ -48,6 +48,7 @@ import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/add_item.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/filter_type.dart';
@@ -1795,14 +1796,10 @@ class HomePageState extends State<HomePage> {
       preferredSize: const Size.fromHeight(65),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: AppBar(
-          titleSpacing: 5,
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          title: Text(appBarTitleValue,
-            style: GlobalsStyle.appBarTextStyle,
-          ),
-          leading: IconButton(
+        child: CustomAppBar(
+          context: context,
+          title: appBarTitleValue,
+          customLeading: IconButton(
             icon: const Icon(Icons.menu, size: 28),
             onPressed: () => sidebarMenuScaffoldKey.currentState?.openDrawer(),
           ),
@@ -1828,7 +1825,7 @@ class HomePageState extends State<HomePage> {
             ],
 
           ],
-        ),
+        ).buildAppBar(),
       ),
     );
   }

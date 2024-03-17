@@ -30,9 +30,11 @@ class InsertData {
   }) async {
 
     final defaultHomeTables = Set<String>.from(GlobalsTable.tableNames);
-    defaultHomeTables.remove(GlobalsTable.directoryUploadTable);
+    final defaultPsTables = Set<String>.from(GlobalsTable.tableNamesPs);
 
-    const defaultPsTables = GlobalsTable.tableNamesPs;
+    defaultHomeTables.remove(GlobalsTable.directoryUploadTable);
+    defaultHomeTables.remove(GlobalsTable.homeVideo);
+    defaultHomeTables.remove(GlobalsTable.psVideo);
 
     final conn = await SqlConnection.initializeConnection();
 
