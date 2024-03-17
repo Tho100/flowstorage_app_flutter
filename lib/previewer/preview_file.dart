@@ -24,7 +24,6 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
@@ -513,7 +512,13 @@ class PreviewFileState extends State<PreviewFile> {
 
               ],
             )
-          : Text(value, style: GlobalsStyle.previewAppBarTextStyle);
+          : Text(value, style: const TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: Color.fromARGB(255,232,232,232),
+              fontWeight: FontWeight.w600,
+              fontSize: 18,          
+          ),
+        );
       },
     );
   }

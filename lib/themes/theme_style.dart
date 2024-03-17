@@ -27,22 +27,8 @@ class GlobalsStyle {
     Colors.grey,
   };
 
-  static const appBarTextStyle = TextStyle(
-    overflow: TextOverflow.ellipsis,
-    color: Color.fromARGB(255,236,236,236),
-    fontWeight: FontWeight.w600,
-    fontSize: 19,          
-  );
-
   static const tabBarTextStyle = TextStyle(
     fontSize: 14, fontWeight: FontWeight.bold
-  );
-
-  static const previewAppBarTextStyle = TextStyle(
-    overflow: TextOverflow.ellipsis,
-    color: Color.fromARGB(255,232,232,232),
-    fontWeight: FontWeight.w600,
-    fontSize: 18,          
   );
 
   static const settingsLeftTextStyle = TextStyle(
