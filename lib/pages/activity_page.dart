@@ -221,6 +221,8 @@ class ActivityPageState extends State<ActivityPage> {
 
     final fileType = mostUploadedFilesName[index].split('.').last;
 
+    final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -234,14 +236,18 @@ class ActivityPageState extends State<ActivityPage> {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: ThemeColor.mediumGrey,
-              borderRadius: BorderRadius.circular(12)
+              color: ThemeColor.darkBlack,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: isGeneralFile 
+                ? ThemeColor.mediumGrey : ThemeColor.darkBlack
+              )
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(18),
               child: Image.memory(
                 mostUploadedImageBytes[index]!,
-                fit: Globals.generalFileTypes.contains(fileType) 
+                fit: isGeneralFile
                 ? BoxFit.scaleDown : BoxFit.cover,
               ),
             )
@@ -504,13 +510,13 @@ class ActivityPageState extends State<ActivityPage> {
                       height: 225,
                       decoration: BoxDecoration(
                         color: ThemeColor.darkBlack,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: ThemeColor.mediumGrey
                         )
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                         child: Image.memory(recentImageBytes[index]!,
                           fit: Globals.generalFileTypes.contains(fileType) || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover, 
                           height: 225, width: 145
