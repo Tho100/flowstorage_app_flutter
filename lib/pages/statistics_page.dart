@@ -520,7 +520,7 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           children: [
             
-            _buildInfoUsage("$totalUpload/$maxValue Uploads", "$percentage%"),
+            _buildInfoUsage("$totalUpload/$maxValue Uploads", "$percentage% Used"),
             const SizedBox(height: 12),
 
             _buildUsageProgressBar(context),
