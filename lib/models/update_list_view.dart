@@ -46,7 +46,7 @@ class UpdateListView {
 
     List<Future<void>> isolatedFileFutures = [];
 
-    isolatedFileFutures.add(insertData.insertValueParams(
+    isolatedFileFutures.add(insertData.insert(
       tableName: table,
       fileName: filePath,
       userName: userData.username,

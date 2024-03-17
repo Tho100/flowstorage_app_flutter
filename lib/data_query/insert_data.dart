@@ -21,7 +21,7 @@ class InsertData {
   final psUploadData = GetIt.instance<PsUploadDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
-  Future<void> insertValueParams({
+  Future<void> insert({
     required String tableName,
     required String fileName,
     required String userName,
