@@ -56,7 +56,7 @@ class CreateTextPageState extends State<CreateText> {
 
     try {
     
-      await InsertData().insertValueParams(
+      await InsertData().insert(
         tableName: table,
         fileName: fileName,
         userName: userData.username,
