@@ -14,14 +14,14 @@ import 'package:get_it/get_it.dart';
 
 class BackupRecoveryPage extends StatelessWidget {
 
-  BackupRecoveryPage({Key? key}) : super (key: key);
+  BackupRecoveryPage({Key? key}) : super(key: key);
 
   final pinController = TextEditingController();
   final passwordController = TextEditingController();
 
   final passwordNotifier = ValueNotifier<bool>(false);
 
-  Widget _buildBody(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     
     final mediaQuery = MediaQuery.of(context);
 
@@ -62,7 +62,10 @@ class BackupRecoveryPage extends StatelessWidget {
         MainButton(
           text: "Export Recovery Key",
           onPressed: () async {
-            await _exportOnPressed(pinController.text, passwordController.text);
+            await exportOnPressed(
+              pinController.text, 
+              passwordController.text
+            );
           },
         ),
 
@@ -70,7 +73,7 @@ class BackupRecoveryPage extends StatelessWidget {
     );
   }
 
-  Future<void> _exportOnPressed(String pinInput, String passwordInput) async {
+  Future<void> exportOnPressed(String pinInput, String passwordInput) async {
 
     try {
 
@@ -118,7 +121,7 @@ class BackupRecoveryPage extends StatelessWidget {
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context),
+      body: buildBody(context),
     );
   }
 

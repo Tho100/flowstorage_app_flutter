@@ -19,7 +19,7 @@ import 'package:get_it/get_it.dart';
 
 class DeleteAccountPage extends StatelessWidget {
 
-  DeleteAccountPage({Key? key}) : super (key: key);
+  DeleteAccountPage({Key? key}) : super(key: key);
 
   final pinController = TextEditingController();
   final passwordController = TextEditingController();
@@ -30,7 +30,7 @@ class DeleteAccountPage extends StatelessWidget {
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
 
-  Widget _buildBody(BuildContext context) {
+  Widget buildBody(BuildContext context) {
 
     final mediaQuery = MediaQuery.of(context);
 
@@ -71,7 +71,10 @@ class DeleteAccountPage extends StatelessWidget {
         MainButton(
           text: "Proceed",
           onPressed: () async {
-            await _proceedOnPressed(pinController.text, passwordController.text);
+            await proceedOnPressed(
+              pinController.text, 
+              passwordController.text
+            );
           },
         ),
 
@@ -79,7 +82,7 @@ class DeleteAccountPage extends StatelessWidget {
     );
   }
 
-  Future<void> _proceedOnPressed(String pinInput, String passwordInput) async {
+  Future<void> proceedOnPressed(String pinInput, String passwordInput) async {
 
     try {
 
@@ -116,7 +119,7 @@ class DeleteAccountPage extends StatelessWidget {
       );
 
     } catch (err) {
-      CustomAlertDialog.alertDialog("Failed to backup your recovery key.");
+      CustomAlertDialog.alertDialogTitle("An error occurred", "Please try again later.");
     }
 
   }
@@ -174,7 +177,7 @@ class DeleteAccountPage extends StatelessWidget {
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context),
+      body: buildBody(context),
     );
   }
 

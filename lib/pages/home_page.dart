@@ -634,6 +634,7 @@ class HomePageState extends State<HomePage> {
     if(editAllIsPressed) {
       selectedItemsCheckedList.clear();
       selectedItemsCheckedList = List.generate(storageData.fileNamesFilteredList.length, (index) => false);
+      tempData.setAppBarTitle("Select items");
     }
 
     if(!editAllIsPressed) {
