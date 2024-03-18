@@ -67,6 +67,12 @@ class GlobalsStyle {
     ),
   );
 
+  static final btnMiniStyle = ElevatedButton.styleFrom(
+    backgroundColor: ThemeColor.darkGrey,
+    elevation: 0,
+    shape: const StadiumBorder(),
+  );
+
   static final btnNavigationBarStyle = ElevatedButton.styleFrom(
     backgroundColor: ThemeColor.darkGrey,
     elevation: 0,
