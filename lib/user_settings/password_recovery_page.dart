@@ -141,14 +141,14 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         Navigator.push(
           context, 
           MaterialPageRoute(builder: (context) => ResetPasswordPage(
-            custUsername: widget.username, custEmail: email
+            username: widget.username, email: email
             )
           )
         );
       }
 
     } catch (err) {
-      CustomAlertDialog.alertDialogTitle("An error occurred","Failed to process your recovery key. Please try again later");
+      CustomAlertDialog.alertDialogTitle("An error occurred", "Failed to process your recovery key. Please try again later");
     }
 
   }

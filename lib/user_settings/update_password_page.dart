@@ -29,7 +29,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  Widget _buildBody(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     
     final mediaQuery = MediaQuery.of(context);
 
@@ -146,7 +146,7 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context),
+      body: buildBody(context),
     );
   }
 

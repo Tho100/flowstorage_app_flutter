@@ -1,79 +1,33 @@
 import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 
-class ResetPasswordPage extends StatefulWidget {
+class ResetPasswordPage extends StatelessWidget {
 
-  final String custUsername;
-  final String custEmail;
+  final String username;
+  final String email;
 
-  const ResetPasswordPage({
-    Key? key,
-    required this.custUsername,
-    required this.custEmail,
-  }) : super (key: key);
+  ResetPasswordPage({
+    required this.username,
+    required this.email,
+    Key? key
+  }) : super(key: key);
 
-  @override
-  State<ResetPasswordPage> createState() => ResetAuthenticationState();
-}
+  final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-class ResetAuthenticationState extends State<ResetPasswordPage> {
+  final newPasswordNotifier = ValueNotifier<bool>(false);
+  final confirmPasswordNotifier = ValueNotifier<bool>(false);
 
-  final curPassController = TextEditingController();
-  final newPassController = TextEditingController();
+  Widget buildBody(BuildContext context) {
 
-  final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
-
-  Widget _buildTextField(String hintText, TextEditingController controller, BuildContext context, bool isSecured, bool isPin) {
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: suffixIconVisibilityNotifier,
-              builder: (_, isVisible, __) => TextFormField(
-                style: const TextStyle(
-                  color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w500,
-                ),
-                enabled: true,
-                controller: controller,
-                obscureText: isSecured ? !isVisible : true,
-                maxLines: 1,
-                decoration: GlobalsStyle.setupTextFieldDecoration(
-                  hintText,
-                  customSuffix: isSecured 
-                    ? IconButton(
-                      icon: Icon(
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: const Color.fromARGB(255, 141, 141, 141),
-                      ),
-                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
-                    )
-                  : null,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
 
     return Column(
       children: [
@@ -88,11 +42,19 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter a new password", newPassController, context, true, false),
+        AuthTextField(mediaQuery).passwordTextField(
+          controller: newPasswordController, 
+          visibility: newPasswordNotifier,
+          customText: "Enter a new password"
+        ),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Confirm your password", curPassController, context, true, false),
+        AuthTextField(mediaQuery).passwordTextField(
+          controller: confirmPasswordController, 
+          visibility: confirmPasswordNotifier,
+          customText: "Confirm your password"
+        ),
         
         const SizedBox(height: 20),
 
@@ -100,8 +62,8 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
           text: "Update Password",
           onPressed: () async {
             await processResetPassword(
-              currentAuth: curPassController.text, 
-              newAuth: newPassController.text
+              currentAuth: confirmPasswordController.text, 
+              newAuth: newPasswordController.text
             );
           }
         ),
@@ -126,11 +88,11 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
         return;
       }
 
-      final getUsername = await getUsernameByEmail(widget.custEmail);
+      final getUsername = await getUsernameByEmail(email);
 
       await updateAuthPassword(newAuth, getUsername);
 
-      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for ${widget.custEmail} has been updated. You may login into your account now");
+      CustomAlertDialog.alertDialogTitle("Password Updated", "Password for $email has been updated. You may login into your account now");
 
     } catch (err) {
       SnackAlert.errorSnack("Failed to update your password.");
@@ -163,21 +125,13 @@ class ResetAuthenticationState extends State<ResetPasswordPage> {
   }
 
   @override
-  void dispose() {
-    newPassController.dispose();
-    curPassController.dispose();
-    suffixIconVisibilityNotifier.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context)
+      body: buildBody(context)
     );
   }
 
