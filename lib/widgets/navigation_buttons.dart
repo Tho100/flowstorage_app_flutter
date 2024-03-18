@@ -1,6 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +38,15 @@ class NavigationButtons extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
+  final buttonStyle = ElevatedButton.styleFrom(
+    backgroundColor: ThemeColor.darkGrey,
+    elevation: 0,
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(14),
+    )
+  );
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -59,7 +67,7 @@ class NavigationButtons extends StatelessWidget {
           
                 ElevatedButton(
                   onPressed: sharedOnPressed,
-                  style: GlobalsStyle.btnNavigationBarStyle,
+                  style: buttonStyle,
                   child: const Row(
                     children: [
                       Icon(Icons.share, color: Colors.white),
@@ -78,7 +86,7 @@ class NavigationButtons extends StatelessWidget {
           
                 ElevatedButton(
                   onPressed: scannerOnPressed,
-                  style: GlobalsStyle.btnNavigationBarStyle,
+                  style: buttonStyle,
                   child: const Row(
                     children: [
                       Icon(Icons.center_focus_strong_rounded, color: Colors.white),
@@ -102,7 +110,7 @@ class NavigationButtons extends StatelessWidget {
                       visible: value,
                       child: ElevatedButton(
                         onPressed: createDirectoryOnPressed,
-                        style: GlobalsStyle.btnNavigationBarStyle,
+                        style: buttonStyle,
                         child: const Row(
                           children: [
                             Icon(Icons.add_box, color: Colors.white),

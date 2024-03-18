@@ -73,15 +73,6 @@ class GlobalsStyle {
     shape: const StadiumBorder(),
   );
 
-  static final btnNavigationBarStyle = ElevatedButton.styleFrom(
-    backgroundColor: ThemeColor.darkGrey,
-    elevation: 0,
-    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 14),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15),
-    )
-  );
-
   static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix, TextStyle? customCounterStyle, }) {
     return InputDecoration(
       hintText: hintText,
