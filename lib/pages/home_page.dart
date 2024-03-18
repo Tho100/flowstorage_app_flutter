@@ -1770,13 +1770,7 @@ class HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: () => _selectAllPhotosOnPressed(),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ThemeColor.darkGrey,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            )
-          ),
+          style: GlobalsStyle.btnMiniStyle,
           child: const Text("Select All",
             style: TextStyle(
               fontSize: 13.2,
@@ -2382,7 +2376,7 @@ class HomePageState extends State<HomePage> {
             : await _callMyPublicStorageData();
 
         },
-        style: GlobalsStyle.btnNavigationBarStyle,
+        style: GlobalsStyle.btnMiniStyle,
         child: ValueListenableBuilder(
           valueListenable: psButtonTextNotifier,
           builder: (context, value, child) {

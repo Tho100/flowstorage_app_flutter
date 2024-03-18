@@ -448,9 +448,12 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildMoreIconButton() {
-    return IconButton(
-      onPressed: _callBottomTrailing,
-      icon: const Icon(Icons.more_vert_rounded),
+    return Transform.translate(
+      offset: const Offset(-4, 0),
+      child: IconButton(
+        onPressed: _callBottomTrailing,
+        icon: const Icon(Icons.pending_outlined, size: 25),
+      ),
     );
   }
 
@@ -526,9 +529,10 @@ class PreviewFileState extends State<PreviewFile> {
   Widget _buildUploadedByText() {
 
     const generalOrigin = {
-      OriginFile.home, OriginFile.sharedMe, OriginFile.folder, 
-      OriginFile.directory, OriginFile.public, OriginFile.publicSearching,
-      OriginFile.offline, 
+      OriginFile.home, OriginFile.sharedMe, 
+      OriginFile.directory, OriginFile.folder,
+      OriginFile.public, OriginFile.publicSearching,
+      OriginFile.offline,
     };
 
     return Text(
@@ -537,8 +541,8 @@ class PreviewFileState extends State<PreviewFile> {
       textAlign: TextAlign.start,
       style: const TextStyle(
         fontSize: 12,
-        color: Color.fromARGB(255, 136, 136, 136),
-        fontWeight: FontWeight.w500,
+        color: ThemeColor.darkWhite,
+        fontWeight: FontWeight.w600,
       ),
     );
 
@@ -586,7 +590,7 @@ class PreviewFileState extends State<PreviewFile> {
             backgroundColor: color,
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: textStyle,
@@ -595,21 +599,26 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildBottomBar() {
+  Widget _buildBottomBar(BuildContext context) {
     return Container(
       height: 135,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: ThemeColor.darkBlack
+      width: MediaQuery.of(context).size.width-15,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 7,
+            spreadRadius: 5,
+            offset: const Offset(0, 0),
+          )
+        ],
+        color: ThemeColor.justWhite,
+        borderRadius: BorderRadius.circular(16)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
-  
-          const Divider(height: 1, color: ThemeColor.lightGrey),
-
-          const SizedBox(height: 2),
-
+    
           Padding(
             padding: const EdgeInsets.only(left: 6, top: 10), 
             child: SizedBox(
@@ -617,9 +626,9 @@ class PreviewFileState extends State<PreviewFile> {
               child: _buildUploadedByText()
             ),
           ),
-
+  
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 8),
+            padding: const EdgeInsets.only(left: 15, top: 6),
             child: SizedBox(
               width: double.infinity,
               child: ValueListenableBuilder(
@@ -630,66 +639,69 @@ class PreviewFileState extends State<PreviewFile> {
                       ? "$value (You)" : value,
                     textAlign: TextAlign.start,
                     style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 15.2,
+                      color: ThemeColor.darkGrey,
+                      fontWeight: FontWeight.w600,
                     ),
                   );
                 }
               ),
             ),
           ),
-  
+    
           const Spacer(),
-  
+    
           Row(
             
             children: [
-  
+    
               const SizedBox(width: 5),
-  
+    
               _buildBottomButtons(
                 textStyle: const Icon(Icons.comment, size: 22), 
-                color: ThemeColor.darkGrey, 
+                color: ThemeColor.darkBlack, 
                 width: 60, 
                 height: 45,
                 buttonType: "comment", 
               ),
-  
+    
               const Spacer(),
-
+  
               Visibility(
                 visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
                 child: _buildBottomButtons(
                   textStyle: const Icon(Icons.save, size: 22), 
-                  color: ThemeColor.darkPurple, 
+                  color: ThemeColor.darkBlack, 
                   width: 60, 
                   height: 45,
                   buttonType: "save",
                 ),
               ),
-
+  
               _buildBottomButtons(
                 textStyle: const Icon(Icons.download, size: 22), 
-                color: ThemeColor.darkPurple, 
+                color: ThemeColor.darkBlack, 
                 width: 60, 
                 height: 45,
                 buttonType: "download",
               ),
-  
+    
               Visibility(
                 visible: tempData.origin != OriginFile.offline,
                 child: _buildBottomButtons(
-                  textStyle: const Text('SHARE',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600)),
-                  color: ThemeColor.darkPurple,
+                  textStyle: const Text('Share', style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.w600
+                    )
+                  ),
+                  color: ThemeColor.darkBlack,
                   width: 105,
                   height: 45,
                   buttonType: "share",
                 ),
               ),
-  
+    
               const SizedBox(width: 5),
-  
+    
             ],
           ),
         ],
@@ -697,7 +709,7 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
- Widget _buildPreviewerUnavailable() {
+  Widget _buildPreviewerUnavailable() {
     return const Center(
       child: Text(
         "(Preview is not available)",
@@ -766,29 +778,29 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBody() {
-    return Container(
-      decoration: _buildBackgroundDecoration(),
-      child: Column(
-        children: [
-          
-          _buildTextHeaderTitle(),
+    return Column(
+      children: [
+      
+        _buildTextHeaderTitle(),
 
-          Expanded(
-            child: _buildFilePreviewOnCondition(),
-          ),
-
-          ValueListenableBuilder<bool>(
+        Expanded(
+          child: _buildFilePreviewOnCondition(),
+        ),
+  
+        Transform.translate(
+          offset: const Offset(0, -10),
+          child: ValueListenableBuilder<bool>(
             valueListenable: bottomBarVisibleNotifier,
             builder: (context, value, child) {
               return Visibility(
                 visible: value,
-                child: _buildBottomBar(),
+                child: _buildBottomBar(context),
               );
             },
           ),
-
-        ],
-      ),
+        ),
+        
+      ],
     );
   }
 
