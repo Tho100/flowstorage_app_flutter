@@ -448,9 +448,12 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildMoreIconButton() {
-    return IconButton(
-      onPressed: _callBottomTrailing,
-      icon: const Icon(Icons.more_vert_rounded),
+    return Transform.translate(
+      offset: const Offset(-4, 0),
+      child: IconButton(
+        onPressed: _callBottomTrailing,
+        icon: const Icon(Icons.pending_outlined, size: 25),
+      ),
     );
   }
 
