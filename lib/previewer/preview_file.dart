@@ -603,8 +603,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     final fileType = tempData.selectedFileName.split('.').last;
 
-    final isShowHideBottomBar = 
-      Globals.textType.contains(fileType) || fileType == "pdf";
+    final isShowHideBottomBar = fileType == "pdf";
 
     return Container(
       height: 135,
