@@ -618,33 +618,63 @@ class PreviewFileState extends State<PreviewFile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
-    
-          Padding(
-            padding: const EdgeInsets.only(left: 6, top: 10), 
-            child: SizedBox(
-              width: double.infinity,
-              child: _buildUploadedByText()
-            ),
-          ),
-  
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 6),
-            child: SizedBox(
-              width: double.infinity,
-              child: ValueListenableBuilder(
-                valueListenable: uploaderNameNotifier,
-                builder: (context, value, child) {
-                  return Text(
-                    value == userData.username 
-                      ? "$value (You)" : value,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                      fontSize: 15.2,
-                      color: ThemeColor.darkGrey,
-                      fontWeight: FontWeight.w600,
+          
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 6, top: 10), 
+                child: SizedBox(
+                  width: 100,
+                  child: _buildUploadedByText()
+                ),
+              ),
+
+              const Spacer(),
+
+              Transform.translate(
+                offset: const Offset(-10, 10),
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      bottomBarVisibleNotifier.value = false;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ThemeColor.darkBlack,
+                      shape: const StadiumBorder(),
+                    ), 
+                    child: Transform.translate(
+                      offset: const Offset(-12, 0),
+                      child: const Icon(Icons.keyboard_arrow_down)
                     ),
-                  );
-                }
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          Transform.translate(
+            offset: const Offset(0, -5),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 6),
+              child: SizedBox(
+                width: 155,
+                child: ValueListenableBuilder(
+                  valueListenable: uploaderNameNotifier,
+                  builder: (context, value, child) {
+                    return Text(
+                      value == userData.username 
+                        ? "$value (You)" : value,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: 15.2,
+                        color: ThemeColor.darkGrey,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }
+                ),
               ),
             ),
           ),
@@ -654,7 +684,7 @@ class PreviewFileState extends State<PreviewFile> {
           Row(
             
             children: [
-    
+
               const SizedBox(width: 5),
     
               _buildBottomButtons(
