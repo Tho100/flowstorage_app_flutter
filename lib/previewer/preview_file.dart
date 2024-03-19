@@ -778,29 +778,32 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBody() {
-    return Column(
-      children: [
-      
-        _buildTextHeaderTitle(),
-
-        Expanded(
-          child: _buildFilePreviewOnCondition(),
-        ),
-  
-        Transform.translate(
-          offset: const Offset(0, -10),
-          child: ValueListenableBuilder<bool>(
-            valueListenable: bottomBarVisibleNotifier,
-            builder: (context, value, child) {
-              return Visibility(
-                visible: value,
-                child: _buildBottomBar(context),
-              );
-            },
-          ),
-        ),
+    return Container(
+      decoration: _buildBackgroundDecoration(),
+      child: Column(
+        children: [
         
-      ],
+          _buildTextHeaderTitle(),
+    
+          Expanded(
+            child: _buildFilePreviewOnCondition(),
+          ),
+      
+          Transform.translate(
+            offset: const Offset(0, -10),
+            child: ValueListenableBuilder<bool>(
+              valueListenable: bottomBarVisibleNotifier,
+              builder: (context, value, child) {
+                return Visibility(
+                  visible: value,
+                  child: _buildBottomBar(context),
+                );
+              },
+            ),
+          ),
+          
+        ],
+      ),
     );
   }
 

@@ -83,8 +83,10 @@ class PreviewText extends StatelessWidget {
       child: FutureBuilder<Uint8List>(
         future: callTextDataAsync(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {        
-            textController.text = utf8.decode(snapshot.data!);
+          if (snapshot.hasData) {
+            final emptyLines = List.filled(5, '\n').join();
+            final decodedText = utf8.decode(snapshot.data!);
+            textController.text = "$decodedText$emptyLines";
             return Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 30.0),
               child: TextFormField(
