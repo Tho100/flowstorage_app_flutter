@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class EmptyBody extends StatelessWidget {
 
-  final dynamic refreshList;
+  final Future<void> Function() refreshList;
 
   EmptyBody({
     required this.refreshList,

@@ -645,7 +645,7 @@ class UploadDialogModel {
     required String filePath,
     required String tableName,
     required File? previewData,
-    required dynamic videoThumbnail,
+    required Uint8List? videoThumbnail,
   }) async {
 
     final psStorageData = GetIt.instance<PsStorageDataProvider>();

@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_single_cascade_in_expression_statements
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
@@ -25,8 +26,8 @@ class InsertData {
     required String tableName,
     required String fileName,
     required String userName,
-    required dynamic fileValue,
-    required dynamic videoThumbnail,
+    required String fileValue,
+    required Uint8List? videoThumbnail,
   }) async {
 
     final defaultHomeTables = Set<String>.from(GlobalsTable.tableNames);
@@ -44,12 +45,12 @@ class InsertData {
     final fileType = fileName.split('.').last;
 
     final thumbnail = videoThumbnail != null 
-        ? base64.encode(videoThumbnail) 
-        : null;
+      ? base64.encode(videoThumbnail) 
+      : null;
 
     final fileData = specialFile.ignoreEncryption(fileType) 
-        ? fileValue 
-        : encryptedFileData;
+      ? fileValue 
+      : encryptedFileData;
 
     if(defaultHomeTables.contains(tableName)) {
       await _insertFileInfo(

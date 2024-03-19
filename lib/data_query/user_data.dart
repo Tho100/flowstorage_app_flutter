@@ -31,12 +31,12 @@ class UserData {
       'username': userData.username
     };
 
-    for(var tables in GlobalsTable.tableNames) {
+    for(final tables in GlobalsTable.tableNames) {
       final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
       await crud.delete(query: query, params: params);
     }
 
-    for(var tables in GlobalsTable.tableNamesPs) {
+    for(final tables in GlobalsTable.tableNamesPs) {
       final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
       await crud.delete(query: query, params: params);
     }
