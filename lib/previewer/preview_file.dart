@@ -600,6 +600,12 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBottomBar(BuildContext context) {
+
+    final fileType = tempData.selectedFileName.split('.').last;
+
+    final isShowHideBottomBar = 
+      Globals.textType.contains(fileType) || fileType == "pdf";
+
     return Container(
       height: 135,
       width: MediaQuery.of(context).size.width-15,
@@ -631,6 +637,7 @@ class PreviewFileState extends State<PreviewFile> {
 
               const Spacer(),
 
+              if(isShowHideBottomBar)
               Transform.translate(
                 offset: const Offset(-10, 10),
                 child: SizedBox(
@@ -655,7 +662,7 @@ class PreviewFileState extends State<PreviewFile> {
           ),
 
           Transform.translate(
-            offset: const Offset(0, -5),
+            offset: Offset(0, isShowHideBottomBar ? -5 : 0),
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 6),
               child: SizedBox(
