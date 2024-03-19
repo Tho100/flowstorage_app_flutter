@@ -1,7 +1,6 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
-import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -122,41 +121,6 @@ class DeleteData {
 
     await crud.delete(query: query, params: params);
 
-  }
-
-  Future<void> deleteAccount() async {
-
-    final params = {
-      'username': userData.username
-    };
-
-    for(var tables in GlobalsTable.tableNames) {
-      final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
-      await crud.delete(query: query, params: params);
-
-    }
-
-    for(var tables in GlobalsTable.tableNamesPs) {
-      final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
-      await crud.delete(query: query, params: params);
-
-    }
-
-    final queries = [
-      "DELETE FROM information WHERE CUST_USERNAME = :username",
-      "DELETE FROM cust_type WHERE CUST_USERNAME = :username",
-      "DELETE FROM sharing_info WHERE CUST_USERNAME = :username",
-      "DELETE FROM upload_info_directory WHERE CUST_USERNAME = :username",
-      "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username",
-      "DELETE FROM cust_sharing WHERE CUST_FROM = :username",
-      "DELETE FROM cust_sharing WHERE CUST_TO = :username",
-      "DELETE FROM ps_report_info WHERE ISSUER_NAME = :username",
-    ];
-
-    for (final query in queries) {
-      await crud.delete(query: query, params: params);
-    }
-    
   }
 
 }

@@ -40,8 +40,8 @@ class UpdateListView {
   Future<void> _insertFileData({
     required String table,
     required String filePath,
-    required dynamic fileData,
-    dynamic videoThumbnail,
+    required String fileData,
+    Uint8List? videoThumbnail,
   }) async {
 
     List<Future<void>> isolatedFileFutures = [];
@@ -126,7 +126,7 @@ class UpdateListView {
     required String tableName,
     required String fileBase64Encoded,
     File? previewImage,
-    dynamic thumbnailImage,
+    Uint8List? thumbnailImage,
   }) async {
 
     List<Uint8List> newImageByteValues = [];
@@ -165,14 +165,14 @@ class UpdateListView {
       homeImageData.addAll(newFilteredSearchedBytes);
       
     } else if (verifyTableName == GlobalsTable.homeVideo) {
-      homeThumbnailData.add(thumbnailImage);
+      homeThumbnailData.add(thumbnailImage!);
 
     } else if (verifyTableName == GlobalsTable.psImage) {
       psStorageData.psImageBytesList.addAll(newFilteredSearchedBytes);
       psStorageData.myPsImageBytesList.addAll(newFilteredSearchedBytes);
 
     } else if (verifyTableName == GlobalsTable.psVideo) {
-      psStorageData.psThumbnailBytesList.add(thumbnailImage);
+      psStorageData.psThumbnailBytesList.add(thumbnailImage!);
       psStorageData.myPsThumbnailBytesList.add(thumbnailImage);
 
     }

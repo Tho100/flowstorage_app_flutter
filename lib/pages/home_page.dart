@@ -271,7 +271,7 @@ class HomePageState extends State<HomePage> {
     required String tableName,
     required String fileData,
     File? previewImage,
-    dynamic videoThumbnail,
+    Uint8List? videoThumbnail,
   }) async {
 
     try {
@@ -301,7 +301,7 @@ class HomePageState extends State<HomePage> {
     required String tableName,
     required String fileData,
     File? previewImage,
-    dynamic videoThumbnail,
+    Uint8List? videoThumbnail,
   }) async {
 
     await NotificationApi.stopNotification(0);
@@ -314,7 +314,7 @@ class HomePageState extends State<HomePage> {
       imagePreview = fileData;
 
     } else if (Globals.videoType.contains(fileType)) {
-      imagePreview = base64.encode(videoThumbnail);
+      imagePreview = base64.encode(videoThumbnail!);
 
     } 
 
@@ -1827,9 +1827,7 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildEmptyBody() {
     return EmptyBody(
-      refreshList: () async {
-        await _refreshListViewData();
-      }
+      refreshList: () async => await _refreshListViewData(),
     );
   }
 

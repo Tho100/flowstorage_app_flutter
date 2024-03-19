@@ -600,6 +600,12 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBottomBar(BuildContext context) {
+
+    final fileType = tempData.selectedFileName.split('.').last;
+
+    final isShowHideBottomBar = 
+      Globals.textType.contains(fileType) || fileType == "pdf";
+
     return Container(
       height: 135,
       width: MediaQuery.of(context).size.width-15,
@@ -618,33 +624,64 @@ class PreviewFileState extends State<PreviewFile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
-    
-          Padding(
-            padding: const EdgeInsets.only(left: 6, top: 10), 
-            child: SizedBox(
-              width: double.infinity,
-              child: _buildUploadedByText()
-            ),
-          ),
-  
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 6),
-            child: SizedBox(
-              width: double.infinity,
-              child: ValueListenableBuilder(
-                valueListenable: uploaderNameNotifier,
-                builder: (context, value, child) {
-                  return Text(
-                    value == userData.username 
-                      ? "$value (You)" : value,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                      fontSize: 15.2,
-                      color: ThemeColor.darkGrey,
-                      fontWeight: FontWeight.w600,
+          
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 6, top: 10), 
+                child: SizedBox(
+                  width: 100,
+                  child: _buildUploadedByText()
+                ),
+              ),
+
+              const Spacer(),
+
+              if(isShowHideBottomBar)
+              Transform.translate(
+                offset: const Offset(-10, 10),
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      bottomBarVisibleNotifier.value = false;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ThemeColor.darkBlack,
+                      shape: const StadiumBorder(),
+                    ), 
+                    child: Transform.translate(
+                      offset: const Offset(-12, 0),
+                      child: const Icon(Icons.keyboard_arrow_down)
                     ),
-                  );
-                }
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          Transform.translate(
+            offset: Offset(0, isShowHideBottomBar ? -5 : 0),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 6),
+              child: SizedBox(
+                width: 155,
+                child: ValueListenableBuilder(
+                  valueListenable: uploaderNameNotifier,
+                  builder: (context, value, child) {
+                    return Text(
+                      value == userData.username 
+                        ? "$value (You)" : value,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: 15.2,
+                        color: ThemeColor.darkGrey,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }
+                ),
               ),
             ),
           ),
@@ -654,7 +691,7 @@ class PreviewFileState extends State<PreviewFile> {
           Row(
             
             children: [
-    
+
               const SizedBox(width: 5),
     
               _buildBottomButtons(
@@ -778,29 +815,32 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBody() {
-    return Column(
-      children: [
-      
-        _buildTextHeaderTitle(),
-
-        Expanded(
-          child: _buildFilePreviewOnCondition(),
-        ),
-  
-        Transform.translate(
-          offset: const Offset(0, -10),
-          child: ValueListenableBuilder<bool>(
-            valueListenable: bottomBarVisibleNotifier,
-            builder: (context, value, child) {
-              return Visibility(
-                visible: value,
-                child: _buildBottomBar(context),
-              );
-            },
-          ),
-        ),
+    return Container(
+      decoration: _buildBackgroundDecoration(),
+      child: Column(
+        children: [
         
-      ],
+          _buildTextHeaderTitle(),
+    
+          Expanded(
+            child: _buildFilePreviewOnCondition(),
+          ),
+      
+          Transform.translate(
+            offset: const Offset(0, -10),
+            child: ValueListenableBuilder<bool>(
+              valueListenable: bottomBarVisibleNotifier,
+              builder: (context, value, child) {
+                return Visibility(
+                  visible: value,
+                  child: _buildBottomBar(context),
+                );
+              },
+            ),
+          ),
+          
+        ],
+      ),
     );
   }
 

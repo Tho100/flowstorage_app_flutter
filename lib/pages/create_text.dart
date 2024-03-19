@@ -48,10 +48,10 @@ class CreateTextPageState extends State<CreateText> {
   final saveVisibilityNotifier = ValueNotifier<bool>(true);
   final textFormEnabledNotifier = ValueNotifier<bool>(true);
 
-  Future<void> _insertUserFile({
+  Future<void> _insertTextFile({
     required String table,
     required String fileName,
-    required dynamic fileValue,
+    required String fileValue,
   }) async {
 
     try {
@@ -132,7 +132,7 @@ class CreateTextPageState extends State<CreateText> {
         return;
 
       } else {
-        await _insertUserFile(
+        await _insertTextFile(
           table: _tableToUploadTo(),
           fileName: fileName,
           fileValue: compressedFileBase64,

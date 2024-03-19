@@ -11,7 +11,7 @@ class CreateFolder {
   final String titleFolder;
   final List<String> fileValues;
   final List<String> fileNames;
-  final List<dynamic>? videoThumbnail;
+  final List<String>? videoThumbnail;
 
   CreateFolder({
     required this.titleFolder,
