@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/data_query/delete_data.dart';
+import 'package:flowstorage_fsc/data_query/user_data.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_account_dialog.dart';
 import 'package:flowstorage_fsc/main.dart';
@@ -135,7 +135,7 @@ class DeleteAccountPage extends StatelessWidget {
 
     try {
 
-      await DeleteData().deleteAccount();
+      await UserData().deleteAccount();
 
       await LocalStorageModel()
         .deleteAutoLoginAndOfflineFiles(userData.username, true);

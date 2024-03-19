@@ -1,4 +1,4 @@
-import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/user_data.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
@@ -6,7 +6,6 @@ import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/encryption/verify_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -103,7 +102,8 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
     
     if (!passwordIsIncorrect && !pinIsIncorrect) {
 
-      await updateAuthPassword(newPasswordAuth: newPasswordAuth);
+      await UserData()
+        .updatePassword(newPassword: newPasswordAuth);
 
       CustomAlertDialog.alertDialogTitle("Password updated.","Your password has been updated successfully.");
 
@@ -114,18 +114,6 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
       CustomAlertDialog.alertDialog("PIN key is incorrect.");
 
     }
-
-  }
-
-  Future<void> updateAuthPassword({required String newPasswordAuth}) async {
-
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :new_auth WHERE CUST_USERNAME = :username"; 
-    final params = {
-      'new_auth': AuthModel().computeAuth(newPasswordAuth), 
-      'username': userData.username
-    };
-
-    await Crud().update(query: updateAuthQuery, params: params);
 
   }
 

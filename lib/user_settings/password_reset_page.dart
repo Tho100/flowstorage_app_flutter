@@ -1,4 +1,6 @@
-import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
+import 'package:flowstorage_fsc/data_classes/user_data_getter.dart';
+import 'package:flowstorage_fsc/data_query/user_data.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
@@ -6,7 +8,6 @@ import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/text_field/auth_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flowstorage_fsc/encryption/hash_model.dart';
 
 class ResetPasswordPage extends StatelessWidget {
 
@@ -79,6 +80,8 @@ class ResetPasswordPage extends StatelessWidget {
 
     try {
 
+      final conn = await SqlConnection.initializeConnection();
+
       if(newAuth.isEmpty && currentAuth.isEmpty) {
         return;
       }
@@ -88,9 +91,15 @@ class ResetPasswordPage extends StatelessWidget {
         return;
       }
 
-      final getUsername = await getUsernameByEmail(email);
+      final getUsername = await UserDataGetter().getUsername(
+        conn: conn,
+        email: email
+      );
 
-      await updateAuthPassword(newAuth, getUsername);
+      await UserData().updatePassword(
+        newPassword: newAuth, 
+        customUsername: getUsername
+      );
 
       CustomAlertDialog.alertDialogTitle("Password Updated", "Password for $email has been updated. You may login into your account now");
 
@@ -98,30 +107,6 @@ class ResetPasswordPage extends StatelessWidget {
       SnackAlert.errorSnack("Failed to update your password.");
     }
     
-  }
-
-  Future<void> updateAuthPassword(String newAuth,String username) async {
-
-    const updateAuthQuery = "UPDATE information SET CUST_PASSWORD = :new_auth WHERE CUST_USERNAME = :username"; 
-    final params = {'new_auth': AuthModel().computeAuth(newAuth), 'username': username};
-
-    await Crud().update(query: updateAuthQuery, params: params);
-
-  }
-
-  Future<String> getUsernameByEmail(String custEmail) async {
-
-    const selectUsername = "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
-    final params = {'email': custEmail};
-
-    final returnedUsername = await Crud().select(
-      query: selectUsername, 
-      returnedColumn: "CUST_USERNAME", 
-      params: params
-    );
-
-    return returnedUsername;
-
   }
 
   @override
