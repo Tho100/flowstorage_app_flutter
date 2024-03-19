@@ -643,9 +643,7 @@ class PreviewFileState extends State<PreviewFile> {
                   width: 30,
                   height: 30,
                   child: ElevatedButton(
-                    onPressed: () {
-                      bottomBarVisibleNotifier.value = false;
-                    },
+                    onPressed: () => bottomBarVisibleNotifier.value = false,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ThemeColor.darkBlack,
                       shape: const StadiumBorder(),
@@ -830,9 +828,13 @@ class PreviewFileState extends State<PreviewFile> {
             child: ValueListenableBuilder<bool>(
               valueListenable: bottomBarVisibleNotifier,
               builder: (context, value, child) {
-                return Visibility(
-                  visible: value,
-                  child: _buildBottomBar(context),
+                return AnimatedOpacity(
+                  opacity: value ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 250),
+                  child: Visibility(
+                    visible: value,
+                    child: _buildBottomBar(context)
+                  ),
                 );
               },
             ),
@@ -857,17 +859,22 @@ class PreviewFileState extends State<PreviewFile> {
         child: ValueListenableBuilder<bool>(
           valueListenable: bottomBarVisibleNotifier,
           builder: (context, value, child) {
-            return Visibility(
-              visible: hideableAppBarFile.contains(currentTable)
-                ? bottomBarVisibleNotifier.value
-                : true,
-              child: AppBar(
-                titleSpacing: 2,
-                backgroundColor: filesInfrontAppBar.contains(currentTable)
-                  ? ThemeColor.darkBlack
-                  : const Color(0x44000000),
-                actions: _buildAppBarActions(),
-                title: _buildAppBarTitle(),
+            return AnimatedOpacity(
+              opacity: hideableAppBarFile.contains(currentTable) 
+                ? (value ? 1.0 : 0.0) : 1.0,
+              duration: const Duration(milliseconds: 250),
+              child: Visibility(
+                visible: hideableAppBarFile.contains(currentTable)
+                  ? bottomBarVisibleNotifier.value
+                  : true,
+                child: AppBar(
+                  titleSpacing: 2,
+                  backgroundColor: filesInfrontAppBar.contains(currentTable)
+                    ? ThemeColor.darkBlack
+                    : const Color(0x44000000),
+                  actions: _buildAppBarActions(),
+                  title: _buildAppBarTitle(),
+                ),
               ),
             );
           },

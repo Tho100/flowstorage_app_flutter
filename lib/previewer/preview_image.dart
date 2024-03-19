@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flutter/material.dart';
@@ -35,23 +34,14 @@ class PreviewImageState extends State<PreviewImage> {
   }
 
   Widget buildImageWidget(int index) {
-
-    final fileTypes = filteredNames[index].split('.').last;
-
     return InteractiveViewer(
       scaleEnabled: true,
       panEnabled: true,
-      child: Container(
-        constraints: const BoxConstraints.expand(),
-        child: Image.memory(
-          filteredImages[index]!,
-          fit: Globals.generalFileTypes.contains(fileTypes)
-              ? BoxFit.scaleDown
-              : BoxFit.fitWidth,
-        ),
+      child: Image.memory(
+        filteredImages[index]!,
+        fit: BoxFit.fitWidth,
       ),
     );
-
   }
 
   Widget buildImageOnCondition() {
