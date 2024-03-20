@@ -35,7 +35,7 @@ class SubmitReportPage extends StatelessWidget {
 
   final violationReport = {"cv","tv","pv"};
 
-  Widget buildBody(BuildContext context) {
+  Widget buildBody() {
 
     const reportTypeToFull = {
       "cv": "Copyright Violation",
@@ -315,7 +315,7 @@ class SubmitReportPage extends StatelessWidget {
 
   }
 
-  void processOnSubmit(BuildContext context) async {
+  void processOnSubmit() async {
 
     try {
 
@@ -355,7 +355,7 @@ class SubmitReportPage extends StatelessWidget {
                 return;
               }
 
-              processOnSubmit(context);
+              processOnSubmit();
 
               Navigator.pop(context);
 
@@ -363,7 +363,7 @@ class SubmitReportPage extends StatelessWidget {
           ),
         ]
       ).buildAppBar(),
-      body: buildBody(context),
+      body: buildBody(),
     );
   }
 
