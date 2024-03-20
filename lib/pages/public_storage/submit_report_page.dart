@@ -35,8 +35,6 @@ class SubmitReportPage extends StatelessWidget {
 
   final violationReport = {"cv","tv","pv"};
 
-  int numberOfSubmittedReport = 0;
-
   Widget buildBody(BuildContext context) {
 
     const reportTypeToFull = {
@@ -299,61 +297,34 @@ class SubmitReportPage extends StatelessWidget {
     );
   }
 
-  void removeReportedFile(String uploaderName, String encryptedFileName, String fileType) async {
-    final tableName = Globals.fileTypesToTableNamesPs[fileType]!;
+  Future<void> createNewReport(String uploaderName, String fileName) async {
 
-    final removeFileQuery = "DELETE FROM $tableName WHERE CUST_USERNAME = :uploader_name AND CUST_FILE_PATH = :file_name";
-    final params = {'uploader_name': uploaderName, 'file_name': encryptedFileName};
+    final encryptedFileName = EncryptionClass().encrypt(fileName);
 
-    await Crud().delete(query: removeFileQuery, params: params);
-  }
-
-  void createNewReport(String uploaderName, String encryptedFileName) async {
-    const query = "INSERT INTO ps_report_info VALUES (:user_name, :uploader_name, :file_name)";
+    const query = "INSERT INTO ps_report_info VALUES (:issuer_name, :uploader_name, :file_name, :report_type, :encrypted_name)";
 
     final params = {
-      'user_name': userData.username, 
+      'issuer_name': userData.username, 
       'uploader_name': uploaderName,
-      'file_name': encryptedFileName
+      'file_name': fileName,
+      'encrypted_name': encryptedFileName,
+      'report_type': reportType
     };
 
     await Crud().insert(query: query, params: params);
+
   }
 
   void processOnSubmit(BuildContext context) async {
 
     try {
 
-      if(numberOfSubmittedReport != 2) {
+      final uploaderName = psStorageData.psUploaderList
+        .elementAt(storageData.fileNamesFilteredList.indexOf(fileName));
 
-        final uploaderName = psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName));
-        final fileType = fileName.split('.').last;
-
-        final encryptedFileName = EncryptionClass().encrypt(fileName);
-
-        final retrieveCountQuery = violationReport.contains(reportType) 
-          ? 'SELECT COUNT(ISSUER_NAME) FROM ps_report_info WHERE UPLOADER_NAME = :uploader_name AND CUST_FILE_NAME = :file_name' 
-          : 'SELECT COUNT(DISTINCT ISSUER_NAME) FROM ps_report_info WHERE UPLOADER_NAME = :uploader_name AND CUST_FILE_NAME = :file_name';
-
-        final params = {'uploader_name': uploaderName, 'file_name': encryptedFileName};
-
-        final countTotalReports = await Crud().count(query: retrieveCountQuery, params: params);
-
-        if(countTotalReports >= 2) {
-          removeReportedFile(uploaderName, encryptedFileName, fileType);
-
-        } else {
-          createNewReport(uploaderName, encryptedFileName);
-
-        }
-
-      } else {
-        Navigator.pop(context);
-      }
+      await createNewReport(uploaderName, fileName);
 
       CustomFormDialog.startDialog("Thank You", "Your report has been successfully submitted.");
-
-      numberOfSubmittedReport++;
 
     } catch (err) {
       CustomAlertDialog.alertDialog("Something went wrong.");
@@ -378,6 +349,7 @@ class SubmitReportPage extends StatelessWidget {
               ),
             ),
             onPressed: () {
+
               if(violationReport.contains(reportType) && !isMyEntityNotifier.value && !isNotMyEntityNotifier.value) {
                 CustomAlertDialog.alertDialog("We need your input on the last question. Please choose at least one checkbox.");
                 return;
