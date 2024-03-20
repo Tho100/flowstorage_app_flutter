@@ -548,7 +548,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  Future<void> _bottomButtonsOnPressed(String buttonType) async {
+  void _bottomButtonsOnPressed(String buttonType) async {
 
     if(buttonType == "download") {
       await functionModel.downloadFileData(
@@ -585,7 +585,7 @@ class PreviewFileState extends State<PreviewFile> {
         width: width, 
         height: height, 
         child: ElevatedButton(
-          onPressed: () async => await _bottomButtonsOnPressed(buttonType),
+          onPressed: () => _bottomButtonsOnPressed(buttonType),
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
             elevation: 0,
