@@ -216,9 +216,7 @@ class SettingsPageState extends State<SettingsPage> {
                     child: ElevatedButton(
                       onPressed: () => NavigatePage.goToPageUpgrade(),
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
+                        shape: const StadiumBorder(),
                         backgroundColor: ThemeColor.justWhite,
                       ),
                       child: const Text('Upgrade',

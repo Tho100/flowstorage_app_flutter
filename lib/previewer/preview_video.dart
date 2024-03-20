@@ -179,8 +179,8 @@ class PreviewVideoState extends State<PreviewVideo> {
                     }
                   },
                   icon: isLandscapeMode
-                      ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
-                      : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
+                    ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
+                    : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
                 ),
               ),
             ),
@@ -280,8 +280,8 @@ class PreviewVideoState extends State<PreviewVideo> {
                                 videoIsEnded = false;
                               } else {
                                 iconPausePlayNotifier.value = buttonPlayPausePressed 
-                                ? Icons.play_arrow
-                                : Icons.pause;
+                                  ? Icons.play_arrow
+                                  : Icons.pause;
                               }
                               
                               if (buttonPlayPausePressed) {
@@ -359,7 +359,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
             if(!isLandscapeMode) {
             PreviewFileState.bottomBarVisibleNotifier.value =
-                !PreviewFileState.bottomBarVisibleNotifier.value;
+              !PreviewFileState.bottomBarVisibleNotifier.value;
             }
           },
           child: Center(
@@ -422,16 +422,17 @@ class PreviewVideoState extends State<PreviewVideo> {
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
-    final newPosition = 
-    value == "positive" 
-    ? position + const Duration(seconds: 5) 
-    : position - const Duration(seconds: 5);
+    final newPosition = value == "positive" 
+      ? position + const Duration(seconds: 5) 
+      : position - const Duration(seconds: 5);
 
     if (newPosition <= duration) {
       videoPlayerController.seekTo(newPosition);
+
     } else {
       iconPausePlayNotifier.value = Icons.pause;
       videoPlayerController.play();
+
     }
     
   }
@@ -457,7 +458,8 @@ class PreviewVideoState extends State<PreviewVideo> {
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
-    String currentDuration = getDurationString(position);
+    final currentDuration = getDurationString(position);
+
     currentVideoDurationNotifier.value = currentDuration;
     videoPositionNotifier.value = position.inSeconds.toDouble();
 

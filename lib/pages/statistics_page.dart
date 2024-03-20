@@ -22,11 +22,13 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
-class ChartData {
+class GaugeChartData {
+
   final String x;
   final double y;
 
-  ChartData(this.x, this.y);
+  GaugeChartData(this.x, this.y);
+
 }
 
 class ChartUploadCountValue {
@@ -761,19 +763,19 @@ class StatsPageState extends State<StatisticsPage> {
       children: [
         SfCircularChart(
           series: <CircularSeries>[
-            RadialBarSeries<ChartData, String>(
-              dataSource: <ChartData>[
-                ChartData('Data Point', dataValue), 
+            RadialBarSeries<GaugeChartData, String>(
+              dataSource: <GaugeChartData>[
+                GaugeChartData('Data Point', dataValue), 
               ],
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data, _) => data.y,
+              xValueMapper: (GaugeChartData data, _) => data.x,
+              yValueMapper: (GaugeChartData data, _) => data.y,
               trackColor: ThemeColor.darkGrey,
               maximumValue: maxValue,
               innerRadius: '80%',
               cornerStyle: CornerStyle.bothCurve,
               gap: '5%',
               radius: '100%',
-              pointColorMapper: (ChartData data, _) {
+              pointColorMapper: (GaugeChartData data, _) {
                 return customColor ?? ThemeColor.darkPurple;
               },
             ),

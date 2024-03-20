@@ -88,7 +88,7 @@ class MyPlanPageState extends State<MyPlanPage> {
       text,
       style: GoogleFonts.poppins(
         textStyle: TextStyle(
-          color: const Color.fromARGB(255, 18, 18, 18),
+          color: ThemeColor.darkGrey,
           fontWeight: FontWeight.w600,
           fontSize: customFont ?? 15,
         ),
@@ -101,7 +101,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     return Text(text,
       style: GoogleFonts.poppins(
         textStyle: const TextStyle(
-          color: Color.fromARGB(255, 15, 15, 15),
+          color: ThemeColor.mediumBlack,
           fontWeight: FontWeight.w600,
           fontSize: 20
         ),
@@ -489,7 +489,7 @@ class MyPlanPageState extends State<MyPlanPage> {
                         Text("SUPREME",
                           style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 74, 3, 164),
+                              color: ThemeColor.darkPurple,
                               fontWeight: FontWeight.w600,
                               fontSize: 28
                             ),
