@@ -5,7 +5,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/helper/random_generator.dart';
-import 'package:flowstorage_fsc/interact_dialog/activity_image_previewer.dart';
+import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -229,8 +229,8 @@ class ActivityPageState extends State<ActivityPage> {
         GestureDetector(
           onTap: () {
             final fileName = mostUploadedFilesName[index];
-            final imageBytes = mostUploadedImageBytes[index];
-            ActivityImagePreviewer.showPreviewer(fileName, imageBytes);
+            final fileIndex = storageData.fileNamesFilteredList.indexOf(fileName);
+            navigateToPreviewFile(fileName, fileIndex);
           },
           child: Container(
             width: width,
@@ -493,8 +493,8 @@ class ActivityPageState extends State<ActivityPage> {
         return GestureDetector(
           onTap: () {
             final fileName = recentFilesName[index];
-            final imageBytes = recentImageBytes[index];
-            ActivityImagePreviewer.showPreviewer(fileName, imageBytes);
+            final fileIndex = storageData.fileNamesFilteredList.indexOf(fileName);
+            navigateToPreviewFile(fileName, fileIndex);
           },
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -657,9 +657,10 @@ class ActivityPageState extends State<ActivityPage> {
 
   Widget buildPhotoOfTheDay(double width) {
     return GestureDetector(
-      onTap: () => ActivityImagePreviewer.showPreviewer(
-        photoOfTheDayFileName, photoOfTheDayImageBytes
-      ),
+      onTap: (){
+        final fileIndex = storageData.fileNamesFilteredList.indexOf(photoOfTheDayFileName);
+        navigateToPreviewFile(photoOfTheDayFileName, fileIndex);
+      },
       child: SizedBox(
         width: width-45,
         height: 315,
@@ -1046,6 +1047,19 @@ class ActivityPageState extends State<ActivityPage> {
     legacyDate.addAll(filesDate);
     legacyImageBytes.addAll(imagesBytes);
 
+  }
+
+  void navigateToPreviewFile(String selectedFileName, int fileIndex) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PreviewFile(
+          selectedFilename: selectedFileName,
+          tappedIndex: fileIndex
+        ),
+        transitionDuration: const Duration(microseconds: 0), 
+      ),
+    );
   }
 
   @override

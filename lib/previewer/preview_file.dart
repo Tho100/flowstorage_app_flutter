@@ -83,7 +83,8 @@ class PreviewFileState extends State<PreviewFile> {
   @override
   void initState() {
     super.initState();
-    appBarTitleNotifier.value = tempData.selectedFileName;
+    appBarTitleNotifier.value = widget.selectedFilename;
+    tempData.setCurrentFileName(widget.selectedFilename);
     _initializeTableName();
     _initializeUploaderName();
   }
