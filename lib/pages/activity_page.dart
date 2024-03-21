@@ -1057,7 +1057,6 @@ class ActivityPageState extends State<ActivityPage> {
           selectedFilename: selectedFileName,
           tappedIndex: fileIndex
         ),
-        transitionDuration: const Duration(microseconds: 0), 
       ),
     );
   }
