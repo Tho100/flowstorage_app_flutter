@@ -93,7 +93,14 @@ class PreviewFileState extends State<PreviewFile> {
     appBarTitleNotifier.dispose();
     uploaderNameNotifier.dispose();
     tempData.clearFileData();
+    _toggleUIVisibility(true);
     super.dispose();
+  }
+
+  void _toggleUIVisibility(bool visible) {
+    visible 
+      ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
+      : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
   void _initializeTableName() {
@@ -383,7 +390,10 @@ class PreviewFileState extends State<PreviewFile> {
 
   Widget _buildFilePreview() {
     return GestureDetector(
-      onTap: () => bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value,
+      onTap: () {
+        bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
+        _toggleUIVisibility(bottomBarVisibleNotifier.value);
+      },
       child: _buildFileDataWidget(),
     );
   }
