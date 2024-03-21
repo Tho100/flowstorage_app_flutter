@@ -490,6 +490,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   void toPortraitMode() {
+    toggleUIVisibility(true);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -497,10 +498,17 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   void toLandscapeMode() {
+    toggleUIVisibility(false);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+  }
+  
+  void toggleUIVisibility(bool visible) {
+    visible 
+      ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
+      : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
   @override
@@ -520,6 +528,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     currentVideoDurationNotifier.dispose();
     iconPausePlayNotifier.dispose();
     sliderValueController.close();
+    toggleUIVisibility(true);
     super.dispose();
   }
 
