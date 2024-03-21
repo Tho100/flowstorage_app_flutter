@@ -1051,13 +1051,10 @@ class ActivityPageState extends State<ActivityPage> {
 
   void navigateToPreviewFile(String selectedFileName, int fileIndex) {
     Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => PreviewFile(
-          selectedFilename: selectedFileName,
-          tappedIndex: fileIndex
-        ),
-      ),
+      context, 
+      MaterialPageRoute(builder: (context) => PreviewFile(
+        selectedFilename: selectedFileName, tappedIndex: fileIndex)
+      )
     );
   }
 
