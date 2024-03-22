@@ -19,7 +19,7 @@ class RenameDialog {
   static final renameController = TextEditingController();
   
   void copyOnPressed(String fileName) {
-    
+
     final removedFileType = fileName
       .substring(0, fileName.lastIndexOf('.'));
 

@@ -14,28 +14,34 @@ class DeleteAccountDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14)
           ),
-          backgroundColor: ThemeColor.darkGrey,
-          content: const Text(
-            'Delete your Flowstorage account? This action is irreversible.',
-            style: TextStyle(color: Colors.white),
+          backgroundColor: ThemeColor.mediumBlack,
+          content: const Text('Delete your Flowstorage account? This action is irreversible.',
+            style: TextStyle(
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.white),
+              child: const Text('Cancel',
+                style: TextStyle(
+                  color: ThemeColor.secondaryWhite,
+                  fontWeight: FontWeight.bold
+                )
               ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeColor.darkGrey,
+                backgroundColor: ThemeColor.mediumBlack,
                 elevation: 0,
               ),
               onPressed: deleteOnPressed,
-              child: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.red),
+              child: const Text('Delete',
+                style: TextStyle(
+                  color: ThemeColor.darkRed,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

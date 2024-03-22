@@ -83,6 +83,7 @@ class AddSharingPassword {
 
             MainDialogButton(
               text: "Confirm",
+              isButtonClose: false,
               onPressed: () async {
 
                 try {
@@ -104,7 +105,6 @@ class AddSharingPassword {
                 }
 
               },
-              isButtonClose: false,
             ),
 
             const SizedBox(width: 18),

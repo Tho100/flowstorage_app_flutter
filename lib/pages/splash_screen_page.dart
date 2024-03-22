@@ -53,6 +53,9 @@ class SplashScreenState extends State<SplashScreen> {
 
   final crud = Crud();
   
+  final newDirectoryAction = "new_dir";
+  final goOfflinePageAction = "go_offline";
+
   Timer? splashScreenTimer;
 
   void _initializeQuickActions() async {
@@ -89,12 +92,12 @@ class SplashScreenState extends State<SplashScreen> {
     });
 
     quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(
+      ShortcutItem(
         type: newDirectoryAction,
         localizedTitle: 'Create Directory',
         icon: 'dir_icon'
       ),
-      const ShortcutItem(
+      ShortcutItem(
         type: goOfflinePageAction,
         localizedTitle: 'Offline',
         icon: 'off_icon'
@@ -149,20 +152,19 @@ class SplashScreenState extends State<SplashScreen> {
 
         if(isPassCodeExists && isPasscodeEnabled == "true") {
           
-          await Future.delayed(const Duration(milliseconds: 850));
-
-          if(mounted) {
-            NavigatePage.goToPagePasscode(context);
-          }
+          await Future.delayed(const Duration(milliseconds: 850), () {
+            if(mounted) {
+              NavigatePage.goToPagePasscode(context);
+            }
+          });
 
         } else {
 
           final conn = await SqlConnection.initializeConnection();
                     
           tempData.origin == OriginFile.offline 
-          ? await quickActionsModel.offline()
-          : await _getStartupDataFiles(
-            conn, getLocalUsername, getLocalEmail, getLocalAccountType);
+            ? await quickActionsModel.offline()
+            : await _getStartupDataFiles(conn, getLocalUsername, getLocalEmail, getLocalAccountType);
           
           if(mounted) {
             NavigatePage.permanentPageHome(context);

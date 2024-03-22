@@ -8,11 +8,14 @@ class GetAssets {
   static const assetPath = 'assets/images/';
 
   Future<File> loadAssetsFile(String path) async {   
+
     final byteData = await rootBundle.load('$assetPath$path');   
-    final file = await File('${(await getTemporaryDirectory()).path}/$path')       
-    .create(recursive: true);   
+    final file = await File('${(await getTemporaryDirectory()).path}/$path').create(recursive: true);   
+    
     await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));   
+
     return file; 
+
   }
 
   Future<Uint8List> loadAssetsData(String path) async {

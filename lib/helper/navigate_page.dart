@@ -96,7 +96,8 @@ class NavigatePage {
     Navigator.pushAndRemoveUntil(
       context, 
       MaterialPageRoute(builder: (context) => const MainPage()), 
-      (route) => false);
+      (route) => false
+    );
   }
 
   static void permanentPageHome(BuildContext context) {
@@ -209,8 +210,8 @@ class NavigatePage {
     } 
 
     final isSharingDisabled = userData.sharingStatus == "0" 
-    ? true
-    : false;
+      ? true
+      : false;
 
     Navigator.push(
       navigatorKey.currentContext!,

@@ -7,9 +7,9 @@ class CallNotify {
     required int count
   }) async {
 
-    final setupBodyMessage = 
-    count == 1 ? 
-    "1 File has been added" : "$count Files has been added";
+    final setupBodyMessage = count == 1 
+      ?  "1 File has been added" 
+      : "$count Files has been added";
 
     await NotificationApi.showOnFinishTaskNotification(
       title: title,

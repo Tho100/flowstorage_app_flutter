@@ -8,6 +8,3 @@ enum OriginFile {
   public,
   publicSearching,
 }
-
-const newDirectoryAction = "new_dir";
-const goOfflinePageAction = "go_offline";

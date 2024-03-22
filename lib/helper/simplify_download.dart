@@ -68,7 +68,9 @@ class SimplifyDownload {
 
       }
 
-      await CallNotify().downloadedNotification(fileName: fileNameValue!);
+      await CallNotify().downloadedNotification(
+        fileName: fileNameValue!
+      );
 
     } catch (err, st) {
       Logger().e("Exception from downloadFile {SimplifyDownload}", err, st);

@@ -11,18 +11,20 @@ class ScannerPdf {
 
   Future<void> convertImageToPdf({required File imagePath}) async {
 
-    final image = pw.MemoryImage(imagePath.readAsBytesSync());
+    final image = pw.MemoryImage(await imagePath.readAsBytes());
 
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-      return pw.Center(child: pw.Image(image));
-    }));
+          return pw.Center(child: pw.Image(image));
+        }
+      )
+    );
 
   }
 
-  Future<void> savePdf({required String fileName  }) async {
+  Future<void> savePdf({required String fileName}) async {
 
     try {
 
