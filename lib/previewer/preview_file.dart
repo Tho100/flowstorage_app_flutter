@@ -468,13 +468,6 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildInfoIconButton() {
-    return IconButton(
-      onPressed: () => NavigatePage.goToPageFileDetails(tempData.selectedFileName),
-      icon: const Icon(Icons.info_outlined),
-    );
-  }
-
   Widget _buildOpenWithIconButton() {
     return IconButton(
       onPressed: _openWithOnPressed,
@@ -910,7 +903,6 @@ class PreviewFileState extends State<PreviewFile> {
       actions.add(_buildOpenWithIconButton());
     }
 
-    actions.add(_buildInfoIconButton());
     actions.add(_buildMoreIconButton());
 
     return actions;
