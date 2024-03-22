@@ -376,21 +376,32 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
           ),
         ),
+
+
         ValueListenableBuilder(
           valueListenable: videoIsTappedNotifier,
           builder: (context, value, child) {
-            return Visibility(
-              visible: value,
-              child: buildPortraitModeButton()
+            return AnimatedOpacity(
+              opacity: value ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 250),
+              child: Visibility(
+                visible: value,
+                child: buildPortraitModeButton()
+              ),
             );
           },
         ),
+      
         ValueListenableBuilder(
           valueListenable: videoIsTappedNotifier,
           builder: (context, value, child) {
-            return Visibility(
-              visible: value && videoBytes.isNotEmpty,
-              child: buildButtons(),
+            return AnimatedOpacity(
+              opacity: value ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 250),
+              child: Visibility(
+                visible: value && videoBytes.isNotEmpty,
+                child: buildButtons(),
+              ),
             );
           },
         ),
