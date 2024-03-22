@@ -1334,20 +1334,22 @@ class HomePageState extends State<HomePage> {
       
     }
 
+    final isNotOnUploadLimit = tempData.origin == OriginFile.offline || storageData.fileNamesList.length < limitUpload;
+
     return BottomTrailingAddItem().buildTrailing(
+      context: context,
       headerText: headerText, 
       galleryOnPressed: () async {
-
-        if(storageData.fileNamesList.length < limitUpload) {
+        if (isNotOnUploadLimit) {
           Navigator.pop(context);
           await _openDialogUploadGallery();
+
         } else {
           _showUpgradeLimitedDialog(limitUpload);
-        }
 
+        }
       }, 
       fileOnPressed: () async {
-
         if (tempData.origin == OriginFile.public) {
 
           final totalPsUpload = psStorageData.psUploaderList
@@ -1365,11 +1367,7 @@ class HomePageState extends State<HomePage> {
 
         } else {
 
-          if(tempData.origin == OriginFile.offline) {
-            Navigator.pop(context);
-            await _openDialogUploadFile();
-
-          } else if (storageData.fileNamesList.length < limitUpload) {
+          if(isNotOnUploadLimit) {
             Navigator.pop(context);
             await _openDialogUploadFile();
 
@@ -1377,11 +1375,10 @@ class HomePageState extends State<HomePage> {
             _showUpgradeLimitedDialog(limitUpload);
 
           }
-        }
 
+        }
       }, 
       folderOnPressed: () async {
-        
         if(tempStorageData.folderNameList.length != AccountPlan.mapFoldersUpload[userData.accountType]!) {
 
           if(mounted) {
@@ -1395,41 +1392,40 @@ class HomePageState extends State<HomePage> {
             message: "You're currently limited to ${AccountPlan.mapFoldersUpload[userData.accountType]} folders upload. Upgrade your account plan to upload more folder.",
             context: context
           );
-        }
 
+        }
       }, 
       photoOnPressed: () async {
-
-        if (storageData.fileNamesList.length < limitUpload) {
+        if (isNotOnUploadLimit) {
           Navigator.pop(context);
           await _initializePhotoCamera();
+
         } else {
           _showUpgradeLimitedDialog(limitUpload);
-        }
 
+        }
       }, 
       scannerOnPressed: () async {
-
-        if(storageData.fileNamesList.length < limitUpload) {
+        if(isNotOnUploadLimit) {
           Navigator.pop(context);
           await _initializeDocumentScanner();
+
         } else {
           _showUpgradeLimitedDialog(limitUpload);
-        }
 
+        }
       }, 
       textOnPressed: () {
-
-        if(storageData.fileNamesList.length < limitUpload) {
+        if(isNotOnUploadLimit) {
           Navigator.pop(context);
           NavigatePage.goToPageCreateText();
+
         } else {
           _showUpgradeLimitedDialog(limitUpload);
-        }
 
+        }
       }, 
       directoryOnPressed: () {
-
         final countDirectory = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
         if(storageData.fileNamesList.length < AccountPlan.mapFilesUpload[userData.accountType]!) {
           if(countDirectory != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
@@ -1450,9 +1446,8 @@ class HomePageState extends State<HomePage> {
         } else {
           _showUpgradeLimitedDialog(limitUpload);
         }
-
       }, 
-      context: context
+      
     );
   
   }
