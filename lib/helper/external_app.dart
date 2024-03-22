@@ -18,16 +18,13 @@ class ExternalApp {
 
     try {
 
-      Directory tempDir = await getTemporaryDirectory();
-      String tempPath = tempDir.path;
+      final tempDir = await getTemporaryDirectory();
 
-      File tempFile = File('$tempPath/$fileName');
+      final tempFile = File('${tempDir.path}/$fileName');
       
       await tempFile.writeAsBytes(bytes, flush: true);
-
-      String filePath = tempFile.path;
       
-      return await OpenFile.open(filePath);
+      return await OpenFile.open(tempFile.path);
       
     } catch (err) {
       return OpenResult(
@@ -35,7 +32,7 @@ class ExternalApp {
         message: 'An error occurred while opening the file.',
       );
     }
-
+    
   }
 
 }

@@ -12,8 +12,6 @@ class SharingPassword {
 
   final sharingPasswordController = TextEditingController();
   
-  final shareFileData = ShareFileData();
-
   Future buildAskPasswordDialog({
     required String sendTo, 
     required String fileName, 
@@ -86,17 +84,19 @@ class SharingPassword {
 
             MainDialogButton(
               text: "Share",
+              isButtonClose: false,
               onPressed: () async {
 
                 final loadingDialog = SingleTextLoading();
-                final compare = AuthModel().computeAuth(sharingPasswordController.text);
+                final hashedPassword = AuthModel().computeAuth(sharingPasswordController.text);
 
-                if(compare == authInput) {
+                if(hashedPassword == authInput) {
                   
                   loadingDialog.startLoading(
-                    title: "Sharing...", context: context);
+                    title: "Sharing...", context: context
+                  );
 
-                  await shareFileData.insertValuesParams(
+                  await ShareFileData().insertValuesParams(
                     sendTo: sendTo, 
                     fileName: fileName, 
                     comment: comment, 
@@ -111,11 +111,12 @@ class SharingPassword {
                 loadingDialog.stopLoading();
 
                 Navigator.pop(context);
+
               },
-              isButtonClose: false,
             ),
             
             const SizedBox(width: 18),
+
           ],
         ),
         
