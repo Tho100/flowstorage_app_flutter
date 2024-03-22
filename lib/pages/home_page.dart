@@ -547,9 +547,10 @@ class HomePageState extends State<HomePage> {
   }
 
   Future<void> _sortDataDescendingPs() async {
-    await Future.delayed(const Duration(milliseconds: 890));
-    _sortUploadDate();
-    _sortUploadDate();
+    await Future.delayed(const Duration(milliseconds: 890), () {
+      _sortUploadDate();
+      _sortUploadDate();
+    });
   }
 
   Future<void> _refreshPublicStorage() async {
@@ -968,10 +969,10 @@ class HomePageState extends State<HomePage> {
 
         await deleteData.deleteOnMultiSelection(fileName: fileName);
 
-        await Future.delayed(const Duration(milliseconds: 855));
+        await Future.delayed(const Duration(milliseconds: 855), () {
+          _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
+        });
         
-        _removeFileFromListView(fileName: fileName, isFromSelectAll: true);
-
         if(tempStorageData.offlineFileNameList.contains(fileName)) {
           setState(() {
             tempStorageData.offlineFileNameList.remove(fileName);
@@ -2364,9 +2365,10 @@ class HomePageState extends State<HomePage> {
           }
 
           if(psButtonTextNotifier.value == "My Files") {
-            await Future.delayed(const Duration(milliseconds: 299));
-            _sortUploadDate();
-            _sortUploadDate();
+            await Future.delayed(const Duration(milliseconds: 299), () {
+              _sortUploadDate();
+              _sortUploadDate();
+            });
           }
 
           psButtonTextNotifier.value == "Back" 
@@ -2449,10 +2451,11 @@ class HomePageState extends State<HomePage> {
       (currentHour >= 13 && currentHour < 16) || 
       (currentHour >= 20 && currentHour < 21))) {
 
-      await Future.delayed(const Duration(milliseconds: 759));
-      if(mounted) {
-        UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
-      }      
+      await Future.delayed(const Duration(milliseconds: 759), () {
+        if(mounted) {
+          UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
+        }      
+      });
     }
 
   }
