@@ -34,13 +34,27 @@ class PreviewImageState extends State<PreviewImage> {
   }
 
   Widget buildImageWidget(int index) {
-    return InteractiveViewer(
-      scaleEnabled: true,
-      panEnabled: true,
-      child: Image.memory(
-        filteredImages[index]!,
-        fit: BoxFit.fitWidth,
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: IntrinsicWidth(
+            child: InteractiveViewer(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 45.0),
+                child: Image.memory(
+                  filteredImages[index]!,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
