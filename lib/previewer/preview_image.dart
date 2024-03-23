@@ -40,16 +40,13 @@ class PreviewImageState extends State<PreviewImage> {
         ConstrainedBox(
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width,
-            minHeight: MediaQuery.of(context).size.height,
+            minHeight: MediaQuery.of(context).size.height-65,
           ),
           child: IntrinsicWidth(
             child: InteractiveViewer(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 45.0),
-                child: Image.memory(
-                  filteredImages[index]!,
-                  fit: BoxFit.fitWidth,
-                ),
+              child: Image.memory(
+                filteredImages[index]!,
+                fit: BoxFit.fitWidth,
               ),
             ),
           ),

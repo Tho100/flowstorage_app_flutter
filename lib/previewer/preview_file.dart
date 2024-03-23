@@ -824,7 +824,7 @@ class PreviewFileState extends State<PreviewFile> {
           _buildTextHeaderTitle(),
     
           Expanded(
-            child: _buildFilePreviewOnCondition(),
+            child: _buildFilePreviewOnCondition()
           ),
       
           Transform.translate(
