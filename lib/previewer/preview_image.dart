@@ -28,38 +28,30 @@ class PreviewImageState extends State<PreviewImage> {
   late final List<String> filteredNames;
   late final List<Uint8List?> filteredImages;
 
-  final transformationController = TransformationController();
-
   void handlePageChange(int index) {
     tempData.setCurrentFileName(filteredNames[index]);
     widget.onPageChanged(); 
   }
 
   Widget buildImageWidget(int index) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width,
-              minHeight: MediaQuery.of(context).size.height-65,
-            ),
-            child: IntrinsicWidth(
-              child: InteractiveViewer(
-                transformationController: transformationController,
-                onInteractionEnd: (details) {
-                  transformationController.value = Matrix4.identity();
-                },
-                child: Image.memory(
-                  filteredImages[index]!,
-                  fit: BoxFit.fitWidth,
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+            minHeight: MediaQuery.of(context).size.height-65,
+          ),
+          child: IntrinsicWidth(
+            child: InteractiveViewer(
+              child: Image.memory(
+                filteredImages[index]!,
+                fit: BoxFit.fitWidth,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -103,7 +95,6 @@ class PreviewImageState extends State<PreviewImage> {
   @override
   void dispose() {
     pageController.dispose();
-    transformationController.dispose();
     super.dispose();
   }
 
