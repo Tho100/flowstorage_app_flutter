@@ -35,19 +35,16 @@ class PreviewImageState extends State<PreviewImage> {
 
   Widget buildImageWidget(int index) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width,
             minHeight: MediaQuery.of(context).size.height-65,
           ),
-          child: IntrinsicWidth(
-            child: InteractiveViewer(
-              child: Image.memory(
-                filteredImages[index]!,
-                fit: BoxFit.fitWidth,
-              ),
+          child: InteractiveViewer(
+            child: Image.memory(
+              filteredImages[index]!,
+              fit: BoxFit.fitWidth,
             ),
           ),
         ),
