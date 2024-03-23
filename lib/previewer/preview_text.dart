@@ -44,7 +44,7 @@ class PreviewText extends StatelessWidget {
       return fileData;
 
     } catch (err, st) {
-      Logger().e("Exception from _callData {PreviewText}", err, st);
+      Logger().e("Exception from callTextDataAsync {PreviewText}", err, st);
       return Future.value(Uint8List(0));
     }
     

@@ -47,7 +47,8 @@ class PsGridListView extends StatelessWidget {
         ? const EdgeInsets.only(left: 16.0) 
         : const EdgeInsets.only(right: 16.0),
       child: Align(
-        alignment: isFromDownload ? Alignment.bottomLeft : Alignment.bottomRight,
+        alignment: isFromDownload 
+          ? Alignment.bottomLeft : Alignment.bottomRight,
         child: SizedBox(
           width: isFromDownload ? 52 : 128, 
           height: isFromDownload ? 36 : 36,

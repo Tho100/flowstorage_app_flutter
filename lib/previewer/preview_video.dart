@@ -108,8 +108,8 @@ class PreviewVideoState extends State<PreviewVideo> {
       } 
 
     } catch (err, st) {
-      Logger().e("Exception from _callData {preview_video}", err, st);
       videoBytes = Uint8List(0);
+      Logger().e("Exception from playVideoDataAsync {preview_video}", err, st);
     }
 
     final videoUrl = "data:video/mp4;base64,${base64Encode(videoBytes)}";

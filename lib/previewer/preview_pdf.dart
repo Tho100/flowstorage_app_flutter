@@ -49,7 +49,7 @@ class PreviewPdf extends StatelessWidget {
       return fileData;
 
     } catch (err, st) {
-      Logger().e("Exception from _callData {PreviewPdf}", err, st);
+      Logger().e("Exception from callPDFDataAsync {PreviewPdf}", err, st);
       return Future.value(Uint8List(0));
     }
 
