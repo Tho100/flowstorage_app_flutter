@@ -80,7 +80,7 @@ class CustomSideBarMenu extends StatelessWidget {
         child: Ink(
           color: ThemeColor.darkBlack,
           child: ListTile(
-            horizontalTitleGap: 1.5,
+            horizontalTitleGap: 3.5,
             contentPadding: const EdgeInsets.only(left: 26),
             leading: Icon(
               icon,
@@ -226,7 +226,7 @@ class CustomSideBarMenu extends StatelessWidget {
         child: const Text(
           'Get more storage',
           style: TextStyle(
-            fontSize: 17.5, 
+            fontSize: 17, 
             fontWeight: FontWeight.bold,
             color: ThemeColor.darkBlack
           ),
@@ -239,6 +239,8 @@ class CustomSideBarMenu extends StatelessWidget {
     return Expanded(
       child: ListView(
         children: [
+
+          const SizedBox(height: 8),
 
           _buildSidebarButtons(
             title: "Offline",
@@ -265,11 +267,6 @@ class CustomSideBarMenu extends StatelessWidget {
               Navigator.pop(context);
               sharedOnPressed();
             }
-          ),
-
-          const Padding(
-            padding: EdgeInsets.only(left: 19, right: 19),
-            child: Divider(color: ThemeColor.lightGrey),
           ),
 
           _buildSidebarButtons(
