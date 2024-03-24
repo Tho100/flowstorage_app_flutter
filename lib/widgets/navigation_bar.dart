@@ -32,7 +32,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
   final bottomNavigationBarIndex = ValueNotifier<int>(0); 
   final isPhotosPressedNotifier = ValueNotifier<bool>(false);
 
-  final bottomPadding = 2.0;
+  final bottomPadding = 4.5;
 
   @override
   void dispose() {
@@ -99,7 +99,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
           color: ThemeColor.lightGrey,
         ),
         Container(
-          height: 65,
+          height: 68,
           color: ThemeColor.lightGrey,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -166,7 +166,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
             },
           ),
         ),
-        const SizedBox(height: 1.5),
+        const SizedBox(height: 3.5),
       ],
     );
   }

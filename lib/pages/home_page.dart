@@ -112,7 +112,6 @@ class HomePageState extends State<HomePage> {
 
   final psButtonTextNotifier = ValueNotifier<String>('My Files');
   
-  final navDirectoryButtonVisible = ValueNotifier<bool>(true);
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
 
   final gridListViewSelected = ValueNotifier<bool>(false);
@@ -161,10 +160,6 @@ class HomePageState extends State<HomePage> {
 
   void _addItemButtonVisibility(bool visible) {
     floatingActionButtonVisible.value = visible;
-  }
-
-  void _navDirectoryButtonVisibility(bool visible) {
-    navDirectoryButtonVisible.value = visible;
   }
 
   void _toggleGoBackHome() {
@@ -466,7 +461,6 @@ class HomePageState extends State<HomePage> {
     searchBarVisibleNotifier.value = false;
     gridListViewSelected.value = true;
 
-    _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
 
     final combinedTypes = [
@@ -492,7 +486,6 @@ class HomePageState extends State<HomePage> {
 
     if ([OriginFile.home, OriginFile.directory].contains(tempData.origin)) {
       _addItemButtonVisibility(true);
-      _navDirectoryButtonVisibility(true);
     }
 
     _itemSearchingImplementation('');
@@ -532,7 +525,6 @@ class HomePageState extends State<HomePage> {
 
     }
 
-    _navDirectoryButtonVisibility(true);
     _addItemButtonVisibility(true);
 
     selectedItemIsChecked = false;
@@ -787,7 +779,6 @@ class HomePageState extends State<HomePage> {
 
     _clearItemSelection(); 
 
-    _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
 
     searchBarVisibleNotifier.value = true;
@@ -816,7 +807,6 @@ class HomePageState extends State<HomePage> {
 
     _itemSearchingImplementation('');
     _addItemButtonVisibility(false);
-    _navDirectoryButtonVisibility(false);
 
     searchHintText.value = "Search in Flowstorage";
 
@@ -829,7 +819,6 @@ class HomePageState extends State<HomePage> {
     await dataCaller.publicStorageData(context: context);
 
     _itemSearchingImplementation('');
-    _navDirectoryButtonVisibility(false);
     _addItemButtonVisibility(true);
 
     psButtonTextNotifier.value = "My Files";
@@ -878,7 +867,6 @@ class HomePageState extends State<HomePage> {
     _itemSearchingImplementation('');
 
     _addItemButtonVisibility(false);
-    _navDirectoryButtonVisibility(false);
     
     searchBarController.text = '';
     searchBarVisibleNotifier.value = true;
@@ -1117,7 +1105,6 @@ class HomePageState extends State<HomePage> {
 
       await _refreshListViewData();
       
-      _navDirectoryButtonVisibility(true);
       _addItemButtonVisibility(true);
 
       if(mounted) {
@@ -1542,39 +1529,10 @@ class HomePageState extends State<HomePage> {
 
     return NavigationButtons(
       isVisible: isVisibleCondition, 
-      isCreateDirectoryVisible: navDirectoryButtonVisible, 
       isGridListViewSelected: gridListViewSelected, 
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
-      sharedOnPressed: () => _callBottomTrailingShared(),
       sortingOnPressed: () => _callBottomTrailingSorting(),
-      scannerOnPressed: () async {
-        final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-        storageData.fileNamesList.length < limitFileUploads 
-          ? await _initializeDocumentScanner()
-          : _showUpgradeLimitedDialog(limitFileUploads);
-      }, 
-      createDirectoryOnPressed: () {
-        final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-        final directoryCount = storageData.fileNamesFilteredList.where((dir) => !dir.contains('.')).length;
-        if (storageData.fileNamesList.length < limitFileUploads) {
-          if (directoryCount != AccountPlan.mapDirectoryUpload[userData.accountType]!) {
-            tempData.origin == OriginFile.offline
-              ? CustomAlertDialog.alertDialog("Can't create Directory on offline mode.")
-              : _openCreateDirectoryDialog();
-
-          } else {
-            UpgradeDialog.buildUpgradeBottomSheet(
-              message: "You're currently limited to ${AccountPlan.mapDirectoryUpload[userData.accountType]} directory uploads. Upgrade your account to upload more directories.",
-              context: context,
-            );
-          }
-
-        } else {
-          _showUpgradeLimitedDialog(AccountPlan.mapFilesUpload[userData.accountType]!);
-        }
-
-      }, 
       filterTypePsOnPressed: () {
         BottomTrailingFilter(
           context: context, 
@@ -1830,8 +1788,6 @@ class HomePageState extends State<HomePage> {
   void _openDirectoryOnSelect() async {
 
     tempData.setOrigin(OriginFile.directory);
-
-    _navDirectoryButtonVisibility(false);
     
     final loading = SingleTextLoading();
 
@@ -2232,11 +2188,11 @@ class HomePageState extends State<HomePage> {
     final mediaQuery = MediaQuery.of(context).size;
 
     if (tempData.origin == OriginFile.public) {
-      mediaHeight = mediaQuery.height - 157;
+      mediaHeight = mediaQuery.height - 162;
 
     } else {
       mediaHeight = togglePhotosPressed 
-        ? mediaQuery.height - 157 
+        ? mediaQuery.height - 162 
         : mediaQuery.height - 321;
 
     }
@@ -2554,7 +2510,6 @@ class HomePageState extends State<HomePage> {
 
     gridListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
-    navDirectoryButtonVisible.dispose();
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibleNotifier.dispose();
@@ -2576,6 +2531,7 @@ class HomePageState extends State<HomePage> {
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(
           usageProgress: _getStorageUsagePercentage(),
+          sharedOnPressed: () => _callBottomTrailingShared(),
           offlinePageOnPressed: () async => await _callOfflineData(),
           publicStorageFunction: () async => await _callPublicStorageData(),
         ),
