@@ -93,7 +93,9 @@ class NavigationButtons extends StatelessWidget {
                 child: ValueListenableBuilder<bool>(
                   valueListenable: isGridListViewSelected,
                   builder: (context, isSelected, child) {
-                    return !isSelected ? const Icon(Icons.grid_view, size: 21) : const Icon(Icons.format_list_bulleted_outlined, size: 22);
+                    return !isSelected 
+                      ? const Icon(Icons.grid_view, size: 20.5, color: ThemeColor.secondaryWhite) 
+                      : const Icon(Icons.format_list_bulleted_outlined, size: 21.5, color: ThemeColor.secondaryWhite);
                   }
                 ),
               ),
