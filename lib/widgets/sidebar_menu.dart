@@ -18,11 +18,13 @@ class CustomSideBarMenu extends StatelessWidget {
 
   final Future<int> usageProgress;
   final VoidCallback offlinePageOnPressed;
+  final VoidCallback sharedOnPressed;
   final VoidCallback publicStorageFunction;
 
   CustomSideBarMenu({
     required this.usageProgress,
     required this.offlinePageOnPressed,
+    required this.sharedOnPressed,
     required this.publicStorageFunction,
     Key? key
   }) : super(key: key);
@@ -83,13 +85,13 @@ class CustomSideBarMenu extends StatelessWidget {
             leading: Icon(
               icon,
               color: const Color.fromARGB(255, 215, 215, 215),
-              size: 21.5,
+              size: 22.5,
             ),
             title: Text(
               title,
               style: const TextStyle(
                 color: Color.fromARGB(255, 216, 216, 216),
-                fontSize: 18.5,
+                fontSize: 19.5,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -257,6 +259,20 @@ class CustomSideBarMenu extends StatelessWidget {
           ),
 
           _buildSidebarButtons(
+            title: "Shared",
+            icon: Icons.group_outlined,
+            onPressed: () {
+              Navigator.pop(context);
+              sharedOnPressed();
+            }
+          ),
+
+          const Padding(
+            padding: EdgeInsets.only(left: 19, right: 19),
+            child: Divider(color: ThemeColor.lightGrey),
+          ),
+
+          _buildSidebarButtons(
             title: "Settings",
             icon: Icons.settings_outlined,
             onPressed: () {
@@ -418,7 +434,7 @@ class CustomSideBarMenu extends StatelessWidget {
               const SizedBox(height: 15),
     
               const Padding(
-                padding: EdgeInsets.only(left: 18, right: 18),
+                padding: EdgeInsets.only(left: 19, right: 19),
                 child: Divider(color: ThemeColor.lightGrey),
               ),
     

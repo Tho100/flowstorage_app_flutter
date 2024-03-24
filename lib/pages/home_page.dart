@@ -1542,11 +1542,11 @@ class HomePageState extends State<HomePage> {
 
     return NavigationButtons(
       isVisible: isVisibleCondition, 
+      sharedOnPressed: () => _callBottomTrailingShared(),
       isCreateDirectoryVisible: navDirectoryButtonVisible, 
       isGridListViewSelected: gridListViewSelected, 
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
-      sharedOnPressed: () => _callBottomTrailingShared(),
       sortingOnPressed: () => _callBottomTrailingSorting(),
       scannerOnPressed: () async {
         final limitFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
@@ -2576,6 +2576,7 @@ class HomePageState extends State<HomePage> {
         key: sidebarMenuScaffoldKey,
         drawer: CustomSideBarMenu(
           usageProgress: _getStorageUsagePercentage(),
+          sharedOnPressed: () => _callBottomTrailingShared(),
           offlinePageOnPressed: () async => await _callOfflineData(),
           publicStorageFunction: () async => await _callPublicStorageData(),
         ),
