@@ -19,9 +19,10 @@ class ResponsiveListView extends StatelessWidget {
     Key? key
   }) : super(key: key); 
   
-  final itemExtentValue = 65.0;
+  final itemExtentValue = 68.0;
   final bottomExtraSpacesHeight = 89.0;
   final topExtraSpacesHeight = 5.0;
+  final leftRightExtraSpaces = 3.2;
 
   @override
   Widget build(BuildContext context) {    
@@ -35,7 +36,7 @@ class ResponsiveListView extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics()
             ),
-            padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight, top: topExtraSpacesHeight),
+            padding: EdgeInsets.only(bottom: bottomExtraSpacesHeight, top: topExtraSpacesHeight, left: leftRightExtraSpaces, right: leftRightExtraSpaces),
             itemExtent: itemExtentValue,
             itemCount: storageData.fileNamesFilteredList.length,
             itemBuilder: (context, index) {

@@ -37,7 +37,7 @@ class ResponsiveSearchBar extends StatelessWidget {
   final borderRadius = 25.0;
   
   final double? defaultWidth = 0.94;
-  final double? defaultHeight = 50.0;
+  final double? defaultHeight = 52.0;
 
   @override
   Widget build(BuildContext context) {

@@ -2232,11 +2232,11 @@ class HomePageState extends State<HomePage> {
     final mediaQuery = MediaQuery.of(context).size;
 
     if (tempData.origin == OriginFile.public) {
-      mediaHeight = mediaQuery.height - 157;
+      mediaHeight = mediaQuery.height - 162;
 
     } else {
       mediaHeight = togglePhotosPressed 
-        ? mediaQuery.height - 157 
+        ? mediaQuery.height - 162 
         : mediaQuery.height - 321;
 
     }

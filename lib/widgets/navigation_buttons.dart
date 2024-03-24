@@ -56,9 +56,9 @@ class NavigationButtons extends StatelessWidget {
 
           tempData.origin == OriginFile.public 
           ? const SizedBox(height: 0)
-          : const SizedBox(height: 10),
+          : const SizedBox(height: 8),
     
-          if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
+          /*if(WidgetVisibility.setNotVisible(OriginFile.public)) ... [
             Row(
             
               children: [
@@ -130,11 +130,11 @@ class NavigationButtons extends StatelessWidget {
           
               ],
             ),
-          ],
+          ],*/
     
           tempData.origin == OriginFile.public
           ? const SizedBox(height: 0)
-          : const SizedBox(height: 8),
+          : const SizedBox(height: 4),
     
           Row(
             children: [
@@ -154,7 +154,7 @@ class NavigationButtons extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: ThemeColor.justWhite
+                            color: ThemeColor.secondaryWhite
                           ),
                         ),
                         const SizedBox(width: 2),
@@ -163,7 +163,7 @@ class NavigationButtons extends StatelessWidget {
                           builder: (context, value, child) {
                             return Icon(value, 
                               size: 20, 
-                              color: Colors.white
+                              color: ThemeColor.secondaryWhite
                             );
                           }
                         ),
@@ -195,7 +195,7 @@ class NavigationButtons extends StatelessWidget {
             ]
           ),
     
-          const Divider(color: ThemeColor.lightGrey, height: 0),
+          //const Divider(color: ThemeColor.lightGrey, height: 0),
           
         ],
       ),
