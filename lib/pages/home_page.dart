@@ -2193,7 +2193,7 @@ class HomePageState extends State<HomePage> {
     } else {
       mediaHeight = togglePhotosPressed 
         ? mediaQuery.height - 162 
-        : mediaQuery.height - 321;
+        : mediaQuery.height - 276;
 
     }
 
