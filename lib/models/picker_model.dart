@@ -14,6 +14,7 @@ class PickerModel {
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
+  final tempData = GetIt.instance<TempDataProvider>();
 
   Future<SelectedImagesDetails?> galleryPicker({
     required ImageSource source,
@@ -24,7 +25,9 @@ class PickerModel {
 
       final maxUpload = AccountPlan.mapFilesUpload[userData.accountType];
       final currentUpload = storageData.fileNamesFilteredList.length;
-      final maximumSelections = maxUpload! - currentUpload;
+      final maximumSelections = tempData.origin == OriginFile.offline 
+        ? 100
+        : maxUpload! - currentUpload;
 
       final picker = ImagePickerPlus(navigatorKey.currentContext!);
 
@@ -68,8 +71,6 @@ class PickerModel {
   Future<FilePickerResult?> filePicker() async {
 
     try {
-
-      final tempData = GetIt.instance<TempDataProvider>();
 
       const fileTypes = [...Globals.imageType, ...Globals.audioType, ...Globals.videoType,...Globals.excelType,...Globals.textType,...Globals.wordType, ...Globals.ptxType, "pdf", "apk", "exe"];
 
