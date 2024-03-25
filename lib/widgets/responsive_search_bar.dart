@@ -109,7 +109,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                         ),
                         child: [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
                           ? const Icon(Icons.cancel, color: ThemeColor.darkWhite, size: 25)
-                          : const Icon(Icons.filter_list_outlined, size: 25),
+                          : const Icon(Icons.filter_list_outlined, color: ThemeColor.secondaryWhite, size: 25),
                       ),
                     ),
                   ],
