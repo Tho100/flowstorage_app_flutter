@@ -2533,7 +2533,10 @@ class HomePageState extends State<HomePage> {
           children: [
             Column(
               children: [
-                _buildSearchBar(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2),
+                  child: _buildSearchBar(),
+                ),
                 _buildNavigationButtons(),
                 storageData.fileNamesList.isEmpty 
                   ? _buildEmptyBody()

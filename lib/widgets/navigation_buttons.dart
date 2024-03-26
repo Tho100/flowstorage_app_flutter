@@ -115,7 +115,7 @@ class NavigationButtons extends StatelessWidget {
               ),
               
               Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child: ClipOval(
                   child: SizedBox(
                     width: 48,

@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/constant.dart';
+import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class ResponsiveSearchBar extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final borderRadius = 25.0;
+  final borderRadius = 15.0;
   
   final double? defaultWidth = 0.94;
   final double? defaultHeight = 52.0;
@@ -50,7 +51,6 @@ class ResponsiveSearchBar extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),
-                color: ThemeColor.darkGrey,
               ),
               height: customHeight ?? defaultHeight,
               child: FractionallySizedBox(
@@ -90,6 +90,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
                     Padding(
                       padding: const EdgeInsets.only(right: 4.0),
                       child: ElevatedButton(
@@ -100,7 +101,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                           minimumSize: Size.zero,
                           padding: const EdgeInsets.only(left: 6, right: 14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)
+                            borderRadius: BorderRadius.circular(15)
                           ),
                         ).copyWith(
                           fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
