@@ -1533,7 +1533,7 @@ class HomePageState extends State<HomePage> {
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
       sortingOnPressed: () => _callBottomTrailingSorting(),
-      filterTypePsOnPressed: () {
+      filterTypeOnPressed: () {
         BottomTrailingFilter(
           context: context, 
           filterTypeFunctionality: _itemSearchingImplementation
@@ -1565,13 +1565,6 @@ class HomePageState extends State<HomePage> {
         _itemSearchingImplementation(value);
 
       }, 
-
-      filterTypeOnPressed: () {
-        BottomTrailingFilter(          
-          filterTypeFunctionality: _itemSearchingImplementation, 
-          context: context
-        ).buildFilterTypeAll();
-      }
     );
   }
 

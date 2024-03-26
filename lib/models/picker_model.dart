@@ -67,7 +67,6 @@ class PickerModel {
     );
   }
 
-
   Future<FilePickerResult?> filePicker() async {
 
     try {

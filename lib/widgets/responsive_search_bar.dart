@@ -14,7 +14,6 @@ class ResponsiveSearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final String hintText;
   final bool? autoFocus;
-  final VoidCallback? filterTypeOnPressed;
   final VoidCallback? cancelSearchOnPressed;
   final Function(String) onChanged;
 
@@ -25,7 +24,6 @@ class ResponsiveSearchBar extends StatelessWidget {
     this.focusNode,
     this.autoFocus,
     this.cancelSearchOnPressed,
-    this.filterTypeOnPressed,
     required this.controller,
     required this.hintText,
     required this.onChanged,
@@ -95,7 +93,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 4.0),
                       child: ElevatedButton(
-                        onPressed: cancelSearchOnPressed ?? filterTypeOnPressed,
+                        onPressed: cancelSearchOnPressed,
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           backgroundColor: Colors.transparent,
@@ -109,7 +107,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                         ),
                         child: [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
                           ? const Icon(Icons.cancel, color: ThemeColor.darkWhite, size: 25)
-                          : const Icon(Icons.filter_list_outlined, color: ThemeColor.secondaryWhite, size: 25),
+                          : null,
                       ),
                     ),
                   ],
