@@ -1,5 +1,3 @@
-import 'package:flowstorage_fsc/constant.dart';
-import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -88,27 +86,6 @@ class ResponsiveSearchBar extends StatelessWidget {
                           ),
                           prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
                         ),
-                      ),
-                    ),
-                    if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: ElevatedButton(
-                        onPressed: cancelSearchOnPressed,
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.transparent,
-                          minimumSize: Size.zero,
-                          padding: const EdgeInsets.only(left: 6, right: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                        ).copyWith(
-                          fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
-                        ),
-                        child: [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
-                          ? const Icon(Icons.cancel, color: ThemeColor.darkWhite, size: 25)
-                          : null,
                       ),
                     ),
                   ],
