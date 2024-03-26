@@ -1,4 +1,3 @@
-import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ class ResponsiveSearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final String hintText;
   final bool? autoFocus;
-  final VoidCallback? filterTypeOnPressed;
   final VoidCallback? cancelSearchOnPressed;
   final Function(String) onChanged;
 
@@ -25,7 +23,6 @@ class ResponsiveSearchBar extends StatelessWidget {
     this.focusNode,
     this.autoFocus,
     this.cancelSearchOnPressed,
-    this.filterTypeOnPressed,
     required this.controller,
     required this.hintText,
     required this.onChanged,
@@ -34,7 +31,7 @@ class ResponsiveSearchBar extends StatelessWidget {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
-  final borderRadius = 25.0;
+  final borderRadius = 15.0;
   
   final double? defaultWidth = 0.94;
   final double? defaultHeight = 52.0;
@@ -52,7 +49,6 @@ class ResponsiveSearchBar extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),
-                color: ThemeColor.darkGrey,
               ),
               height: customHeight ?? defaultHeight,
               child: FractionallySizedBox(
@@ -90,26 +86,6 @@ class ResponsiveSearchBar extends StatelessWidget {
                           ),
                           prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: ElevatedButton(
-                        onPressed: cancelSearchOnPressed ?? filterTypeOnPressed,
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.transparent,
-                          minimumSize: Size.zero,
-                          padding: const EdgeInsets.only(left: 6, right: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)
-                          ),
-                        ).copyWith(
-                          fixedSize: MaterialStateProperty.all<Size>(const Size(36, 36)),
-                        ),
-                        child: [OriginFile.public, OriginFile.publicSearching].contains(tempData.origin)
-                          ? const Icon(Icons.cancel, color: ThemeColor.darkWhite, size: 25)
-                          : const Icon(Icons.filter_list_outlined, color: ThemeColor.secondaryWhite, size: 25),
                       ),
                     ),
                   ],

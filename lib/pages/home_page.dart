@@ -1533,7 +1533,7 @@ class HomePageState extends State<HomePage> {
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
       sortingOnPressed: () => _callBottomTrailingSorting(),
-      filterTypePsOnPressed: () {
+      filterTypeOnPressed: () {
         BottomTrailingFilter(
           context: context, 
           filterTypeFunctionality: _itemSearchingImplementation
@@ -1565,13 +1565,6 @@ class HomePageState extends State<HomePage> {
         _itemSearchingImplementation(value);
 
       }, 
-
-      filterTypeOnPressed: () {
-        BottomTrailingFilter(          
-          filterTypeFunctionality: _itemSearchingImplementation, 
-          context: context
-        ).buildFilterTypeAll();
-      }
     );
   }
 
@@ -2540,7 +2533,10 @@ class HomePageState extends State<HomePage> {
           children: [
             Column(
               children: [
-                _buildSearchBar(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2),
+                  child: _buildSearchBar(),
+                ),
                 _buildNavigationButtons(),
                 storageData.fileNamesList.isEmpty 
                   ? _buildEmptyBody()
