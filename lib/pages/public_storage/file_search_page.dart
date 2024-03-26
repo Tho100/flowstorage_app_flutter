@@ -351,7 +351,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   Widget buildResultWidget() {
 
     final mediaQuery = isTagsVisibleNotifier.value 
-      ? MediaQuery.of(context).size.height-340
+      ? MediaQuery.of(context).size.height-328
       : MediaQuery.of(context).size.height-195;
 
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
@@ -500,8 +500,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = true;
     });
-
-    psSearchBarController.text = "Tag: [$tagName]";
 
     isTagsVisibleNotifier.value = false;
 
