@@ -844,59 +844,51 @@ class ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  int countDay(List<String?> list, day) {
+  int countDay(List<String?> list, String day) {
     return list.where((getDay) => getDay!.contains(day)).length;
   }
 
   void initializeHistoryData() {
 
-    final modifiedList = storageData.fileDateFilteredList
-        .where((element) => element.contains(GlobalsStyle.dotSeparator))
-        .map((dateString) {
-      final datePart = dateString.split(GlobalsStyle.dotSeparator)[1].trim();
-      final formattedDate = "20$datePart";
-      final date = DateFormat("yyyyMMM d yyyy").parse(formattedDate);
+    final isCanShowData = tempData.origin != OriginFile.public && tempData.origin != OriginFile.sharedOther && tempData.origin != OriginFile.sharedMe;
 
-      final now = DateTime.now();
-      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-      final endOfWeek = startOfWeek.add(const Duration(days: 6));
-
-      if (date.isAfter(startOfWeek.subtract(const Duration(days: 1))) && date.isBefore(endOfWeek.add(const Duration(days: 1)))) {
-        final dayOfWeek = getDayOfWeek(date.weekday);
-        return dayOfWeek;
-      } else {
-        return null;
-      }
-    }).toList()..removeWhere((element) => element == null); 
-
-    final now = DateTime.now();
-    final startOfWeek = now
-      .subtract(Duration(days: now.weekday - 1));
-
-    List<String> currentWeekDays = [];
-    for (int i = 0; i < 7; i++) {
-      final day = startOfWeek.add(Duration(days: i));
-      currentWeekDays.add(getDayOfWeek(day.weekday));
+    if(!isCanShowData) {
+      return;
     }
 
-    final monday = countDay(modifiedList, "Monday");
-    final tuesday = countDay(modifiedList, "Tuesday");
-    final wednesday = countDay(modifiedList, "Wednesday");
-    final thursday = countDay(modifiedList, "Thursday");
-    final friday = countDay(modifiedList, "Friday");
-    final saturday = countDay(modifiedList, "Saturday");
-    final sunday = countDay(modifiedList, "Sunday");
+    final modifiedList = storageData.fileDateFilteredList
+      .where((element) => element.contains(GlobalsStyle.dotSeparator))
+      .map((dateString) {
+
+        final datePart = dateString.split(GlobalsStyle.dotSeparator)[1].trim();
+        final formattedDate = "20$datePart";
+        final date = DateFormat("yyyyMMM d yyyy").parse(formattedDate);
+
+        final now = DateTime.now();
+        final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+        final endOfWeek = startOfWeek.add(const Duration(days: 6));
+
+        return date.isAfter(startOfWeek.subtract(const Duration(days: 1))) && date.isBefore(endOfWeek.add(const Duration(days: 1)))
+          ? getDayOfWeek(date.weekday)
+          : null;
+
+    }).where((element) => element != null).toList();
+
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+
+    final currentWeekDays = List.generate(
+      7,
+      (index) => getDayOfWeek(startOfWeek.add(Duration(days: index)).weekday),
+    );
+
+    final daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     setState(() {
-      data = [
-        ChartUploadByDayValue('Mon', currentWeekDays.contains('Monday') ? monday : 0),
-        ChartUploadByDayValue('Tue', currentWeekDays.contains('Tuesday') ? tuesday : 0),
-        ChartUploadByDayValue('Wed', currentWeekDays.contains('Wednesday') ? wednesday : 0),
-        ChartUploadByDayValue('Thu', currentWeekDays.contains('Thursday') ? thursday : 0),
-        ChartUploadByDayValue('Fri', currentWeekDays.contains('Friday') ? friday : 0),
-        ChartUploadByDayValue('Sat', currentWeekDays.contains('Saturday') ? saturday : 0),
-        ChartUploadByDayValue('Sun', currentWeekDays.contains('Sunday') ? sunday : 0),
-      ];
+      data = daysOfWeek.map((day) {
+        final count = countDay(modifiedList, day);
+        return ChartUploadByDayValue(day.substring(0, 3), currentWeekDays.contains(day) ? count : 0);
+      }).toList();
     });
 
   }
