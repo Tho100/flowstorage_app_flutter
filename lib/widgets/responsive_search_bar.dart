@@ -71,11 +71,11 @@ class ResponsiveSearchBar extends StatelessWidget {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(borderRadius),
                             borderSide: const BorderSide(
-                              color: ThemeColor.darkGrey,
+                              color: ThemeColor.lightGrey,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: ThemeColor.darkGrey),
+                            borderSide: const BorderSide(color: ThemeColor.lightGrey),
                             borderRadius: BorderRadius.circular(borderRadius),
                           ),
                           hintText: hintText,
