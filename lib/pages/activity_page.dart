@@ -4,7 +4,6 @@ import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/date_parser.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
-import 'package:flowstorage_fsc/helper/random_generator.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -17,6 +16,16 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+class ChartUploadByDayValue {
+
+  ChartUploadByDayValue(this.day, this.totalUpload);
+
+  final String day;
+  final int totalUpload;
+
+}
 
 class ActivityPage extends StatefulWidget {
 
@@ -37,6 +46,8 @@ class ActivityPageState extends State<ActivityPage> {
   final tempStorageData = GetIt.instance<TempStorageProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
+  late List<ChartUploadByDayValue> data;
+
   List<String> recentFilesName = [];
   List<String> recentDate = [];
   List<Uint8List?> recentImageBytes = [];
@@ -51,9 +62,6 @@ class ActivityPageState extends State<ActivityPage> {
 
   List<String> directoriesList = [];
   List<String> foldersList = [];
-
-  Uint8List photoOfTheDayImageBytes = Uint8List(0);
-  String photoOfTheDayFileName = "";
 
   String mostUploadTag = "";
 
@@ -115,16 +123,13 @@ class ActivityPageState extends State<ActivityPage> {
             child: buildDirectories("folder")
           ),
 
-          if(photoOfTheDayFileName.isNotEmpty) ... [
           const SizedBox(height: 18),
 
-          buildHeader("Photo you may like", Icons.star_outline),
+          buildHeader("This week upload", Icons.calendar_month_outlined),
 
           const SizedBox(height: 18),
 
-          buildPhotoOfTheDay(width),
-
-          ],
+          buildHistoryChart(context),
 
           if(legacyFilesName.isNotEmpty) ... [
           const SizedBox(height: 28),
@@ -655,25 +660,6 @@ class ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  Widget buildPhotoOfTheDay(double width) {
-    return GestureDetector(
-      onTap: (){
-        final fileIndex = storageData.fileNamesFilteredList.indexOf(photoOfTheDayFileName);
-        navigateToPreviewFile(photoOfTheDayFileName, fileIndex);
-      },
-      child: SizedBox(
-        width: width-45,
-        height: 315,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.memory(photoOfTheDayImageBytes,
-            fit: BoxFit.cover, width: width-40, height: 315,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget buildLegacyWidget(Uint8List imageBytes, String fileName, String date) {
     return Container(
       height: 90,
@@ -811,6 +797,129 @@ class ActivityPageState extends State<ActivityPage> {
         ),
       ),
     );
+  }
+
+  Widget buildHistoryChart(context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        decoration: BoxDecoration(
+          color: ThemeColor.justWhite,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        height: 370,
+        width: MediaQuery.of(context).size.width-35,
+        child: SfCartesianChart(
+          plotAreaBorderColor: ThemeColor.justWhite,
+          primaryXAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0),
+            majorTickLines: const MajorTickLines(size: 0),
+            axisLine: const AxisLine(width: 0),
+            minorGridLines: const MinorGridLines(width: 0),
+            minorTickLines: const MinorTickLines(size: 0),
+            labelStyle: GoogleFonts.poppins(
+              color: ThemeColor.mediumGrey,
+              fontSize: 13,
+              fontWeight: FontWeight.w500
+            ),
+          ),
+          primaryYAxis: CategoryAxis(
+            isVisible: false,
+          ),
+          legend: Legend(isVisible: false),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          series: <ChartSeries<ChartUploadByDayValue, String>>[
+            ColumnSeries<ChartUploadByDayValue, String>(
+              color: ThemeColor.darkPurple,
+              borderRadius: BorderRadius.circular(12),
+              dataSource: data,
+              xValueMapper: (ChartUploadByDayValue value, _) => value.day,
+              yValueMapper: (ChartUploadByDayValue value, _) => value.totalUpload,
+              name: 'Files',
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  int countDay(List<String?> list, day) {
+    return list.where((getDay) => getDay!.contains(day)).length;
+  }
+
+  void initializeHistoryData() {
+
+    final modifiedList = storageData.fileDateFilteredList
+        .where((element) => element.contains(GlobalsStyle.dotSeparator))
+        .map((dateString) {
+      final datePart = dateString.split(GlobalsStyle.dotSeparator)[1].trim();
+      final formattedDate = "20$datePart";
+      final date = DateFormat("yyyyMMM d yyyy").parse(formattedDate);
+
+      final now = DateTime.now();
+      final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+      final endOfWeek = startOfWeek.add(const Duration(days: 6));
+
+      if (date.isAfter(startOfWeek.subtract(const Duration(days: 1))) && date.isBefore(endOfWeek.add(const Duration(days: 1)))) {
+        final dayOfWeek = getDayOfWeek(date.weekday);
+        return dayOfWeek;
+      } else {
+        return null;
+      }
+    }).toList()..removeWhere((element) => element == null); 
+
+    final now = DateTime.now();
+    final startOfWeek = now
+      .subtract(Duration(days: now.weekday - 1));
+
+    List<String> currentWeekDays = [];
+    for (int i = 0; i < 7; i++) {
+      final day = startOfWeek.add(Duration(days: i));
+      currentWeekDays.add(getDayOfWeek(day.weekday));
+    }
+
+    final monday = countDay(modifiedList, "Monday");
+    final tuesday = countDay(modifiedList, "Tuesday");
+    final wednesday = countDay(modifiedList, "Wednesday");
+    final thursday = countDay(modifiedList, "Thursday");
+    final friday = countDay(modifiedList, "Friday");
+    final saturday = countDay(modifiedList, "Saturday");
+    final sunday = countDay(modifiedList, "Sunday");
+
+    setState(() {
+      data = [
+        ChartUploadByDayValue('Mon', currentWeekDays.contains('Monday') ? monday : 0),
+        ChartUploadByDayValue('Tue', currentWeekDays.contains('Tuesday') ? tuesday : 0),
+        ChartUploadByDayValue('Wed', currentWeekDays.contains('Wednesday') ? wednesday : 0),
+        ChartUploadByDayValue('Thu', currentWeekDays.contains('Thursday') ? thursday : 0),
+        ChartUploadByDayValue('Fri', currentWeekDays.contains('Friday') ? friday : 0),
+        ChartUploadByDayValue('Sat', currentWeekDays.contains('Saturday') ? saturday : 0),
+        ChartUploadByDayValue('Sun', currentWeekDays.contains('Sunday') ? sunday : 0),
+      ];
+    });
+
+  }
+
+  String getDayOfWeek(int weekday) {
+    switch (weekday) {
+      case DateTime.monday:
+        return 'Monday';
+      case DateTime.tuesday:
+        return 'Tuesday';
+      case DateTime.wednesday:
+        return 'Wednesday';
+      case DateTime.thursday:
+        return 'Thursday';
+      case DateTime.friday:
+        return 'Friday';
+      case DateTime.saturday:
+        return 'Saturday';
+      case DateTime.sunday:
+        return 'Sunday';
+      default:
+        return '';
+    }
   }
 
   List<String> filterNamesByType(String fileType, int count) {
@@ -988,22 +1097,6 @@ class ActivityPageState extends State<ActivityPage> {
 
   }
 
-  void initializePhotoOfTheDayData() {
-
-    final filesName = storageData.fileNamesFilteredList
-      .where((fileName) => Globals.imageType.any((type) => fileName.toLowerCase().endsWith(type)))
-      .toList();
-    
-    if(filesName.isNotEmpty) {
-      final generateRandomNumber = Generator.generateRandomInt(0, filesName.length - 1);
-      photoOfTheDayFileName = filesName[generateRandomNumber];
-
-      photoOfTheDayImageBytes = filterImagesByType(photoOfTheDayFileName, 1)[0]!;
-
-    }
-
-  }
-
   void initializeLegacyData() {
 
     final currentDate = DateTime.now();
@@ -1064,8 +1157,8 @@ class ActivityPageState extends State<ActivityPage> {
     initializeRecentData();
     initializeMostUploadData();
     initializeDirectoriesData();
-    initializePhotoOfTheDayData();
     initializeLegacyData();
+    initializeHistoryData();
   }
 
   @override
