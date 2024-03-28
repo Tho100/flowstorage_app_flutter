@@ -50,8 +50,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final psSearchBarController = TextEditingController();
   final psSearchBarFocusNode = FocusNode();
 
-  final scrollListViewController = ScrollController();
-
   final tempData = GetIt.instance<TempDataProvider>();
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
@@ -132,9 +130,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            buildTagsButton("Entertainment", "en"),
-                            buildTagsButton("Data", "en"),
-                            buildTagsButton("Creativity", "en"),
+                            buildTagsButton("Entertainment"),
+                            buildTagsButton("Data"),
+                            buildTagsButton("Creativity"),
                           ],
                         ),
                       ),
@@ -147,11 +145,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          buildTagsButton("Software", "en"),
-                          buildTagsButton("Education", "en"),
-                          buildTagsButton("Gaming", "en"),
-                          buildTagsButton("Music", "en"),
-                          buildTagsButton("Random", "en"),
+                          buildTagsButton("Software"),
+                          buildTagsButton("Education"),
+                          buildTagsButton("Gaming"),
+                          buildTagsButton("Music"),
+                          buildTagsButton("Random"),
                         ],
                       ),
                     ),
@@ -185,10 +183,65 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
-  Widget buildTagsButton(
-    String tagName,  
-    String tagType,
-  ) {
+  Widget buildSearchButton() {
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: ThemeColor.lightGrey),
+          ),
+        ),
+        onPressed: () => searchFileOnPressed(),
+        child: Transform.translate(
+          offset: const Offset(-3, 0),
+          child: const Icon(Icons.search, color: ThemeColor.justWhite)
+        ),
+      ),
+    );
+  }
+
+
+  Widget buildMoreOptionsButton() {
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: ThemeColor.lightGrey),
+          ),
+        ),
+        onPressed: () {
+          BottomTrailingPsSearchFilter().buildBottomTrailing(
+            context: context, 
+            onTitlePressed: () {
+              selectedFilterSearch = "title";
+              searchBarHintTextNotifier.value = "Search title";
+            }, 
+            onUploaderNamePressed: () {
+              selectedFilterSearch = "uploader_name";
+              searchBarHintTextNotifier.value = "Search uploader name";
+            },
+            onPast24HoursPressed: () => onPast24HoursPressed(),
+            onPastWeekPressed: () => onPastWeekPressed(),
+            onPastMonthPressed: () => onPastMonthPressed(),
+          );
+        },
+        child: Transform.translate(
+          offset: const Offset(-3, 0),
+          child: const Icon(Icons.more_vert, color: ThemeColor.justWhite)
+        ),
+      ),
+    );
+  }
+
+  Widget buildTagsButton(String tagName) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ElevatedButton(
@@ -672,27 +725,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   }
 
-  Widget buildSearchButton() {
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: const BorderSide(color: ThemeColor.lightGrey),
-          ),
-        ),
-        onPressed: () => searchFileOnPressed(),
-        child: Transform.translate(
-          offset: const Offset(-3, 0),
-          child: const Icon(Icons.search, color: ThemeColor.justWhite)
-        ),
-      ),
-    );
-  }
-
   void onPastWeekPressed() async {
 
     final oneWeekAgo = now.subtract(const Duration(days: 7));
@@ -720,42 +752,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     final todayDate = DateFormat('dd/MM/yyyy').format(now);
     await searchByDateOnPressed(todayDate, "none", "24_hours");
 
-  }
-
-  Widget buildMoreOptionsButton() {
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: const BorderSide(color: ThemeColor.lightGrey),
-          ),
-        ),
-        onPressed: () {
-          BottomTrailingPsSearchFilter().buildBottomTrailing(
-            context: context, 
-            onTitlePressed: () {
-              selectedFilterSearch = "title";
-              searchBarHintTextNotifier.value = "Search title";
-            }, 
-            onUploaderNamePressed: () {
-              selectedFilterSearch = "uploader_name";
-              searchBarHintTextNotifier.value = "Search uploader name";
-            },
-            onPast24HoursPressed: () => onPast24HoursPressed(),
-            onPastWeekPressed: () => onPastWeekPressed(),
-            onPastMonthPressed: () => onPastMonthPressed(),
-          );
-        },
-        child: Transform.translate(
-          offset: const Offset(-3, 0),
-          child: const Icon(Icons.more_vert, color: ThemeColor.justWhite)
-        ),
-      ),
-    );
   }
 
   void clearSearchingData() {
@@ -809,7 +805,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   @override
   void dispose() {
     psSearchBarController.dispose();
-    scrollListViewController.dispose();
     psSearchBarFocusNode.dispose();
     isTagsVisibleNotifier.dispose();
     searchBarHintTextNotifier.dispose();
