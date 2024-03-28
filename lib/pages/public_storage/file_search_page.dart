@@ -130,9 +130,9 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            buildTagsButton("Entertainment", "en"),
-                            buildTagsButton("Data", "en"),
-                            buildTagsButton("Creativity", "en"),
+                            buildTagsButton("Entertainment"),
+                            buildTagsButton("Data"),
+                            buildTagsButton("Creativity"),
                           ],
                         ),
                       ),
@@ -145,11 +145,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          buildTagsButton("Software", "en"),
-                          buildTagsButton("Education", "en"),
-                          buildTagsButton("Gaming", "en"),
-                          buildTagsButton("Music", "en"),
-                          buildTagsButton("Random", "en"),
+                          buildTagsButton("Software"),
+                          buildTagsButton("Education"),
+                          buildTagsButton("Gaming"),
+                          buildTagsButton("Music"),
+                          buildTagsButton("Random"),
                         ],
                       ),
                     ),
@@ -243,7 +243,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildTagsButton(
     String tagName,  
-    String tagType,
   ) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
