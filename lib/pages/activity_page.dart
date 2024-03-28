@@ -244,8 +244,7 @@ class ActivityPageState extends State<ActivityPage> {
               color: ThemeColor.darkBlack,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
-                color: isGeneralFile 
-                ? ThemeColor.mediumGrey : ThemeColor.darkBlack
+                color: ThemeColor.mediumGrey
               )
             ),
             child: ClipRRect(

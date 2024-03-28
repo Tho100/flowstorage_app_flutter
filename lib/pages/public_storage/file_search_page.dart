@@ -16,7 +16,6 @@ import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
-import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -674,24 +673,21 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   Widget buildSearchButton() {
-    return ClipOval(
-      child: SizedBox(
-        width: 48,
-        height: 48,
-        child: SplashWidget(
-          child: Container(
-            decoration: BoxDecoration(
-              color: ThemeColor.lightGrey.withOpacity(0.35),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => searchFileOnPressed(),
-              icon: const Icon(Icons.search, color: ThemeColor.justWhite),
-            ),
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: ThemeColor.lightGrey),
           ),
+        ),
+        onPressed: () => searchFileOnPressed(),
+        child: Transform.translate(
+          offset: const Offset(-3, 0),
+          child: const Icon(Icons.search, color: ThemeColor.justWhite)
         ),
       ),
     );
@@ -727,39 +723,36 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   }
 
   Widget buildMoreOptionsButton() {
-    return ClipOval(
-      child: SizedBox(
-        width: 48,
-        height: 48,
-        child: SplashWidget(
-          child: Container(
-            decoration: BoxDecoration(
-              color: ThemeColor.lightGrey.withOpacity(0.35),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                BottomTrailingPsSearchFilter().buildBottomTrailing(
-                  context: context, 
-                  onTitlePressed: () {
-                    selectedFilterSearch = "title";
-                    searchBarHintTextNotifier.value = "Search title";
-                  }, 
-                  onUploaderNamePressed: () {
-                    selectedFilterSearch = "uploader_name";
-                    searchBarHintTextNotifier.value = "Search uploader name";
-                  },
-                  onPast24HoursPressed: () => onPast24HoursPressed(),
-                  onPastWeekPressed: () => onPastWeekPressed(),
-                  onPastMonthPressed: () => onPastMonthPressed(),
-                );
-              },
-              icon: const Icon(Icons.more_vert, color: ThemeColor.justWhite),
-            ),
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: ThemeColor.lightGrey),
           ),
+        ),
+        onPressed: () {
+          BottomTrailingPsSearchFilter().buildBottomTrailing(
+            context: context, 
+            onTitlePressed: () {
+              selectedFilterSearch = "title";
+              searchBarHintTextNotifier.value = "Search title";
+            }, 
+            onUploaderNamePressed: () {
+              selectedFilterSearch = "uploader_name";
+              searchBarHintTextNotifier.value = "Search uploader name";
+            },
+            onPast24HoursPressed: () => onPast24HoursPressed(),
+            onPastWeekPressed: () => onPastWeekPressed(),
+            onPastMonthPressed: () => onPastMonthPressed(),
+          );
+        },
+        child: Transform.translate(
+          offset: const Offset(-3, 0),
+          child: const Icon(Icons.more_vert, color: ThemeColor.justWhite)
         ),
       ),
     );
