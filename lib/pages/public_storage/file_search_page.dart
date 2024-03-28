@@ -241,9 +241,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
-  Widget buildTagsButton(
-    String tagName,  
-  ) {
+  Widget buildTagsButton(String tagName) {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ElevatedButton(
