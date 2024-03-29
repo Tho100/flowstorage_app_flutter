@@ -253,7 +253,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             borderRadius: BorderRadius.circular(35.0),
           ),
         ),
-        child:  Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.label_outline, color: ThemeColor.justWhite), 
