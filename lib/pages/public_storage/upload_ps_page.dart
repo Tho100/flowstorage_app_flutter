@@ -281,7 +281,7 @@ class UploadPsPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        title: "Public Storage - Upload",
+        title: "Public Storage",
         actions: [
           TextButton(
             child: const Text("Upload",

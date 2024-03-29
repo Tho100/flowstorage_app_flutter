@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {
@@ -38,7 +39,7 @@ class CustomAppBar {
         ),
       ),
       leading: customLeading ?? IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new),
+        icon: const Icon(CupertinoIcons.chevron_back),
         onPressed: customBackOnPressed ?? () => Navigator.pop(context!),
       ),
       backgroundColor: backgroundColor ?? ThemeColor.darkBlack,
