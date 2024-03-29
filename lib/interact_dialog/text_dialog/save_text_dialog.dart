@@ -44,6 +44,7 @@ class SaveTextDialog {
               ),
             ),
             child: TextFormField(
+              maxLength: 40,
               autofocus: true,
               style: const TextStyle(
                 color: ThemeColor.secondaryWhite,
