@@ -68,6 +68,7 @@ import 'package:flowstorage_fsc/widgets/grid_list_view/photos_grid.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/ps_grid.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/recent_ps_grid.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/sub_ps_grid.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
@@ -1572,10 +1573,10 @@ class HomePageState extends State<HomePage> {
     return Row(
       children: [
         IconButton(
-          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(Icons.check_box_outlined, size: 26),
+          icon: editAllIsPressed ? const Icon(Icons.check) : const Icon(CupertinoIcons.checkmark_square, size: 26),
           onPressed: () {
             checkedItemsName.clear();
-            selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
+            selectAllItemsIconNotifier.value = CupertinoIcons.square;
 
             editAllIsPressed 
               ? selectAllItemsIsPressedNotifier.value = false 
@@ -1739,10 +1740,11 @@ class HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: CustomAppBar(
+          enableCenter: false,
           context: context,
           title: appBarTitleValue,
           customLeading: IconButton(
-            icon: const Icon(Icons.menu, size: 28),
+            icon: const Icon(CupertinoIcons.bars, size: 28),
             onPressed: () => sidebarMenuScaffoldKey.currentState?.openDrawer(),
           ),
           actions: [
@@ -2285,7 +2287,7 @@ class HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, right: 8.0),
       child: IconButton(
-        icon: const Icon(Icons.search_rounded, size: 26),
+        icon: const Icon(CupertinoIcons.search, size: 26),
         onPressed: () {
           Navigator.push(
             context,

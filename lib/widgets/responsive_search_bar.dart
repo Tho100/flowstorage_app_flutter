@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -84,7 +85,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
-                          prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
+                          prefixIcon: const Icon(CupertinoIcons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
                         ),
                       ),
                     ),

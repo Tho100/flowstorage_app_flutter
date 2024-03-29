@@ -10,6 +10,7 @@ class CustomAppBar {
   final BuildContext? context;
   final VoidCallback? customBackOnPressed;
   final Widget? customLeading;
+  final bool? enableCenter;
 
   const CustomAppBar({
     required this.context,
@@ -18,12 +19,14 @@ class CustomAppBar {
     this.bottom,
     this.backgroundColor,
     this.customBackOnPressed,
-    this.customLeading
+    this.customLeading,
+    this.enableCenter,
   });
 
   PreferredSizeWidget? buildAppBar() {
     return AppBar(
       titleSpacing: 5,
+      centerTitle: enableCenter ?? true,
       automaticallyImplyLeading: false,
       title: Text(
         title,

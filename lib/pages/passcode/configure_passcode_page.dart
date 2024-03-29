@@ -113,7 +113,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        title: "Configure passcode"
+        title: "Configure Passcode"
       ).buildAppBar(),
       body: buildBody(),
     );
