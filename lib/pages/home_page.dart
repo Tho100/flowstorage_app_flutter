@@ -1739,6 +1739,7 @@ class HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: CustomAppBar(
+          enableCenter: false,
           context: context,
           title: appBarTitleValue,
           customLeading: IconButton(
