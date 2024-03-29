@@ -16,6 +16,7 @@ import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -197,8 +198,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         ),
         onPressed: () => searchFileOnPressed(),
         child: Transform.translate(
-          offset: const Offset(-3, 0),
-          child: const Icon(Icons.search, color: ThemeColor.justWhite)
+          offset: const Offset(-2, 0),
+          child: const Icon(CupertinoIcons.search, color: ThemeColor.justWhite)
         ),
       ),
     );
