@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/splash_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -63,8 +64,8 @@ class NavigationButtons extends StatelessWidget {
                           valueListenable: isGridListViewSelected,
                           builder: (context, isSelected, child) {
                             return !isSelected 
-                              ? const Icon(Icons.grid_view, size: 20.5, color: ThemeColor.secondaryWhite) 
-                              : const Icon(Icons.format_list_bulleted_outlined, size: 21.5, color: ThemeColor.secondaryWhite);
+                              ? const Icon(CupertinoIcons.square_grid_2x2, size: 20.5, color: ThemeColor.secondaryWhite) 
+                              : const Icon(CupertinoIcons.list_bullet, size: 21.5, color: ThemeColor.secondaryWhite);
                           }
                         ),
                       ),
@@ -124,7 +125,7 @@ class NavigationButtons extends StatelessWidget {
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         onPressed:() => filterTypeOnPressed(),
-                        icon: const Icon(Icons.tune_outlined, size: 22.5, color: ThemeColor.secondaryWhite),
+                        icon: const Icon(CupertinoIcons.slider_horizontal_3, size: 22.5, color: ThemeColor.secondaryWhite),
                       ),
                     ),
                   ),

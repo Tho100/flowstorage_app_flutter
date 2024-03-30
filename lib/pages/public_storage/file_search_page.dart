@@ -186,8 +186,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildSearchButton() {
     return SizedBox(
-      width: 48,
-      height: 48,
+      width: 50,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkBlack,
@@ -197,10 +197,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           ),
         ),
         onPressed: () => searchFileOnPressed(),
-        child: Transform.translate(
-          offset: const Offset(-2, 0),
-          child: const Icon(CupertinoIcons.search, color: ThemeColor.justWhite)
-        ),
+        child: const Icon(CupertinoIcons.search, color: ThemeColor.justWhite)
       ),
     );
   }
@@ -208,8 +205,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildMoreOptionsButton() {
     return SizedBox(
-      width: 48,
-      height: 48,
+      width: 50,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkBlack,
@@ -234,10 +231,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             onPastMonthPressed: () => onPastMonthPressed(),
           );
         },
-        child: Transform.translate(
-          offset: const Offset(-3, 0),
-          child: const Icon(Icons.more_vert, color: ThemeColor.justWhite)
-        ),
+        child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.justWhite)
       ),
     );
   }
