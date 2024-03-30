@@ -227,6 +227,7 @@ class ActivityPageState extends State<ActivityPage> {
     final fileType = mostUploadedFilesName[index].split('.').last;
 
     final isGeneralFile = Globals.generalFileTypes.contains(fileType);
+    final isOfflineVideo = tempData.origin == OriginFile.offline && Globals.videoType.contains(fileType);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,8 +252,8 @@ class ActivityPageState extends State<ActivityPage> {
               borderRadius: BorderRadius.circular(18),
               child: Image.memory(
                 mostUploadedImageBytes[index]!,
-                fit: isGeneralFile
-                ? BoxFit.scaleDown : BoxFit.cover,
+                fit: isGeneralFile || isOfflineVideo 
+                  ? BoxFit.scaleDown : BoxFit.cover,
               ),
             )
           ),
