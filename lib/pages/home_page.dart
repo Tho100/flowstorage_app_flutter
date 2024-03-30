@@ -2229,7 +2229,7 @@ class HomePageState extends State<HomePage> {
             onTap: () => _callBottomTrailing(index),
             child: editAllIsPressed 
               ? _buildCheckboxItem(index) 
-              : const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.secondaryWhite),
+              : const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.thirdWhite, size: 22),
           ),
         ];
       },
