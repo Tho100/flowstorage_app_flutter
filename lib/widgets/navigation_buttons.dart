@@ -125,7 +125,7 @@ class NavigationButtons extends StatelessWidget {
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         onPressed:() => filterTypeOnPressed(),
-                        icon: const Icon(Icons.tune_outlined, size: 22.5, color: ThemeColor.secondaryWhite),
+                        icon: const Icon(CupertinoIcons.slider_horizontal_3, size: 22.5, color: ThemeColor.secondaryWhite),
                       ),
                     ),
                   ),

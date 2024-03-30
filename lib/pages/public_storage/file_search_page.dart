@@ -234,10 +234,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             onPastMonthPressed: () => onPastMonthPressed(),
           );
         },
-        child: Transform.translate(
-          offset: const Offset(-3, 0),
-          child: const Icon(Icons.more_vert, color: ThemeColor.justWhite)
-        ),
+        child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.justWhite)
       ),
     );
   }

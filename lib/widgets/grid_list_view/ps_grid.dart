@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -108,7 +109,7 @@ class PsGridListView extends StatelessWidget {
 
               IconButton(
                 onPressed: () => callBottomTrailing(index),
-                icon: const Icon(Icons.more_vert, color: Colors.white, size: 22),
+                icon: const Icon(CupertinoIcons.ellipsis_vertical, color: Colors.white, size: 22),
               ),
 
             ],

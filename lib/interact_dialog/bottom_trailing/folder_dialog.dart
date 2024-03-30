@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -65,7 +66,7 @@ class FolderDialog {
                           ),
                           trailing: GestureDetector(
                             onTap: () => trailingOnPressed(index),
-                            child: const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite)),
+                            child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.secondaryWhite)),
                         ),
                       ),
                     );

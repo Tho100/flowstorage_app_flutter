@@ -119,7 +119,7 @@ class HomePageState extends State<HomePage> {
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
 
   final selectAllItemsIconNotifier = ValueNotifier<IconData>(
-                                      Icons.check_box_outline_blank);
+                                      CupertinoIcons.square);
   final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
                                       Icons.expand_more);
 
@@ -1639,7 +1639,7 @@ class HomePageState extends State<HomePage> {
 
   void _onSelectItemLongPress(int index) {
 
-    selectAllItemsIconNotifier.value = Icons.check_box_outline_blank;
+    selectAllItemsIconNotifier.value = CupertinoIcons.square;
 
     selectAllItemsIsPressedNotifier.value = true;
 
@@ -1689,7 +1689,7 @@ class HomePageState extends State<HomePage> {
           context: context
         ).buildFilterTypePhotos();
       },
-      icon: const Icon(Icons.tune_outlined, 
+      icon: const Icon(CupertinoIcons.slider_horizontal_3, 
         color: Colors.white, size: 26
       ),
     );
@@ -1698,7 +1698,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildMoreOptionsOnSelectButton() {
     return IconButton(
       onPressed: () => _callSelectedItemsBottomTrailing(),
-      icon: const Icon(Icons.more_vert),
+      icon: const Icon(CupertinoIcons.ellipsis_vertical),
     );
   }
 
@@ -2229,7 +2229,7 @@ class HomePageState extends State<HomePage> {
             onTap: () => _callBottomTrailing(index),
             child: editAllIsPressed 
               ? _buildCheckboxItem(index) 
-              : const Icon(Icons.more_vert, color: ThemeColor.secondaryWhite),
+              : const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.secondaryWhite),
           ),
         ];
       },
