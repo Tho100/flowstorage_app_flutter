@@ -58,6 +58,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
+                        textAlignVertical: TextAlignVertical.bottom,
                         autofocus: autoFocus ?? false,
                         onChanged: onChanged,
                         controller: controller,
@@ -68,7 +69,7 @@ class ResponsiveSearchBar extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 26),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(borderRadius),
                             borderSide: const BorderSide(
