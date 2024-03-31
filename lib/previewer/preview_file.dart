@@ -856,6 +856,8 @@ class PreviewFileState extends State<PreviewFile> {
       GlobalsTable.homeVideo, GlobalsTable.psVideo
     };
 
+    final isCenterAppBar = tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching;
+
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
       child: GestureDetector(
@@ -872,7 +874,7 @@ class PreviewFileState extends State<PreviewFile> {
                   ? bottomBarVisibleNotifier.value
                   : true,
                 child: AppBar(
-                  centerTitle: true,
+                  centerTitle: isCenterAppBar,
                   titleSpacing: 2,
                   backgroundColor: filesInfrontAppBar.contains(currentTable)
                     ? ThemeColor.darkBlack

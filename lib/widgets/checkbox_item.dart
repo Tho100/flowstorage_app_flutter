@@ -1,5 +1,4 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CheckBoxItems extends StatelessWidget {
@@ -35,10 +34,10 @@ class CheckBoxItems extends StatelessWidget {
           ),
           side: const BorderSide(
             color: ThemeColor.secondaryWhite,
-            width: 2.0,
+            width: 1.6,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(1.5),
+            borderRadius: BorderRadius.circular(3.2),
           ),
         ),
         child: Checkbox(
