@@ -187,8 +187,6 @@ class HomePageState extends State<HomePage> {
         _callStorageUsageWarning();
       }
 
-      _scrollEndListView();
-
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadGallery {main}',err,st);
     }
@@ -211,8 +209,6 @@ class HomePageState extends State<HomePage> {
       if(isShowWarning) {
         _callStorageUsageWarning();
       }
-
-      _scrollEndListView();
 
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadFile {main}', err,st);
