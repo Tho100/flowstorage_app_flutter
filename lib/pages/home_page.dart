@@ -187,6 +187,8 @@ class HomePageState extends State<HomePage> {
         _callStorageUsageWarning();
       }
 
+      _scrollEndListView();
+
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadGallery {main}',err,st);
     }
@@ -205,9 +207,12 @@ class HomePageState extends State<HomePage> {
 
       final storageUsagePercentage = await _getStorageUsagePercentage();
       final isShowWarning = storageUsagePercentage > 70 && tempData.origin != OriginFile.offline;
+      
       if(isShowWarning) {
         _callStorageUsageWarning();
       }
+
+      _scrollEndListView();
 
     } catch (err, st) {
       _callOnUploadFailed('Exception from _openDialogUploadFile {main}', err,st);
