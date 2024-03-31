@@ -99,9 +99,11 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   void _toggleUIVisibility(bool visible) {
-    visible 
-      ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
-      : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    if(tempData.origin != OriginFile.publicSearching) {
+      visible 
+        ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
+        : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    }
   }
 
   void _initializeTableName() {
