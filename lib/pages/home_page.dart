@@ -2226,11 +2226,12 @@ class HomePageState extends State<HomePage> {
       itemOnTap: editAllIsPressed ? _onSelectItemLongPress : _navigateToPreviewFile,
       children: (int index) {
         return [
-          GestureDetector(
-            onTap: () => _callBottomTrailing(index),
-            child: editAllIsPressed 
-              ? _buildCheckboxItem(index) 
-              : const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.thirdWhite, size: 22),
+          editAllIsPressed
+          ? _buildCheckboxItem(index)
+          : IconButton(
+            onPressed: () => _callBottomTrailing(index),
+            iconSize: 22,
+            icon: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.thirdWhite),
           ),
         ];
       },

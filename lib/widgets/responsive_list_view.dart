@@ -22,7 +22,7 @@ class ResponsiveListView extends StatelessWidget {
   final itemExtentValue = 68.0;
   final bottomExtraSpacesHeight = 89.0;
   final topExtraSpacesHeight = 5.0;
-  final rightExtraSpaces = 3.2;
+  final rightExtraSpaces = 1.0;
   final leftExtraSpaces = 4.0;
 
   @override
@@ -49,7 +49,7 @@ class ResponsiveListView extends StatelessWidget {
 
               const titleOffset = Offset(-3, -6);
               const subtitleOffset = Offset(-2, -4);
-              const trailingOffset = Offset(0, -4);
+              const trailingOffset = Offset(5, -4);
 
               final leadingXOffset = isGeneralFile ? 2.0 : 0.0;
               const leadingYOffset = 0.0;
