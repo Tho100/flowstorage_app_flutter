@@ -13,10 +13,13 @@ class BottomTrailingSorting {
     required BuildContext context,
     required VoidCallback sortUploadDateOnPressed,
     required VoidCallback sortItemNameOnPressed,
-    required VoidCallback sortDefaultOnPressed
+    required VoidCallback sortDefaultOnPressed,
+    required String sortType,
+    required bool isDateAscending,
+    required bool isNameAscending,
   }) {
     return BottomTrailing().buildTrailing(
-      context: context, 
+      context: context,
       children: [
 
         const SizedBox(height: 12),
@@ -24,55 +27,66 @@ class BottomTrailingSorting {
         const BottomTrailingBar(),
 
         const BottomTrailingTitle(title: "Sort By"),
-        
+
         const Divider(color: ThemeColor.lightGrey),
-      
-        if(WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe, OriginFile.sharedOther]))
-        ElevatedButton(
-          onPressed: sortUploadDateOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text(
-                'Upload Date',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
-        ),
 
-        ElevatedButton(
+        if (WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe, OriginFile.sharedOther]))
+          _buildSortButton(
+            onPressed: sortUploadDateOnPressed,
+            sortType: sortType,
+            icon: sortType == "Upload Date"
+              ? isNameAscending
+                ? const Icon(Icons.keyboard_arrow_up)
+                : const Icon(Icons.keyboard_arrow_down)
+              : const SizedBox(width: 25.0),
+            label: 'Upload Date',
+          ),
+
+        _buildSortButton(
           onPressed: sortItemNameOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text(
-                'Item Name',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+          sortType: sortType,
+          icon: sortType == "Item Name"
+            ? isNameAscending
+              ? const Icon(Icons.keyboard_arrow_up)
+              : const Icon(Icons.keyboard_arrow_down)
+            : const SizedBox(width: 25.0),
+          label: 'Item Name',
         ),
 
-        ElevatedButton(
+        _buildSortButton(
           onPressed: sortDefaultOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text(
-                'Default',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+          sortType: sortType,
+          icon: sortType == "Default"
+            ? const Icon(Icons.keyboard_arrow_down)
+            : const SizedBox(width: 25.0),
+          label: 'Default',
         ),
 
         const SizedBox(height: 20),
 
       ],
+    );
+  }
+
+  Widget _buildSortButton({
+    required VoidCallback onPressed,
+    required String sortType,
+    required Widget icon,
+    required String label,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          icon,
+          const SizedBox(width: 15.0),
+          Text(
+            label,
+            style: GlobalsStyle.btnBottomDialogTextStyle,
+          ),
+        ],
+      ),
     );
   }
 
