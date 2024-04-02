@@ -1512,7 +1512,10 @@ class HomePageState extends State<HomePage> {
       sortDefaultOnPressed: () {
         _sortDefault();
         Navigator.pop(context);
-      }
+      },
+      sortType: sortingText.value,
+      isDateAscending: sortingIsAscendingUploadDate,
+      isNameAscending: sortingIsAscendingItemName
     );
   }
 
