@@ -274,7 +274,7 @@ class CreateTextPageState extends State<CreateText> {
                     child: const Text("Save",
                       style: TextStyle(
                         color: ThemeColor.darkPurple,
-                        fontSize: 17,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
