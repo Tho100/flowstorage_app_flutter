@@ -470,13 +470,6 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildOpenWithIconButton() {
-    return IconButton(
-      onPressed: _openWithOnPressed,
-      icon: const Icon(Icons.open_in_new_outlined),
-    );
-  }
-
   Widget _buildAppBarTitle() {
 
     if (filesWithCustomHeader.contains(currentTable)) {
@@ -902,10 +895,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     if ([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)) {
       actions.add(_buildCommentIconButtonAudio());
-    }
-
-    if ([GlobalsTable.homePdf, GlobalsTable.psPdf].contains(currentTable)) {
-      actions.add(_buildOpenWithIconButton());
     }
 
     actions.add(_buildMoreIconButton());
