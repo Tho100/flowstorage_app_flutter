@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/data_query/retrieve_data.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
+import 'package:flowstorage_fsc/pages/mini_game.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -267,26 +268,34 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 14, top: 12, bottom: 12),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: isGeneralFile || isOfflineVideo
-                        ? ThemeColor.mediumGrey 
-                        : ThemeColor.darkBlack,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PongGame())
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: isGeneralFile || isOfflineVideo
+                          ? ThemeColor.mediumGrey 
+                          : ThemeColor.darkBlack,
+                      ),
+                      borderRadius: BorderRadius.circular(16)
                     ),
-                    borderRadius: BorderRadius.circular(16)
-                  ),
-                  width: width - 25,
-                  height: 200,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.memory(
-                      imageData!,
-                      width: width - 25,
-                      height: 200,
-                      fit: isGeneralFile || isOfflineVideo
-                        ? BoxFit.scaleDown
-                        : BoxFit.fitWidth,
+                    width: width - 25,
+                    height: 200,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.memory(
+                        imageData!,
+                        width: width - 25,
+                        height: 200,
+                        fit: isGeneralFile || isOfflineVideo
+                          ? BoxFit.scaleDown
+                          : BoxFit.fitWidth,
+                      ),
                     ),
                   ),
                 ),
