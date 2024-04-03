@@ -9,6 +9,28 @@ import 'package:flutter/material.dart';
 
 class BottomTrailingSorting {
 
+  Widget _buildSortButton({
+    required VoidCallback onPressed,
+    required String sortType,
+    required Widget icon,
+    required String label,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          icon,
+          const SizedBox(width: 15.0),
+          Text(
+            label,
+            style: GlobalsStyle.btnBottomDialogTextStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildTrailing({
     required BuildContext context,
     required VoidCallback sortUploadDateOnPressed,
@@ -36,8 +58,8 @@ class BottomTrailingSorting {
             sortType: sortType,
             icon: sortType == "Upload Date"
               ? isNameAscending
-                ? const Icon(Icons.keyboard_arrow_up)
-                : const Icon(Icons.keyboard_arrow_down)
+                ? const Icon(Icons.keyboard_arrow_up, color: ThemeColor.secondaryWhite)
+                : const Icon(Icons.keyboard_arrow_down, color: ThemeColor.secondaryWhite)
               : const SizedBox(width: 25.0),
             label: 'Upload Date',
           ),
@@ -47,8 +69,8 @@ class BottomTrailingSorting {
           sortType: sortType,
           icon: sortType == "Item Name"
             ? isNameAscending
-              ? const Icon(Icons.keyboard_arrow_up)
-              : const Icon(Icons.keyboard_arrow_down)
+              ? const Icon(Icons.keyboard_arrow_up, color: ThemeColor.secondaryWhite)
+              : const Icon(Icons.keyboard_arrow_down, color: ThemeColor.secondaryWhite)
             : const SizedBox(width: 25.0),
           label: 'Item Name',
         ),
@@ -57,7 +79,7 @@ class BottomTrailingSorting {
           onPressed: sortDefaultOnPressed,
           sortType: sortType,
           icon: sortType == "Default"
-            ? const Icon(Icons.keyboard_arrow_down)
+            ? const Icon(Icons.keyboard_arrow_down, color: ThemeColor.secondaryWhite)
             : const SizedBox(width: 25.0),
           label: 'Default',
         ),
@@ -65,28 +87,6 @@ class BottomTrailingSorting {
         const SizedBox(height: 20),
 
       ],
-    );
-  }
-
-  Widget _buildSortButton({
-    required VoidCallback onPressed,
-    required String sortType,
-    required Widget icon,
-    required String label,
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-      child: Row(
-        children: [
-          icon,
-          const SizedBox(width: 15.0),
-          Text(
-            label,
-            style: GlobalsStyle.btnBottomDialogTextStyle,
-          ),
-        ],
-      ),
     );
   }
 

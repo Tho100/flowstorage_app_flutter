@@ -13,6 +13,30 @@ class BottomTrailingSelectedItems {
 
   final tempData = GetIt.instance<TempDataProvider>();
 
+  Widget _buildOptionButton({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed,
+    required BuildContext context
+  }) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pop(context);
+        onPressed();
+      },
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          Icon(icon, color: ThemeColor.secondaryWhite),
+          const SizedBox(width: 15.0),
+          Text(text,
+            style: GlobalsStyle.btnBottomDialogTextStyle
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildTrailing({
     required BuildContext context,
     required VoidCallback makeAoOnPressed,
@@ -54,56 +78,28 @@ class BottomTrailingSelectedItems {
           ),
 
           if(WidgetVisibility.setNotVisible(OriginFile.offline))
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              makeAoOnPressed();
-            },
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.offline_bolt_outlined, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
-                Text(
-                  'Make available offline',
-                  style: GlobalsStyle.btnBottomDialogTextStyle,
-                ),
-              ],
-            ),
+          _buildOptionButton(
+            text: "Make available offline", 
+            icon: Icons.offline_bolt_outlined, 
+            onPressed: makeAoOnPressed, 
+            context: context
           ),
         
           if(WidgetVisibility.setVisible(OriginFile.home))
-          ElevatedButton(
-            onPressed: moveOnPressed,
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.open_with_outlined, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
-                Text('Move',
-                  style: GlobalsStyle.btnBottomDialogTextStyle
-                ),
-              ],
-            ),
+          _buildOptionButton(
+            text: "Move", 
+            icon: Icons.open_with_outlined, 
+            onPressed: moveOnPressed, 
+            context: context
           ),
 
           const Divider(color: ThemeColor.lightGrey),
 
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              deleteOnPressed();
-            },
-            style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.delete_outline, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
-                Text('Delete',
-                  style: GlobalsStyle.btnBottomDialogTextStyle
-                ),
-              ],
-            ),
+          _buildOptionButton(
+            text: "Delete", 
+            icon: Icons.delete_outline, 
+            onPressed: deleteOnPressed, 
+            context: context
           ),
 
         ],
