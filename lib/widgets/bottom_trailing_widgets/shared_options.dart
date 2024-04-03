@@ -7,6 +7,27 @@ import 'package:flutter/material.dart';
 
 class BottomTrailingShared {
 
+  Widget _buildSharedButton({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          Icon(icon, color: ThemeColor.secondaryWhite),
+          const SizedBox(width: 10.0),
+          Text(
+            text,
+            style: GlobalsStyle.btnBottomDialogTextStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildTrailing({
     required BuildContext context,
     required VoidCallback sharedToMeOnPressed,
@@ -24,34 +45,16 @@ class BottomTrailingShared {
         
         const Divider(color: ThemeColor.lightGrey),
           
-        ElevatedButton(
-          onPressed: sharedToMeOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.chevron_right, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 10.0),
-              Text(
-                'Shared to me',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildSharedButton(
+          text: "Shared to me",
+          icon: Icons.chevron_right,
+          onPressed: sharedToMeOnPressed
         ),
 
-        ElevatedButton(
-          onPressed: sharedToOthersOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.chevron_left, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 10.0),
-              Text(
-                'Shared files',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildSharedButton(
+          text: "Shared files",
+          icon: Icons.chevron_left,
+          onPressed: sharedToOthersOnPressed
         ),
 
         const SizedBox(height: 20),
