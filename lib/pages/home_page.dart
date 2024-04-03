@@ -1659,6 +1659,10 @@ class HomePageState extends State<HomePage> {
         : checkedItemsName.add(storageData.fileNamesFilteredList[index]);
     });
 
+    if(checkedItemsName.length == storageData.fileNamesFilteredList.length) {
+      selectAllItemsIsPressedNotifier.value = false;
+    }
+
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
 
     tempData.setAppBarTitle(setAppBarTitle);
