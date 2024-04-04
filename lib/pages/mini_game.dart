@@ -83,14 +83,17 @@ class PongGameState extends State<PongGame> {
   final scoreNotifier = ValueNotifier<int>(0);
   final highScoreNotifier = ValueNotifier<int>(0);
 
+  int highScore = 0;
+
   void checkCollisions() {
 
     if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90 && ball.x >= paddlePosition && ball.x <= paddlePosition + 155) {
       scoreNotifier.value++;
-      highScoreNotifier.value++;
+      highScore = scoreNotifier.value;
       ball.dy = -ball.dy;
 
     } else if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90) {
+      highScoreNotifier.value = highScore;
       resetBall();
 
     }
@@ -110,7 +113,8 @@ class PongGameState extends State<PongGame> {
     ball.y = MediaQuery.of(context).size.height / 2;
     ball.dx = 3;
     ball.dy = 3;
-    scoreNotifier.value = scoreNotifier.value == 0 ? 0 : scoreNotifier.value-1;
+    highScore = scoreNotifier.value;
+    scoreNotifier.value = 0;
   }
 
   void startGameLoop() {
