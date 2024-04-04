@@ -12,6 +12,7 @@ class CustomAppBar {
   final VoidCallback? customBackOnPressed;
   final Widget? customLeading;
   final bool? enableCenter;
+  final Color? leadingColor;
 
   const CustomAppBar({
     required this.context,
@@ -22,6 +23,7 @@ class CustomAppBar {
     this.customBackOnPressed,
     this.customLeading,
     this.enableCenter,
+    this.leadingColor,
   });
 
   PreferredSizeWidget? buildAppBar() {
@@ -39,7 +41,7 @@ class CustomAppBar {
         ),
       ),
       leading: customLeading ?? IconButton(
-        icon: const Icon(CupertinoIcons.chevron_back),
+        icon: Icon(CupertinoIcons.chevron_back, color: leadingColor ?? ThemeColor.justWhite),
         onPressed: customBackOnPressed ?? () => Navigator.pop(context!),
       ),
       backgroundColor: backgroundColor ?? ThemeColor.darkBlack,

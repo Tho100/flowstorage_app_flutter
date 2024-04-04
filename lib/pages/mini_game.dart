@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Ball {
@@ -22,6 +24,7 @@ class Ball {
 }
 
 class PongPainter extends CustomPainter {
+  
   final double paddlePosition;
   final Ball ball;
 
@@ -29,18 +32,32 @@ class PongPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Draw paddles, ball, and game elements here
-    // For example:
-    canvas.drawRect(
-        Rect.fromLTWH(paddlePosition, 180, 80, 10),
-        Paint()
-          ..color = Colors.blue
-          ..style = PaintingStyle.fill);
+
+    const paddleWidth = 155.0; 
+    const paddleHeight = 15.0; 
+
+    final paddleRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(
+        paddlePosition,
+        size.height - paddleHeight, 
+        paddleWidth,
+        paddleHeight,
+      ),
+      const Radius.circular(12),
+    );
+
+    canvas.drawRRect(
+      paddleRect,
+      Paint()
+        ..color = ThemeColor.darkBlack
+        ..style = PaintingStyle.fill,
+    );
+
     canvas.drawCircle(
         Offset(ball.x, ball.y),
         ball.radius,
         Paint()
-          ..color = Colors.red
+          ..color = ThemeColor.secondaryPurple
           ..style = PaintingStyle.fill);
   }
 
@@ -48,6 +65,7 @@ class PongPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+
 }
 
 class PongGame extends StatefulWidget {
@@ -62,6 +80,46 @@ class PongGameState extends State<PongGame> {
   late double paddlePosition;
   late Ball ball;
 
+  final scoreNotifier = ValueNotifier<int>(0);
+
+  void checkCollisions() {
+
+    if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90 && ball.x >= paddlePosition && ball.x <= paddlePosition + 155) {
+      scoreNotifier.value++;
+      ball.dy = -ball.dy;
+
+    } else if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90) {
+      resetBall();
+      
+    }
+
+    if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= MediaQuery.of(context).size.width) {
+      ball.dx = -ball.dx;
+    }
+
+    if (ball.y - ball.radius <= 0) {
+      ball.dy = -ball.dy;
+    }
+
+  }
+
+  void resetBall() {
+    ball.x = MediaQuery.of(context).size.width / 2;
+    ball.y = MediaQuery.of(context).size.height / 2;
+    ball.dx = 3;
+    ball.dy = 3;
+    scoreNotifier.value = scoreNotifier.value == 0 ? 0 : scoreNotifier.value-1;
+  }
+
+  void startGameLoop() {
+    Timer.periodic(const Duration(milliseconds: 8), (timer) {
+      setState(() {
+        ball.updatePosition();
+        checkCollisions();
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -70,47 +128,57 @@ class PongGameState extends State<PongGame> {
     startGameLoop();
   }
 
-  void startGameLoop() {
-    Timer.periodic(const Duration(milliseconds: 16), (timer) {
-      setState(() {
-        ball.updatePosition();
-        checkCollisions();
-      });
-    });
-  }
-
-  void checkCollisions() {
-    // Check for collisions with walls
-    if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= 300) {
-      ball.dx = -ball.dx; // Reverse horizontal velocity
-    }
-    if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= 200) {
-      ball.dy = -ball.dy; // Reverse vertical velocity
-    }
+  @override
+  void dispose() {
+    scoreNotifier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeColor.justWhite,
+      appBar: CustomAppBar(
+        backgroundColor: ThemeColor.justWhite,
+        leadingColor: ThemeColor.darkBlack,
+        context: context, 
+        title: ""
+      ).buildAppBar(),
       body: Center(
-        child: Container(
-          child: GestureDetector(
-            onHorizontalDragUpdate: (DragUpdateDetails details) {
-              setState(() {
-                paddlePosition += details.delta.dx;
-              });
-            },
-            child: CustomPaint(
-              painter: PongPainter(
-                paddlePosition: paddlePosition,
-                ball: ball,
-              ),
-              child: const SizedBox(
-                width: 300,
-                height: 200,
+        child: Stack(
+          children: [
+            ValueListenableBuilder(
+              valueListenable: scoreNotifier,
+              builder: (context, value, child) {
+                return Center(
+                  child: Text(value.toString(), 
+                    style: const TextStyle(
+                      fontSize: 135,
+                      color: ThemeColor.thirdWhite,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                );
+              },
+            ),
+            GestureDetector(
+              onHorizontalDragUpdate: (DragUpdateDetails details) {
+                setState(() {
+                  paddlePosition += details.delta.dx;
+                });
+              },
+              child: CustomPaint(
+                painter: PongPainter(
+                  paddlePosition: paddlePosition,
+                  ball: ball,
+                ),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height-90,
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
