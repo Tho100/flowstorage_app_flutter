@@ -34,8 +34,8 @@ class PongPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
 
-    const paddleWidth = 155.0; 
-    const paddleHeight = 15.0; 
+    const paddleWidth = 148.0; 
+    const paddleHeight = 20.0; 
 
     final paddleRect = RRect.fromRectAndRadius(
       Rect.fromLTWH(
@@ -55,7 +55,7 @@ class PongPainter extends CustomPainter {
 
     canvas.drawCircle(
         Offset(ball.x, ball.y),
-        ball.radius,
+        ball.radius*1.2,
         Paint()
           ..color = ThemeColor.secondaryPurple
           ..style = PaintingStyle.fill);
@@ -109,16 +109,20 @@ class PongGameState extends State<PongGame> {
   }
 
   void resetBall() {
+
     ball.x = MediaQuery.of(context).size.width / 2;
     ball.y = MediaQuery.of(context).size.height / 2;
+
     ball.dx = 3;
-    ball.dy = 3;
+    ball.dy = 3; 
+    
     highScore = scoreNotifier.value;
     scoreNotifier.value = 0;
+
   }
 
   void startGameLoop() {
-    Timer.periodic(const Duration(milliseconds: 8), (timer) {
+    Timer.periodic(const Duration(milliseconds: 6), (timer) {
       setState(() {
         ball.updatePosition();
         checkCollisions();
