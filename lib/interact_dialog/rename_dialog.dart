@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
@@ -56,13 +57,16 @@ class RenameDialog {
                 
                 Padding(
                   padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image(
-                      width: isGeneralFile ? 36 : 55,
-                      height: isGeneralFile ? 36 : 55,
-                      fit: BoxFit.cover,
-                      image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
+                  child: GestureDetector(
+                    onTap: () => NavigatePage.goToPagePongGame(),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image(
+                        width: isGeneralFile ? 36 : 55,
+                        height: isGeneralFile ? 36 : 55,
+                        fit: BoxFit.cover,
+                        image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
+                      ),
                     ),
                   ),
                 ),

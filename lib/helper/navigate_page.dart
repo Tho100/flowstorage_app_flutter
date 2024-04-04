@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/pages/activity_page.dart';
 import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/pages/file_details.dart';
 import 'package:flowstorage_fsc/pages/home_page.dart';
+import 'package:flowstorage_fsc/pages/mini_game.dart';
 import 'package:flowstorage_fsc/pages/move_file_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
 import 'package:flowstorage_fsc/pages/settings/account_page.dart';
@@ -238,6 +239,13 @@ class NavigatePage {
     Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const UserAccountsPage())
+    );
+  }
+
+  static void goToPagePongGame() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(builder: (context) => const PongGame())
     );
   }
 

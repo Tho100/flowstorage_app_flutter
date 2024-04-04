@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
@@ -51,15 +52,18 @@ class BottomTrailingOptions {
 
             Padding(
               padding: const EdgeInsets.only(left: 12,top: 12, bottom: 12),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image(
-                  width: isGeneralFile 
-                    ? 36 : 60,
-                  height: isGeneralFile
-                    ? 36 : 60,
-                  fit: BoxFit.cover,
-                  image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
+              child: GestureDetector(
+                onTap: () => NavigatePage.goToPagePongGame(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image(
+                    width: isGeneralFile 
+                      ? 36 : 60,
+                    height: isGeneralFile
+                      ? 36 : 60,
+                    fit: BoxFit.cover,
+                    image: MemoryImage(storageData.imageBytesFilteredList[storageData.fileNamesFilteredList.indexWhere((name) => name == fileName)]!),
+                  ),
                 ),
               ),
             ),
