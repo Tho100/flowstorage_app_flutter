@@ -97,6 +97,7 @@ class PongGameState extends State<PongGame> {
     } else if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90) {
       highScoreNotifier.value = highScore;
       resetBall();
+      
     }
 
     if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= MediaQuery.of(context).size.width) {
