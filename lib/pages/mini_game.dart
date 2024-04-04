@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Ball {
 
@@ -50,8 +51,7 @@ class PongPainter extends CustomPainter {
       paddleRect,
       Paint()
         ..color = ThemeColor.darkBlack
-        ..style = PaintingStyle.fill,
-    );
+        ..style = PaintingStyle.fill);
 
     canvas.drawCircle(
         Offset(ball.x, ball.y),
@@ -81,16 +81,18 @@ class PongGameState extends State<PongGame> {
   late Ball ball;
 
   final scoreNotifier = ValueNotifier<int>(0);
+  final highScoreNotifier = ValueNotifier<int>(0);
 
   void checkCollisions() {
 
     if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90 && ball.x >= paddlePosition && ball.x <= paddlePosition + 155) {
       scoreNotifier.value++;
+      highScoreNotifier.value++;
       ball.dy = -ball.dy;
 
     } else if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90) {
       resetBall();
-      
+
     }
 
     if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= MediaQuery.of(context).size.width) {
@@ -147,12 +149,29 @@ class PongGameState extends State<PongGame> {
       body: Center(
         child: Stack(
           children: [
+            
+            ValueListenableBuilder(
+              valueListenable: highScoreNotifier,
+              builder: (context, value, child) {
+                return Align(
+                  alignment: Alignment.topCenter,
+                  child: Text("HIGH SCORE: ${value.toString()}", 
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: ThemeColor.thirdWhite,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                );
+              },
+            ),
+
             ValueListenableBuilder(
               valueListenable: scoreNotifier,
               builder: (context, value, child) {
                 return Center(
                   child: Text(value.toString(), 
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 135,
                       color: ThemeColor.thirdWhite,
                       fontWeight: FontWeight.bold
@@ -161,6 +180,7 @@ class PongGameState extends State<PongGame> {
                 );
               },
             ),
+
             GestureDetector(
               onHorizontalDragUpdate: (DragUpdateDetails details) {
                 setState(() {
