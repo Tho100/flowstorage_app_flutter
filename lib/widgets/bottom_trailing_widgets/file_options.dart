@@ -22,6 +22,27 @@ class BottomTrailingOptions {
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
 
+  Widget _buildOptionButton({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          Icon(icon, color: ThemeColor.secondaryWhite),
+          const SizedBox(width: 15.0),
+          Text(
+            text,
+            style: GlobalsStyle.btnBottomDialogTextStyle
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildBottomTrailing({
     required String fileName,
     required VoidCallback onRenamePressed,
@@ -111,150 +132,75 @@ class BottomTrailingOptions {
         const Divider(color: ThemeColor.lightGrey),
 
         if(WidgetVisibility.setNotVisibleList([OriginFile.public, OriginFile.publicSearching]))
-        ElevatedButton(
-          onPressed: onRenamePressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: Row(
-            children: [
-              const Icon(Icons.edit_outlined, color: ThemeColor.secondaryWhite),
-              const SizedBox(width: 15.0),
-              Text(
-                fileName.contains('.') ? "Rename file" : "Rename directory",
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: fileName.contains('.') ? "Rename file" : "Rename directory",
+          icon: Icons.edit_outlined,
+          onPressed: onRenamePressed
         ),
         
         if(fileName.contains('.'))
-        ElevatedButton(
-          onPressed: onOpenWithPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.open_in_new_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                "Open with",
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
-        ), 
+        _buildOptionButton(
+          text: "Open with",
+          icon: Icons.open_in_new_outlined,
+          onPressed: onOpenWithPressed
+        ),
 
         if(WidgetVisibility.setNotVisible(OriginFile.offline) && fileName.contains('.'))
-        ElevatedButton(
-          onPressed: onSharingPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-            children: [
-              Icon(Icons.share_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Share file',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
-        ),  
+        _buildOptionButton(
+          text: "Share file",
+          icon: Icons.share_outlined,
+          onPressed: onSharingPressed
+        ),
 
         if(WidgetVisibility.setNotVisible(OriginFile.offline))
         const Divider(color: ThemeColor.lightGrey),
 
         if(WidgetVisibility.setNotVisible(OriginFile.offline) && fileName.contains('.'))
-        ElevatedButton(
-          onPressed: onAOPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.offline_bolt_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Make available offline',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: "Make available offline",
+          icon: Icons.offline_bolt_outlined,
+          onPressed: onAOPressed
         ),
         
-
         if(fileName.contains('.'))
         const Divider(color: ThemeColor.lightGrey),
 
         if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
-        ElevatedButton(
+        _buildOptionButton(
+          text: "Report",
+          icon: Icons.flag_outlined,
           onPressed: () {
             Navigator.pop(context);
             BottomTrailingReport(
               fileName: fileName, context: context).buildReportType();
-          },
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.flag_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Report',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+          }
         ),
 
-        ElevatedButton(
-          onPressed: onDownloadPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Download',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: "Download",
+          icon: Icons.file_download_outlined,
+          onPressed: onDownloadPressed
         ),
 
         if(fileName.contains('.') && tempData.origin == OriginFile.home)
-        ElevatedButton(
-          onPressed: onMovePressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.open_with_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Move',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: "Move",
+          icon: Icons.open_with_outlined,
+          onPressed: onMovePressed
         ),
 
         if(fileName.contains('.'))
-        ElevatedButton(
-          onPressed: onDetailsPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.info_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Details',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: "Details",
+          icon: Icons.info_outlined,
+          onPressed: onDetailsPressed
         ),
 
         if((tempData.origin == OriginFile.public && tempData.appBarTitle != "Public Storage") || tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching)
-        ElevatedButton(
-          onPressed: onDeletePressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.delete_outline, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Delete',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildOptionButton(
+          text: "Delete",
+          icon: Icons.delete_outline,
+          onPressed: onDeletePressed
         ),
       
         const SizedBox(height: 20),

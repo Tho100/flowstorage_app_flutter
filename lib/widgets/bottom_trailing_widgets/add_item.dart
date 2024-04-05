@@ -9,6 +9,27 @@ import 'package:flutter/material.dart';
 
 class BottomTrailingAddItem {
   
+  Widget _buildAddItemButton({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          Icon(icon, color: ThemeColor.secondaryWhite),
+          const SizedBox(width: 15.0),
+          Text(
+            text,
+            style: GlobalsStyle.btnBottomDialogTextStyle
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildTrailing({
     required String headerText,
     required VoidCallback galleryOnPressed,
@@ -32,115 +53,53 @@ class BottomTrailingAddItem {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        ElevatedButton(
-          onPressed: galleryOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.photo_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                'Upload from gallery',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildAddItemButton(
+          text: "Upload from gallery",
+          icon: Icons.photo_outlined,
+          onPressed: galleryOnPressed
         ),
         
-        ElevatedButton(
-          onPressed: fileOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.upload_file_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                'Upload files',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildAddItemButton(
+          text: "Upload files",
+          icon: Icons.upload_file_outlined,
+          onPressed: fileOnPressed
         ),
 
         if(WidgetVisibility.setVisible(OriginFile.home))
-        ElevatedButton(
-          onPressed: folderOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.folder_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Upload folder',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
+        _buildAddItemButton(
+          text: "Upload folder",
+          icon: Icons.folder_outlined,
+          onPressed: folderOnPressed
         ),
 
         const Divider(color: ThemeColor.lightGrey),
 
-        ElevatedButton(
-          onPressed: photoOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.camera_alt_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                'Take a photo',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildAddItemButton(
+          text: "Take a photo",
+          icon: Icons.camera_alt_outlined,
+          onPressed: photoOnPressed
         ),
 
-        ElevatedButton(
-          onPressed: scannerOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.center_focus_strong_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                'Scan document',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+        _buildAddItemButton(
+          text: "Scan document",
+          icon: Icons.center_focus_strong_outlined,
+          onPressed: scannerOnPressed
         ),
       
         const Divider(color: ThemeColor.lightGrey),
 
-        ElevatedButton(
-          onPressed: textOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.add_box_outlined, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
-                Text(
-                  'Create text file',
-                  style: GlobalsStyle.btnBottomDialogTextStyle,
-                ),
-              ],
-            ),
-          ),
+        _buildAddItemButton(
+          text: "Create text file",
+          icon: Icons.add_box_outlined,
+          onPressed: textOnPressed
+        ),
         
         if(WidgetVisibility.setVisible(OriginFile.home))
-        ElevatedButton(
-          onPressed: directoryOnPressed,
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
-              children: [
-                Icon(Icons.add_box_outlined, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
-                Text(
-                  'Create directory',
-                  style: GlobalsStyle.btnBottomDialogTextStyle,
-                ),
-              ],
-            ),
-          ),
+        _buildAddItemButton(
+          text: "Create directory",
+          icon: Icons.add_box_outlined,
+          onPressed: directoryOnPressed
+        ),
         
         const SizedBox(height: 20),
         
