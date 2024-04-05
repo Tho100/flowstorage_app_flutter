@@ -87,7 +87,7 @@ class PongGameState extends State<PongGame> {
 
   void checkCollisions() {
 
-    final paddleTop = MediaQuery.of(context).size.height - 110;
+    final paddleTop = MediaQuery.of(context).size.height - 112;
 
     if (ball.y + ball.radius >= paddleTop && ball.x >= paddlePosition &&  ball.x <= paddlePosition + 155 &&  ball.y - ball.radius <= paddleTop + 10) {
       scoreNotifier.value++;
