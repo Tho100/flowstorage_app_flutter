@@ -34,8 +34,8 @@ class PongPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
 
-    const paddleWidth = 148.0; 
-    const paddleHeight = 20.0; 
+    const paddleWidth = 135.0; 
+    const paddleHeight = 22.0; 
 
     final paddleRect = RRect.fromRectAndRadius(
       Rect.fromLTWH(
@@ -135,13 +135,14 @@ class PongGameState extends State<PongGame> {
   @override
   void initState() {
     super.initState();
-    paddlePosition = 0.0;
+    paddlePosition = 165.0;
     ball = Ball(x: 150, y: 100, radius: 10, dx: 3, dy: 3);
     startGameLoop();
   }
 
   @override
   void dispose() {
+    highScoreNotifier.dispose();
     scoreNotifier.dispose();
     super.dispose();
   }
