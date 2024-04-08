@@ -771,13 +771,16 @@ class PreviewFileState extends State<PreviewFile> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, top: 12.0, bottom: 8),
-                child: Text(
-                  displayFileName,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 240, 240, 240),
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                    overflow: TextOverflow.ellipsis,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width-45,
+                  child: Text(
+                    displayFileName,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 240, 240, 240),
+                      fontSize: 26,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ),
