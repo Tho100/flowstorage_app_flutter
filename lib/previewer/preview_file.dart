@@ -516,7 +516,7 @@ class PreviewFileState extends State<PreviewFile> {
             )
           : Text(value, style: const TextStyle(
               overflow: TextOverflow.ellipsis,
-              color: Color.fromARGB(255,232,232,232),
+              color: Color.fromARGB(255, 245, 245, 245),
               fontWeight: FontWeight.w600,
               fontSize: 18,          
           ),
@@ -870,7 +870,6 @@ class PreviewFileState extends State<PreviewFile> {
                   : true,
                 child: AppBar(
                   centerTitle: isCenterAppBar,
-                  titleSpacing: 2,
                   backgroundColor: filesInfrontAppBar.contains(currentTable)
                     ? ThemeColor.darkBlack
                     : const Color(0x44000000),

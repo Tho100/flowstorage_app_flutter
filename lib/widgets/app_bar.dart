@@ -35,7 +35,7 @@ class CustomAppBar {
         title,
         style: const TextStyle(
           overflow: TextOverflow.ellipsis,
-          color: Color.fromARGB(255,236,236,236),
+          color: Color.fromARGB(255, 245, 245, 245),
           fontWeight: FontWeight.w600,
           fontSize: 19,          
         ),

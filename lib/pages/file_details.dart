@@ -273,9 +273,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: isGeneralFile || isOfflineVideo
-                          ? ThemeColor.mediumGrey 
-                          : ThemeColor.darkBlack,
+                        color: ThemeColor.mediumGrey,
                       ),
                       borderRadius: BorderRadius.circular(16)
                     ),

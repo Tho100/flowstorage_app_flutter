@@ -19,6 +19,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
+import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -231,39 +232,29 @@ class IntentSharingPage extends StatelessWidget {
         context: context,
         title: "Upload to Flowstorage",
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: TextButton(
-              child: const Text("Upload",
-                  style: TextStyle(
-                  color: ThemeColor.darkPurple,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () async {
-                    
-                if (storageData.fileNamesList.contains(fileName)) {
-                  CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
-                  return;
-                }
-          
-                if(!Globals.supportedFileTypes.contains(fileType)) {
-                  CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
-                  return;
-                }
-          
-                final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
-          
-                if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
-                  return exceededUploadDialog();
+          RightTextButton(
+            text: "Upload",
+            onPressed: () async {
                   
-                }
-          
-                await processFileUpload(context);
-          
+              if (storageData.fileNamesList.contains(fileName)) {
+                CustomFormDialog.startDialog("Upload Failed", "$fileName already exists.");
+                return;
               }
-            ),
+        
+              if(!Globals.supportedFileTypes.contains(fileType)) {
+                CustomFormDialog.startDialog("Couldn't upload $fileName","File type is not supported.");
+                return;
+              }
+        
+              final allowedFileUploads = AccountPlan.mapFilesUpload[userData.accountType]!;
+        
+              if (storageData.fileNamesList.length + 1 > allowedFileUploads) {
+                return exceededUploadDialog();
+                
+              }
+        
+              await processFileUpload(context);
+            },
           ),
         ],
       ).buildAppBar(),

@@ -77,11 +77,7 @@ class ActivityPageState extends State<ActivityPage> {
           
           buildPublicStorageBanner(width),
     
-          const SizedBox(height: 8),
-    
-          const Divider(color: ThemeColor.lightGrey),
-    
-          const SizedBox(height: 4),
+          const SizedBox(height: 12),
 
           if(recentFilesName.isEmpty || tempData.origin == OriginFile.public || tempData.origin == OriginFile.sharedOther || tempData.origin == OriginFile.sharedMe)
           buildOnEmpty(context),
@@ -243,13 +239,13 @@ class ActivityPageState extends State<ActivityPage> {
             height: height,
             decoration: BoxDecoration(
               color: ThemeColor.darkBlack,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: ThemeColor.mediumGrey
               )
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
               child: Image.memory(
                 mostUploadedImageBytes[index]!,
                 fit: isGeneralFile || isOfflineVideo 
@@ -324,7 +320,7 @@ class ActivityPageState extends State<ActivityPage> {
                   width: width-35,
                   height: 125,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
                     gradient: linearGradientBorder, 
                   ),
                 ),
@@ -335,7 +331,7 @@ class ActivityPageState extends State<ActivityPage> {
                     height: 125 - 4,
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -387,7 +383,7 @@ class ActivityPageState extends State<ActivityPage> {
               height: 95,
               decoration: BoxDecoration(
                 color: ThemeColor.secondaryPurple,
-                borderRadius: BorderRadius.circular(12)
+                borderRadius: BorderRadius.circular(16)
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -413,7 +409,7 @@ class ActivityPageState extends State<ActivityPage> {
                 height: 95,
                 decoration: BoxDecoration(
                   color: ThemeColor.justWhite,
-                  borderRadius: BorderRadius.circular(12)
+                  borderRadius: BorderRadius.circular(16)
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -460,7 +456,7 @@ class ActivityPageState extends State<ActivityPage> {
                 height: 95,
                 decoration: BoxDecoration(
                   color: ThemeColor.secondaryPurple,
-                  borderRadius: BorderRadius.circular(12)
+                  borderRadius: BorderRadius.circular(16)
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -753,7 +749,7 @@ class ActivityPageState extends State<ActivityPage> {
         height: 100,
         decoration: BoxDecoration(
           color: ThemeColor.justWhite,
-          borderRadius: BorderRadius.circular(12)
+          borderRadius: BorderRadius.circular(16)
         ),
         child: Row(
           children: [
