@@ -17,9 +17,9 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
-import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
+import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -255,7 +255,8 @@ class CreateTextPageState extends State<CreateText> {
               builder: (context, value, child) {
                 return Visibility(
                   visible: value,
-                  child: TextButton(
+                  child: RightTextButton(
+                    text: "Save",
                     onPressed: () {
                       SaveTextDialog().buildSaveTextDialog(
                         fileNameController: fileNameController, 
@@ -270,14 +271,7 @@ class CreateTextPageState extends State<CreateText> {
                         }, 
                         context: context
                       );
-                    },
-                    child: const Text("Save",
-                      style: TextStyle(
-                        color: ThemeColor.darkPurple,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    }
                   ),
                 );
               },
