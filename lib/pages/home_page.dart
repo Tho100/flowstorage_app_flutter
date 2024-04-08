@@ -2054,7 +2054,6 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const Divider(color: ThemeColor.lightGrey),
             ],
             if (tempData.origin == OriginFile.public && !isPsRecent && index > 6) ... [
               if (index == 7)
