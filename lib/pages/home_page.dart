@@ -2567,7 +2567,6 @@ class HomePageState extends State<HomePage> {
           toggleHome: _toggleHome,
           togglePhotos: _togglePhotos,
           togglePublicStorage: _togglePublicStorage, 
-          context: context
         ),
       ),
     );

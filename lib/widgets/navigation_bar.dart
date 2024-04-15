@@ -10,7 +10,6 @@ class CustomNavigationBar extends StatefulWidget {
   final VoidCallback toggleHome;
   final VoidCallback togglePhotos;
   final VoidCallback togglePublicStorage;
-  final BuildContext context;
 
   const CustomNavigationBar({
     super.key, 
@@ -18,7 +17,6 @@ class CustomNavigationBar extends StatefulWidget {
     required this.toggleHome,
     required this.togglePhotos,
     required this.togglePublicStorage,
-    required this.context,
   });
 
   @override
