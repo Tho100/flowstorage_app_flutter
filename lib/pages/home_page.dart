@@ -1026,11 +1026,15 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      final indexOfFile = togglePhotosPressed 
-        ? storageData.fileNamesFilteredList.indexOf(fileName)+1
-        : storageData.fileNamesFilteredList.indexOf(fileName);
+      final indexOfFile = searchBarController.text != "" 
+        ? storageData.fileNamesFilteredList.indexOf(fileName)
+        : storageData.fileNamesList.indexOf(fileName);
 
-      if (indexOfFile >= 0 && indexOfFile < storageData.fileNamesList.length) {
+      final fileListLength = searchBarController.text != "" 
+        ? storageData.fileNamesFilteredList.length
+        : storageData.fileNamesList.length;
+
+      if (indexOfFile >= 0 && indexOfFile < fileListLength) {
         storageData.updateRemoveFile(indexOfFile);
       }
 
@@ -1038,8 +1042,11 @@ class HomePageState extends State<HomePage> {
         Navigator.pop(context);
       }
 
+      if(searchBarController.text != "") {
+        searchBarController.clear();
+      }
+
       if(togglePhotosPressed) {
-        _togglePhotos();
         return;
 
       } else {
