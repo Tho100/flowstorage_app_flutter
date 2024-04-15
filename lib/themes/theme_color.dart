@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ThemeColor {
 
-  static const darkBlack = Color.fromARGB(255, 2, 2, 2);
-  static const mediumBlack = Color.fromARGB(255, 13, 13, 13);
+  static const darkBlack = Colors.black;
+  static const mediumBlack = Color.fromARGB(255, 12, 12, 12);
 
   static const darkGrey = Color.fromARGB(255, 17, 17, 17);
   static const mediumGrey = Color.fromARGB(255, 25, 25, 25);
-  static const lightGrey = Color.fromARGB(255, 37, 37, 37);
+  static const lightGrey = Color.fromARGB(255, 35, 35, 35);
 
   static const darkPurple = Color.fromARGB(255, 83, 6, 172);
   static const secondaryPurple = Color.fromARGB(255, 136, 71, 211);
