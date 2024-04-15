@@ -85,6 +85,8 @@ class PongGameState extends State<PongGame> {
 
   int highScore = 0;
 
+  List<int> highScoresList = [];
+
   void checkCollisions() {
 
     final paddleTop = MediaQuery.of(context).size.height - 112;
@@ -95,7 +97,8 @@ class PongGameState extends State<PongGame> {
       ball.dy = -ball.dy;
 
     } else if (ball.y + ball.radius >= MediaQuery.of(context).size.height - 90) {
-      highScoreNotifier.value = highScore;
+      highScoresList.add(highScore);
+      highScoreNotifier.value = highScoresList.reduce((score, next) => score > next? score: next);
       resetBall();
       
     }
