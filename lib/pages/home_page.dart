@@ -784,6 +784,8 @@ class HomePageState extends State<HomePage> {
 
     await dataCaller.homeData();
 
+    _appBarTitleCenter(true);
+
     searchHintText.value = "Search in Flowstorage";
 
   }
@@ -837,6 +839,7 @@ class HomePageState extends State<HomePage> {
 
     _itemSearchingImplementation('');
     _addItemButtonVisibility(true);
+    _appBarTitleCenter(false);
 
     psButtonTextNotifier.value = "My Files";
     searchBarVisibleNotifier.value = false;
