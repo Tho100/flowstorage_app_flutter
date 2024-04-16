@@ -1571,12 +1571,6 @@ class HomePageState extends State<HomePage> {
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
       sortingOnPressed: () => _callBottomTrailingSorting(),
-      filterTypeOnPressed: () {
-        BottomTrailingFilter(
-          context: context, 
-          filterTypeFunctionality: _itemSearchingImplementation
-        ).buildFilterTypeAll();
-      },
       filterPhotosTypeVisibleOnPressed: () {
         setState(() {
           filterPhotosTypeVisible = !filterPhotosTypeVisible;
