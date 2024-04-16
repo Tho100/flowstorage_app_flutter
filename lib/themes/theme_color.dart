@@ -15,7 +15,7 @@ class ThemeColor {
 
   static const justWhite = Colors.white;
   static const secondaryWhite = Color.fromARGB(255, 212, 212, 212);
-  static const thirdWhite = Color.fromARGB(255, 116, 116, 116);
+  static const thirdWhite = Color.fromARGB(255, 117, 117, 117);
   static const darkWhite = Color.fromARGB(255, 75, 75, 75);
   
 }

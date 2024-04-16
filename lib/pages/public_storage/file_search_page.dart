@@ -202,7 +202,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
-
   Widget buildMoreOptionsButton() {
     return SizedBox(
       width: 50,

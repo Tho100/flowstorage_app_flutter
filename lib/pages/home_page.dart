@@ -1578,11 +1578,35 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  Widget _buildFilterButton() {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: const BorderSide(color: ThemeColor.lightGrey),
+          ),
+        ),
+        onPressed: () {
+          BottomTrailingFilter(          
+            filterTypeFunctionality: _itemSearchingImplementation, 
+            context: context
+          ).buildFilterTypeAll();
+        },
+        child: const Icon(CupertinoIcons.slider_horizontal_3, color: ThemeColor.secondaryWhite)
+      ),
+    );
+  }
+
   Widget _buildSearchBar() {
     return ResponsiveSearchBar(
       controller: searchBarController,
       visibility: searchBarVisibleNotifier, 
       focusNode: searchBarFocusNode, 
+      customWidth: 0.97,
       hintText: tempData.origin != OriginFile.public 
         ? searchHintText.value 
         : "Search in Public Storage", 
@@ -2576,8 +2600,16 @@ class HomePageState extends State<HomePage> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 2),
-                  child: _buildSearchBar(),
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: _buildSearchBar()
+                      ),
+                      const SizedBox(width: 6),
+                      _buildFilterButton(),
+                    ],
+                  ),
                 ),
                 _buildNavigationButtons(),
                 storageData.fileNamesList.isEmpty 
