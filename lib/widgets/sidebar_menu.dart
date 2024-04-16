@@ -109,7 +109,7 @@ class CustomSideBarMenu extends StatelessWidget {
             width: 40,
             child: Container(
               decoration: BoxDecoration(
-                color: ThemeColor.darkGrey.withOpacity(0.8),
+                color: ThemeColor.darkGrey,
                 border: Border.all(
                   color: Colors.transparent,
                 ),

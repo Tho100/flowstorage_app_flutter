@@ -49,7 +49,7 @@ class SettingsButton extends StatelessWidget {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: ThemeColor.darkGrey.withOpacity(0.8),
+                            color: ThemeColor.darkGrey,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20)
