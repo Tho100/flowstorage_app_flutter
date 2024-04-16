@@ -115,6 +115,8 @@ class HomePageState extends State<HomePage> {
   
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
 
+  final centerAppBarTitleNotifier = ValueNotifier<bool>(true);
+
   final gridListViewSelected = ValueNotifier<bool>(false);
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
 
@@ -157,6 +159,10 @@ class HomePageState extends State<HomePage> {
     logger.e(message, err, stackTrace);
     SnackAlert.errorSnack("Upload failed.");
     NotificationApi.stopNotification(0);
+  }
+
+  void _appBarTitleCenter(bool value) {
+    centerAppBarTitleNotifier.value = value;
   }
 
   void _addItemButtonVisibility(bool visible) {
@@ -464,6 +470,7 @@ class HomePageState extends State<HomePage> {
     gridListViewSelected.value = true;
 
     _addItemButtonVisibility(true);
+    _appBarTitleCenter(true);
 
     final combinedTypes = [
       ...Globals.imageType.map((type) => '.$type'),
@@ -489,6 +496,8 @@ class HomePageState extends State<HomePage> {
     if ([OriginFile.home, OriginFile.directory].contains(tempData.origin)) {
       _addItemButtonVisibility(true);
     }
+    
+    _appBarTitleCenter(true);
 
     _itemSearchingImplementation('');
 
@@ -567,8 +576,10 @@ class HomePageState extends State<HomePage> {
       ? tempData.setAppBarTitle(Globals.originToName[tempData.origin]!)
       : tempData.setAppBarTitle("Photos");
 
+    _addItemButtonVisibility(true);
+    _appBarTitleCenter(true);
+
     setState(() {
-      _addItemButtonVisibility(true);
       selectedItemIsChecked = false;
       editAllIsPressed = false;
     });
@@ -621,8 +632,10 @@ class HomePageState extends State<HomePage> {
 
   void _editAllOnPressed() {
 
+    _addItemButtonVisibility(false);
+    _appBarTitleCenter(false);
+
     setState(() {
-      _addItemButtonVisibility(false);
       editAllIsPressed = !editAllIsPressed;
     });
 
@@ -634,8 +647,9 @@ class HomePageState extends State<HomePage> {
 
     if(!editAllIsPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
+      _addItemButtonVisibility(true);
+      _appBarTitleCenter(true);
       setState(() {
-        _addItemButtonVisibility(true);
         selectedItemIsChecked = false;
       });
     }
@@ -653,7 +667,7 @@ class HomePageState extends State<HomePage> {
         : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
 
-    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";
 
     tempData.setAppBarTitle(setAppBarTitle);
 
@@ -670,6 +684,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle("Photos");
 
     _addItemButtonVisibility(true);
+    _appBarTitleCenter(true);
 
   }
 
@@ -687,7 +702,7 @@ class HomePageState extends State<HomePage> {
       selectedItemIsChecked = true;
     });
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
 
   }
 
@@ -1623,10 +1638,11 @@ class HomePageState extends State<HomePage> {
 
     }
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
 
     if(selectedPhotosIndex.isEmpty) {
       _addItemButtonVisibility(true);
+      _appBarTitleCenter(true);
       tempData.setAppBarTitle("Photos");
       selectedItemIsChecked = false;
     }
@@ -1642,8 +1658,9 @@ class HomePageState extends State<HomePage> {
     });
     
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
     
+    _appBarTitleCenter(false);
     _addItemButtonVisibility(false);
 
   }
@@ -1670,7 +1687,7 @@ class HomePageState extends State<HomePage> {
       selectAllItemsIsPressedNotifier.value = false;
     }
 
-    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";
 
     tempData.setAppBarTitle(setAppBarTitle);
 
@@ -1754,37 +1771,42 @@ class HomePageState extends State<HomePage> {
       preferredSize: const Size.fromHeight(65),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: CustomAppBar(
-          enableCenter: false,
-          context: context,
-          title: appBarTitleValue,
-          customLeading: IconButton(
-            icon: const Icon(CupertinoIcons.bars, size: 28),
-            onPressed: () => sidebarMenuScaffoldKey.currentState?.openDrawer(),
-          ),
-          actions: [
-
-            if(selectedPhotosIndex.isNotEmpty) ... [
-              _buildSelectAllPhotosButton(),
-              _buildDeselectAllPhotosButton(),
-            ],
-
-            if(tempData.origin != OriginFile.public && !togglePhotosPressed && !filterPhotosTypeVisible)
-            _buildSelectAll(),  
-
-            if(selectedItemIsChecked)
-            _buildMoreOptionsOnSelectButton(),
-
-            if (togglePhotosPressed && checkedItemsName.isEmpty && !filterPhotosTypeVisible)
-            _buildFilterPhotosTypeButton(),
-
-            if(tempData.origin == OriginFile.public) ... [
-              _buildPsSearchButton(),
-              _buildMyPsFilesButton(),
-            ],
-
-          ],
-        ).buildAppBar(),
+        child: ValueListenableBuilder(
+          valueListenable: centerAppBarTitleNotifier,
+          builder: (context, value, child) {
+            return CustomAppBar(
+              enableCenter: value,
+              context: context,
+              title: appBarTitleValue,
+              customLeading: IconButton(
+                icon: const Icon(CupertinoIcons.bars, size: 28),
+                onPressed: () => sidebarMenuScaffoldKey.currentState?.openDrawer(),
+              ),
+              actions: [
+          
+                if(selectedPhotosIndex.isNotEmpty) ... [
+                  _buildSelectAllPhotosButton(),
+                  _buildDeselectAllPhotosButton(),
+                ],
+          
+                if(tempData.origin != OriginFile.public && !togglePhotosPressed && !filterPhotosTypeVisible)
+                _buildSelectAll(),  
+          
+                if(selectedItemIsChecked)
+                _buildMoreOptionsOnSelectButton(),
+          
+                if (togglePhotosPressed && checkedItemsName.isEmpty && !filterPhotosTypeVisible)
+                _buildFilterPhotosTypeButton(),
+          
+                if(tempData.origin == OriginFile.public) ... [
+                  _buildPsSearchButton(),
+                  _buildMyPsFilesButton(),
+                ],
+          
+              ],
+            ).buildAppBar()!;
+          },
+        ),
       ),
     );
   }
