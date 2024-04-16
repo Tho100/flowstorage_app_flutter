@@ -116,6 +116,7 @@ class HomePageState extends State<HomePage> {
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
 
   final centerAppBarTitleNotifier = ValueNotifier<bool>(true);
+  final filterButtonVisibleNotifier = ValueNotifier<bool>(true);
 
   final gridListViewSelected = ValueNotifier<bool>(false);
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
@@ -467,6 +468,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle("Photos");
 
     searchBarVisibleNotifier.value = false;
+    filterButtonVisibleNotifier.value = false;
     gridListViewSelected.value = true;
 
     _addItemButtonVisibility(true);
@@ -486,6 +488,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
     searchBarVisibleNotifier.value = true;
+    filterButtonVisibleNotifier.value = true;
     gridListViewSelected.value = false;
 
     filterPhotosTypeVisible = false;
@@ -543,6 +546,8 @@ class HomePageState extends State<HomePage> {
     filterPhotosTypeVisible = false;
 
     searchBarVisibleNotifier.value = true;
+    filterButtonVisibleNotifier.value = true;
+
     gridListViewSelected.value = false;
     
     _itemSearchingImplementation('');
@@ -801,6 +806,7 @@ class HomePageState extends State<HomePage> {
     _addItemButtonVisibility(true);
 
     searchBarVisibleNotifier.value = true;
+    filterButtonVisibleNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
  
   }
@@ -843,6 +849,7 @@ class HomePageState extends State<HomePage> {
 
     psButtonTextNotifier.value = "My Files";
     searchBarVisibleNotifier.value = false;
+    filterButtonVisibleNotifier.value = false;
     gridListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
@@ -887,7 +894,8 @@ class HomePageState extends State<HomePage> {
     _itemSearchingImplementation('');
 
     _addItemButtonVisibility(false);
-    
+    _appBarTitleCenter(true);
+
     searchBarController.text = '';
     searchBarVisibleNotifier.value = true;
     searchHintText.value = "Search in ${ShortenText().cutText(folderTitle)} folder";
@@ -1579,25 +1587,33 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildFilterButton() {
-    return SizedBox(
-      width: 50,
-      height: 50,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ThemeColor.darkBlack,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: const BorderSide(color: ThemeColor.lightGrey),
+    return ValueListenableBuilder(
+      valueListenable: filterButtonVisibleNotifier,
+      builder: (context, value, child) {
+        return Visibility(
+          visible: value,
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ThemeColor.darkBlack,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  side: const BorderSide(color: ThemeColor.lightGrey),
+                ),
+              ),
+              onPressed: () {
+                BottomTrailingFilter(          
+                  filterTypeFunctionality: _itemSearchingImplementation, 
+                  context: context
+                ).buildFilterTypeAll();
+              },
+              child: const Icon(CupertinoIcons.slider_horizontal_3, color: ThemeColor.secondaryWhite)
+            ),
           ),
-        ),
-        onPressed: () {
-          BottomTrailingFilter(          
-            filterTypeFunctionality: _itemSearchingImplementation, 
-            context: context
-          ).buildFilterTypeAll();
-        },
-        child: const Icon(CupertinoIcons.slider_horizontal_3, color: ThemeColor.secondaryWhite)
-      ),
+        );
+      },
     );
   }
 
@@ -2566,7 +2582,9 @@ class HomePageState extends State<HomePage> {
     scrollListViewController.dispose();
     psButtonTextNotifier.dispose();
     intentDataStreamSubscription.cancel();
-
+    
+    centerAppBarTitleNotifier.dispose();
+    filterButtonVisibleNotifier.dispose();
     gridListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
     selectAllItemsIconNotifier.dispose();
