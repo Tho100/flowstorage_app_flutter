@@ -667,7 +667,7 @@ class HomePageState extends State<HomePage> {
         : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
     });
 
-    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";
 
     tempData.setAppBarTitle(setAppBarTitle);
 
@@ -702,7 +702,7 @@ class HomePageState extends State<HomePage> {
       selectedItemIsChecked = true;
     });
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
 
   }
 
@@ -1638,7 +1638,7 @@ class HomePageState extends State<HomePage> {
 
     }
 
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
 
     if(selectedPhotosIndex.isEmpty) {
       _addItemButtonVisibility(true);
@@ -1658,7 +1658,7 @@ class HomePageState extends State<HomePage> {
     });
     
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
-    tempData.setAppBarTitle("${selectedPhotosIndex.length} Selected");
+    tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
     
     _appBarTitleCenter(false);
     _addItemButtonVisibility(false);
@@ -1687,7 +1687,7 @@ class HomePageState extends State<HomePage> {
       selectAllItemsIsPressedNotifier.value = false;
     }
 
-    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} Selected";
+    final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";
 
     tempData.setAppBarTitle(setAppBarTitle);
 
@@ -1773,7 +1773,7 @@ class HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(4.0),
         child: ValueListenableBuilder(
           valueListenable: centerAppBarTitleNotifier,
-          builder: (context, value ,child) {
+          builder: (context, value, child) {
             return CustomAppBar(
               enableCenter: value,
               context: context,
