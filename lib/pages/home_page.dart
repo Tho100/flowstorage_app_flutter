@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -114,9 +113,10 @@ class HomePageState extends State<HomePage> {
   final psButtonTextNotifier = ValueNotifier<String>('My Files');
   
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
+  final searchBarVisibleNotifier = ValueNotifier<bool>(true);
+  final filterButtonVisibleNotifier = ValueNotifier<bool>(true);
 
   final centerAppBarTitleNotifier = ValueNotifier<bool>(true);
-  final filterButtonVisibleNotifier = ValueNotifier<bool>(true);
 
   final gridListViewSelected = ValueNotifier<bool>(false);
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
@@ -126,7 +126,6 @@ class HomePageState extends State<HomePage> {
   final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
                                       Icons.expand_more);
 
-  final searchBarVisibleNotifier = ValueNotifier<bool>(true);
 
   late StreamSubscription intentDataStreamSubscription;
 
@@ -451,15 +450,16 @@ class HomePageState extends State<HomePage> {
 
     togglePhotosPressed = !togglePhotosPressed;
 
-    togglePhotosPressed 
-      ? _activatePhotosView() 
-      : _deactivatePhotosView();
-
     if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: true);
       _toggleGoBackHome();
+      await _callHomeData();
       await _refreshListViewData();
     }
+    
+    togglePhotosPressed 
+      ? _activatePhotosView() 
+      : _deactivatePhotosView();
     
   }
 
@@ -469,10 +469,8 @@ class HomePageState extends State<HomePage> {
 
     searchBarVisibleNotifier.value = false;
     filterButtonVisibleNotifier.value = false;
-    gridListViewSelected.value = true;
 
-    _addItemButtonVisibility(true);
-    _appBarTitleCenter(true);
+    gridListViewSelected.value = true;
 
     final combinedTypes = [
       ...Globals.imageType.map((type) => '.$type'),
@@ -489,6 +487,7 @@ class HomePageState extends State<HomePage> {
 
     searchBarVisibleNotifier.value = true;
     filterButtonVisibleNotifier.value = true;
+
     gridListViewSelected.value = false;
 
     filterPhotosTypeVisible = false;
@@ -526,10 +525,6 @@ class HomePageState extends State<HomePage> {
       return;
     }
 
-    if (tempData.origin == OriginFile.public) {
-      _clearPublicStorageData(clearImage: false);
-    }
-
     if (tempData.origin == OriginFile.home && togglePhotosPressed) {
       _toggleGoBackHome();
 
@@ -539,7 +534,18 @@ class HomePageState extends State<HomePage> {
 
     }
 
+    _toggleReturnToDefault();
+
+  }
+
+  void _toggleReturnToDefault() {
+
+    if (tempData.origin == OriginFile.public) {
+      _clearPublicStorageData(clearImage: false);
+    }
+
     _addItemButtonVisibility(true);
+    _appBarTitleCenter(true);
 
     selectedItemIsChecked = false;
     togglePhotosPressed = false;
@@ -801,12 +807,8 @@ class HomePageState extends State<HomePage> {
 
     await dataCaller.offlineData();
 
-    _clearItemSelection(); 
+    _toggleReturnToDefault();
 
-    _addItemButtonVisibility(true);
-
-    searchBarVisibleNotifier.value = true;
-    filterButtonVisibleNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
  
   }
@@ -830,8 +832,7 @@ class HomePageState extends State<HomePage> {
 
     await dataCaller.sharingData(originFrom);
 
-    _itemSearchingImplementation('');
-    _addItemButtonVisibility(false);
+    _toggleReturnToDefault();
 
     searchHintText.value = "Search in Flowstorage";
 
@@ -850,6 +851,7 @@ class HomePageState extends State<HomePage> {
     psButtonTextNotifier.value = "My Files";
     searchBarVisibleNotifier.value = false;
     filterButtonVisibleNotifier.value = false;
+
     gridListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
@@ -883,21 +885,12 @@ class HomePageState extends State<HomePage> {
 
     _clearGlobalData();
 
-    if(togglePhotosPressed) {
-      _togglePhotos();
-    }
-
     tempData.setCurrentFolder(folderTitle);
 
     await dataCaller.folderData(folderName: folderTitle);
-    
-    _itemSearchingImplementation('');
 
-    _addItemButtonVisibility(false);
-    _appBarTitleCenter(true);
+    _toggleReturnToDefault();
 
-    searchBarController.text = '';
-    searchBarVisibleNotifier.value = true;
     searchHintText.value = "Search in ${ShortenText().cutText(folderTitle)} folder";
     
   }
@@ -953,12 +946,9 @@ class HomePageState extends State<HomePage> {
 
     }
 
-    if(tempData.origin == OriginFile.home && togglePhotosPressed) {
-      _togglePhotos();
-    }
-
     if(togglePhotosPressed) {
       searchBarVisibleNotifier.value = false;
+      filterButtonVisibleNotifier.value = false;
     }
 
     if(storageData.fileNamesList.isEmpty) {
@@ -2576,11 +2566,11 @@ class HomePageState extends State<HomePage> {
     scrollListViewController.dispose();
     psButtonTextNotifier.dispose();
     intentDataStreamSubscription.cancel();
-    
-    centerAppBarTitleNotifier.dispose();
-    filterButtonVisibleNotifier.dispose();
+
     gridListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
+    filterButtonVisibleNotifier.dispose();
+    centerAppBarTitleNotifier.dispose();
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibleNotifier.dispose();
