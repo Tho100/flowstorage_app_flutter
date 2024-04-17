@@ -485,24 +485,18 @@ class HomePageState extends State<HomePage> {
 
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
-    searchBarVisibleNotifier.value = true;
-    filterButtonVisibleNotifier.value = true;
-
-    gridListViewSelected.value = false;
-
-    filterPhotosTypeVisible = false;
-    selectedItemIsChecked = false;
+    _toggleReturnToDefault();
 
     selectedPhotosIndex.clear();
 
-    if ([OriginFile.home, OriginFile.directory].contains(tempData.origin)) {
+    if ([OriginFile.home, OriginFile.directory, OriginFile.offline].contains(tempData.origin)) {
       _addItemButtonVisibility(true);
+      
+    } else {
+      _addItemButtonVisibility(false);
+
     }
     
-    _appBarTitleCenter(true);
-
-    _itemSearchingImplementation('');
-
   }
 
   void _togglePublicStorage() async {
