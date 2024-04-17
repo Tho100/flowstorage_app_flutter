@@ -17,7 +17,6 @@ class NavigationButtons extends StatelessWidget {
 
   final VoidCallback sortingOnPressed;
   final VoidCallback filterPhotosTypeVisibleOnPressed;
-  final VoidCallback filterTypeOnPressed;
 
   NavigationButtons({
     required this.isVisible,
@@ -25,7 +24,6 @@ class NavigationButtons extends StatelessWidget {
     required this.ascendingDescendingCaret, 
     required this.sortingText,
     required this.sortingOnPressed,
-    required this.filterTypeOnPressed,
     required this.filterPhotosTypeVisibleOnPressed,
     Key? key,
   }) : super(key: key);
@@ -45,36 +43,6 @@ class NavigationButtons extends StatelessWidget {
     
           Row(
             children: [
-
-              if(WidgetVisibility.setNotVisible(OriginFile.public))
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: ClipOval(
-                  child: SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: SplashWidget(
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          isGridListViewSelected.value = !isGridListViewSelected.value;
-                          filterPhotosTypeVisibleOnPressed();
-                        },
-                        icon: ValueListenableBuilder<bool>(
-                          valueListenable: isGridListViewSelected,
-                          builder: (context, isSelected, child) {
-                            return !isSelected 
-                              ? const Icon(CupertinoIcons.square_grid_2x2, size: 20.5, color: ThemeColor.secondaryWhite) 
-                              : const Icon(CupertinoIcons.list_bullet, size: 21.5, color: ThemeColor.secondaryWhite);
-                          }
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            
-              const Spacer(),
 
               Transform.translate(
                 offset: const Offset(8, 0),
@@ -114,7 +82,10 @@ class NavigationButtons extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
+              const Spacer(),
+
+              if(WidgetVisibility.setNotVisible(OriginFile.public))
               Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: ClipOval(
@@ -124,8 +95,18 @@ class NavigationButtons extends StatelessWidget {
                     child: SplashWidget(
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed:() => filterTypeOnPressed(),
-                        icon: const Icon(CupertinoIcons.slider_horizontal_3, size: 22.5, color: ThemeColor.secondaryWhite),
+                        onPressed: () {
+                          isGridListViewSelected.value = !isGridListViewSelected.value;
+                          filterPhotosTypeVisibleOnPressed();
+                        },
+                        icon: ValueListenableBuilder<bool>(
+                          valueListenable: isGridListViewSelected,
+                          builder: (context, isSelected, child) {
+                            return !isSelected 
+                              ? const Icon(CupertinoIcons.square_grid_2x2, size: 20.5, color: ThemeColor.secondaryWhite) 
+                              : const Icon(CupertinoIcons.list_bullet, size: 21.5, color: ThemeColor.secondaryWhite);
+                          }
+                        ),
                       ),
                     ),
                   ),

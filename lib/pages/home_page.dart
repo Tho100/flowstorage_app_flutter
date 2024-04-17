@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -114,6 +113,8 @@ class HomePageState extends State<HomePage> {
   final psButtonTextNotifier = ValueNotifier<String>('My Files');
   
   final floatingActionButtonVisible = ValueNotifier<bool>(true);
+  final searchBarVisibleNotifier = ValueNotifier<bool>(true);
+  final filterButtonVisibleNotifier = ValueNotifier<bool>(true);
 
   final centerAppBarTitleNotifier = ValueNotifier<bool>(true);
 
@@ -125,7 +126,6 @@ class HomePageState extends State<HomePage> {
   final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
                                       Icons.expand_more);
 
-  final searchBarVisibleNotifier = ValueNotifier<bool>(true);
 
   late StreamSubscription intentDataStreamSubscription;
 
@@ -450,15 +450,16 @@ class HomePageState extends State<HomePage> {
 
     togglePhotosPressed = !togglePhotosPressed;
 
-    togglePhotosPressed 
-      ? _activatePhotosView() 
-      : _deactivatePhotosView();
-
     if (tempData.origin == OriginFile.public) {
       _clearPublicStorageData(clearImage: true);
       _toggleGoBackHome();
+      await _callHomeData();
       await _refreshListViewData();
     }
+    
+    togglePhotosPressed 
+      ? _activatePhotosView() 
+      : _deactivatePhotosView();
     
   }
 
@@ -467,10 +468,9 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle("Photos");
 
     searchBarVisibleNotifier.value = false;
-    gridListViewSelected.value = true;
+    filterButtonVisibleNotifier.value = false;
 
-    _addItemButtonVisibility(true);
-    _appBarTitleCenter(true);
+    gridListViewSelected.value = true;
 
     final combinedTypes = [
       ...Globals.imageType.map((type) => '.$type'),
@@ -486,6 +486,8 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
     searchBarVisibleNotifier.value = true;
+    filterButtonVisibleNotifier.value = true;
+
     gridListViewSelected.value = false;
 
     filterPhotosTypeVisible = false;
@@ -523,10 +525,6 @@ class HomePageState extends State<HomePage> {
       return;
     }
 
-    if (tempData.origin == OriginFile.public) {
-      _clearPublicStorageData(clearImage: false);
-    }
-
     if (tempData.origin == OriginFile.home && togglePhotosPressed) {
       _toggleGoBackHome();
 
@@ -536,13 +534,26 @@ class HomePageState extends State<HomePage> {
 
     }
 
+    _toggleReturnToDefault();
+
+  }
+
+  void _toggleReturnToDefault() {
+
+    if (tempData.origin == OriginFile.public) {
+      _clearPublicStorageData(clearImage: false);
+    }
+
     _addItemButtonVisibility(true);
+    _appBarTitleCenter(true);
 
     selectedItemIsChecked = false;
     togglePhotosPressed = false;
     filterPhotosTypeVisible = false;
 
     searchBarVisibleNotifier.value = true;
+    filterButtonVisibleNotifier.value = true;
+
     gridListViewSelected.value = false;
     
     _itemSearchingImplementation('');
@@ -796,11 +807,8 @@ class HomePageState extends State<HomePage> {
 
     await dataCaller.offlineData();
 
-    _clearItemSelection(); 
+    _toggleReturnToDefault();
 
-    _addItemButtonVisibility(true);
-
-    searchBarVisibleNotifier.value = true;
     searchHintText.value = "Search in Flowstorage";
  
   }
@@ -824,8 +832,7 @@ class HomePageState extends State<HomePage> {
 
     await dataCaller.sharingData(originFrom);
 
-    _itemSearchingImplementation('');
-    _addItemButtonVisibility(false);
+    _toggleReturnToDefault();
 
     searchHintText.value = "Search in Flowstorage";
 
@@ -843,6 +850,8 @@ class HomePageState extends State<HomePage> {
 
     psButtonTextNotifier.value = "My Files";
     searchBarVisibleNotifier.value = false;
+    filterButtonVisibleNotifier.value = false;
+
     gridListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
@@ -876,20 +885,12 @@ class HomePageState extends State<HomePage> {
 
     _clearGlobalData();
 
-    if(togglePhotosPressed) {
-      _togglePhotos();
-    }
-
     tempData.setCurrentFolder(folderTitle);
 
     await dataCaller.folderData(folderName: folderTitle);
-    
-    _itemSearchingImplementation('');
 
-    _addItemButtonVisibility(false);
-    
-    searchBarController.text = '';
-    searchBarVisibleNotifier.value = true;
+    _toggleReturnToDefault();
+
     searchHintText.value = "Search in ${ShortenText().cutText(folderTitle)} folder";
     
   }
@@ -945,12 +946,9 @@ class HomePageState extends State<HomePage> {
 
     }
 
-    if(tempData.origin == OriginFile.home && togglePhotosPressed) {
-      _togglePhotos();
-    }
-
     if(togglePhotosPressed) {
       searchBarVisibleNotifier.value = false;
+      filterButtonVisibleNotifier.value = false;
     }
 
     if(storageData.fileNamesList.isEmpty) {
@@ -1563,12 +1561,6 @@ class HomePageState extends State<HomePage> {
       ascendingDescendingCaret: ascendingDescendingIconNotifier, 
       sortingText: sortingText, 
       sortingOnPressed: () => _callBottomTrailingSorting(),
-      filterTypeOnPressed: () {
-        BottomTrailingFilter(
-          context: context, 
-          filterTypeFunctionality: _itemSearchingImplementation
-        ).buildFilterTypeAll();
-      },
       filterPhotosTypeVisibleOnPressed: () {
         setState(() {
           filterPhotosTypeVisible = !filterPhotosTypeVisible;
@@ -1578,11 +1570,43 @@ class HomePageState extends State<HomePage> {
 
   }
 
+  Widget _buildFilterButton() {
+    return ValueListenableBuilder(
+      valueListenable: filterButtonVisibleNotifier,
+      builder: (context, value, child) {
+        return Visibility(
+          visible: value,
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ThemeColor.darkBlack,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  side: const BorderSide(color: ThemeColor.lightGrey),
+                ),
+              ),
+              onPressed: () {
+                BottomTrailingFilter(          
+                  filterTypeFunctionality: _itemSearchingImplementation, 
+                  context: context
+                ).buildFilterTypeAll();
+              },
+              child: const Icon(CupertinoIcons.slider_horizontal_3, color: ThemeColor.secondaryWhite)
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildSearchBar() {
     return ResponsiveSearchBar(
       controller: searchBarController,
       visibility: searchBarVisibleNotifier, 
       focusNode: searchBarFocusNode, 
+      customWidth: 0.97,
       hintText: tempData.origin != OriginFile.public 
         ? searchHintText.value 
         : "Search in Public Storage", 
@@ -2545,6 +2569,8 @@ class HomePageState extends State<HomePage> {
 
     gridListViewSelected.dispose();
     floatingActionButtonVisible.dispose();
+    filterButtonVisibleNotifier.dispose();
+    centerAppBarTitleNotifier.dispose();
     selectAllItemsIconNotifier.dispose();
     ascendingDescendingIconNotifier.dispose();
     searchBarVisibleNotifier.dispose();
@@ -2576,8 +2602,16 @@ class HomePageState extends State<HomePage> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 2),
-                  child: _buildSearchBar(),
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: _buildSearchBar()
+                      ),
+                      const SizedBox(width: 6),
+                      _buildFilterButton(),
+                    ],
+                  ),
                 ),
                 _buildNavigationButtons(),
                 storageData.fileNamesList.isEmpty 
