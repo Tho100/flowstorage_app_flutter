@@ -489,7 +489,7 @@ class HomePageState extends State<HomePage> {
 
     selectedPhotosIndex.clear();
 
-    if ([OriginFile.home, OriginFile.directory].contains(tempData.origin)) {
+    if ([OriginFile.home, OriginFile.directory, OriginFile.offline].contains(tempData.origin)) {
       _addItemButtonVisibility(true);
       
     } else {
