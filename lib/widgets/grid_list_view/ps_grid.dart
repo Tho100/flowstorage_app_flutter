@@ -51,7 +51,7 @@ class PsGridListView extends StatelessWidget {
           ? Alignment.bottomRight : Alignment.bottomLeft,
         child: SizedBox(
           width: isMiniActionButton ? 52 : 126, 
-          height: isMiniActionButton ? 52 : 36,
+          height: isMiniActionButton ? 37 : 36,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
