@@ -39,26 +39,25 @@ class PsGridListView extends StatelessWidget {
   final tempData = GetIt.instance<TempDataProvider>();
 
   Widget buildAccessButton({
-    required bool isFromDownload,
+    required bool isMiniActionButton,
+    required EdgeInsets customPadding,
     required VoidCallback onPressed, 
     required Widget child
   }) {
     return Padding(
-      padding: isFromDownload 
-        ? const EdgeInsets.only(left: 16.0) 
-        : const EdgeInsets.only(right: 16.0),
+      padding: customPadding,
       child: Align(
-        alignment: isFromDownload 
-          ? Alignment.bottomLeft : Alignment.bottomRight,
+        alignment: isMiniActionButton 
+          ? Alignment.bottomRight : Alignment.bottomLeft,
         child: SizedBox(
-          width: isFromDownload ? 52 : 128, 
-          height: isFromDownload ? 36 : 36,
+          width: isMiniActionButton ? 52 : 126, 
+          height: isMiniActionButton ? 52 : 36,
           child: ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(ThemeColor.darkBlack),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(isFromDownload ? 12 : 18),
+                  borderRadius: BorderRadius.circular(isMiniActionButton ? 12 : 16),
                   side: const BorderSide(
                     color: ThemeColor.lightGrey
                   ),
@@ -231,24 +230,11 @@ class PsGridListView extends StatelessWidget {
           const SizedBox(height: 12),
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
+        
               buildAccessButton(
-                isFromDownload: true,
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Icon(Icons.file_download_outlined, color: ThemeColor.justWhite, size: 20)
-                ),
-                onPressed: () async { 
-                  final fileName = storageData.fileNamesFilteredList[index];
-                  tempData.setCurrentFileName(fileName);
-                  await downloadOnPressed(fileName: fileName); 
-                },
-              ),
-
-              buildAccessButton(
-                isFromDownload: false,
+                isMiniActionButton: false,
+                customPadding: const EdgeInsets.only(left: 17.5),
                 child: const Row(
                   children: [
                     Icon(CupertinoIcons.bubble_left, color: ThemeColor.justWhite, size: 19),
@@ -261,6 +247,35 @@ class PsGridListView extends StatelessWidget {
                   tempData.setCurrentFileName(fileName);
                   NavigatePage.goToPageFileComment(fileName);
                 }
+              ),
+
+              const Spacer(),
+
+              buildAccessButton(
+                isMiniActionButton: true,
+                customPadding: const EdgeInsets.only(right: 8.5),
+                child: const Align(
+                  alignment: Alignment.center,
+                  child: Icon(Icons.file_download_outlined, color: ThemeColor.justWhite, size: 20)
+                ),
+                onPressed: () async { 
+                  final fileName = storageData.fileNamesFilteredList[index];
+                  tempData.setCurrentFileName(fileName);
+                  await downloadOnPressed(fileName: fileName); 
+                },
+              ),
+              
+              buildAccessButton(
+                isMiniActionButton: true,
+                customPadding: const EdgeInsets.only(right: 17.5),
+                child: const Align(
+                  alignment: Alignment.center,
+                  child: Icon(CupertinoIcons.arrowshape_turn_up_right, color: ThemeColor.justWhite, size: 19)
+                ),
+                onPressed: () { 
+                  final fileName = storageData.fileNamesFilteredList[index];
+                  NavigatePage.goToPageSharing(fileName);
+                },
               ),
 
             ],
