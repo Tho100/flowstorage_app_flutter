@@ -28,6 +28,7 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/file_options.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -440,7 +441,7 @@ class PreviewFileState extends State<PreviewFile> {
           MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
         );
       },
-      icon: const Icon(Icons.comment),
+      icon: const Icon(CupertinoIcons.ellipses_bubble),
     );
   }
 
@@ -691,7 +692,7 @@ class PreviewFileState extends State<PreviewFile> {
               const SizedBox(width: 5),
     
               _buildBottomButtons(
-                textStyle: const Icon(Icons.comment, size: 22), 
+                textStyle: const Icon(CupertinoIcons.ellipses_bubble, size: 23.5), 
                 color: ThemeColor.darkBlack, 
                 width: 60, 
                 height: 45,
@@ -712,7 +713,7 @@ class PreviewFileState extends State<PreviewFile> {
               ),
   
               _buildBottomButtons(
-                textStyle: const Icon(Icons.download, size: 22), 
+                textStyle: const Icon(Icons.file_download_outlined, size: 22), 
                 color: ThemeColor.darkBlack, 
                 width: 60, 
                 height: 45,

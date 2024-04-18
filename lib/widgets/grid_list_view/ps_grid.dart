@@ -251,7 +251,7 @@ class PsGridListView extends StatelessWidget {
                 isFromDownload: false,
                 child: const Row(
                   children: [
-                    Icon(Icons.mode_comment_outlined, color: ThemeColor.justWhite, size: 19),
+                    Icon(CupertinoIcons.bubble_left, color: ThemeColor.justWhite, size: 19),
                     SizedBox(width: 8),
                     Text("Comments", style: TextStyle(fontSize: 13))
                   ]
