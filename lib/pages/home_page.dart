@@ -1120,6 +1120,7 @@ class HomePageState extends State<HomePage> {
       await DeleteFolder(folderName: folderName).delete();
 
       tempData.setOrigin(OriginFile.home);
+      tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
 
       await _refreshListViewData();
       
