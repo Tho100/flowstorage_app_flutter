@@ -428,7 +428,7 @@ class PreviewFileState extends State<PreviewFile> {
         bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
       },
       icon: bottomBarVisibleNotifier.value 
-        ? const Icon(Icons.import_contacts_outlined, size: 28)
+        ? const Icon(CupertinoIcons.book, size: 26)
         : const Icon(Icons.edit_note_outlined, size: 32),
     );
   }
