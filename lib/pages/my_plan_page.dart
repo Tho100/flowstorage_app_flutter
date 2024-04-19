@@ -685,7 +685,7 @@ class MyPlanPageState extends State<MyPlanPage> {
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        title: "My plan"
+        title: "My Plan"
       ).buildAppBar(),
       body: Center(
         child: Column(

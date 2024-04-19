@@ -428,7 +428,7 @@ class PreviewFileState extends State<PreviewFile> {
         bottomBarVisibleNotifier.value = !bottomBarVisibleNotifier.value;
       },
       icon: bottomBarVisibleNotifier.value 
-        ? const Icon(Icons.import_contacts_outlined, size: 28)
+        ? const Icon(CupertinoIcons.book, size: 26)
         : const Icon(Icons.edit_note_outlined, size: 32),
     );
   }
@@ -704,7 +704,7 @@ class PreviewFileState extends State<PreviewFile> {
               Visibility(
                 visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
                 child: _buildBottomButtons(
-                  textStyle: const Icon(Icons.save, size: 22), 
+                  textStyle: const Icon(CupertinoIcons.floppy_disk, size: 22.5), 
                   color: ThemeColor.darkBlack, 
                   width: 60, 
                   height: 45,
