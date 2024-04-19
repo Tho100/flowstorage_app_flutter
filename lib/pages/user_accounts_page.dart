@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/profile_picture.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -98,8 +99,9 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               const Spacer(),
               const Padding( 
                 padding: EdgeInsets.only(right: 12.0),
-                child: Icon(Icons.check_circle_rounded, 
-                  color: ThemeColor.darkPurple
+                child: Icon(CupertinoIcons.checkmark_alt_circle_fill, 
+                  color: ThemeColor.darkPurple,
+                  size: 26,
                 ),
               ),
             ],
