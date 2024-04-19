@@ -704,7 +704,7 @@ class PreviewFileState extends State<PreviewFile> {
               Visibility(
                 visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
                 child: _buildBottomButtons(
-                  textStyle: const Icon(Icons.save, size: 22), 
+                  textStyle: const Icon(CupertinoIcons.floppy_disk, size: 22.5), 
                   color: ThemeColor.darkBlack, 
                   width: 60, 
                   height: 45,
