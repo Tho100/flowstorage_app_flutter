@@ -126,7 +126,6 @@ class HomePageState extends State<HomePage> {
   final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
                                       Icons.expand_more);
 
-
   late StreamSubscription intentDataStreamSubscription;
 
   bool togglePhotosPressed = false;
@@ -161,8 +160,8 @@ class HomePageState extends State<HomePage> {
     NotificationApi.stopNotification(0);
   }
 
-  void _appBarTitleCenter(bool value) {
-    centerAppBarTitleNotifier.value = value;
+  void _appBarTitleCenter(bool center) {
+    centerAppBarTitleNotifier.value = center;
   }
 
   void _addItemButtonVisibility(bool visible) {

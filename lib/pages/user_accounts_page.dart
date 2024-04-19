@@ -177,7 +177,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
     return Scaffold(
       appBar: CustomAppBar(
         context: context,
-        title: "My accounts"
+        title: "My Accounts"
       ).buildAppBar(),
       body: buildBody(),
     );
