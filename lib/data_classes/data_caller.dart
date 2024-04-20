@@ -72,11 +72,9 @@ class DataCaller {
     
     final files = offlineDirPath.listSync().whereType<File>().toList();
 
-    List<String> fileValues = [];
-    List<String> filteredSearchedFiles = [];
-    List<String> setDateValues = [];
-    List<Uint8List> imageByteValues = [];
-    List<Uint8List> filteredSearchedBytes = [];
+    final fileNames = <String>{};
+    final bytes = <Uint8List>{};
+    final dates = <String>[];
 
     for (final file in files) {
 
@@ -131,20 +129,14 @@ class DataCaller {
         
       }
 
-      fileValues.add(fileName);
-      filteredSearchedFiles.add(fileName);
-      setDateValues.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");
-      imageByteValues.add(imageBytes);
-      filteredSearchedBytes.add(imageBytes);
+      fileNames.add(fileName);
+      dates.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");
+      bytes.add(imageBytes);
 
     }
 
-    storageData.setFilesName(fileValues);
-    storageData.setFilteredFilesName(filteredSearchedFiles);
-    storageData.setFilteredFilesDate(setDateValues);
-    storageData.setFilesDate(setDateValues);
-    storageData.setImageBytes(imageByteValues);
-    storageData.setFilteredImageBytes(filteredSearchedBytes);
+    _initializeData(
+      fileName: fileNames, fileData: bytes, date: dates);
 
   }
 
