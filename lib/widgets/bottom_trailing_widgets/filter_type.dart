@@ -204,7 +204,7 @@ class BottomTrailingFilter {
                     _buildFilterTypeButtons("Videos", CupertinoIcons.video_camera, videoTypes),
 
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All", Icons.shape_line_rounded, '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("All", CupertinoIcons.square_on_circle, '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
                   ],
                 ),
