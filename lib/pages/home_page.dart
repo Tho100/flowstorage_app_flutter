@@ -814,7 +814,6 @@ class HomePageState extends State<HomePage> {
 
     _itemSearchingImplementation('');
 
-    searchBarController.text = '';
     searchHintText.value = "Search in ${ShortenText().cutText(tempData.appBarTitle)} directory";
 
   }
@@ -848,8 +847,6 @@ class HomePageState extends State<HomePage> {
     gridListViewSelected.value = true;
 
     filterPhotosTypeVisible = false;
-
-    searchBarController.text = '';
 
   }
 
