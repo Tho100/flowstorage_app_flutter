@@ -84,7 +84,7 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
   Widget _buildNavigationBar() {
     
     const labelTextStyle = TextStyle(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       fontSize: 12,
       color: ThemeColor.justWhite,
     );

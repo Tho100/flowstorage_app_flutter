@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BottomTrailingFilter {
@@ -23,38 +24,44 @@ class BottomTrailingFilter {
   final videoTypes = _joinFileTypes(Globals.videoType);
   final textTypes = _joinFileTypes(Globals.textType);
   final audioTypes = _joinFileTypes(Globals.audioType);
-  final excelTypes = _joinFileTypes(Globals.excelType);
+  final excelTypes = "${_joinFileTypes(Globals.excelType)},.csv";
   final docTypes = _joinFileTypes(Globals.wordType);
 
   Widget _buildFilterTypeButtons(
     String filterName, 
     IconData icon, 
     String filterType,
+    {double? customWidth}
   ) {
-    return ElevatedButton(
-      onPressed: () {
-        filterTypeFunctionality(filterType);  
-        Navigator.pop(context);
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        fixedSize: const Size(112,42),
-        backgroundColor: ThemeColor.darkBlack,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35.0),
-          side: const BorderSide(color: ThemeColor.lightGrey),
-        ),
+    return Container(
+      constraints: const BoxConstraints(
+        minHeight: 42,
       ),
-      child: Row(
-        children: [
-          Icon(icon),
-          const SizedBox(width: 8),
-          Text(filterName,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600
-            )
+      child: ElevatedButton(
+        onPressed: () {
+          filterTypeFunctionality(filterType);  
+          Navigator.pop(context);
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          fixedSize: Size.fromWidth(customWidth ?? 112),
+          backgroundColor: ThemeColor.darkBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35.0),
+            side: const BorderSide(color: ThemeColor.lightGrey),
           ),
-        ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon),
+            const SizedBox(width: 8),
+            Text(filterName,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600
+              )
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -92,7 +99,7 @@ class BottomTrailingFilter {
               
                         const SizedBox(height: 5),
               
-                        _buildFilterTypeButtons("Images", Icons.photo, imageTypes),
+                        _buildFilterTypeButtons("Images", Icons.photo_outlined, imageTypes),
               
                         const SizedBox(height: 3),
 
@@ -100,15 +107,15 @@ class BottomTrailingFilter {
       
                           children: [
 
-                          _buildFilterTypeButtons("Text", Icons.text_snippet_rounded, textTypes),
+                          _buildFilterTypeButtons("Text", CupertinoIcons.doc_text, textTypes),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Audio", Icons.music_note_rounded, audioTypes),
+                          _buildFilterTypeButtons("Audio", CupertinoIcons.waveform, audioTypes),
               
                           const SizedBox(width: 8),
               
-                          _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, videoTypes),
+                          _buildFilterTypeButtons("Videos", CupertinoIcons.video_camera, videoTypes),
               
                         ],
                       ),
@@ -129,9 +136,11 @@ class BottomTrailingFilter {
                         Row(
                           children: [
 
-                            _buildFilterTypeButtons("PDFs", Icons.picture_as_pdf, '.pdf'),
+                            _buildFilterTypeButtons("PDFs", CupertinoIcons.doc, '.pdf'),
+
                             const SizedBox(width: 8),
-                            _buildFilterTypeButtons("Sheets", Icons.table_chart, excelTypes),
+
+                            _buildFilterTypeButtons("Spreadsheets", CupertinoIcons.chart_bar_square, excelTypes, customWidth: 152),
 
                           ]
                         ),
@@ -142,15 +151,11 @@ class BottomTrailingFilter {
               
                           children: [
               
-                            _buildFilterTypeButtons("DOCs", Icons.text_snippet_outlined, docTypes),
-              
-                            const SizedBox(width: 8),
-              
-                            _buildFilterTypeButtons("CSV", Icons.insert_chart_outlined, '.csv'),
-                  
+                            _buildFilterTypeButtons("Documents", CupertinoIcons.doc, docTypes, customWidth: 140),
+                                
                             const SizedBox(width: 8),
 
-                            _buildFilterTypeButtons("All", Icons.shape_line_rounded,' '),
+                            _buildFilterTypeButtons("All", CupertinoIcons.square_on_circle, ' '),
                                     
                           ],
                         ),
@@ -193,13 +198,13 @@ class BottomTrailingFilter {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     
-                    _buildFilterTypeButtons("Images", Icons.photo, imageTypes),
+                    _buildFilterTypeButtons("Images", Icons.photo_outlined, imageTypes),
                     const SizedBox(width: 8),
 
-                    _buildFilterTypeButtons("Videos", Icons.video_collection_rounded, videoTypes),
+                    _buildFilterTypeButtons("Videos", CupertinoIcons.video_camera, videoTypes),
 
                     const SizedBox(width: 8),
-                    _buildFilterTypeButtons("All", Icons.shape_line_rounded, '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
+                    _buildFilterTypeButtons("All", CupertinoIcons.square_on_circle, '.png,.jpg,.jpeg,.mp4,.avi,.mov,.wmv'),
           
                   ],
                 ),
