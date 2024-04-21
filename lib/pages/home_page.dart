@@ -168,6 +168,11 @@ class HomePageState extends State<HomePage> {
     floatingActionButtonVisible.value = visible;
   }
 
+  void _toggleCenterTitleAddItem(bool value) {
+    _appBarTitleCenter(value);
+    _addItemButtonVisibility(value);
+  }
+
   void _toggleGoBackHome() {
     searchHintText.value = "Search in Flowstorage";
     tempData.setOrigin(OriginFile.home);
@@ -537,8 +542,7 @@ class HomePageState extends State<HomePage> {
       _clearPublicStorageData(clearImage: false);
     }
 
-    _addItemButtonVisibility(true);
-    _appBarTitleCenter(true);
+    _toggleCenterTitleAddItem(true);
 
     selectedItemIsChecked = false;
     togglePhotosPressed = false;
@@ -580,8 +584,7 @@ class HomePageState extends State<HomePage> {
       ? tempData.setAppBarTitle(Globals.originToName[tempData.origin]!)
       : tempData.setAppBarTitle("Photos");
 
-    _addItemButtonVisibility(true);
-    _appBarTitleCenter(true);
+    _toggleCenterTitleAddItem(true);
 
     setState(() {
       selectedItemIsChecked = false;
@@ -636,8 +639,7 @@ class HomePageState extends State<HomePage> {
 
   void _editAllOnPressed() {
 
-    _addItemButtonVisibility(false);
-    _appBarTitleCenter(false);
+    _toggleCenterTitleAddItem(false);
 
     setState(() {
       editAllIsPressed = !editAllIsPressed;
@@ -651,8 +653,7 @@ class HomePageState extends State<HomePage> {
 
     if(!editAllIsPressed) {
       tempData.setAppBarTitle(Globals.originToName[tempData.origin]!);
-      _addItemButtonVisibility(true);
-      _appBarTitleCenter(true);
+      _toggleCenterTitleAddItem(true);
       setState(() {
         selectedItemIsChecked = false;
       });
@@ -687,8 +688,7 @@ class HomePageState extends State<HomePage> {
 
     tempData.setAppBarTitle("Photos");
 
-    _addItemButtonVisibility(true);
-    _appBarTitleCenter(true);
+    _toggleCenterTitleAddItem(true);
 
   }
 
@@ -1659,8 +1659,7 @@ class HomePageState extends State<HomePage> {
     tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
 
     if(selectedPhotosIndex.isEmpty) {
-      _addItemButtonVisibility(true);
-      _appBarTitleCenter(true);
+      _toggleCenterTitleAddItem(true);
       tempData.setAppBarTitle("Photos");
       selectedItemIsChecked = false;
     }
@@ -1678,8 +1677,7 @@ class HomePageState extends State<HomePage> {
     checkedItemsName.add(storageData.fileNamesFilteredList[index]);
     tempData.setAppBarTitle("${selectedPhotosIndex.length} selected");
     
-    _appBarTitleCenter(false);
-    _addItemButtonVisibility(false);
+    _toggleCenterTitleAddItem(false);
 
   }
 
@@ -1928,15 +1926,12 @@ class HomePageState extends State<HomePage> {
 
     if (Globals.supportedFileTypes.contains(fileType) && !(externalFileTypes.contains(fileType))) {
       _openGeneralFileOnSelect(index);
-      return;
 
     } else if (fileType == tempData.selectedFileName && !Globals.supportedFileTypes.contains(fileType)) {
       _openDirectoryOnSelect();
-      return;
 
     } else if (externalFileTypes.contains(fileType)) {
       _openExternalFileOnSelect(tempData.selectedFileName);
-      return;
 
     } else {
       CustomFormDialog.startDialog(
