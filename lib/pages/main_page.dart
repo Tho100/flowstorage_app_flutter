@@ -26,10 +26,11 @@ class MainPage extends StatelessWidget {
           width: MediaQuery.of(context).size.width-62,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-            backgroundColor: ThemeColor.justWhite,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),  
+            backgroundColor: ThemeColor.justWhite,
+            foregroundColor: ThemeColor.thirdWhite,
           ),
           onPressed: () => NavigatePage.goToPageRegister(context),
           child: const Text("Create Account",
