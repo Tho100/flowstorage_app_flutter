@@ -261,4 +261,5 @@ class IntentSharingPage extends StatelessWidget {
       body: buildBody(context),
     );
   }
+  
 }
