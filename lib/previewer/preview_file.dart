@@ -84,8 +84,7 @@ class PreviewFileState extends State<PreviewFile> {
   @override
   void initState() {
     super.initState();
-    appBarTitleNotifier.value = widget.selectedFilename;
-    tempData.setCurrentFileName(widget.selectedFilename);
+    _initializeUIData();
     _initializeTableName();
     _initializeUploaderName();
   }
@@ -94,9 +93,18 @@ class PreviewFileState extends State<PreviewFile> {
   void dispose() {
     appBarTitleNotifier.dispose();
     uploaderNameNotifier.dispose();
+    _onClose();
+    super.dispose();
+  }
+
+  void _onClose() {
     tempData.clearFileData();
     _toggleUIVisibility(true);
-    super.dispose();
+  }
+
+  void _initializeUIData() {
+    appBarTitleNotifier.value = widget.selectedFilename;
+    tempData.setCurrentFileName(widget.selectedFilename);
   }
 
   void _toggleUIVisibility(bool visible) {
@@ -357,6 +365,7 @@ class PreviewFileState extends State<PreviewFile> {
       onOpenWithPressed: () => _openWithOnPressed(),
       context: context
     );
+    
   }
 
   void _openMoveFileOnPressed() async {
