@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
 
-// ignore: must_be_immutable
 class SubmitReportPage extends StatelessWidget {
 
   final String reportType;
@@ -33,7 +32,7 @@ class SubmitReportPage extends StatelessWidget {
   final isMyEntityNotifier = ValueNotifier<bool>(false); 
   final isNotMyEntityNotifier = ValueNotifier<bool>(false);
 
-  final violationReport = {"cv","tv","pv"};
+  final violationReport = {"cv", "tv", "pv"};
 
   Widget buildBody() {
 

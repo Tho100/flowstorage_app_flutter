@@ -118,4 +118,5 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
       body: buildBody(),
     );
   }
+  
 }
