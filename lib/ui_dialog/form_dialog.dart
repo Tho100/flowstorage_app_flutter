@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomFormDialog {
@@ -9,11 +10,7 @@ class CustomFormDialog {
       barrierDismissible: false,
       context: navigatorKey.currentContext!,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           content: SizedBox( 
             width: MediaQuery.of(context).size.width*4,
             height: 250,

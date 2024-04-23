@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class SingleTextLoading {
@@ -25,16 +26,11 @@ class SingleTextLoading {
     Navigator.pop(context);
   }
 
-  AlertDialog _buildLoadingDialog(BuildContext context) {
+  AlertDialogWidget _buildLoadingDialog(BuildContext context) {
     
-    const backgroundColor = ThemeColor.mediumBlack;
     const color = ThemeColor.darkPurple;
 
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14)
-      ),
-      backgroundColor: backgroundColor,
+    return AlertDialogWidget(
       title: Row(
         children: [
 

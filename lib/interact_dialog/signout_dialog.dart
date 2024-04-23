@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class SignOutDialog {
@@ -10,11 +11,7 @@ class SignOutDialog {
     return showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           content: const Text(
             'Are you sure you want to sign out from your Flowstorage account?',
             style: TextStyle(
@@ -23,6 +20,7 @@ class SignOutDialog {
             ),
           ),
           actions: [
+
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text(
@@ -33,6 +31,7 @@ class SignOutDialog {
                 ),
               ),
             ),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: ThemeColor.mediumBlack,
@@ -47,6 +46,7 @@ class SignOutDialog {
                 ),
               ),
             ),
+
           ],
         );
       },

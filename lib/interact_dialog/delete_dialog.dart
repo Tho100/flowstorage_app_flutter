@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class DeleteDialog {
@@ -11,11 +12,7 @@ class DeleteDialog {
     return showDialog(
       context: navigatorKey.currentContext!,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           title: Text(fileName,
             style: const TextStyle(
               color: ThemeColor.justWhite,

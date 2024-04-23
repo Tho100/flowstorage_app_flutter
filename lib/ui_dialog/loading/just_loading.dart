@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class JustLoading {
@@ -20,17 +21,12 @@ class JustLoading {
     Navigator.pop(context);
   }
 
-  AlertDialog buildLoadingDialog() {
+  AlertDialogWidget buildLoadingDialog() {
     
-    const backgroundColor = ThemeColor.mediumBlack;
     const color = ThemeColor.darkPurple;
 
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14)
-      ),
-      backgroundColor: backgroundColor,
-      content: const SizedBox(
+    return const AlertDialogWidget(
+      content: SizedBox(
         height: 100,
         child: Center(
           child: CircularProgressIndicator(color: color),
