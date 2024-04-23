@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class DiscardChangesDialog {
@@ -7,11 +8,7 @@ class DiscardChangesDialog {
     return await showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           content: const Text("Discard changes?",
             style: TextStyle(
               color: ThemeColor.justWhite,

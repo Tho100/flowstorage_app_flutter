@@ -76,7 +76,9 @@ class RenameFolderDialog {
             const SizedBox(width: 18),
           ],
         ),
+        
         const SizedBox(height: 15),
+
       ]
     );
   }

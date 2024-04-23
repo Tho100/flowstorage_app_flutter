@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomAlertDialog {
@@ -9,11 +10,7 @@ class CustomAlertDialog {
       barrierDismissible: false,
       context: navigatorKey.currentContext!,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           content: Text(messages,
             style: const TextStyle(
               color: ThemeColor.justWhite,
@@ -40,11 +37,7 @@ class CustomAlertDialog {
     return showDialog(
       context: navigatorKey.currentContext!,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           title: Text(title,
             style: const TextStyle(
               color: ThemeColor.justWhite
@@ -82,11 +75,7 @@ class CustomAlertDialog {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)
-          ),
-          backgroundColor: ThemeColor.mediumBlack,
+        return AlertDialogWidget(
           content: Text(messages,
             style: const TextStyle(
               color: ThemeColor.justWhite,
@@ -94,6 +83,7 @@ class CustomAlertDialog {
             )
           ),
           actions: [
+
             TextButton(
               onPressed: onCancelPressed,
               child: const Text('Cancel',
@@ -103,6 +93,7 @@ class CustomAlertDialog {
                 )
               ),
             ),
+
             TextButton(
               onPressed: oPressedEvent,
               child: const Text('Confirm',
@@ -112,6 +103,7 @@ class CustomAlertDialog {
                 )
               ),
             ),
+            
           ],
         );
       },
