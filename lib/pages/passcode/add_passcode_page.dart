@@ -266,27 +266,33 @@ class AddPasscodePageState extends State<AddPasscodePage> {
   }
 
   void updateBackSpace() {
+    
     controllers[currentActiveField].clear();
+
     if (currentActiveField > 0) {
       FocusScope.of(context).requestFocus(focusNodes[currentActiveField - 1]);
       currentActiveField--;
     }
+
   }
 
   void updateCurrentFieldText(String text) {
+
     controllers[currentActiveField].text = text;
     if (currentActiveField < 3) {
       FocusScope.of(context).requestFocus(focusNodes[currentActiveField + 1]);
       currentActiveField++;
+
     } else {
       processInput();
       focusNodes[currentActiveField].unfocus();
+
     }
+
   }
 
   @override 
   void dispose() {
-
     for(final controller in controllers) {
       controller.dispose();
     }
@@ -308,4 +314,5 @@ class AddPasscodePageState extends State<AddPasscodePage> {
       body: buildAddPasscodePage()
     );
   }
+
 }

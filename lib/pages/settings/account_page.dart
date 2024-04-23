@@ -102,4 +102,5 @@ class SettingsAccountPage extends StatelessWidget {
       ),
     );
   }
+  
 }

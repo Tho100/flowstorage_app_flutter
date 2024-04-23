@@ -22,7 +22,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
 
   final userData = GetIt.instance<UserDataProvider>();
 
-  bool isPasswordEnabled = false;
+  final isPasswordEnabledNotifier = ValueNotifier<bool>(false);
 
   void togglePasscode(String disabled) async {
 
@@ -51,24 +51,28 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
-              DefaultSwitch(
-                value: isPasswordEnabled, 
-                onChanged: (value) async {
-                  setState(() {
-                    isPasswordEnabled = value;
-                  });
-            
-                  final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
-            
-                  if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
-                    AddSharingPassword().buildAddPasswordDialog();
-            
-                  } else {
-                    final isEnabled = isPasswordEnabled ? "0" : "1";
-                    togglePasscode(isEnabled);
-            
-                  }
-                }
+              ValueListenableBuilder(
+                valueListenable: isPasswordEnabledNotifier,
+                builder: (context, value, child) {
+                  return DefaultSwitch(
+                    value: value, 
+                    onChanged: (value) async {
+                      isPasswordEnabledNotifier.value = value;
+                            
+                      final retrievedPassword = await SharingOptions.retrievePassword(userData.username);
+                            
+                      if (userData.sharingPasswordDisabled == "1" && retrievedPassword == "DEF") {
+                        AddSharingPassword().buildAddPasswordDialog();
+                            
+                      } else {
+                        final isEnabled = isPasswordEnabledNotifier.value 
+                          ? "0" : "1";
+                        togglePasscode(isEnabled);
+                            
+                      }
+                    }
+                  );
+                },
               ),
 
             ],
@@ -78,13 +82,18 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
 
         const SizedBox(height: 8),
 
-        Visibility(
-          visible: isPasswordEnabled,
-          child: SettingsButton(
-            topText: "Edit password", 
-            bottomText: "Update your sharing password", 
-            onPressed: () => AddSharingPassword().buildAddPasswordDialog(),
-          ),
+        ValueListenableBuilder(
+          valueListenable: isPasswordEnabledNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: value,
+              child: SettingsButton(
+                topText: "Edit password", 
+                bottomText: "Update your sharing password", 
+                onPressed: () => AddSharingPassword().buildAddPasswordDialog(),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -97,9 +106,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
       userData.setSharingPasswordStatus(passwordIsDisabled);
     } 
 
-    setState(() {
-      isPasswordEnabled = userData.sharingPasswordDisabled == "0";
-    });
+    isPasswordEnabledNotifier.value = userData.sharingPasswordDisabled == "0";
 
   }
 
@@ -107,6 +114,12 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   void initState() {
     super.initState();
     _loadPasswordStatus();
+  }
+
+  @override
+  void dispose() {
+    isPasswordEnabledNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -119,4 +132,5 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
       body: buildBody(),
     );
   }
+
 }

@@ -23,7 +23,6 @@ import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-// ignore: must_be_immutable
 class ShareFilePage extends StatelessWidget {
 
   final String fileName;
@@ -37,8 +36,6 @@ class ShareFilePage extends StatelessWidget {
   final commentController = TextEditingController();
 
   final storageData = GetIt.instance<StorageDataProvider>();
-
-  late Uint8List fileBytes = Uint8List(0);
 
   Widget buildBody(BuildContext context) {
 
@@ -171,6 +168,8 @@ class ShareFilePage extends StatelessWidget {
 
     final retrieveData = RetrieveData();
     final loadingDialog = SingleTextLoading();
+
+    Uint8List fileBytes = Uint8List(0);
 
     try {
 

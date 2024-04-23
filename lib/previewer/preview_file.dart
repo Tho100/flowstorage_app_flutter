@@ -443,14 +443,17 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildCommentIconButtonAudio() {
-    return IconButton(
-      onPressed: () {
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
-        );
-      },
-      icon: const Icon(CupertinoIcons.ellipses_bubble),
+    return Padding(
+      padding: const EdgeInsets.only(top: 2.4),
+      child: IconButton(
+        onPressed: () {
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
+          );
+        },
+        icon: const Icon(CupertinoIcons.ellipses_bubble, size: 25.5),
+      ),
     );
   }
 

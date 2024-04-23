@@ -9,12 +9,12 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/form_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
+import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
 
-// ignore: must_be_immutable
 class SubmitReportPage extends StatelessWidget {
 
   final String reportType;
@@ -33,7 +33,7 @@ class SubmitReportPage extends StatelessWidget {
   final isMyEntityNotifier = ValueNotifier<bool>(false); 
   final isNotMyEntityNotifier = ValueNotifier<bool>(false);
 
-  final violationReport = {"cv","tv","pv"};
+  final violationReport = {"cv", "tv", "pv"};
 
   Widget buildBody() {
 
@@ -340,16 +340,9 @@ class SubmitReportPage extends StatelessWidget {
         context: context,
         title: "Submit a Report",
         actions: [
-          TextButton(
-            child: const Text("Submit",
-                style: TextStyle(
-                color: ThemeColor.darkPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+          RightTextButton(
+            text: "Submit",
             onPressed: () {
-
               if(violationReport.contains(reportType) && !isMyEntityNotifier.value && !isNotMyEntityNotifier.value) {
                 CustomAlertDialog.alertDialog("We need your input on the last question. Please choose at least one checkbox.");
                 return;
@@ -358,10 +351,9 @@ class SubmitReportPage extends StatelessWidget {
               processOnSubmit();
 
               Navigator.pop(context);
-
             }
           ),
-        ]
+        ],
       ).buildAppBar(),
       body: buildBody(),
     );
