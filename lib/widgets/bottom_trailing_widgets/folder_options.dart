@@ -7,6 +7,27 @@ import 'package:flutter/material.dart';
 
 class BottomTrailingFolder {
 
+  Widget _buildOptionButton({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          Icon(icon, color: ThemeColor.secondaryWhite),
+          const SizedBox(width: 15.0),
+          Text(
+            text,
+            style: GlobalsStyle.btnBottomDialogTextStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildFolderBottomTrailing({
     required String folderName,
     required BuildContext context,
@@ -26,54 +47,28 @@ class BottomTrailingFolder {
 
         const Divider(color: ThemeColor.lightGrey),
           
-        ElevatedButton(
+        _buildOptionButton(
+          text: "Rename folder",
+          icon: Icons.edit_outlined,
           onPressed: () {
             Navigator.pop(context);
             onRenamePressed();
-          },
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.edit_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text(
-                'Rename folder',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
+          }
         ),
-
-        ElevatedButton(
+        
+        _buildOptionButton(
+          text: "Download",
+          icon: Icons.file_download_outlined,
           onPressed: () => onDownloadPressed(),
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Download',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
         ),
 
-        ElevatedButton(
+        _buildOptionButton(
+          text: "Delete",
+          icon: Icons.delete_outline,
           onPressed: () async {
             Navigator.pop(context);
             onDeletePressed();
           },
-
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              Icon(Icons.delete_outline,color: ThemeColor.secondaryWhite),
-              SizedBox(width: 15.0),
-              Text('Delete',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
         ),
 
         const SizedBox(height: 20),
