@@ -7,6 +7,25 @@ import 'package:flutter/material.dart';
 
 class PsDateSearchFilterBottomTrailing {
 
+  Widget _buildFilterButton({
+    required String text,
+    required VoidCallback onPressed
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: GlobalsStyle.btnBottomDialogBackgroundStyle,
+      child: Row(
+        children: [
+          const SizedBox(width: 15.0),
+          Text(
+            text,
+            style: GlobalsStyle.btnBottomDialogTextStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
   Future buildBottomTrailing({
     required BuildContext context,
     required VoidCallback onPast24HoursPressed,
@@ -25,60 +44,34 @@ class PsDateSearchFilterBottomTrailing {
         
         const Divider(color: ThemeColor.lightGrey),
 
-        ElevatedButton(
+        _buildFilterButton(
+          text: "Past 24 hours",
           onPressed: () {
             Navigator.pop(context);
             onPast24HoursPressed();
           },
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text(
-                'Past 24 hours',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
         ),
 
-        ElevatedButton(
+        _buildFilterButton(
+          text: "Past week",
           onPressed: () {
             Navigator.pop(context);
             onPastWeekPressed();
           },
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text(
-                'Past week',
-                style: GlobalsStyle.btnBottomDialogTextStyle,
-              ),
-            ],
-          ),
         ),
 
-        ElevatedButton(
-          onPressed: () { 
+        _buildFilterButton(
+          text: "Past month",
+          onPressed: () {
             Navigator.pop(context);
             onPastMonthPressed();
           },
-          style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-          child: const Row(
-            children: [
-              SizedBox(width: 15.0),
-              Text('Past month',
-                style: GlobalsStyle.btnBottomDialogTextStyle
-              ),
-            ],
-          ),
         ),
 
         const SizedBox(height: 20),
         
       ],
     );
-
   }
+  
 }
