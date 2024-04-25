@@ -34,6 +34,7 @@ import 'package:flowstorage_fsc/models/upload_dialog_model.dart';
 import 'package:flowstorage_fsc/pages/intent_share_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/file_search_page.dart';
 import 'package:flowstorage_fsc/pages/public_storage/upload_ps_page.dart';
+import 'package:flowstorage_fsc/pages/scheduled_upgrade_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -2448,9 +2449,13 @@ class HomePageState extends State<HomePage> {
       (currentHour >= 20 && currentHour < 21))) {
 
       await Future.delayed(const Duration(milliseconds: 759), () {
-        if(mounted) {
-          UpgradeDialog.buildGetBetterPlanBottomSheet(context: context);
-        }      
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const ScheduledUpgradePage(),
+            transitionDuration: const Duration(microseconds: 0), 
+          ),
+        );
       });
     }
 

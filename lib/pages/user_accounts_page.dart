@@ -97,11 +97,14 @@ class UserAccountsPageState extends State<UserAccountsPage> {
                 style: titleTextStyle,
               ),
               const Spacer(),
-              const Padding( 
-                padding: EdgeInsets.only(right: 12.0),
-                child: Icon(CupertinoIcons.checkmark_alt_circle_fill, 
-                  color: ThemeColor.darkPurple,
-                  size: 26,
+              Transform.translate(
+                offset: const Offset(0, 4),
+                child: const Padding( 
+                  padding: EdgeInsets.only(right: 12.0),
+                  child: Icon(CupertinoIcons.checkmark_alt_circle_fill, 
+                    color: ThemeColor.darkPurple,
+                    size: 26,
+                  ),
                 ),
               ),
             ],
