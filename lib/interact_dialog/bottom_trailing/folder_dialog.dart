@@ -64,9 +64,11 @@ class FolderDialog {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          trailing: GestureDetector(
-                            onTap: () => trailingOnPressed(index),
-                            child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.secondaryWhite)),
+                          trailing: IconButton(
+                            onPressed: () => trailingOnPressed(index),
+                            iconSize: 22,
+                            icon: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.thirdWhite),
+                          ),
                         ),
                       ),
                     );
