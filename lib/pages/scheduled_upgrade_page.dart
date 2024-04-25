@@ -22,14 +22,14 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
     required BuildContext context,
     required String plan,
     required String subheader,
-    required Color planColor, 
+    required Color bgColor,
     double? customFontSize
   }) {
     return Container(
       width: MediaQuery.of(context).size.width-55,
       height: 510,
       decoration: BoxDecoration(
-        color: ThemeColor.justWhite,
+        color: bgColor,
         borderRadius: BorderRadius.circular(25)
       ),
       child: Column(
@@ -39,7 +39,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
             padding: const EdgeInsets.only(top: 40.0),
             child: Text("PLAN",  
               style: GoogleFonts.poppins(
-                color: ThemeColor.mediumBlack,
+                color: ThemeColor.darkGrey,
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
               ),
@@ -48,7 +48,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
 
           Text(plan,  
             style: GoogleFonts.poppins(
-              color: planColor,
+              color: ThemeColor.darkGrey,
               fontSize: customFontSize ?? 60,
               fontWeight: FontWeight.bold,
             ),
@@ -60,7 +60,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
             padding: const EdgeInsets.only(bottom: 18.0),
             child: Text(subheader,  
               style: GoogleFonts.poppins(
-                color: ThemeColor.mediumBlack,
+                color: ThemeColor.darkGrey,
                 fontSize: customFontSize ?? 24,
                 fontWeight: FontWeight.w600,
               ),
@@ -95,10 +95,10 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
       "Upload up to 2000 files \nand 20 folders!"
     ];
     
-    const planColors = [
-      Color.fromARGB(255, 250, 195, 4),
-      Color.fromARGB(255, 40, 100, 169),
-      ThemeColor.darkPurple,
+    const bgColors = [
+      Color.fromARGB(255, 250, 225, 137),
+      Color.fromARGB(255, 97, 166, 245),
+      Color.fromARGB(255, 156, 85, 236),
     ];
 
     return SizedBox(
@@ -114,7 +114,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
               context: context, 
               plan: plans[index], 
               subheader: subheaders[index], 
-              planColor: planColors[index]
+              bgColor: bgColors[index]
             );
           },
         ),
@@ -237,7 +237,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 42.0),
+        padding: const EdgeInsets.only(top: 45.0),
         child: buildBody(context),
       ),
     );
