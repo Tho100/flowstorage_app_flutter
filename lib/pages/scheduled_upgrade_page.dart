@@ -3,9 +3,20 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ScheduledUpgradePage extends StatelessWidget {
+class ScheduledUpgradePage extends StatefulWidget {
 
   const ScheduledUpgradePage({Key? key}) : super(key: key);
+
+  @override
+  State<ScheduledUpgradePage> createState() => ScheduledUpgradePageState();
+
+}
+
+class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
+
+  final pageController = PageController();
+
+  int currentPageIndex = 0;
 
   Widget buildCard({
     required BuildContext context,
@@ -90,17 +101,14 @@ class ScheduledUpgradePage extends StatelessWidget {
       ThemeColor.darkPurple,
     ];
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 34.0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width-55,
-        height: 510,
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics()
-          ),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width-55,
+      height: 510,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 34.0),
+        child: PageView.builder(
+          controller: pageController,
           itemCount: 3,
-          scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return buildCard(
               context: context, 
@@ -108,20 +116,21 @@ class ScheduledUpgradePage extends StatelessWidget {
               subheader: subheaders[index], 
               planColor: planColors[index]
             );
-          }
+          },
         ),
       ),
     );
 
   }
 
-  Widget buildDot() {
+  Widget buildDot({bool isActive = false}) {
     return Container(
       width: 10,
       height: 10,
+      margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: ThemeColor.thirdWhite,
-        borderRadius: BorderRadius.circular(55)
+        color: isActive ? Colors.white : Colors.grey,
+        shape: BoxShape.circle,
       ),
     );
   }
@@ -129,94 +138,106 @@ class ScheduledUpgradePage extends StatelessWidget {
   Widget buildDotsRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        buildDot(),
-        const SizedBox(width: 10),
-        buildDot(),
-        const SizedBox(width: 10),
-        buildDot(),
-      ]
+      children: List.generate(
+        3, 
+        (index) => buildDot(isActive: index == currentPageIndex),
+      ),
     );
   }
 
   Widget buildBody(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 38.0),
-        child: Column(
-          children: [
+      child: Column(
+        children: [
 
-            Text("Get a better Flowstorage",  
-              style: GoogleFonts.poppins(
-                color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 22,
-              ),
+          Text("Get a better Flowstorage",  
+            style: GoogleFonts.poppins(
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w600,
+              fontSize: 22,
             ),
+          ),
 
-            buildCardsListView(context),
-            
-            const SizedBox(height: 36),
+          buildCardsListView(context),
+          
+          const SizedBox(height: 40),
 
-            buildDotsRow(),
+          buildDotsRow(),
 
-            const Spacer(),
+          const Spacer(),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width-55,
-                height: 65,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ThemeColor.justWhite,
-                    foregroundColor: ThemeColor.thirdWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    )
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    NavigatePage.goToPageUpgrade();
-                  },
-                  child: Text(
-                    'See Plan',
-                    style: GoogleFonts.poppins(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: ThemeColor.darkBlack,
-                    ),
-                  ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width-55,
+              height: 65,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ThemeColor.justWhite,
+                  foregroundColor: ThemeColor.thirdWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  )
                 ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 26.0),
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("DISMISS",
+                onPressed: () {
+                  Navigator.pop(context);
+                  NavigatePage.goToPageUpgrade();
+                },
+                child: Text(
+                  'See Plan',
                   style: GoogleFonts.poppins(
-                    color: ThemeColor.secondaryWhite,
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
+                    color: ThemeColor.darkBlack,
                   ),
                 ),
               ),
             ),
+          ),
 
-          ],
-        ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 26.0),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("DISMISS",
+                style: GoogleFonts.poppins(
+                  color: ThemeColor.secondaryWhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+
+        ],
       ),
     );
+  }
+
+  void onPageChanged() {
+    setState(() {
+      currentPageIndex = pageController.page?.round() ?? 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(onPageChanged);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 42.0),
         child: buildBody(context),
       ),
     );
