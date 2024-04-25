@@ -797,21 +797,13 @@ class HomePageState extends State<HomePage> {
 
   Future<void> _callOfflineData() async {
 
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const ScheduledUpgradePage(),
-        transitionDuration: const Duration(microseconds: 0), 
-      ),
-    );
-
-    /*_clearGlobalData();
+    _clearGlobalData();
 
     await dataCaller.offlineData();
 
     _toggleReturnToDefault();
 
-    searchHintText.value = "Search in Flowstorage";*/
+    searchHintText.value = "Search in Flowstorage";
  
   }
 
