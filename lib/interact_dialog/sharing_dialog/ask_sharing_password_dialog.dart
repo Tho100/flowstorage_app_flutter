@@ -30,10 +30,10 @@ class SharingPassword {
           child: Text(
             "Enter this user sharing password",
             style: TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: ThemeColor.secondaryWhite,
               fontSize: 17,
               overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -53,7 +53,7 @@ class SharingPassword {
             ),
             child: TextFormField(
               style: const TextStyle(
-                color: ThemeColor.secondaryWhite,
+                color: ThemeColor.justWhite,
                 fontWeight: FontWeight.w500,
               ),
               enabled: true,

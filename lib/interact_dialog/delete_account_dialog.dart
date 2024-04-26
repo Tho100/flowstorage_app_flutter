@@ -14,8 +14,8 @@ class DeleteAccountDialog {
         return AlertDialogWidget(
           content: const Text('Delete your Flowstorage account? This action is irreversible.',
             style: TextStyle(
-              color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w600,
             ),
           ),
           actions: [

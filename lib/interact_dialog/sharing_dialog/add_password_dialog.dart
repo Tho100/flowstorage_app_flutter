@@ -28,10 +28,10 @@ class AddSharingPassword {
               child: Text(
                 "Password for File Sharing",
                 style: TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: ThemeColor.secondaryWhite,
                   fontSize: 17,
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -51,7 +51,7 @@ class AddSharingPassword {
             ),
             child: TextFormField(
               style: const TextStyle(
-                color: ThemeColor.secondaryWhite,
+                color: ThemeColor.justWhite,
                 fontWeight: FontWeight.w500,
               ),
               enabled: true,
