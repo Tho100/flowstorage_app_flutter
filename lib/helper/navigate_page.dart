@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/pages/home_page.dart';
 import 'package:flowstorage_fsc/pages/mini_game.dart';
 import 'package:flowstorage_fsc/pages/move_file_page.dart';
 import 'package:flowstorage_fsc/pages/passcode/configure_passcode_page.dart';
+import 'package:flowstorage_fsc/pages/scheduled_upgrade_page.dart';
 import 'package:flowstorage_fsc/pages/settings/account_page.dart';
 import 'package:flowstorage_fsc/pages/settings/app_page.dart';
 import 'package:flowstorage_fsc/pages/settings/security_page.dart';
@@ -246,6 +247,16 @@ class NavigatePage {
     Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(builder: (context) => const PongGame())
+    );
+  }
+
+  static void goToPageScheduledUpgrade() {
+    Navigator.push(
+      navigatorKey.currentContext!,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const ScheduledUpgradePage(),
+        transitionDuration: const Duration(microseconds: 0), 
+      ),
     );
   }
 
