@@ -94,10 +94,10 @@ class IntentSharingPage extends StatelessWidget {
                   Text(
                     ShortenText().cutText(fileName),
                     style: const TextStyle(
-                      color: ThemeColor.justWhite,
+                      color: ThemeColor.secondaryWhite,
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
 

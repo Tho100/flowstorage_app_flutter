@@ -81,10 +81,10 @@ class ShareFilePage extends StatelessWidget {
                   child: Text(
                     ShortenText().cutText(fileName, customLength: 42),
                     style: const TextStyle(
-                      color: ThemeColor.justWhite,
+                      color: ThemeColor.secondaryWhite,
                       fontSize: 15,
                       overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -101,7 +101,7 @@ class ShareFilePage extends StatelessWidget {
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
           child: TextFormField(
             style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
+              color: ThemeColor.justWhite,
               fontWeight: FontWeight.w500,
             ),
             enabled: true,
