@@ -86,7 +86,7 @@ class ResponsiveListView extends StatelessWidget {
                         fileName,
                         style: const TextStyle(
                           color: ThemeColor.secondaryWhite,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           overflow: TextOverflow.ellipsis,
                           fontSize: 15,
                         ),

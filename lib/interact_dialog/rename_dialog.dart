@@ -85,10 +85,10 @@ class RenameDialog {
                 child: Text(
                   ShortenText().cutText(fileName),
                   style: const TextStyle(
-                    color: ThemeColor.justWhite,
+                    color: ThemeColor.secondaryWhite,
                     fontSize: 15,
                     overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -111,7 +111,7 @@ class RenameDialog {
           child: TextFormField(
             autofocus: true,
             style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
+              color: ThemeColor.justWhite,
               fontWeight: FontWeight.w500,
             ),
             enabled: true,
