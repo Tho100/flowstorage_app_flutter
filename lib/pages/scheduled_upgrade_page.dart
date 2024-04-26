@@ -198,13 +198,25 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
 
           Padding(
             padding: const EdgeInsets.only(bottom: 26.0),
-            child: TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("DISMISS",
-                style: GoogleFonts.poppins(
-                  color: ThemeColor.secondaryWhite,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
+            child: SizedBox(
+            width: MediaQuery.of(context).size.width-55,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ThemeColor.darkBlack,
+                  foregroundColor: ThemeColor.thirdWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  )
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'Dismiss',
+                    style:  GoogleFonts.poppins(
+                    color: ThemeColor.secondaryWhite,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

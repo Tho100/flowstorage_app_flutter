@@ -23,10 +23,10 @@ class CreateDirectoryDialog {
               child: Text(
                 "Create new directory",
                 style: TextStyle(
-                  color: ThemeColor.justWhite,
+                  color: ThemeColor.secondaryWhite,
                   fontSize: 17,
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -42,7 +42,7 @@ class CreateDirectoryDialog {
           child: TextFormField(
             autofocus: true,
             style: const TextStyle(
-              color: ThemeColor.secondaryWhite,
+              color: ThemeColor.justWhite,
               fontWeight: FontWeight.w500,
             ),
             enabled: true,

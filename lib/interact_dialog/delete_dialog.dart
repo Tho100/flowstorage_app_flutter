@@ -15,15 +15,15 @@ class DeleteDialog {
         return AlertDialogWidget(
           title: Text(fileName,
             style: const TextStyle(
-              color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w600,
             ),
           ),
           content: const Text(
             'Delete this item? Action is permanent.',
             style: TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
+              color: ThemeColor.thirdWhite,
+              fontWeight: FontWeight.w600,
             ),
           ),
           actions: [

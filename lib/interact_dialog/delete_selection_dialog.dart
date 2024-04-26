@@ -16,15 +16,15 @@ class DeleteSelectionDialog {
           title: Text(
             appBarTitle,
             style: const TextStyle(
-              color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w600,
             ),
           ),
           content: const Text(
             'Delete these items? Action is permanent.',
             style: TextStyle(
-              color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
+              color: ThemeColor.thirdWhite,
+              fontWeight: FontWeight.w600,
             ),
           ),
           actions: [
