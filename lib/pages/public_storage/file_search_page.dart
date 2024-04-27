@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/encryption/encryption_model.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/helper/format_date.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
+import 'package:flowstorage_fsc/pages/public_storage/result_search_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/ps_storage_data.provider.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -55,7 +56,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   final storageData = GetIt.instance<StorageDataProvider>();
   final psStorageData = GetIt.instance<PsStorageDataProvider>();
 
-  final uploadDateList = [];
+  final uploadDateList = <String?>[];
 
   final generalFileTableName = {
     GlobalsTable.psText, 
@@ -374,7 +375,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(uploadDate,
+                          Text(uploadDate!,
                             style: const TextStyle(
                               color: ThemeColor.thirdWhite, 
                               fontWeight: FontWeight.w600,
@@ -523,7 +524,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       startDate, endDate, filter);
 
     for(final fileData in fileDataList) {
-      uploadDateList.add(fileData['upload_date']);
+      uploadDateList.add(fileData['upload_date']!);
       psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
       psStorageData.psSearchNameList.add(fileData['file_name']!);
       psStorageData.psSearchImageBytesList.add(fileData['image']!);
@@ -539,6 +540,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Future<void> searchByTagsOnPressed(String tagName) async {
 
+    psSearchBarController.clear();
+
     tempData.setOrigin(OriginFile.public);
 
     clearSearchingData();
@@ -547,12 +550,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
-    isTagsVisibleNotifier.value = false;
-
     final fileDataList = await getSearchedFileByTags(tagName);
 
     for(final fileData in fileDataList) {
-      uploadDateList.add(fileData['upload_date']);
+      uploadDateList.add(fileData['upload_date']!);
       psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
       psStorageData.psSearchNameList.add(fileData['file_name']!);
       psStorageData.psSearchImageBytesList.add(fileData['image']!);
@@ -563,6 +564,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
+
+    if(context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultSearchPagePs(
+          selectedCategory: tagName, 
+          searchDateList: uploadDateList, 
+        ))
+      );
+    }
+
   }
 
   Future<List<Map<String, String>>> getSearchedFileByTags(String selectedTag) async {
@@ -699,13 +711,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
-    isTagsVisibleNotifier.value = false;
-
     final keywordInput = psSearchBarController.text;
     final fileDataList = await getSearchedFileData(keywordInput);
 
     for(final fileData in fileDataList) {
-      uploadDateList.add(fileData['upload_date']);
+      uploadDateList.add(fileData['upload_date']!);
       psStorageData.psSearchUploaderList.add(fileData['uploader_name']!);
       psStorageData.psSearchNameList.add(fileData['file_name']!);
       psStorageData.psSearchImageBytesList.add(fileData['image']!);
@@ -716,6 +726,16 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
+
+    if(context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultSearchPagePs(
+          selectedCategory: "Results for $keywordInput", 
+          searchDateList: uploadDateList, 
+        ))
+      );
+    }
 
   }
 
