@@ -26,10 +26,12 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 class CreateText extends StatefulWidget {
+  
   const CreateText({super.key});
 
   @override
   State<CreateText> createState() => CreateTextPageState();
+
 }
 
 class CreateTextPageState extends State<CreateText> {
@@ -282,4 +284,5 @@ class CreateTextPageState extends State<CreateText> {
       ),
     );
   }
+
 }
