@@ -2447,7 +2447,7 @@ class HomePageState extends State<HomePage> {
       (currentHour >= 13 && currentHour < 16) || 
       (currentHour >= 20 && currentHour < 21))) {
 
-      await Future.delayed(const Duration(milliseconds: 759), () {
+      await Future.delayed(const Duration(milliseconds: 399), () {
         NavigatePage.goToPageScheduledUpgrade();
       });
     }
