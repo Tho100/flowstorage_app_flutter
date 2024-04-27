@@ -226,11 +226,15 @@ class CreateTextPageState extends State<CreateText> {
 
   Future<bool> onPageClose() async {
 
-    final isAskForSave = saveVisibilityNotifier.value && textEditingController.text.isNotEmpty;
+    final isAskForSave = textEditingController.text.isNotEmpty;
 
-    return isAskForSave 
-      ? await discardChangesConfirmation()
-      : true;
+    if(isAskForSave) {
+      return await discardChangesConfirmation();
+
+    } else {
+      return true;
+
+    }
 
   }
 
@@ -249,6 +253,12 @@ class CreateTextPageState extends State<CreateText> {
       onWillPop: () async => onPageClose(),
       child: Scaffold(
         appBar: CustomAppBar(
+          customBackOnPressed: () async {
+            final closePage = await onPageClose();
+            if(closePage) {
+              Navigator.pop(context);
+            }
+          },
           context: context,
           title: "New Text File",
           actions: [
