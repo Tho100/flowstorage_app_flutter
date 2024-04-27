@@ -2134,6 +2134,7 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
+
   }
 
   Widget _buildPsGridListView(Uint8List imageBytes, int index) {
@@ -2223,6 +2224,7 @@ class HomePageState extends State<HomePage> {
         );
       }
     );
+    
   }
 
   Widget _buildHomeBody() {
