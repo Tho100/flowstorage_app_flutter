@@ -898,6 +898,7 @@ class PreviewFileState extends State<PreviewFile> {
         ),
       ),
     );
+    
   }
 
   List<Widget> _buildAppBarActions() {

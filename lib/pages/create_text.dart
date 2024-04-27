@@ -26,10 +26,12 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 class CreateText extends StatefulWidget {
+  
   const CreateText({super.key});
 
   @override
   State<CreateText> createState() => CreateTextPageState();
+
 }
 
 class CreateTextPageState extends State<CreateText> {
@@ -224,11 +226,15 @@ class CreateTextPageState extends State<CreateText> {
 
   Future<bool> onPageClose() async {
 
-    final isAskForSave = saveVisibilityNotifier.value && textEditingController.text.isNotEmpty;
+    final isAskForSave = textEditingController.text.isNotEmpty;
 
-    return isAskForSave 
-      ? await discardChangesConfirmation()
-      : true;
+    if(isAskForSave) {
+      return await discardChangesConfirmation();
+
+    } else {
+      return true;
+
+    }
 
   }
 
@@ -247,6 +253,12 @@ class CreateTextPageState extends State<CreateText> {
       onWillPop: () async => onPageClose(),
       child: Scaffold(
         appBar: CustomAppBar(
+          customBackOnPressed: () async {
+            final closePage = await onPageClose();
+            if(closePage) {
+              Navigator.pop(context);
+            }
+          },
           context: context,
           title: "New Text File",
           actions: [
@@ -282,4 +294,5 @@ class CreateTextPageState extends State<CreateText> {
       ),
     );
   }
+
 }
