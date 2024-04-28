@@ -229,6 +229,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
             onPast24HoursPressed: () => onPast24HoursPressed(),
             onPastWeekPressed: () => onPastWeekPressed(),
             onPastMonthPressed: () => onPastMonthPressed(),
+            onPastYearPressed: () => onPastYearPressed()
           );
         },
         child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.justWhite)
@@ -471,11 +472,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final filterQuery = filter == "week" || filter == "month" 
+    final filterQuery = filter == "week" || filter == "month" || filter == "year"
     ? "STR_TO_DATE(UPLOAD_DATE, '%d/%m/%Y') BETWEEN STR_TO_DATE(:startDate, '%d/%m/%Y') AND STR_TO_DATE(:endDate, '%d/%m/%Y')"
     : "UPLOAD_DATE = :date";
 
-    final filterParams = filter == "week" || filter == "month"
+    final filterParams = filter == "week" || filter == "month" || filter == "year"
     ? {"startDate": startDate, "endDate": endDate}
     : {"date": startDate};
 
@@ -535,6 +536,33 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
+
+    String title = "";
+
+    switch(filter) {
+      case "24_hours":
+        title = "past 24 hours ago";
+        break;
+      case "week":
+        title = "past week";
+        break;
+      case "month":
+        title = "past month";
+        break;
+      case "year":
+        title = "past year";
+        break;
+    }
+
+    if(context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultSearchPagePs(
+          selectedCategory: "Results from $title", 
+          searchDateList: uploadDateList, 
+        ))
+      );
+    }
 
   }
 
@@ -747,6 +775,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     final endDate = DateFormat('dd/MM/yyyy').format(now);
 
     await searchByDateOnPressed(startDate, endDate, "week");
+
+  }
+
+  void onPastYearPressed() async {
+
+    final oneYearAgo = now.subtract(const Duration(days: 365));
+
+    final startDate = DateFormat('dd/MM/yyyy').format(oneYearAgo);
+    final endDate = DateFormat('dd/MM/yyyy').format(now);
+
+    await searchByDateOnPressed(startDate, endDate, "year");
 
   }
 

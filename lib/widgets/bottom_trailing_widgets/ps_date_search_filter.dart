@@ -30,7 +30,8 @@ class PsDateSearchFilterBottomTrailing {
     required BuildContext context,
     required VoidCallback onPast24HoursPressed,
     required VoidCallback onPastWeekPressed,
-    required VoidCallback onPastMonthPressed
+    required VoidCallback onPastMonthPressed,
+    required VoidCallback onPastYearPressed
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
@@ -65,6 +66,14 @@ class PsDateSearchFilterBottomTrailing {
           onPressed: () {
             Navigator.pop(context);
             onPastMonthPressed();
+          },
+        ),
+
+        _buildFilterButton(
+          text: "Past year",
+          onPressed: () {
+            Navigator.pop(context);
+            onPastYearPressed();
           },
         ),
 

@@ -219,17 +219,17 @@ class CreateTextPageState extends State<CreateText> {
     );
   }
 
-  Future<bool> discardChangesConfirmation() async {
+  Future<bool> _discardChangesConfirmation() async {
     return await DiscardChangesDialog()
                       .buildConfirmationDialog(context);
   }
 
-  Future<bool> onPageClose() async {
+  Future<bool> _onPageClose() async {
 
     final isAskForSave = textEditingController.text.isNotEmpty;
 
     if(isAskForSave) {
-      return await discardChangesConfirmation();
+      return await _discardChangesConfirmation();
 
     } else {
       return true;
@@ -250,11 +250,11 @@ class CreateTextPageState extends State<CreateText> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onPageClose(),
+      onWillPop: () async => _onPageClose(),
       child: Scaffold(
         appBar: CustomAppBar(
           customBackOnPressed: () async {
-            final closePage = await onPageClose();
+            final closePage = await _onPageClose();
             if(closePage) {
               Navigator.pop(context);
             }
