@@ -37,6 +37,7 @@ class BottomTrailingPsSearchFilter {
     required VoidCallback onPast24HoursPressed,
     required VoidCallback onPastWeekPressed,
     required VoidCallback onPastMonthPressed,
+    required VoidCallback onPastYearPressed,
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
@@ -63,7 +64,8 @@ class BottomTrailingPsSearchFilter {
               context: context,
               onPast24HoursPressed: onPast24HoursPressed,
               onPastWeekPressed: onPastWeekPressed,
-              onPastMonthPressed: onPastMonthPressed
+              onPastMonthPressed: onPastMonthPressed,
+              onPastYearPressed: onPastYearPressed,
             );
           },
           context: context
