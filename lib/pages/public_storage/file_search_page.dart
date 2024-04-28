@@ -537,6 +537,33 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = false;
     });
 
+    String title = "";
+
+    switch(filter) {
+      case "24_hours":
+        title = "past 24 hours ago";
+        break;
+      case "week":
+        title = "past week";
+        break;
+      case "month":
+        title = "past month";
+        break;
+      case "year":
+        title = "past year";
+        break;
+    }
+
+    if(context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultSearchPagePs(
+          selectedCategory: "Results from $title", 
+          searchDateList: uploadDateList, 
+        ))
+      );
+    }
+
   }
 
   Future<void> searchByTagsOnPressed(String tagName) async {
