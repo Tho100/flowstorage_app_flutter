@@ -635,7 +635,7 @@ class StatsPageState extends State<StatisticsPage> {
         color: ThemeColor.justWhite,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 8),
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

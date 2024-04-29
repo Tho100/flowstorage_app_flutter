@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResponsiveSearchBar extends StatelessWidget {
 
@@ -63,10 +64,10 @@ class ResponsiveSearchBar extends StatelessWidget {
                         onChanged: onChanged,
                         controller: controller,
                         focusNode: focusNode ?? FocusNode(),
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.secondaryWhite,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
                         ),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 26),
@@ -81,10 +82,10 @@ class ResponsiveSearchBar extends StatelessWidget {
                             borderRadius: BorderRadius.circular(borderRadius),
                           ),
                           hintText: hintText,
-                          hintStyle: const TextStyle(
+                          hintStyle: GoogleFonts.inter(
                             color: ThemeColor.secondaryWhite,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
                           ),
                           prefixIcon: const Icon(CupertinoIcons.search, color: Color.fromARGB(255, 200, 200,200), size: 18),
                         ),

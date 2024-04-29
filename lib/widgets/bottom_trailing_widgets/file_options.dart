@@ -14,6 +14,7 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/report_options.d
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BottomTrailingOptions {
 
@@ -97,11 +98,10 @@ class BottomTrailingOptions {
                   children: [
                     Text(
                       ShortenText().cutText(fileName, customLength: 50),
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [

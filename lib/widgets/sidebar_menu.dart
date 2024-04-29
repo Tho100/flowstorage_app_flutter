@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomSideBarMenu extends StatelessWidget {
 
@@ -88,10 +89,10 @@ class CustomSideBarMenu extends StatelessWidget {
             ),
             title: Text(
               title,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 216, 216, 216),
+              style: GoogleFonts.inter(
+                color: const Color.fromARGB(255, 216, 216, 216),
                 fontSize: 19.5,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),
@@ -171,21 +172,19 @@ class CustomSideBarMenu extends StatelessWidget {
         children: [
           Text(
             userData.username,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              overflow: TextOverflow.ellipsis,
+              fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 5),
           Text(
             userData.email,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.thirdWhite,
               fontSize: 16,
-              fontWeight: FontWeight.w600,
-              overflow: TextOverflow.ellipsis,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ],
@@ -208,11 +207,11 @@ class CustomSideBarMenu extends StatelessWidget {
           foregroundColor: ThemeColor.thirdWhite,
           backgroundColor: ThemeColor.justWhite,
         ),
-        child: const Text(
+        child: Text(
           'Get more storage',
-          style: TextStyle(
-            fontSize: 17, 
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.inter(
+            fontSize: 16, 
+            fontWeight: FontWeight.w800,
             color: ThemeColor.darkBlack
           ),
         ),
@@ -273,16 +272,18 @@ class CustomSideBarMenu extends StatelessWidget {
                 future: usageProgress,
                 builder: (context, storageUsageSnapshot) {
 
-                  const textStyle = TextStyle(
+                  final textStyle = GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                   );
 
                   if(storageUsageSnapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+                    return const CircularProgressIndicator(
+                      color: ThemeColor.darkPurple
+                    );
 
                   } else if (storageUsageSnapshot.hasError) {
-                    return const Text(
+                    return Text(
                       "Failed to retrieve storage usage",
                       style: textStyle,
                       textAlign: TextAlign.center,
@@ -294,7 +295,7 @@ class CustomSideBarMenu extends StatelessWidget {
                     final storageText = tempData.origin == OriginFile.public ? "Storage (Public)" : "Storage";
 
                     return isStorageFull
-                      ? const Text(
+                      ? Text(
                         "Storage full",
                         style: textStyle,
                         textAlign: TextAlign.center,
@@ -304,7 +305,6 @@ class CustomSideBarMenu extends StatelessWidget {
                         style: textStyle,
                         textAlign: TextAlign.center,
                       );
-
                   }
 
                 }

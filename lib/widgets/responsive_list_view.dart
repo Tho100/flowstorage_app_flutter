@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ResponsiveListView extends StatelessWidget {
@@ -84,11 +85,10 @@ class ResponsiveListView extends StatelessWidget {
                       offset: titleOffset,
                       child: Text(
                         fileName,
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.secondaryWhite,
-                          fontWeight: FontWeight.w600,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
                         ),
                       ),
                     ),

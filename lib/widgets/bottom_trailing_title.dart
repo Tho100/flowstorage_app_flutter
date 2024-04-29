@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BottomTrailingTitle extends StatelessWidget {
 
@@ -18,13 +19,14 @@ class BottomTrailingTitle extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
         child: Text(
           title,
-          style: const TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.secondaryWhite,
             fontSize: 18.2,
-            fontWeight: FontWeight.w600
+            fontWeight: FontWeight.w800
           ),
         ),
       ),
     );
   }
+
 }
