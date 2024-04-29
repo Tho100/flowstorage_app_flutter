@@ -222,7 +222,7 @@ class StatsPageState extends State<StatisticsPage> {
                 textStyle: const TextStyle(
                   color: Color.fromARGB(255, 18, 18, 18),
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontSize: 12.5,
                 ),
               ),
               textAlign: TextAlign.left,
@@ -272,13 +272,13 @@ class StatsPageState extends State<StatisticsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 18.0, top: 18),
+                      padding: const EdgeInsets.only(left: 16.5, top: 18),
                       child: _buildInfoWidget(
                         "MOST UPLOADED", categoryWithMostUpload, Icons.arrow_upward_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 18, top: 18),
+                      padding: const EdgeInsets.only(left: 16.5, top: 18),
                       child: _buildInfoWidget(
                         "LEAST UPLOADED", categoryWithLeastUpload, Icons.arrow_downward_outlined),
                     ),
@@ -288,13 +288,13 @@ class StatsPageState extends State<StatisticsPage> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 18.0, top: 16),
+                      padding: const EdgeInsets.only(left: 16.5, top: 16),
                       child: _buildInfoWidget(
                         "TOTAL UPLOAD", totalFilesUpload.toString(), Icons.stacked_line_chart_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 34, top: 14),
+                      padding: const EdgeInsets.only(left: 33.5, top: 14),
                       child: _buildInfoWidget(
                         "OFFLINE UPLOAD", totalOfflineFilesUpload.toString(), Icons.offline_bolt_outlined),
                     ),
@@ -304,13 +304,13 @@ class StatsPageState extends State<StatisticsPage> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 18.0, top: 14),
+                      padding: const EdgeInsets.only(left: 16.5, top: 14),
                       child: _buildInfoWidget(
                         "DIRECTORY COUNT", directoryCount.toString(), Icons.folder_outlined),
                     ),
                     const SizedBox(width: 30),
                     Padding(
-                      padding: const EdgeInsets.only(left: 6, top: 14),
+                      padding: const EdgeInsets.only(left: 4.5, top: 14),
                       child: _buildInfoWidget(
                         "FOLDER COUNT", folderCount.toString(), Icons.folder_outlined),
                     ),
@@ -635,7 +635,7 @@ class StatsPageState extends State<StatisticsPage> {
         color: ThemeColor.justWhite,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 6),
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -703,7 +703,7 @@ class StatsPageState extends State<StatisticsPage> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 2.0, top: 8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: Text(cacheSize,
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
@@ -930,7 +930,7 @@ class StatsPageState extends State<StatisticsPage> {
                 Column(
                   children: [
                     _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 10),
                     _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
                   ],
                 ),
@@ -944,6 +944,7 @@ class StatsPageState extends State<StatisticsPage> {
         ],
       ),
     );
+    
   }
 
   Widget _buildLoading() {
