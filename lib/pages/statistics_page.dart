@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -499,7 +500,7 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildUsageContainer(BuildContext context) {
+  Widget _buildUsageContainer() {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
 
@@ -626,58 +627,101 @@ class StatsPageState extends State<StatisticsPage> {
   }
 
   Widget _buildDictionaryFolderCount(String header, String totalUpload, String uploadLimit) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
-      child: Container(
-        height: 74,
-        width: 155,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: ThemeColor.justWhite,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.folder_outlined, size: 21),
-                  const SizedBox(width: 5),
-                  Text(
-                    header,
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        color: Color.fromARGB(255, 18, 18, 18),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 2.0, top: 4.0),
-                child: Text("$totalUpload/$uploadLimit",
+    return Container(
+      height: 74,
+      width: 160,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: ThemeColor.justWhite,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.folder_outlined, size: 21),
+                const SizedBox(width: 5),
+                Text(
+                  header,
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
-                      color: ThemeColor.darkGrey,
+                      color: Color.fromARGB(255, 18, 18, 18),
                       fontWeight: FontWeight.w600,
-                      fontSize: 16
+                      fontSize: 13,
                     ),
                   ),
                   textAlign: TextAlign.left,
                 ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 2.0, top: 4.0),
+              child: Text("$totalUpload/$uploadLimit",
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    color: ThemeColor.darkGrey,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16
+                  ),
+                ),
+                textAlign: TextAlign.left,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildUsageGaugeContainer(BuildContext context) {
+  Widget _buildAppCache(String cacheSize) {
+    return Container(
+      height: 162,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: ThemeColor.justWhite,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "APP CACHE",
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 18, 18, 18),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 2.0, top: 8.0),
+              child: Text(cacheSize,
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    color: ThemeColor.darkGrey,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 30
+                  ),
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUsageGaugeContainer() {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
 
@@ -718,7 +762,7 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildUsageGaugeByTypeContainer(BuildContext context) {
+  Widget _buildUsageGaugeByTypeContainer() {
 
     final maxValue = AccountPlan.mapFilesUpload[userData.accountType]!;
 
@@ -736,69 +780,66 @@ class StatsPageState extends State<StatisticsPage> {
       
     final othersPercentage = ((othersTotalUpload/maxValue) * 100).toInt();
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: Container(
-        height: 165,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: ThemeColor.justWhite,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 6.0, top: 6.0, right: 14.0),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 75,
-                        height: 75,
-                        child: _buildGaugeChart(
-                          maxValue: maxValue.toDouble(), 
-                          dataValue: totalUploadImage.toDouble(),
-                          customColor: ThemeColor.secondaryPurple,
-                          text: "$imagePercentage%",
-                          textSize: 12.5
-                        ),
+    return Container(
+      height: 165,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: ThemeColor.justWhite,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 6.0, top: 6.0, right: 14.0),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 75,
+                      height: 75,
+                      child: _buildGaugeChart(
+                        maxValue: maxValue.toDouble(), 
+                        dataValue: totalUploadImage.toDouble(),
+                        customColor: ThemeColor.secondaryPurple,
+                        text: "$imagePercentage%",
+                        textSize: 12.5
                       ),
-                      Text(
-                        "Image", 
-                        style: GoogleFonts.poppins(
-                          fontSize: 15, fontWeight: FontWeight.bold
-                        ),
+                    ),
+                    Text(
+                      "Image", 
+                      style: GoogleFonts.poppins(
+                        fontSize: 15, fontWeight: FontWeight.bold
                       ),
-                    ],
-                  ),
-    
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 75,
-                        height: 75,
-                        child: _buildGaugeChart(
-                          maxValue: maxValue.toDouble(), 
-                          dataValue: othersTotalUpload.toDouble(),
-                          customColor: ThemeColor.thirdWhite,
-                          text: "$othersPercentage%",
-                          textSize: 12.5
-                        ),
+                    ),
+                  ],
+                ),
+  
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 75,
+                      height: 75,
+                      child: _buildGaugeChart(
+                        maxValue: maxValue.toDouble(), 
+                        dataValue: othersTotalUpload.toDouble(),
+                        customColor: ThemeColor.thirdWhite,
+                        text: "$othersPercentage%",
+                        textSize: 12.5
                       ),
-                      Text(
-                        "Others", 
-                        style: GoogleFonts.poppins(
-                          fontSize: 15, fontWeight: FontWeight.bold
-                        ),
+                    ),
+                    Text(
+                      "Others", 
+                      style: GoogleFonts.poppins(
+                        fontSize: 15, fontWeight: FontWeight.bold
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            
+          ],
         ),
       ),
     );
@@ -848,7 +889,7 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildUsagePage(BuildContext context) {
+  Future<Widget> _buildUsagePage() async {
 
     final dictionaryUploadLimit = AccountPlan.mapDirectoryUpload[userData.accountType].toString();
     final dictionaryTotalUpload = tempStorageData.directoryNameList.length.toString();
@@ -856,30 +897,50 @@ class StatsPageState extends State<StatisticsPage> {
     final folderUploadLimit = AccountPlan.mapFoldersUpload[userData.accountType].toString();
     final folderTotalUpload = tempStorageData.folderNameList.length.toString();
 
+    final cacheSizeInMb = await _getCacheSize() / (1024 * 1024);
+    final cacheToString = "${cacheSizeInMb.toDouble().toStringAsFixed(2)}Mb";
+
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 8, bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildUsageContainer(context),
+          _buildUsageContainer(),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 14.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 14.0, right: 8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: _buildUsageGaugeContainer(context)
+                  child: _buildUsageGaugeContainer()
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildUsageGaugeByTypeContainer(context),
+                  child: _buildUsageGaugeByTypeContainer(),
                 ),
               ],
             ),
           ),
           _buildAccountPlanContainer(),
-          _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
-          _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
+          Padding(
+            padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
+                    const SizedBox(height: 14),
+                    _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
+                  ],
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _buildAppCache(cacheToString)
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -889,6 +950,36 @@ class StatsPageState extends State<StatisticsPage> {
     return const Center(
       child: CircularProgressIndicator(color: ThemeColor.darkPurple),
     );
+  }
+
+  Future<int> _getCacheSize() async {
+
+    final tempDir = await getTemporaryDirectory();
+    final tempDirSize = _processCacheSize(tempDir);
+
+    return tempDirSize;
+
+  }
+
+  int _processCacheSize(FileSystemEntity file) {
+
+    if (file is File) {
+      return file.lengthSync();
+
+    } else if (file is Directory) {
+      int sum = 0;
+
+      final children = file.listSync();
+      for (FileSystemEntity child in children) {
+        sum += _processCacheSize(child);
+      }
+
+      return sum;
+
+    }
+    
+    return 0;
+
   }
 
   @override
@@ -922,7 +1013,16 @@ class StatsPageState extends State<StatisticsPage> {
         body: TabBarView(
           children: [
             dataIsLoading.value ? _buildLoading() : _buildStatsDetailsPage(context),
-            dataIsLoading.value ? _buildLoading() : _buildUsagePage(context),
+            dataIsLoading.value ? _buildLoading() : FutureBuilder<Widget>(
+              future: _buildUsagePage(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+                } else {
+                  return snapshot.data!;
+                }
+              },
+            ),
           ],
         ),
       ),
