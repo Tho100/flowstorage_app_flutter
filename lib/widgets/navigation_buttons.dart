@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavigationButtons extends StatelessWidget {
 
@@ -60,9 +61,9 @@ class NavigationButtons extends StatelessWidget {
                         children: [
                           Text(
                             value,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
                               color: ThemeColor.secondaryWhite
                             ),
                           ),

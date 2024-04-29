@@ -65,10 +65,10 @@ class BottomTrailingSelectedItems {
               saveOnPressed();
             },
             style: GlobalsStyle.btnBottomDialogBackgroundStyle,
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
-                SizedBox(width: 15.0),
+                const Icon(Icons.file_download_outlined, color: ThemeColor.secondaryWhite),
+                const SizedBox(width: 15.0),
                 Text(
                   'Save to device',
                   style: GlobalsStyle.btnBottomDialogTextStyle,

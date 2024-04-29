@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar {
 
@@ -33,11 +34,10 @@ class CustomAppBar {
       automaticallyImplyLeading: false,
       title: Text(
         title,
-        style: const TextStyle(
-          overflow: TextOverflow.ellipsis,
-          color: Color.fromARGB(255, 245, 245, 245),
-          fontWeight: FontWeight.w600,
-          fontSize: 19,          
+        style: GoogleFonts.inter(
+          color: const Color.fromARGB(255, 245, 245, 245),
+          fontWeight: FontWeight.w800,
+          fontSize: 18,          
         ),
       ),
       leading: customLeading ?? IconButton(

@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomNavigationBar extends StatefulWidget {
 
@@ -83,9 +84,9 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
 
   Widget _buildNavigationBar() {
     
-    const labelTextStyle = TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: 12,
+    final labelTextStyle = GoogleFonts.inter(
+      fontWeight: FontWeight.w700,
+      fontSize: 11.5,
       color: ThemeColor.justWhite,
     );
 

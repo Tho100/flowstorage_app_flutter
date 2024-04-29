@@ -460,7 +460,7 @@ class ActivityPageState extends State<ActivityPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Text("You mostly uploaded $mostUploadTag",
+                  child: Text("You mostly uploaded \n$mostUploadTag",
                     style: GoogleFonts.poppins(
                       color: ThemeColor.justWhite,
                       fontWeight: FontWeight.w600,

@@ -74,6 +74,7 @@ import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
@@ -2313,10 +2314,10 @@ class HomePageState extends State<HomePage> {
 
           TextSpan(
             text: tempData.origin == OriginFile.public ? psFilesCategoryTags : originalDateValues,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.thirdWhite, 
-              fontSize: 12.8,
-              fontWeight: FontWeight.w600,
+              fontSize: 12.2,
+              fontWeight: FontWeight.w700,
             ),
           ),
 

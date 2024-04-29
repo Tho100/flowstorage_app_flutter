@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GlobalsStyle {
 
@@ -37,9 +38,9 @@ class GlobalsStyle {
     fontSize: 17,
   );
 
-  static const btnBottomDialogTextStyle = TextStyle(
-    color: Color.fromARGB(255,235,235,235),
-    fontWeight: FontWeight.w600,
+  static final btnBottomDialogTextStyle = GoogleFonts.inter(
+    color: const Color.fromARGB(255,235,235,235),
+    fontWeight: FontWeight.w800,
     fontSize: 16,
   ); 
 
