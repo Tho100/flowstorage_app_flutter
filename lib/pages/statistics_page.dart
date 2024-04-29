@@ -260,7 +260,7 @@ class StatsPageState extends State<StatisticsPage> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
             width: mediaQuery.width-35,
-            height: 300,
+            height: 292,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: ThemeColor.justWhite,
@@ -635,7 +635,7 @@ class StatsPageState extends State<StatisticsPage> {
         color: ThemeColor.justWhite,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
+        padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -677,7 +677,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildAppCache(String cacheSize) {
     return Container(
-      height: 162,
+      height: 158,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: ThemeColor.justWhite,
