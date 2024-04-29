@@ -530,7 +530,7 @@ class StatsPageState extends State<StatisticsPage> {
             const SizedBox(height: 20),
 
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(left: 22.5),
               child: Row(
                 children: [
                   _buildLegendUsage(),
