@@ -391,17 +391,17 @@ class ActivityPageState extends State<ActivityPage> {
                   style: GoogleFonts.poppins(
                     color: ThemeColor.justWhite,
                     fontWeight: FontWeight.w600,
-                    fontSize: 19
+                    fontSize: 18.4
                   ),
                 ),
               ),
             ),
           ),
 
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
 
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 18.5),
             child: GestureDetector(
               onTap: () => NavigatePage.goToPageStatistics(),
               child: Container(
@@ -464,7 +464,7 @@ class ActivityPageState extends State<ActivityPage> {
                     style: GoogleFonts.poppins(
                       color: ThemeColor.justWhite,
                       fontWeight: FontWeight.w600,
-                      fontSize: 19
+                      fontSize: 17.5
                     ),
                   ),
                 ),
