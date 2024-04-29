@@ -545,7 +545,7 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _buildAccountPlanContainer(BuildContext context) {
+  Widget _buildAccountPlanContainer() {
 
     final accountTypeToColor = {
       'Basic': ThemeColor.darkGrey,
@@ -555,7 +555,7 @@ class StatsPageState extends State<StatisticsPage> {
     };
 
     return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 8.0, right: 8.0),
+      padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
       child: GestureDetector(
         onTap: () => NavigatePage.goToPageUpgrade(),
         child: Container(
@@ -619,6 +619,58 @@ class StatsPageState extends State<StatisticsPage> {
       
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDictionaryFolderCount(String header, String totalUpload, String uploadLimit) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
+      child: Container(
+        height: 74,
+        width: 155,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: ThemeColor.justWhite,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.folder_outlined, size: 21),
+                  const SizedBox(width: 5),
+                  Text(
+                    header,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 18, 18, 18),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 2.0, top: 4.0),
+                child: Text("$totalUpload/$uploadLimit",
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      color: ThemeColor.darkGrey,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16
+                    ),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -797,6 +849,13 @@ class StatsPageState extends State<StatisticsPage> {
   }
 
   Widget _buildUsagePage(BuildContext context) {
+
+    final dictionaryUploadLimit = AccountPlan.mapDirectoryUpload[userData.accountType].toString();
+    final dictionaryTotalUpload = tempStorageData.directoryNameList.length.toString();
+
+    final folderUploadLimit = AccountPlan.mapFoldersUpload[userData.accountType].toString();
+    final folderTotalUpload = tempStorageData.folderNameList.length.toString();
+
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 8, bottom: 12),
       child: Column(
@@ -804,7 +863,7 @@ class StatsPageState extends State<StatisticsPage> {
         children: [
           _buildUsageContainer(context),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 25.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 14.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -818,7 +877,9 @@ class StatsPageState extends State<StatisticsPage> {
               ],
             ),
           ),
-          _buildAccountPlanContainer(context),
+          _buildAccountPlanContainer(),
+          _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
+          _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
         ],
       ),
     );
