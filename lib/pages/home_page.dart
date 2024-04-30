@@ -1768,10 +1768,10 @@ class HomePageState extends State<HomePage> {
         child: ElevatedButton(
           onPressed: () => _selectAllPhotosOnPressed(),
           style: GlobalsStyle.btnMiniStyle,
-          child: const Text("Select All",
-            style: TextStyle(
-              fontSize: 13.2,
-              fontWeight: FontWeight.bold,
+          child: Text("Select All",
+            style: GoogleFonts.inter(
+              fontSize: 12.4,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ),
@@ -2021,20 +2021,20 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: [
             if (isPsRecent && tempData.origin == OriginFile.public && index == 0) ... [
-              const Align(
+              Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 18.0, top: 12),
                   child: Row(
                     children: [
-                      Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
+                      const SizedBox(width: 8),
                       Text(
                         "Recent",
-                        style: TextStyle(
-                          fontSize: 23,
+                        style: GoogleFonts.inter(
+                          fontSize: 22,
                           color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -2102,18 +2102,18 @@ class HomePageState extends State<HomePage> {
               if (index == 7)
               Transform.translate(
                 offset: const Offset(0, -12),  
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 18.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
                   child: Row(
                     children: [
-                      Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
+                      const SizedBox(width: 8),
                       Text( 
                         "Discover",
-                        style: TextStyle(
-                          fontSize: 23,
+                        style: GoogleFonts.inter(
+                          fontSize: 22,
                           color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -2324,10 +2324,10 @@ class HomePageState extends State<HomePage> {
           if (tempData.origin == OriginFile.public)
           TextSpan(
             text: " ${psStorageData.psTagsList[index]}",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: GlobalsStyle.psTagsToColor[psStorageData.psTagsList[index]],
-              fontWeight: FontWeight.w500,
-              fontSize: 12.8,
+              fontWeight: FontWeight.w800,
+              fontSize: 11.8,
             ),
           ),
         ];
@@ -2381,9 +2381,9 @@ class HomePageState extends State<HomePage> {
           builder: (context, value, child) {
             return Text(
               value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
               ),
             );
           }
