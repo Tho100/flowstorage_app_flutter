@@ -1770,7 +1770,7 @@ class HomePageState extends State<HomePage> {
           style: GlobalsStyle.btnMiniStyle,
           child: Text("Select All",
             style: GoogleFonts.inter(
-              fontSize: 12.4,
+              fontSize: 12,
               fontWeight: FontWeight.w800,
             ),
           ),
