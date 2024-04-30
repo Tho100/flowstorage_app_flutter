@@ -28,7 +28,7 @@ class GlobalsStyle {
     Colors.grey,
   };
 
-  static const tabBarTextStyle = GoogleFonts.inter(
+  static final tabBarTextStyle = GoogleFonts.inter(
     fontSize: 13, fontWeight: FontWeight.w800
   );
 

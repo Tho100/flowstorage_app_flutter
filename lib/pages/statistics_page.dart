@@ -378,7 +378,7 @@ class StatsPageState extends State<StatisticsPage> {
           children: [
             const SizedBox(height: 15),
             _buildChart(context),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             _buildInfoContainer(),
           ],
         ),
@@ -677,7 +677,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildAppCache(String cacheSize) {
     return Container(
-      height: 158,
+      height: 153,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: ThemeColor.justWhite,
@@ -930,7 +930,7 @@ class StatsPageState extends State<StatisticsPage> {
                 Column(
                   children: [
                     _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
                   ],
                 ),
@@ -961,8 +961,8 @@ class StatsPageState extends State<StatisticsPage> {
         appBar: CustomAppBar(
           context: context,
           title: "Statistics",
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(50.0),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(50.0),
             child: CustomTabBar(
               tabs: [
                 Tab(
