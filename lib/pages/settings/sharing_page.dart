@@ -39,11 +39,12 @@ class SettingsSharingPage extends StatelessWidget {
             child: Row(
               children: [
 
-                const Text(
+                Text(
                   "Enable file sharing",
                   style: GlobalsStyle.settingsLeftTextStyle,
                   textAlign: TextAlign.center,
                 ),
+                
                 const Spacer(),
 
                 ValueListenableBuilder(

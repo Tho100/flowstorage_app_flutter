@@ -32,10 +32,10 @@ class GlobalsStyle {
     fontSize: 14, fontWeight: FontWeight.bold
   );
 
-  static const settingsLeftTextStyle = TextStyle(
+  static final settingsLeftTextStyle = GoogleFonts.inter(
     color: ThemeColor.secondaryWhite,
-    fontWeight: FontWeight.bold,
-    fontSize: 17,
+    fontWeight: FontWeight.w800,
+    fontSize: 16,
   );
 
   static final btnBottomDialogTextStyle = GoogleFonts.inter(

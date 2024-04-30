@@ -45,12 +45,14 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
           padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
           child: Row(
             children: [
-              const Text(
+
+              Text(
                 "Enable sharing password",
                 style: GlobalsStyle.settingsLeftTextStyle,
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
+
               ValueListenableBuilder(
                 valueListenable: isPasswordEnabledNotifier,
                 builder: (context, value, child) {
@@ -79,7 +81,6 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
           ),
         ),
          
-
         const SizedBox(height: 8),
 
         ValueListenableBuilder(

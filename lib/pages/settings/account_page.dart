@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsAccountPage extends StatelessWidget {
 
@@ -33,10 +34,10 @@ class SettingsAccountPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
           child: Text(rightText,
-            style: const TextStyle(
-              fontSize: 17,
+            style: GoogleFonts.inter(
+              fontSize: 16,
               color: ThemeColor.thirdWhite,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ),

@@ -79,18 +79,18 @@ class SettingsAppSettings extends StatelessWidget {
 
           const SizedBox(height: 5),
 
-          const Row(
+          Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
                 child: Text("App version",
                   style: GlobalsStyle.settingsLeftTextStyle
                 ),
               ),
 
-              Spacer(),
+              const Spacer(),
 
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
                 child: Text("2.1.4",
                   style: TextStyle(
