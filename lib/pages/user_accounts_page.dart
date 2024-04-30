@@ -34,16 +34,16 @@ class UserAccountsPageState extends State<UserAccountsPage> {
 
   Widget _buildLocalAccountListView() {
 
-    const titleTextStyle = TextStyle(
+    final titleTextStyle = GoogleFonts.inter(
       color: ThemeColor.secondaryWhite,
-      fontSize: 17,
-      fontWeight: FontWeight.bold
+      fontSize: 16,
+      fontWeight: FontWeight.w800
     );
 
-    const subtitleTextStyle = TextStyle(
+    final subtitleTextStyle = GoogleFonts.inter(
       color: ThemeColor.thirdWhite,
-      fontSize: 14,
-      fontWeight: FontWeight.w600
+      fontSize: 13,
+      fontWeight: FontWeight.w800
     );
 
     return ListView.builder(
