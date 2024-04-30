@@ -28,8 +28,8 @@ class GlobalsStyle {
     Colors.grey,
   };
 
-  static const tabBarTextStyle = TextStyle(
-    fontSize: 14, fontWeight: FontWeight.bold
+  static const tabBarTextStyle = GoogleFonts.inter(
+    fontSize: 13, fontWeight: FontWeight.w800
   );
 
   static final settingsLeftTextStyle = GoogleFonts.inter(
