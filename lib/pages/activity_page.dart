@@ -134,13 +134,13 @@ class ActivityPageState extends State<ActivityPage> {
             children: [
               buildHeader("Legacy", Icons.hourglass_bottom_outlined),
               const Spacer(),
-              const Padding(
-                padding: EdgeInsets.only(right: 16.0),
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
                 child: Text("Files older than 30 days",
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.thirdWhite,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800
                   ),
                 ),
               ),
@@ -191,10 +191,10 @@ class ActivityPageState extends State<ActivityPage> {
             Icon(icon, color: ThemeColor.justWhite, size: 20),
             const SizedBox(width: 8),
             Text(headerMessage, 
-              style: const TextStyle(
-                fontSize: 18, 
+              style: GoogleFonts.inter(
+                fontSize: 17, 
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ],
@@ -206,12 +206,12 @@ class ActivityPageState extends State<ActivityPage> {
   Widget buildOnEmpty(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height-285,
-      child: const Center(
+      child: Center(
         child: Text("No activity to see here",
-          style: TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.secondaryWhite,
-            fontWeight: FontWeight.bold,
-            fontSize: 18
+            fontWeight: FontWeight.w800,
+            fontSize: 17
           ),
         ),
       ),
@@ -264,11 +264,10 @@ class ActivityPageState extends State<ActivityPage> {
             child: SizedBox(
               width: 145,
               child: Text(mostUploadedFilesName[index],
-                style: const TextStyle(
-                  overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12,
                 ),
                 maxLines: 1,
               ),
@@ -283,10 +282,10 @@ class ActivityPageState extends State<ActivityPage> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Text(mostUploadedDate[index],
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.thirdWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                fontSize: 11,
               ),
               maxLines: 1,
             ),
@@ -546,10 +545,10 @@ class ActivityPageState extends State<ActivityPage> {
                   child: SizedBox(
                     width: 145,
                     child: Text(recentFilesName[index],
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
                       ),
                       maxLines: 1,
                     ),
@@ -561,10 +560,10 @@ class ActivityPageState extends State<ActivityPage> {
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(recentDate[index],
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.thirdWhite,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 11,
                     ),
                     maxLines: 1,
                   ),
@@ -605,18 +604,18 @@ class ActivityPageState extends State<ActivityPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(name,
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left,
                 ),
                 Text(type,
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.thirdWhite,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left
                 )
@@ -690,18 +689,18 @@ class ActivityPageState extends State<ActivityPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(fileName,
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left,
                 ),
                 Text(date,
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.thirdWhite,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left
                 )
