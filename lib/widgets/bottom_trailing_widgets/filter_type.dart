@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BottomTrailingFilter {
 
@@ -56,8 +57,8 @@ class BottomTrailingFilter {
             Icon(icon),
             const SizedBox(width: 8),
             Text(filterName,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w800
               )
             ),
           ],

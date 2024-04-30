@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FolderDialog {
 
@@ -76,14 +77,14 @@ class FolderDialog {
                   },
                 ),
               )
-              : const SizedBox(
+              : SizedBox(
                 height: 255,
                 child: Center(
                   child: Text("No folder yet",
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.thirdWhite,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800
                     ),
                   ),
                 ),

@@ -144,8 +144,9 @@ class CustomSideBarMenu extends StatelessWidget {
                 customOnEmpty: Center(
                   child: Text(
                     userData.username != "" ? userData.username.substring(0, 2) : "",
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: GoogleFonts.inter(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w800,
                       color: ThemeColor.darkPurple,
                     ),
                   ),

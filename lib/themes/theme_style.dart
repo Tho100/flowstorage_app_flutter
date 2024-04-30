@@ -28,14 +28,14 @@ class GlobalsStyle {
     Colors.grey,
   };
 
-  static const tabBarTextStyle = TextStyle(
-    fontSize: 14, fontWeight: FontWeight.bold
+  static final tabBarTextStyle = GoogleFonts.inter(
+    fontSize: 13, fontWeight: FontWeight.w800
   );
 
-  static const settingsLeftTextStyle = TextStyle(
+  static final settingsLeftTextStyle = GoogleFonts.inter(
     color: ThemeColor.secondaryWhite,
-    fontWeight: FontWeight.bold,
-    fontSize: 17,
+    fontWeight: FontWeight.w800,
+    fontSize: 16,
   );
 
   static final btnBottomDialogTextStyle = GoogleFonts.inter(

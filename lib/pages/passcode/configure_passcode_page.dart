@@ -36,12 +36,15 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
           padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
           child: Row(
             children: [
-              const Text(
+              
+               Text(
                 "Enable passcode",
                 style: GlobalsStyle.settingsLeftTextStyle,
                 textAlign: TextAlign.center,
               ),
+
               const Spacer(),
+              
               DefaultSwitch(
                 value: isPasscodeEnabled, 
                 onChanged: (value) async {

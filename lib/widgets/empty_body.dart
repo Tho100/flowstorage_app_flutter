@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class EmptyBody extends StatelessWidget {
@@ -46,20 +47,20 @@ class EmptyBody extends StatelessWidget {
             children: [
               Text(
                 originToHeaderMessage[tempData.origin]!,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w800,
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 22,
+                  fontSize: 21,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               Text(
                 originToSubMessage[tempData.origin]!,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w800,
                   color: ThemeColor.thirdWhite,
-                  fontSize: 16,
+                  fontSize: 15,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -68,6 +69,7 @@ class EmptyBody extends StatelessWidget {
         ),
       ),
     );
+    
   }
 
   @override 

@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
+import 'package:flowstorage_fsc/models/app_cache.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -18,39 +17,9 @@ class SettingsAppSettings extends StatelessWidget {
 
   static final userData = GetIt.instance<UserDataProvider>();
 
-  Future<int> _getCacheSize() async {
-
-    final tempDir = await getTemporaryDirectory();
-    final tempDirSize = _processCacheSize(tempDir);
-
-    return tempDirSize;
-
-  }
-
-  int _processCacheSize(FileSystemEntity file) {
-
-    if (file is File) {
-      return file.lengthSync();
-
-    } else if (file is Directory) {
-      int sum = 0;
-
-      final children = file.listSync();
-      for (FileSystemEntity child in children) {
-        sum += _processCacheSize(child);
-      }
-
-      return sum;
-
-    }
-    
-    return 0;
-
-  }
-
   void _clearAppCache() async {
     
-    final cacheSizeInMb = await _getCacheSize() / (1024 * 1024);
+    final cacheSizeInMb = await AppCache().cacheSizeInMb();
     
     await DefaultCacheManager().emptyCache();
 
@@ -110,18 +79,18 @@ class SettingsAppSettings extends StatelessWidget {
 
           const SizedBox(height: 5),
 
-          const Row(
+          Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
                 child: Text("App version",
                   style: GlobalsStyle.settingsLeftTextStyle
                 ),
               ),
 
-              Spacer(),
+              const Spacer(),
 
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
                 child: Text("2.1.4",
                   style: TextStyle(

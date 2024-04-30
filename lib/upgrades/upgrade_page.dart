@@ -508,7 +508,7 @@ class UpgradePageState extends State<UpgradePage> {
       length: 3,
       child: Column(
         children: [
-          const CustomTabBar(
+          CustomTabBar(
             tabs: [
               Tab(
                 child: Text(

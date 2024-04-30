@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsButton extends StatelessWidget {
 
@@ -65,9 +66,9 @@ class SettingsButton extends StatelessWidget {
                       width: 305,
                       child: Text(
                         bottomText,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
                           color: ThemeColor.thirdWhite
                         ),
                       ),

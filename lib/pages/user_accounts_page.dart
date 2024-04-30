@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserAccountsPage extends StatefulWidget {
 
@@ -33,16 +34,16 @@ class UserAccountsPageState extends State<UserAccountsPage> {
 
   Widget _buildLocalAccountListView() {
 
-    const titleTextStyle = TextStyle(
+    final titleTextStyle = GoogleFonts.inter(
       color: ThemeColor.secondaryWhite,
-      fontSize: 17,
-      fontWeight: FontWeight.bold
+      fontSize: 16,
+      fontWeight: FontWeight.w800
     );
 
-    const subtitleTextStyle = TextStyle(
+    final subtitleTextStyle = GoogleFonts.inter(
       color: ThemeColor.thirdWhite,
-      fontSize: 14,
-      fontWeight: FontWeight.w600
+      fontSize: 13,
+      fontWeight: FontWeight.w800
     );
 
     return ListView.builder(
@@ -61,10 +62,10 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               padding: const EdgeInsets.only(top: 9.0),
               child: Text(
                 localAccountUsernamesList[index].substring(0, 2),
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.darkPurple,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -81,10 +82,10 @@ class UserAccountsPageState extends State<UserAccountsPage> {
               padding: const EdgeInsets.only(top: 9.0),
               child: Text(
                 localAccountUsernamesList[index].substring(0, 2),
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.darkPurple,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
               ),

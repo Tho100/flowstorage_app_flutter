@@ -20,6 +20,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FileDetailsPage extends StatefulWidget {
 
@@ -154,10 +155,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
         } else {
           return Text(snapshot.data!,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontSize: 16,
-              fontWeight: FontWeight.w600
+              fontSize: 15,
+              fontWeight: FontWeight.w800
             ),
             textAlign: TextAlign.start,
           );
@@ -181,10 +182,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
         } else {
           return Text("${snapshot.data!}Mb",
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontSize: 16,
-              fontWeight: FontWeight.w600
+              fontSize: 15,
+              fontWeight: FontWeight.w800
             ),
             textAlign: TextAlign.start,
           );
@@ -199,10 +200,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title,
-          style: const TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.thirdWhite,
-            fontSize: 16,
-            fontWeight: FontWeight.w600
+            fontSize: 15,
+            fontWeight: FontWeight.w800
           ),
           textAlign: TextAlign.start,
         ),
@@ -212,10 +213,10 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           : title == "Size" 
             ? buildFileSize() 
             : Text(subHeader,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontSize: 16,
-              fontWeight: FontWeight.w600
+              fontSize: 15,
+              fontWeight: FontWeight.w800
             ),
             textAlign: TextAlign.start,
           )

@@ -5,6 +5,7 @@ import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/models/app_cache.dart';
 import 'package:flowstorage_fsc/provider/temp_storage.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
@@ -19,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 
@@ -378,7 +378,7 @@ class StatsPageState extends State<StatisticsPage> {
           children: [
             const SizedBox(height: 15),
             _buildChart(context),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             _buildInfoContainer(),
           ],
         ),
@@ -677,7 +677,7 @@ class StatsPageState extends State<StatisticsPage> {
 
   Widget _buildAppCache(String cacheSize) {
     return Container(
-      height: 158,
+      height: 153,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: ThemeColor.justWhite,
@@ -897,7 +897,7 @@ class StatsPageState extends State<StatisticsPage> {
     final folderUploadLimit = AccountPlan.mapFoldersUpload[userData.accountType].toString();
     final folderTotalUpload = tempStorageData.folderNameList.length.toString();
 
-    final cacheSizeInMb = await _getCacheSize() / (1024 * 1024);
+    final cacheSizeInMb = await AppCache().cacheSizeInMb();
     final cacheToString = "${cacheSizeInMb.toDouble().toStringAsFixed(2)}Mb";
 
     return Padding(
@@ -930,7 +930,7 @@ class StatsPageState extends State<StatisticsPage> {
                 Column(
                   children: [
                     _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
                   ],
                 ),
@@ -953,36 +953,6 @@ class StatsPageState extends State<StatisticsPage> {
     );
   }
 
-  Future<int> _getCacheSize() async {
-
-    final tempDir = await getTemporaryDirectory();
-    final tempDirSize = _processCacheSize(tempDir);
-
-    return tempDirSize;
-
-  }
-
-  int _processCacheSize(FileSystemEntity file) {
-
-    if (file is File) {
-      return file.lengthSync();
-
-    } else if (file is Directory) {
-      int sum = 0;
-
-      final children = file.listSync();
-      for (FileSystemEntity child in children) {
-        sum += _processCacheSize(child);
-      }
-
-      return sum;
-
-    }
-    
-    return 0;
-
-  }
-
   @override
   Widget build(BuildContext context) {
      return DefaultTabController(
@@ -991,8 +961,8 @@ class StatsPageState extends State<StatisticsPage> {
         appBar: CustomAppBar(
           context: context,
           title: "Statistics",
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(50.0),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(50.0),
             child: CustomTabBar(
               tabs: [
                 Tab(
@@ -1018,7 +988,7 @@ class StatsPageState extends State<StatisticsPage> {
               future: _buildUsagePage(),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+                  return _buildLoading();
                 } else {
                   return snapshot.data!;
                 }
@@ -1030,4 +1000,5 @@ class StatsPageState extends State<StatisticsPage> {
 
     );
   }
+
 }

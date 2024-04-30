@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/widgets/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends StatefulWidget {
 
@@ -98,18 +99,18 @@ class SettingsPageState extends State<SettingsPage> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
                   color: ThemeColor.secondaryWhite, 
                 ),
               ),
               const SizedBox(height: 5),
               Text(
                 subheader,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w600,
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
                   color: ThemeColor.thirdWhite, 
                 ),
               ),
