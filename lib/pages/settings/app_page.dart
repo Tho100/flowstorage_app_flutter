@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
+import 'package:flowstorage_fsc/models/app_cache.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
@@ -18,39 +17,9 @@ class SettingsAppSettings extends StatelessWidget {
 
   static final userData = GetIt.instance<UserDataProvider>();
 
-  Future<int> _getCacheSize() async {
-
-    final tempDir = await getTemporaryDirectory();
-    final tempDirSize = _processCacheSize(tempDir);
-
-    return tempDirSize;
-
-  }
-
-  int _processCacheSize(FileSystemEntity file) {
-
-    if (file is File) {
-      return file.lengthSync();
-
-    } else if (file is Directory) {
-      int sum = 0;
-
-      final children = file.listSync();
-      for (FileSystemEntity child in children) {
-        sum += _processCacheSize(child);
-      }
-
-      return sum;
-
-    }
-    
-    return 0;
-
-  }
-
   void _clearAppCache() async {
     
-    final cacheSizeInMb = await _getCacheSize() / (1024 * 1024);
+    final cacheSizeInMb = await AppCache().cacheSizeInMb();
     
     await DefaultCacheManager().emptyCache();
 
