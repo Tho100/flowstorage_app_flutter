@@ -48,6 +48,7 @@ void main() {
 }
 
 class MainRun extends StatelessWidget {
+  
   const MainRun({super.key});
 
   @override
@@ -69,6 +70,7 @@ class MainRun extends StatelessWidget {
       home: const SplashScreen(),
     );
   }
+
 }
 
 void homePage() => runApp(
