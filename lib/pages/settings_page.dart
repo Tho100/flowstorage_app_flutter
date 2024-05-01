@@ -190,7 +190,7 @@ class SettingsPageState extends State<SettingsPage> {
                           userData.username,
                           style: GoogleFonts.inter(
                             color: ThemeColor.justWhite,
-                            fontSize: 17,
+                            fontSize: 17.5,
                             fontWeight: FontWeight.w800
                           ),
                         ),
