@@ -32,6 +32,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
 
@@ -501,10 +502,10 @@ class PreviewFileState extends State<PreviewFile> {
               children: [
                 const SizedBox(height: 4),
                 Text(value, 
-                  style: const TextStyle(
-                    color: Color.fromARGB(255,232,232,232),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,   
+                  style: GoogleFonts.inter(
+                    color: const Color.fromARGB(255,232,232,232),
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,   
                   ),   
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -515,10 +516,10 @@ class PreviewFileState extends State<PreviewFile> {
                   tempData.origin == OriginFile.public 
                   ? psStorageData.psTitleList[widget.tappedIndex]
                   : psStorageData.psSearchTitleList[widget.tappedIndex],
-                    style: const TextStyle(
-                      color: Color.fromARGB(255,232,232,232),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17
+                    style: GoogleFonts.inter(
+                      color: const Color.fromARGB(255,232,232,232),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16
                   ),   
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -527,11 +528,10 @@ class PreviewFileState extends State<PreviewFile> {
 
               ],
             )
-          : Text(value, style: const TextStyle(
-              overflow: TextOverflow.ellipsis,
-              color: Color.fromARGB(255, 245, 245, 245),
-              fontWeight: FontWeight.w600,
-              fontSize: 18,          
+          : Text(value, style: GoogleFonts.inter(
+              color: const Color.fromARGB(255, 245, 245, 245),
+              fontWeight: FontWeight.w800,
+              fontSize: 17,          
           ),
         );
       },
@@ -551,10 +551,10 @@ class PreviewFileState extends State<PreviewFile> {
       generalOrigin.contains(tempData.origin) 
       ? "   Uploaded By" : "   Shared To",
       textAlign: TextAlign.start,
-      style: const TextStyle(
-        fontSize: 12,
+      style: GoogleFonts.inter(
+        fontSize: 11,
         color: ThemeColor.darkWhite,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w800,
       ),
     );
 
@@ -682,12 +682,13 @@ class PreviewFileState extends State<PreviewFile> {
                     return Text(
                       value == userData.username 
                         ? "$value (You)" : value,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 15.2,
+                      style: GoogleFonts.inter(
+                        fontSize: 14.2,
                         color: ThemeColor.darkGrey,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w800,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                     );
                   }
                 ),
@@ -735,8 +736,8 @@ class PreviewFileState extends State<PreviewFile> {
               Visibility(
                 visible: tempData.origin != OriginFile.offline,
                 child: _buildBottomButtons(
-                  textStyle: const Text('Share', style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w600
+                  textStyle: Text('Share', style: GoogleFonts.inter(
+                    fontSize: 15, fontWeight: FontWeight.w800
                     )
                   ),
                   color: ThemeColor.darkBlack,
@@ -756,13 +757,13 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildPreviewerUnavailable() {
-    return const Center(
+    return Center(
       child: Text(
         "(Preview is not available)",
-        style: TextStyle(
+        style: GoogleFonts.inter(
           color: ThemeColor.secondaryWhite,
-          fontSize: 24,
-          fontWeight: FontWeight.w600
+          fontSize: 23,
+          fontWeight: FontWeight.w800
         ),
       ),
     );
@@ -788,11 +789,10 @@ class PreviewFileState extends State<PreviewFile> {
                   width: MediaQuery.of(context).size.width-45,
                   child: Text(
                     displayFileName,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 240, 240, 240),
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                      overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      color: const Color.fromARGB(255, 240, 240, 240),
+                      fontSize: 25,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
@@ -804,11 +804,10 @@ class PreviewFileState extends State<PreviewFile> {
                   tempData.origin == OriginFile.public
                     ? psStorageData.psTitleList[widget.tappedIndex]
                     : psStorageData.psSearchTitleList[widget.tappedIndex],
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.justWhite,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
                   ),
                   softWrap: true,
                   textAlign: TextAlign.start,

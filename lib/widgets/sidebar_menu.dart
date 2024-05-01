@@ -322,9 +322,9 @@ class CustomSideBarMenu extends StatelessWidget {
             builder: (context, storageUsageSnapshot) {
               return Text(
                 "${storageUsageSnapshot.data.toString()}%",
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
               );

@@ -90,6 +90,7 @@ class ResponsiveListView extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     subtitle: Transform.translate(

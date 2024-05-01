@@ -1,5 +1,6 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RightTextButton extends StatelessWidget {
 
@@ -17,10 +18,10 @@ class RightTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: Text(text,
-        style: const TextStyle(
+        style: GoogleFonts.inter(
           color: ThemeColor.darkPurple,
-          fontSize: 15.2,
-          fontWeight: FontWeight.bold,
+          fontSize: 14.2,
+          fontWeight: FontWeight.w800,
         ),
       ),
     );
