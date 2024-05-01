@@ -188,22 +188,20 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                         child: Text(
                           userData.username,
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                             color: ThemeColor.justWhite,
-                            fontSize: 18.5,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w600
+                            fontSize: 17.5,
+                            fontWeight: FontWeight.w800
                           ),
                         ),
                       ),
                       const SizedBox(height: 3),
                       Text(
                         userData.accountType,
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.thirdWhite,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          overflow: TextOverflow.ellipsis,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
