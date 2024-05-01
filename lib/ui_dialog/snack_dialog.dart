@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SnackAlert {
 
@@ -20,8 +21,8 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w800,
                 ),
                 overflow: TextOverflow.ellipsis
               ),
@@ -48,9 +49,9 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.mediumBlack,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                 ),
                 overflow: TextOverflow.ellipsis
               ),
@@ -91,9 +92,9 @@ class SnackAlert {
         content: SizedBox(
           width: 320,
           child: Text(message,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.mediumBlack,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ), 
             overflow: TextOverflow.ellipsis
           ),
@@ -122,9 +123,9 @@ class SnackAlert {
             SizedBox(
               width: 320,
               child: Text(message, 
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.mediumBlack,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                 ),
                 overflow: TextOverflow.ellipsis
               ),
