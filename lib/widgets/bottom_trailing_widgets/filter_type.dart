@@ -58,7 +58,8 @@ class BottomTrailingFilter {
             const SizedBox(width: 8),
             Text(filterName,
               style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
               )
             ),
           ],
