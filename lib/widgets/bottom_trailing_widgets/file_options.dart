@@ -103,6 +103,7 @@ class BottomTrailingOptions {
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     if(WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.sharedMe, OriginFile.sharedOther])) ... [
                       const SizedBox(height: 2),
