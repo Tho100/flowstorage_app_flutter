@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 
 class AddPasscodePage extends StatefulWidget {
@@ -90,6 +91,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
     } catch (err, st) {
       logger.e("Exception from validatePassCode {PasscodePage}",err, st);
     }
+    
   }
 
   Widget buildAddPasscodePage() {
@@ -97,16 +99,16 @@ class AddPasscodePageState extends State<AddPasscodePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        const SizedBox(height: 100),
+        const SizedBox(height: 75),
 
         Center(
           child: Text(
             widget.isFromConfigurePasscode 
-            ? "Edit passcode" : "Add new passcode",
-            style: const TextStyle(
+              ? "Edit passcode" : "Add new passcode",
+            style: GoogleFonts.inter(
               color: ThemeColor.darkPurple,
-              fontSize: 22,
-              fontWeight: FontWeight.w600
+              fontSize: 21,
+              fontWeight: FontWeight.w800
             ),
           ),
         ),
@@ -120,21 +122,18 @@ class AddPasscodePageState extends State<AddPasscodePage> {
             (index) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: SizedBox(
-                width: 40,
-                height: 40,
+                width: 55,
+                height: 55,
                 child: TextFormField(
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
+                    fontSize: 23, 
                     color: ThemeColor.darkPurple,
-                    fontSize: 118,
-                    fontWeight: FontWeight.w600
+                    fontWeight: FontWeight.w800,
                   ),
-                  obscureText: true,
-                  autofocus: false,
+                  readOnly: true,
                   controller: controllers[index],
                   focusNode: focusNodes[index],
-                  readOnly: true,
                   keyboardType: TextInputType.number,
-                  maxLength: 1,
                   textAlign: TextAlign.center,
                   decoration: GlobalsStyle.setupPasscodeFieldDecoration(),
                   onChanged: (value) {
@@ -162,7 +161,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
         const Spacer(),
 
-        const SizedBox(height: 185),
+        const SizedBox(height: 125),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -199,8 +198,6 @@ class AddPasscodePageState extends State<AddPasscodePage> {
             buildEraseButton(),
           ],
         ),
-
-        const SizedBox(height: 18),
 
         const Spacer(),
 
@@ -244,19 +241,19 @@ class AddPasscodePageState extends State<AddPasscodePage> {
           children: [
             Text(
               input,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
-                fontSize: 34,
-                fontWeight: FontWeight.w900,
+                fontSize: 33,
+                fontWeight: FontWeight.w800,
               ),
             ),
             const SizedBox(height: 5),
             Text(
               bottomInput,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.thirdWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
               ),
             ),
           ],

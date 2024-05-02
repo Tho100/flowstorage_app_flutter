@@ -902,46 +902,49 @@ class StatsPageState extends State<StatisticsPage> {
 
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 8, bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildUsageContainer(),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 14.0, right: 8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: _buildUsageGaugeContainer()
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildUsageGaugeByTypeContainer(),
-                ),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildUsageContainer(),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, top: 14.0, right: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _buildUsageGaugeContainer()
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildUsageGaugeByTypeContainer(),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _buildAccountPlanContainer(),
-          Padding(
-            padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
-                    const SizedBox(height: 5),
-                    _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _buildAppCache(cacheToString)
-                ),
-              ],
+            _buildAccountPlanContainer(),
+            Padding(
+              padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
+                      const SizedBox(height: 5),
+                      _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildAppCache(cacheToString)
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+          ],
+        ),
       ),
     );
     
@@ -997,7 +1000,6 @@ class StatsPageState extends State<StatisticsPage> {
           ],
         ),
       ),
-
     );
   }
 
