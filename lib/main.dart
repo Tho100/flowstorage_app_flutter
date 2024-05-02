@@ -60,7 +60,6 @@ class MainRun extends StatelessWidget {
           backButtonIconBuilder: (BuildContext context) => const Icon(CupertinoIcons.chevron_back),
         ),
         scaffoldBackgroundColor: ThemeColor.darkBlack,
-        textTheme: GoogleFonts.interTextTheme(),
         appBarTheme: const AppBarTheme(
           elevation: 0,
           backgroundColor: ThemeColor.darkBlack,
