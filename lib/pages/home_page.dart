@@ -472,6 +472,7 @@ class HomePageState extends State<HomePage> {
 
     tempData.setAppBarTitle("Photos");
 
+    selectAllItemsIsPressedNotifier.value = false;
     searchBarVisibleNotifier.value = false;
     filterButtonVisibleNotifier.value = false;
 

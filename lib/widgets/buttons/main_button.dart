@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MainButton extends StatelessWidget {
 
@@ -30,10 +31,10 @@ class MainButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.justWhite,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontWeight: FontWeight.w800,
+            fontSize: 15,
           ),
         ),
       ),

@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DefaultGridListView extends StatelessWidget {
 
@@ -98,23 +99,23 @@ class DefaultGridListView extends StatelessWidget {
                   children: [
                     Text(
                       fileNames,
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
                       ),
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       fileDates,
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.thirdWhite,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
                       ),
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ],

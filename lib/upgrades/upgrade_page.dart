@@ -103,11 +103,11 @@ class UpgradePageState extends State<UpgradePage> {
           )
         ),
         onPressed: getNowOnPressed,
-        child: const Text(
+        child: Text(
           'Subscribe',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
             color: ThemeColor.justWhite,
           ),
         ),

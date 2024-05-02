@@ -10,7 +10,6 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/splash_screen_page.dart';
@@ -60,7 +59,6 @@ class MainRun extends StatelessWidget {
           backButtonIconBuilder: (BuildContext context) => const Icon(CupertinoIcons.chevron_back),
         ),
         scaffoldBackgroundColor: ThemeColor.darkBlack,
-        textTheme: GoogleFonts.interTextTheme(),
         appBarTheme: const AppBarTheme(
           elevation: 0,
           backgroundColor: ThemeColor.darkBlack,

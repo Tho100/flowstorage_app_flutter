@@ -151,11 +151,11 @@ class MyPlanPageState extends State<MyPlanPage> {
             context: context
           );
         },
-        child: const Text(
+        child: Text(
           'Cancel Plan',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
             color: ThemeColor.justWhite,
           ),
         ),
@@ -654,11 +654,11 @@ class MyPlanPageState extends State<MyPlanPage> {
                         )
                       ),
                       onPressed: () => NavigatePage.goToPageUpgrade(),
-                      child: const Text(
+                      child: Text(
                         'Upgrade Plan',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
                           color: ThemeColor.justWhite,
                         ),
                       ),
