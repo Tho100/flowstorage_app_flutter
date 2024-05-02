@@ -219,9 +219,9 @@ class SettingsPageState extends State<SettingsPage> {
                         foregroundColor: ThemeColor.thirdWhite,
                         backgroundColor: ThemeColor.justWhite,
                       ),
-                      child: const Text('Upgrade',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                      child: Text('Upgrade',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w800,
                           color: ThemeColor.darkBlack
                         ),
                       ),
