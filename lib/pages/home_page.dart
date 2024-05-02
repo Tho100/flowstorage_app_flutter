@@ -2025,7 +2025,7 @@ class HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18.0, top: 12),
+                  padding: const EdgeInsets.only(left: 18.0, top: 12),
                   child: Row(
                     children: [
                       const Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),

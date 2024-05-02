@@ -97,25 +97,21 @@ class GlobalsStyle {
       ),
     );
   }
-
+  
   static InputDecoration setupPasscodeFieldDecoration() {
     return InputDecoration(
-      contentPadding: const EdgeInsets.fromLTRB(-2.0, -72.0, 0.0, -18.0),
-      hintStyle: const TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-      fillColor: ThemeColor.darkBlack,
-      filled: true,
+      contentPadding: const EdgeInsets.all(15),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(35.0), 
+        borderRadius: BorderRadius.circular(12), 
         borderSide: const BorderSide(
           color: ThemeColor.darkPurple,
-          width: 2.0,
+          width: 2.5,
         ),
       ),
-      counterText: '',
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(35.0),
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(
-          width: 2.0,
+          width: 2.5,
           color: ThemeColor.darkPurple,
         ),
       ),

@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:mysql_client/mysql_client.dart';
 
@@ -151,6 +152,7 @@ class PasscodePageState extends State<PasscodePage> {
       } else {        
         isPasscodeIncorrectNotifier.value = true;
         disableButtonsOnFailed5Attempts();
+
       }
 
     } catch (err, st) {
@@ -190,15 +192,19 @@ class PasscodePageState extends State<PasscodePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        const SizedBox(height: 100),
+        const SizedBox(height: 30),
 
-        const Center(
+        const Icon(Icons.lock, color: ThemeColor.darkPurple),
+
+        const SizedBox(height: 25),
+
+        Center(
           child: Text(
             "Enter passcode",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.darkPurple,
-              fontSize: 22,
-              fontWeight: FontWeight.w600
+              fontSize: 21,
+              fontWeight: FontWeight.w800
             ),
           ),
         ),
@@ -212,21 +218,19 @@ class PasscodePageState extends State<PasscodePage> {
             (index) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: SizedBox(
-                width: 40,
-                height: 40,
+                width: 55,
+                height: 55,
                 child: TextFormField(
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
+                    fontSize: 23, 
                     color: ThemeColor.darkPurple,
-                    fontSize: 118,
-                    fontWeight: FontWeight.w600
+                    fontWeight: FontWeight.w800,
                   ),
-                  autofocus: false,
-                  obscureText: true,
                   controller: controllers[index],
                   focusNode: focusNodes[index],
                   readOnly: true,
                   keyboardType: TextInputType.number,
-                  maxLength: 1,
+                  textAlign: TextAlign.center,
                   decoration: GlobalsStyle.setupPasscodeFieldDecoration(),
                   onChanged: (value) {
                     if (value.isNotEmpty) {
@@ -253,23 +257,28 @@ class PasscodePageState extends State<PasscodePage> {
 
         const SizedBox(height: 25),
       
-        Visibility(
-          visible: isPasscodeIncorrectNotifier.value,
-          child: const Center(
-            child: Text(
-              "Passcode is incorrect",
-              style: TextStyle(
-                color: ThemeColor.darkRed,
-                fontSize: 16,
-                fontWeight: FontWeight.w500
+        ValueListenableBuilder(
+          valueListenable: isPasscodeIncorrectNotifier,
+          builder: (context, value, child) {
+            return Visibility(
+              visible: value,
+              child: Center(
+                child: Text(
+                  "Passcode is incorrect",
+                  style: GoogleFonts.inter(
+                    color: ThemeColor.darkRed,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
 
         const Spacer(),
 
-        const SizedBox(height: 125),
+        const SizedBox(height: 100),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -358,19 +367,19 @@ class PasscodePageState extends State<PasscodePage> {
           children: [
             Text(
               input,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
-                fontSize: 34,
-                fontWeight: FontWeight.w900,
+                fontSize: 33,
+                fontWeight: FontWeight.w800,
               ),
             ),
             const SizedBox(height: 5),
             Text(
               bottomInput,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.thirdWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
               ),
             ),
           ],
