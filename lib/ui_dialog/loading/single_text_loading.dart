@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SingleTextLoading {
 
@@ -43,12 +44,12 @@ class SingleTextLoading {
           const SizedBox(width: 25),
 
           Text(title,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
-              fontSize: 18,
-              overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.w500,
+              fontSize: 17,
+              fontWeight: FontWeight.w800,
             ),
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           ),
 

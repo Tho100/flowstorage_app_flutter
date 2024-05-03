@@ -7,6 +7,7 @@ import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SharingPassword {
 
@@ -25,16 +26,16 @@ class SharingPassword {
       context: context!, 
       children: [
 
-        const Padding(
-          padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
           child: Text(
             "Enter this user sharing password",
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontSize: 17,
-              overflow: TextOverflow.ellipsis,
-              fontWeight: FontWeight.w600,
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         
@@ -52,9 +53,9 @@ class SharingPassword {
               ),
             ),
             child: TextFormField(
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w800,
               ),
               enabled: true,
               controller: sharingPasswordController,

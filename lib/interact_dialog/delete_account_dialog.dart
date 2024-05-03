@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DeleteAccountDialog {
   
@@ -12,20 +13,20 @@ class DeleteAccountDialog {
       context: navigatorKey.currentContext!,
       builder: (context) {
         return AlertDialogWidget(
-          content: const Text('Delete your Flowstorage account? This action is irreversible.',
-            style: TextStyle(
+          content: Text('Delete your Flowstorage account? This action is irreversible.',
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
             ),
           ),
           actions: [
 
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel',
-                style: TextStyle(
+              child: Text('Cancel',
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.w800
                 )
               ),
             ),
@@ -36,10 +37,10 @@ class DeleteAccountDialog {
                 elevation: 0,
               ),
               onPressed: deleteOnPressed,
-              child: const Text('Delete',
-                style: TextStyle(
+              child: Text('Delete',
+                style: GoogleFonts.inter(
                   color: ThemeColor.darkRed,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),

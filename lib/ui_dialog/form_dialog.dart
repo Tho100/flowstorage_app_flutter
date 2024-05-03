@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomFormDialog {
 
@@ -19,10 +20,10 @@ class CustomFormDialog {
                 children: [
                   
                   Text(headMessage,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 23,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -30,10 +31,10 @@ class CustomFormDialog {
                   const SizedBox(height: 15),
 
                   Text(subMessage,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 17,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -52,11 +53,11 @@ class CustomFormDialog {
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Close',
-                        style: TextStyle(
+                      child: Text('Close',
+                        style: GoogleFonts.inter(
                           color: ThemeColor.darkPurple,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800
                         ),
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 
 class AddSharingPassword {
@@ -29,10 +30,10 @@ class AddSharingPassword {
                 "Password for File Sharing",
                 style: TextStyle(
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 17,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -50,9 +51,9 @@ class AddSharingPassword {
               ),
             ),
             child: TextFormField(
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w800,
               ),
               enabled: true,
               maxLength: 90,

@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SaveTextDialog {
 
@@ -14,19 +15,19 @@ class SaveTextDialog {
     return InteractDialog().buildDialog(
       context: context, 
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+              padding: const EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
                 "Save Text File",
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 17,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -46,9 +47,9 @@ class SaveTextDialog {
             child: TextFormField(
               maxLength: 40,
               autofocus: true,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w800,
               ),
               enabled: true,
               controller: fileNameController,
