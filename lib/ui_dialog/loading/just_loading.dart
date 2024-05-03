@@ -15,6 +15,7 @@ class JustLoading {
       barrierDismissible: false,
       builder: (_) => buildLoadingDialog(),
     );
+    
   }
 
   void stopLoading() {
@@ -34,4 +35,5 @@ class JustLoading {
       ),
     );
   }
+
 }

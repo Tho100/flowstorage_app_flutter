@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RenameDialog {
 
@@ -84,12 +85,12 @@ class RenameDialog {
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Text(
                   ShortenText().cutText(fileName),
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
-                    fontSize: 15,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -110,9 +111,9 @@ class RenameDialog {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
             autofocus: true,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ),
             enabled: true,
             controller: renameController,

@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomAlertDialog {
 
@@ -86,20 +87,20 @@ class CustomAlertDialog {
 
             TextButton(
               onPressed: onCancelPressed,
-              child: const Text('Cancel',
-                style: TextStyle(
+              child: Text('Cancel',
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 )
               ),
             ),
 
             TextButton(
               onPressed: oPressedEvent,
-              child: const Text('Confirm',
-                style: TextStyle(
+              child: Text('Confirm',
+                style: GoogleFonts.inter(
                   color: ThemeColor.darkPurple,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.w800
                 )
               ),
             ),

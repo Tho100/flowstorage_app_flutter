@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SkeletonLoadingPs extends StatefulWidget {
 
@@ -72,6 +73,7 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
             height: 395, 
             child: buildAnimatedContainer(),
           ),
+
           const SizedBox(height: 12),
           
           const Divider(color: ThemeColor.lightGrey),
@@ -104,20 +106,20 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
           child: Column(
             children: [
 
-              const Align(
+              Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18.0, top: 12),
+                  padding: const EdgeInsets.only(left: 18.0, top: 12),
                   child: Row(
                     children: [
-                      Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
+                      const SizedBox(width: 8),
                       Text(
                         "Recent",
-                        style: TextStyle(
-                          fontSize: 23,
+                        style: GoogleFonts.inter(
+                          fontSize: 22,
                           color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -145,18 +147,18 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
 
               const SizedBox(height: 8),
 
-              const Padding(
-                padding: EdgeInsets.only(left: 18.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 18.0),
                 child: Row(
                   children: [
-                    Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
-                    SizedBox(width: 8),
+                    const Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
+                    const SizedBox(width: 8),
                     Text( 
                       "Discover",
-                      style: TextStyle(
-                        fontSize: 23, 
+                      style: GoogleFonts.inter(
+                        fontSize: 22, 
                         color: ThemeColor.justWhite,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],
@@ -178,6 +180,7 @@ class SkeletonLoadingState extends State<SkeletonLoadingPs> {
         ),
       ],
     );
+    
   }
 
   void initializeGradient() {
