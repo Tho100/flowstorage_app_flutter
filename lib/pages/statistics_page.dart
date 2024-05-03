@@ -219,11 +219,9 @@ class StatsPageState extends State<StatisticsPage> {
             Text(
               header,
               style: GoogleFonts.poppins(
-                textStyle: const TextStyle(
-                  color: Color.fromARGB(255, 18, 18, 18),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12.5,
-                ),
+                color: const Color.fromARGB(255, 18, 18, 18),
+                fontWeight: FontWeight.w600,
+                fontSize: 12.5,
               ),
               textAlign: TextAlign.left,
             ),
@@ -233,11 +231,9 @@ class StatsPageState extends State<StatisticsPage> {
           padding: const EdgeInsets.only(left: 2.0, top: 2.0),
           child: Text(subHeader,
             style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: ThemeColor.darkGrey,
-                fontWeight: FontWeight.w600,
-                fontSize: 22
-              ),
+              color: ThemeColor.darkGrey,
+              fontWeight: FontWeight.w600,
+              fontSize: 22
             ),
             textAlign: TextAlign.left,
           ),
@@ -646,11 +642,9 @@ class StatsPageState extends State<StatisticsPage> {
                 Text(
                   header,
                   style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                      color: Color.fromARGB(255, 18, 18, 18),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
+                    color: const Color.fromARGB(255, 18, 18, 18),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -660,11 +654,9 @@ class StatsPageState extends State<StatisticsPage> {
               padding: const EdgeInsets.only(left: 2.0, top: 4.0),
               child: Text("$totalUpload/$uploadLimit",
                 style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    color: ThemeColor.darkGrey,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16
-                  ),
+                  color: ThemeColor.darkGrey,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -692,11 +684,9 @@ class StatsPageState extends State<StatisticsPage> {
                 Text(
                   "APP CACHE",
                   style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                      color: Color.fromARGB(255, 18, 18, 18),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
+                    color: const Color.fromARGB(255, 18, 18, 18),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -706,11 +696,9 @@ class StatsPageState extends State<StatisticsPage> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(cacheSize,
                 style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    color: ThemeColor.darkGrey,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 30
-                  ),
+                  color: ThemeColor.darkGrey,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 30
                 ),
                 textAlign: TextAlign.left,
               ),

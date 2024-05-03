@@ -15,7 +15,6 @@ class HeaderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
@@ -27,11 +26,9 @@ class HeaderText extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: ThemeColor.darkPurple,
-                fontSize: 32,
-                fontWeight: FontWeight.w800,
-              ),
+              color: ThemeColor.darkPurple,
+              fontSize: 32,
+              fontWeight: FontWeight.w800,
             ),
           ),
     
