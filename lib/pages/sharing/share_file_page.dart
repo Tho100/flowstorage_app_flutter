@@ -20,6 +20,7 @@ import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -80,12 +81,12 @@ class ShareFilePage extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: Text(
                     ShortenText().cutText(fileName, customLength: 42),
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.secondaryWhite,
-                      fontSize: 15,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
@@ -141,13 +142,13 @@ class ShareFilePage extends StatelessWidget {
                   backgroundColor: ThemeColor.darkBlack,
                 ),
                 onPressed: () => shareExternalOnPressed(),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.share),
-                    SizedBox(width: 8),
+                    const Icon(Icons.share),
+                    const SizedBox(width: 8),
                     Text("Apps Share",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],
