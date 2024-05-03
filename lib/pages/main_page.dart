@@ -50,11 +50,9 @@ class MainPage extends StatelessWidget {
   Widget buildHeaderText() {
     return Text("Flow your files anywhere.",
       style: GoogleFonts.poppins(
-        textStyle: const TextStyle(
-          color: ThemeColor.justWhite,
-          fontSize: 45,
-          fontWeight: FontWeight.w800,
-        ),
+        color: ThemeColor.justWhite,
+        fontSize: 45,
+        fontWeight: FontWeight.w800,
       ),
       textAlign: TextAlign.left,
     );
@@ -63,11 +61,9 @@ class MainPage extends StatelessWidget {
   Widget buildSubText() {
     return Text("Backup your photos and files \nsecurely on the cloud with \nFlowstorage",
       style: GoogleFonts.poppins(
-        textStyle: const TextStyle(
-          color: Color(0xfff9f9f9),
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-        ),
+        color: const Color(0xfff9f9f9),
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
       ),
       textAlign: TextAlign.left,
     );

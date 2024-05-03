@@ -48,11 +48,9 @@ class UpgradePageState extends State<UpgradePage> {
     return Text(
       text,
       style: GoogleFonts.poppins(
-        textStyle: TextStyle(
-          color: ThemeColor.darkGrey,
-          fontWeight: FontWeight.w600,
-          fontSize: customFont ?? 15,
-        ),
+        color: ThemeColor.darkGrey,
+        fontWeight: FontWeight.w600,
+        fontSize: customFont ?? 15,
       ),
       textAlign: TextAlign.left,
     );
@@ -61,11 +59,9 @@ class UpgradePageState extends State<UpgradePage> {
   Widget _buildFeatures(String text) {
     return Text(text,
       style: GoogleFonts.poppins(
-        textStyle: const TextStyle(
-          color: ThemeColor.mediumBlack,
-          fontWeight: FontWeight.w600,
-          fontSize: 20
-        ),
+        color: ThemeColor.mediumBlack,
+        fontWeight: FontWeight.w600,
+        fontSize: 20
       ),
       maxLines: 1,
       textAlign: TextAlign.left,
@@ -76,11 +72,9 @@ class UpgradePageState extends State<UpgradePage> {
     return Text(
       "YOUR CURRENT PLAN",
       style: GoogleFonts.poppins(
-        textStyle: const TextStyle(
-          color: Color.fromARGB(255, 18, 18, 18),
-          fontWeight: FontWeight.w600,
-          fontSize: 18
-        ),
+        color: const Color.fromARGB(255, 18, 18, 18),
+        fontWeight: FontWeight.w600,
+        fontSize: 18
       ),
       textAlign: TextAlign.left,
     );
@@ -116,7 +110,6 @@ class UpgradePageState extends State<UpgradePage> {
   }
 
   Widget _buildPrice(double value) {
-
     return FutureBuilder<String>(
       future: _convertToLocalCurrency(value),
       builder: (context, priceSnapshot) {
@@ -129,11 +122,9 @@ class UpgradePageState extends State<UpgradePage> {
         } else if (priceSnapshot.hasError) {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: Color.fromARGB(255, 15, 15, 15),
-                fontWeight: FontWeight.w600,
-                fontSize: 28
-              ),
+              color: const Color.fromARGB(255, 15, 15, 15),
+              fontWeight: FontWeight.w600,
+              fontSize: 28
             ),
             textAlign: TextAlign.left,
           );
@@ -143,22 +134,18 @@ class UpgradePageState extends State<UpgradePage> {
           final actualPrice = price.substring(0, indexOfDot);
           return Text("$actualPrice/mo.",
             style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: Color.fromARGB(255, 15, 15, 15),
-                fontWeight: FontWeight.w600,
-                fontSize: 28
-              ),
+              color: const Color.fromARGB(255, 15, 15, 15),
+              fontWeight: FontWeight.w600,
+              fontSize: 28
             ),
             textAlign: TextAlign.left,
           );
         } else {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                color: Color.fromARGB(255, 15, 15, 15),
-                fontWeight: FontWeight.w600,
-                fontSize: 28
-              ),
+              color: const Color.fromARGB(255, 15, 15, 15),
+              fontWeight: FontWeight.w600,
+              fontSize: 28
             ),
             textAlign: TextAlign.left,
           );
@@ -201,11 +188,9 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildSubHeader("PLAN"),
                         Text("MAX",
                           style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 250, 195, 4),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 28
-                            ),
+                            color: const Color.fromARGB(255, 250, 195, 4),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -312,11 +297,9 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildSubHeader("PLAN"),
                         Text("SUPREME",
                           style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: ThemeColor.darkPurple,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 28
-                            ),
+                            color: ThemeColor.darkPurple,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -423,11 +406,9 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildSubHeader("PLAN"),
                         Text("EXPRESS",
                           style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 40, 100, 169),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 28
-                            ),
+                            color: const Color.fromARGB(255, 40, 100, 169),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28
                           ),
                           textAlign: TextAlign.left,
                         ),

@@ -2,6 +2,7 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/alert_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DeleteDialog {
 
@@ -14,26 +15,26 @@ class DeleteDialog {
       builder: (context) {
         return AlertDialogWidget(
           title: Text(fileName,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
             ),
           ),
-          content: const Text(
+          content: Text(
             'Delete this item? Action is permanent.',
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.thirdWhite,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w800,
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
+              child: Text(
                 'Cancel',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -46,11 +47,11 @@ class DeleteDialog {
                 Navigator.pop(context);
                 onDeletePressed();
               },
-              child: const Text(
+              child: Text(
                 'Delete',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.darkRed,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),

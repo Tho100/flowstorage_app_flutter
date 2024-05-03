@@ -23,6 +23,7 @@ import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class IntentSharingPage extends StatelessWidget {
@@ -93,24 +94,24 @@ class IntentSharingPage extends StatelessWidget {
 
                   Text(
                     ShortenText().cutText(fileName),
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.secondaryWhite,
-                      fontSize: 16,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
 
                   const SizedBox(height: 5),
 
                   Text(
                     "${fileSizeInMb()}Mb",
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.thirdWhite,
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
 
                 ],
