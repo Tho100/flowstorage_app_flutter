@@ -3,6 +3,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CreateDirectoryDialog {
   
@@ -15,19 +16,19 @@ class CreateDirectoryDialog {
     return InteractDialog().buildDialog(
       context: context,
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 2.0, left: 18.0, right: 18.0, top: 16.0),
+              padding: const EdgeInsets.only(bottom: 2.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
                 "Create new directory",
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 17,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -41,9 +42,9 @@ class CreateDirectoryDialog {
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
           child: TextFormField(
             autofocus: true,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ),
             enabled: true,
             maxLength: 50,
