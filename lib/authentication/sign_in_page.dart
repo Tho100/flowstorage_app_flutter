@@ -166,6 +166,7 @@ class SignInPageState extends State<SignInPage> {
               ),
               child: Row(
                 children: [
+                  
                   ValueListenableBuilder(
                     valueListenable: isCheckedNotifier,
                     builder: (context, value, child) {
@@ -177,14 +178,16 @@ class SignInPageState extends State<SignInPage> {
                       );
                     },
                   ),
-                  const Text(
+
+                  Text(
                     "Remember Me",
-                    style: TextStyle(
-                      color: Color.fromARGB(225, 225, 225, 225),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
+                    style: GoogleFonts.inter(
+                      color: const Color.fromARGB(225, 225, 225, 225),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14,
                     ),
                   ),
+
                 ],
               ),
             ),
