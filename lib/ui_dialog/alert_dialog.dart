@@ -13,18 +13,18 @@ class CustomAlertDialog {
       builder: (context) {
         return AlertDialogWidget(
           content: Text(messages,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             )
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK',
-                style: TextStyle(
+              child: Text('OK',
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 )
               ),
             ),
@@ -40,23 +40,24 @@ class CustomAlertDialog {
       builder: (context) {
         return AlertDialogWidget(
           title: Text(title,
-            style: const TextStyle(
-              color: ThemeColor.justWhite
+            style: GoogleFonts.inter(
+              color: ThemeColor.justWhite,
+              fontWeight: FontWeight.w800,
             )
           ),
           content: Text(messages,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             )
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK',
-                style: TextStyle(
+              child: Text('OK',
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                 )
               ),
             ),
