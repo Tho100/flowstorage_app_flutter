@@ -115,12 +115,12 @@ class BottomTrailingOptions {
                             : tempData.origin == OriginFile.sharedOther
                               ? "Shared to ${tempStorageData.sharedNameList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}"
                               : "Unknown",
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.thirdWhite,
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
