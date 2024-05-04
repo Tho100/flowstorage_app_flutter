@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:video_player/video_player.dart';
 
@@ -134,10 +135,10 @@ class PreviewVideoState extends State<PreviewVideo> {
         builder: (context, value, child) {
           return Text(
             value,
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w600,
-              fontSize: 14
+              fontWeight: FontWeight.w800,
+              fontSize: 13
             ),
             textAlign: TextAlign.center,
           );
