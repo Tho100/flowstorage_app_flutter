@@ -21,6 +21,7 @@ import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class MoveFilePage extends StatefulWidget {
@@ -58,31 +59,15 @@ class MoveFilePageState extends State<MoveFilePage> {
     return Column(
       children: [
 
-        directoriesList.isEmpty 
-        ? const SizedBox()
-        : const Padding(
-          padding: EdgeInsets.only(left: 12.0),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text("",
-              style: TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontSize: 24,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-        ),
-
-        const Align(
+        Align(
           alignment: Alignment.topLeft,
           child: Padding(
-            padding: EdgeInsets.only(bottom: 15.0, left: 16.0),
+            padding: const EdgeInsets.only(bottom: 15.0, left: 16.0),
             child: Text("Select Directory",
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                fontSize: 19,
               ),
             ),
           ),
@@ -154,12 +139,12 @@ class MoveFilePageState extends State<MoveFilePage> {
               ),
               title: Text(
                 directoriesList[index],
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.justWhite,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
               trailing: CheckBoxItems(
                   index: index, 
@@ -196,27 +181,27 @@ class MoveFilePageState extends State<MoveFilePage> {
   }
 
   Widget buildOnEmpty() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 55.0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 55.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "No directory found",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w800,
               color: ThemeColor.secondaryWhite,
-              fontSize: 22,
+              fontSize: 21,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text(
             "Add a new directory to move this file",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w800,
               color: ThemeColor.thirdWhite,
-              fontSize: 18,
+              fontSize: 17,
             ),
             textAlign: TextAlign.center,
           ),

@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PsGridListView extends StatelessWidget {
 
@@ -95,10 +96,10 @@ class PsGridListView extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text("$uploaderName ${GlobalsStyle.dotSeparator} $originalDateValues",
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite, 
-                        fontSize: 15, 
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14, 
+                        fontWeight: FontWeight.w800,
                       ),
                       textAlign: TextAlign.start,
                     ),
@@ -122,12 +123,12 @@ class PsGridListView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width-102,
                 child: Text(
                   psStorageData.psTitleList[index],
-                  style: const TextStyle(
+                  style: GoogleFonts.inter(
                     color: ThemeColor.justWhite,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    overflow: TextOverflow.ellipsis,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
                   ),
+                  overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   textAlign: TextAlign.start,
                 ),
@@ -143,12 +144,12 @@ class PsGridListView extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 ShortenText().cutText(storageData.fileNamesFilteredList[index], customLength: 37),
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
                 ),
+                overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 textAlign: TextAlign.start,
               ),
@@ -173,9 +174,9 @@ class PsGridListView extends StatelessWidget {
                     child: Center(
                       child: Text(
                         psStorageData.psTagsList[index],
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.justWhite, 
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.w800
                         ),
                         textAlign: TextAlign.start,
                       ),
@@ -235,11 +236,13 @@ class PsGridListView extends StatelessWidget {
               buildAccessButton(
                 isMiniActionButton: false,
                 customPadding: const EdgeInsets.only(left: 17.5),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(CupertinoIcons.bubble_left, color: ThemeColor.justWhite, size: 19),
-                    SizedBox(width: 8),
-                    Text("Comments", style: TextStyle(fontSize: 13))
+                    const Icon(CupertinoIcons.bubble_left, color: ThemeColor.justWhite, size: 19),
+                    const SizedBox(width: 8),
+                    Text("Comments", 
+                      style: GoogleFonts.inter(fontSize: 12)
+                    ),
                   ]
                 ),
                 onPressed: () {
