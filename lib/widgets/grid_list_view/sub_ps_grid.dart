@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SubPsListView extends StatelessWidget {
   
@@ -86,28 +87,28 @@ class SubPsListView extends StatelessWidget {
                   children: [
                     Text(
                       ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.justWhite,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       ShortenText().cutText(fileName, customLength: 16),
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 17)} ${GlobalsStyle.dotSeparator} $uploadDate",
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -121,10 +122,10 @@ class SubPsListView extends StatelessWidget {
                       child: Center(
                         child: Text(
                           psStorageData.psTagsList[index],
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                             color: ThemeColor.justWhite,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 13,
                           ),
                         ),
                       ),
