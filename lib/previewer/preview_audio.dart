@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
 
@@ -221,10 +222,10 @@ class PreviewAudioState extends State<PreviewAudio> {
                         builder: (context, value, child) {
                           return Text(
                             value,
-                            style: const TextStyle(
+                            style: GoogleFonts.inter(
                               color: ThemeColor.secondaryWhite,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15
                             ),
                           );
                         }
@@ -232,10 +233,10 @@ class PreviewAudioState extends State<PreviewAudio> {
                       const Spacer(),
                       Text(
                         audioDuration,
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.secondaryWhite,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15
                         ),
                       ),
                     ]
@@ -336,20 +337,20 @@ class PreviewAudioState extends State<PreviewAudio> {
       children: [
         Text(
           tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4),
-          style: const TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.justWhite,
-            fontSize: 24,
-            fontWeight: FontWeight.w700
+            fontSize: 23,
+            fontWeight: FontWeight.w800
           ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 6),
         Text(
           userData.username,
-          style: const TextStyle(
+          style: GoogleFonts.inter(
             color: ThemeColor.secondaryWhite,
-            fontSize: 19,
-            fontWeight: FontWeight.w500
+            fontSize: 18,
+            fontWeight: FontWeight.w800
           ),
           textAlign: TextAlign.center,
         ),
