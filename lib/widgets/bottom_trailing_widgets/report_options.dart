@@ -4,6 +4,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BottomTrailingReport {
 
@@ -37,8 +38,8 @@ class BottomTrailingReport {
           ),
         ),
         child: Text(reportName,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.w800
           ),
         ),
       ),
