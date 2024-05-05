@@ -11,6 +11,7 @@ import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UploadPsPage extends StatelessWidget {
 
@@ -91,24 +92,24 @@ class UploadPsPage extends StatelessWidget {
 
                   Text(
                     ShortenText().cutText(fileName),
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.justWhite,
-                      fontSize: 16,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
 
                   const SizedBox(height: 5),
 
                   Text(
                     "${fileSizeInMb()}Mb",
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.thirdWhite,
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
 
                 ],
@@ -126,9 +127,9 @@ class UploadPsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 2.0),
           child: TextFormField(
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ),
             enabled: true,
             controller: titleController,
@@ -141,7 +142,7 @@ class UploadPsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
               fontWeight: FontWeight.w500,
             ),
@@ -164,11 +165,11 @@ class UploadPsPage extends StatelessWidget {
             child: Row(
               children: [
                 
-                const Text("Select Tags ", 
-                  style: TextStyle(
+                Text("Select Tags ", 
+                  style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -180,10 +181,10 @@ class UploadPsPage extends StatelessWidget {
                       visible: value != "",
                       child: Text(
                         "${GlobalsStyle.dotSeparator} $value",
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           color: GlobalsStyle.psTagsToColor[value],
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     );
