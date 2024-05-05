@@ -60,9 +60,9 @@ class FolderDialog {
                           ),
                           title: Text(  
                             tempStorageData.folderNameList[index],
-                            style: const TextStyle(
+                            style: GoogleFonts.inter(
                               color: ThemeColor.justWhite,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                           trailing: IconButton(

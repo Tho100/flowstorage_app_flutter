@@ -74,7 +74,7 @@ class GlobalsStyle {
     shape: const StadiumBorder(),
   );
 
-  static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix, TextStyle? customCounterStyle, }) {
+  static InputDecoration setupTextFieldDecoration(String hintText, {IconButton? customSuffix, TextStyle? customCounterStyle}) {
     return InputDecoration(
       hintText: hintText,
       suffixIcon: customSuffix,
