@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthTextField {
 
@@ -15,9 +16,9 @@ class AuthTextField {
     return SizedBox(
       width: customWidth ?? mediaQuery.size.width*0.2,
       child: TextFormField(
-        style: const TextStyle(
+        style: GoogleFonts.inter(
           color: ThemeColor.secondaryWhite,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w800,
         ),
         enabled: true,
         controller: controller,
@@ -44,9 +45,9 @@ class AuthTextField {
         valueListenable: visibility,
         builder: (context, value, child) {
           return TextFormField(
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ),
             enabled: true,
             controller: controller,

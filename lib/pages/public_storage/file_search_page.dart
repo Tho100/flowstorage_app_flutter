@@ -255,7 +255,11 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           children: [
             const Icon(Icons.label_outline, color: ThemeColor.justWhite), 
             const SizedBox(width: 8),
-            Text(tagName),
+            Text(tagName,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w800
+              )
+            ),
           ],
         ),
       ),

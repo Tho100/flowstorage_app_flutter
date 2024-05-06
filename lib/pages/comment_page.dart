@@ -16,10 +16,14 @@ class CommentPage extends StatefulWidget {
 
   final String fileName;
 
-  const CommentPage({required this.fileName, Key? key}) : super(key: key);
+  const CommentPage({
+    required this.fileName, 
+    Key? key
+  }) : super(key: key);
 
   @override
   State<CommentPage> createState() => CommentPageState();
+
 }
 
 class CommentPageState extends State<CommentPage> {
@@ -46,7 +50,7 @@ class CommentPageState extends State<CommentPage> {
       'shared_to': tempStorageData.sharedNameList[index]
     };
 
-    final results = await conn.execute(query,params);
+    final results = await conn.execute(query, params);
 
     final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
     final decryptedComment = EncryptionClass().decrypt(retrievedComment);
@@ -68,7 +72,7 @@ class CommentPageState extends State<CommentPage> {
       'from': tempStorageData.sharedNameList[index]
     };
 
-    final results = await conn.execute(query,params);
+    final results = await conn.execute(query, params);
 
     final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
     final decryptedComment = EncryptionClass().decrypt(retrievedComment);
@@ -86,7 +90,7 @@ class CommentPageState extends State<CommentPage> {
       'filename': EncryptionClass().encrypt(tempData.selectedFileName)
     };
 
-    final results = await conn.execute(query,params);
+    final results = await conn.execute(query, params);
 
     final retrievedComment = results.rows.last.assoc()['CUST_COMMENT'];
     final decryptedComment = EncryptionClass().decrypt(retrievedComment);
@@ -143,7 +147,6 @@ class CommentPageState extends State<CommentPage> {
   Widget _buildComment({required String commentValue}) {
 
     final commentController = TextEditingController(text: commentValue);
-    final mediaQuery = MediaQuery.of(context).size;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +155,7 @@ class CommentPageState extends State<CommentPage> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            height: mediaQuery.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               color: ThemeColor.darkBlack,
@@ -189,6 +192,7 @@ class CommentPageState extends State<CommentPage> {
         ),
       ],
     );
+
   }
 
   Widget _buildNoComment() {
@@ -261,4 +265,5 @@ class CommentPageState extends State<CommentPage> {
       ),
     );
   }
+
 }
