@@ -61,11 +61,11 @@ class UpgradeDialog {
                     Navigator.pop(context);
                     NavigatePage.goToPageUpgrade();
                   },
-                  child: const Text(
+                  child: Text(
                     'Upgrade',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
                       color: ThemeColor.justWhite,
                     ),
                   ),
@@ -75,10 +75,11 @@ class UpgradeDialog {
 
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("No Thanks",
-                style: TextStyle(
+              child: Text("No Thanks",
+                style: GoogleFonts.inter(
                   color: ThemeColor.thirdWhite,
-                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 15,
                 ),
               ),
             ),

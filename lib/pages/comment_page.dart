@@ -122,18 +122,17 @@ class CommentPageState extends State<CommentPage> {
   }
 
   Widget _buildHeader() {
-    return const Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: Text(
             'Comment',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.inter(
+              color: ThemeColor.justWhite,
+              fontSize: 23,
+              fontWeight: FontWeight.w800,
             )
           ),
         ),
