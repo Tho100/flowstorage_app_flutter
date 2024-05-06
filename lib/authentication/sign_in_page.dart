@@ -106,6 +106,7 @@ class SignInPageState extends State<SignInPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: mediaQuery.size.width * 0.02,
@@ -204,6 +205,7 @@ class SignInPageState extends State<SignInPage> {
             Center(
               child: Column(
                 children: [
+
                   Text('Forgot your password?',
                     style: GoogleFonts.poppins(
                       color: ThemeColor.secondaryWhite,
@@ -216,7 +218,8 @@ class SignInPageState extends State<SignInPage> {
                     onPressed: () {
                       Navigator.push(
                         context, 
-                        MaterialPageRoute(builder: (context) => PasswordRecoveryPage(username: userData.username)));
+                        MaterialPageRoute(builder: (context) => PasswordRecoveryPage(username: userData.username))
+                      );
                     },
                     child: Text('Reset with Recovery Key',  
                       style: GoogleFonts.inter(
@@ -235,6 +238,5 @@ class SignInPageState extends State<SignInPage> {
       ),      
     );
   }
-
 
 }

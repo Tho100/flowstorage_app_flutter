@@ -242,6 +242,7 @@ class SignUpPageState extends State<SignUpPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
                     Text(
                       'Already have an account?',
                       style: GoogleFonts.inter(
@@ -249,6 +250,7 @@ class SignUpPageState extends State<SignUpPage> {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ThemeColor.darkBlack,
@@ -266,6 +268,7 @@ class SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                     ),
+                    
                   ],
                 ),
               ),
