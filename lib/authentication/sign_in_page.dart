@@ -218,11 +218,11 @@ class SignInPageState extends State<SignInPage> {
                         context, 
                         MaterialPageRoute(builder: (context) => PasswordRecoveryPage(username: userData.username)));
                     },
-                    child: const Text('Reset with Recovery Key',  
-                      style: TextStyle(
+                    child: Text('Reset with Recovery Key',  
+                      style: GoogleFonts.inter(
                         color: ThemeColor.darkPurple,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16
                       ),
                     ),
                   ),
