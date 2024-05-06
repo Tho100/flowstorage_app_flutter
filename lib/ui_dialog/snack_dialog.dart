@@ -22,6 +22,7 @@ class SnackAlert {
               width: 320,
               child: Text(message, 
                 style: GoogleFonts.inter(
+                  fontSize: 13,
                   fontWeight: FontWeight.w800,
                 ),
                 overflow: TextOverflow.ellipsis
@@ -48,8 +49,9 @@ class SnackAlert {
             if (icon != null) const SizedBox(width: 10),
             SizedBox(
               width: 320,
-              child: Text(message, 
+              child: Text(message,
                 style: GoogleFonts.inter(
+                  fontSize: 13,
                   color: ThemeColor.mediumBlack,
                   fontWeight: FontWeight.w800,
                 ),
@@ -93,6 +95,7 @@ class SnackAlert {
           width: 320,
           child: Text(message,
             style: GoogleFonts.inter(
+              fontSize: 13,
               color: ThemeColor.mediumBlack,
               fontWeight: FontWeight.w800,
             ), 
@@ -124,6 +127,7 @@ class SnackAlert {
               width: 320,
               child: Text(message, 
                 style: GoogleFonts.inter(
+                  fontSize: 13,
                   color: ThemeColor.mediumBlack,
                   fontWeight: FontWeight.w800,
                 ),
