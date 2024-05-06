@@ -16,6 +16,7 @@ import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/data_classes/sign_up_process.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -241,11 +242,11 @@ class SignUpPageState extends State<SignUpPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Already have an account?',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: ThemeColor.secondaryWhite,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     ElevatedButton(
@@ -256,12 +257,12 @@ class SignUpPageState extends State<SignUpPage> {
                         shape: const StadiumBorder(),
                       ),
                       onPressed: () => NavigatePage.goToPageLogin(context),
-                      child: const Text(
+                      child: Text(
                         "Sign In",
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.darkPurple,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
                         ),
                       ),
                     ),
