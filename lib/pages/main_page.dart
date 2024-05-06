@@ -33,11 +33,11 @@ class MainPage extends StatelessWidget {
             foregroundColor: ThemeColor.thirdWhite,
           ),
           onPressed: () => NavigatePage.goToPageRegister(context),
-          child: const Text("Create Account",
-            style: TextStyle(
+          child: Text("Create Account",
+            style: GoogleFonts.inter(
               color: ThemeColor.darkBlack,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
               ),
             ),
           ),
