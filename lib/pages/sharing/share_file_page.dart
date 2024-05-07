@@ -101,9 +101,9 @@ class ShareFilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
           child: TextFormField(
-            style: const TextStyle(
+            style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w800,
             ),
             enabled: true,
             controller: shareToController,
@@ -113,16 +113,16 @@ class ShareFilePage extends StatelessWidget {
          
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
-            child: TextFormField(
-              style: const TextStyle(
-                color: ThemeColor.secondaryWhite,
-                fontWeight: FontWeight.w500,
-              ),
-              enabled: true,
-              controller: commentController,
-              maxLines: 12,
-              maxLength: 100,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
+          child: TextFormField(
+            style: GoogleFonts.inter(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w800,
+            ),
+            enabled: true,
+            controller: commentController,
+            maxLines: 12,
+            maxLength: 100,
+            decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
           ),
         ),
 
