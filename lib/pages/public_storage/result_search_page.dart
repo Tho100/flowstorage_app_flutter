@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResultSearchPagePs extends StatelessWidget {
 
@@ -39,27 +40,27 @@ class ResultSearchPagePs extends StatelessWidget {
   }
 
   Widget buildOnEmpty() {
-    return const Expanded(
+    return Expanded(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "No results found",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w800,
                 color: ThemeColor.secondaryWhite,
-                fontSize: 22,
+                fontSize: 21,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               "Check the spelling or try different keywords",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w800,
                 color: ThemeColor.thirdWhite,
-                fontSize: 16,
+                fontSize: 15,
               ),
               textAlign: TextAlign.center,
             ),
@@ -113,28 +114,28 @@ class ResultSearchPagePs extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                             color: ThemeColor.justWhite,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 17,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),              
                         const SizedBox(height: 3),      
                         Text(
                           "Uploaded by $uploaderName",
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                             color: ThemeColor.secondaryWhite,
                             fontWeight: FontWeight.w500,
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 14,
+                            fontSize: 13,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 8),
                         Text(uploadDate!,
-                          style: const TextStyle(
+                          style: GoogleFonts.inter(
                             color: ThemeColor.thirdWhite, 
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w800,
                             fontSize: 12.8
                           ),
                         ),
