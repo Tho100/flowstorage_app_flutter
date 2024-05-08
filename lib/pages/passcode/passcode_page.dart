@@ -228,6 +228,8 @@ class PasscodePageState extends State<PasscodePage> {
                   ),
                   controller: controllers[index],
                   focusNode: focusNodes[index],
+                  obscureText: true,
+                  obscuringCharacter: '*',
                   readOnly: true,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
