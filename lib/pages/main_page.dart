@@ -63,9 +63,9 @@ class MainPage extends StatelessWidget {
   Widget buildSubText() {
     return Text("Backup your photos and files \nsecurely on the cloud with \nFlowstorage",
       style: GoogleFonts.poppins(
-        color: const Color(0xfff9f9f9),
+        color: ThemeColor.secondaryWhite,
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
       ),
       textAlign: TextAlign.left,
     );

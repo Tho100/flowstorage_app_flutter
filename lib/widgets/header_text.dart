@@ -38,10 +38,11 @@ class HeaderText extends StatelessWidget {
            subTitle,
             style: GoogleFonts.poppins(
               color: ThemeColor.secondaryWhite, 
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               fontSize: 16,
             ),
           ),
+
         ],
       ),
     );
