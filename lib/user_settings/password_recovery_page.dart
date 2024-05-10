@@ -29,9 +29,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   final emailController = TextEditingController();
   final recoveryController = TextEditingController();
 
-  final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
-
-  Widget _buildTextField(String hintText, TextEditingController mainController) {
+  Widget buildTextField(String hintText, TextEditingController mainController) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,18 +39,15 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
             ),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: suffixIconVisibilityNotifier,
-              builder: (_, isVisible, __) => TextFormField(
-                style: GoogleFonts.inter(
-                  color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w800,
-                ),
-                controller: mainController,
-                maxLines: 1,
-                maxLength: null,
-                decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
+            child: TextFormField(
+              style: GoogleFonts.inter(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w800,
               ),
+              controller: mainController,
+              maxLines: 1,
+              maxLength: null,
+              decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
             ),
           ),
         ),
@@ -60,7 +55,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Column(
       children: [
 
@@ -74,11 +69,11 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter your email address", emailController),
+        buildTextField("Enter your email address", emailController),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your Recovery Key", recoveryController),
+        buildTextField("Enter your Recovery Key", recoveryController),
 
         const SizedBox(height: 20),
         
@@ -143,7 +138,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   void dispose() {
     emailController.dispose();
     recoveryController.dispose();
-    suffixIconVisibilityNotifier.dispose();
     super.dispose();
   }
 
@@ -154,7 +148,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context),
+      body: buildBody(context),
     );
   }
 
