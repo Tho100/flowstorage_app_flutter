@@ -133,6 +133,7 @@ class PreviewVideoState extends State<PreviewVideo> {
         ),
         child: Row(
           children: [
+
             ValueListenableBuilder(
               valueListenable: currentDuration,
               builder: (context, value, child) {
@@ -147,6 +148,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                 );
               }
             ),
+
             ValueListenableBuilder(
               valueListenable: originalDuration,
               builder: (context, value, child) {
@@ -161,6 +163,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                 );
               }
             ),
+
           ],
         ),
       ),
@@ -260,13 +263,17 @@ class PreviewVideoState extends State<PreviewVideo> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 5.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               buildSkipPrevious(),
+
               const SizedBox(width: 18),
+
               ClipOval(
                 child: SplashWidget(
                   child: SizedBox(
@@ -320,11 +327,15 @@ class PreviewVideoState extends State<PreviewVideo> {
                   ),
                 ),
               ),
+
               const SizedBox(width: 18),
+
               buildSkipForward(),
+
             ],
           ),
         ),
+
       ],
     );
   }
@@ -336,6 +347,7 @@ class PreviewVideoState extends State<PreviewVideo> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+
             SliderTheme(
               data: const SliderThemeData(
                 thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.0),
@@ -358,6 +370,7 @@ class PreviewVideoState extends State<PreviewVideo> {
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: Row(
                 children: [
+
                   buildDurationText(currentVideoDurationNotifier, videoDurationNotifier),
                   
                   const Spacer(),
@@ -375,9 +388,11 @@ class PreviewVideoState extends State<PreviewVideo> {
                       );
                     },
                   ),
+
                 ],
               ),
             ),
+
           ],
         );
       },
@@ -387,6 +402,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   Widget buildVideoAndComponents() {
     return Stack(
       children: [
+        
         Padding(
           padding: const EdgeInsets.only(top: 25.0),
           child: Stack(
@@ -435,6 +451,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             );
           },
         ),
+
       ],
     );
   }
@@ -496,6 +513,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   }
 
   void videoPlayerListener() {
+
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
@@ -518,9 +536,11 @@ class PreviewVideoState extends State<PreviewVideo> {
         PreviewFileState.bottomBarVisibleNotifier.value = true;
       }
     }
+
   }
 
   void initializeVideoConfiguration() {
+
     indexThumbnail = storageData
       .fileNamesFilteredList.indexOf(tempData.selectedFileName);
 
@@ -528,6 +548,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       .imageBytesFilteredList[indexThumbnail]!;
       
     videoPlayerController = VideoPlayerController.networkUrl(Uri());
+    
   }
 
   void toPortraitMode() {

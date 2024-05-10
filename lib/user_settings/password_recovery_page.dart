@@ -20,8 +20,8 @@ class PasswordRecoveryPage extends StatefulWidget {
 
   @override
   State<PasswordRecoveryPage> createState() => PasswordRecoveryPageState();
-}
 
+}
 
 class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
@@ -31,7 +31,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
   Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured) {
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -74,7 +73,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    
     return Column(
       children: [
 
