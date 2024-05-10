@@ -21,16 +21,16 @@ class AddSharingPassword {
     return InteractDialog().buildDialog(
       context: navigatorKey.currentContext!, 
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
                 "Password for File Sharing",
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w800,
                 ),
                 overflow: TextOverflow.ellipsis,

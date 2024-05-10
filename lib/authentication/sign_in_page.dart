@@ -207,10 +207,10 @@ class SignInPageState extends State<SignInPage> {
                 children: [
 
                   Text('Forgot your password?',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       color: ThemeColor.secondaryWhite,
                       fontSize: 15,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
 

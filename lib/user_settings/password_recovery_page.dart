@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PasswordRecoveryPage extends StatefulWidget {
 
@@ -20,18 +21,15 @@ class PasswordRecoveryPage extends StatefulWidget {
 
   @override
   State<PasswordRecoveryPage> createState() => PasswordRecoveryPageState();
-}
 
+}
 
 class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
   final emailController = TextEditingController();
   final recoveryController = TextEditingController();
 
-  final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
-
-  Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured) {
-
+  Widget buildTextField(String hintText, TextEditingController mainController) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,31 +39,15 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
             ),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: suffixIconVisibilityNotifier,
-              builder: (_, isVisible, __) => TextFormField(
-                style: const TextStyle(
-                  color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w500,
-                ),
-                enabled: true,
-                controller: mainController,
-                obscureText: isSecured ? !isVisible : false,
-                maxLines: 1,
-                maxLength: null,
-                decoration: GlobalsStyle.setupTextFieldDecoration(
-                  hintText,
-                  customSuffix: isSecured
-                  ? IconButton(
-                      icon: Icon(
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: const Color.fromARGB(255, 141, 141, 141),
-                      ),
-                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
-                    )
-                  : null,
-                ),
+            child: TextFormField(
+              style: GoogleFonts.inter(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w800,
               ),
+              controller: mainController,
+              maxLines: 1,
+              maxLength: null,
+              decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
             ),
           ),
         ),
@@ -73,8 +55,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    
+  Widget buildBody(BuildContext context) {
     return Column(
       children: [
 
@@ -88,11 +69,11 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter your email address", emailController,context,false),
+        buildTextField("Enter your email address", emailController),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your Recovery Key", recoveryController,context,false),
+        buildTextField("Enter your Recovery Key", recoveryController),
 
         const SizedBox(height: 20),
         
@@ -157,7 +138,6 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
   void dispose() {
     emailController.dispose();
     recoveryController.dispose();
-    suffixIconVisibilityNotifier.dispose();
     super.dispose();
   }
 
@@ -168,7 +148,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         context: context, 
         title: ""
       ).buildAppBar(),
-      body: _buildBody(context),
+      body: buildBody(context),
     );
   }
 
