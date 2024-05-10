@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MainPage extends StatelessWidget {
 
+  const MainPage({Key? key}) : super(key: key);
+
   Widget buildButtons(BuildContext context) {
     return Column(
       children: [
@@ -86,14 +88,14 @@ class MainPage extends StatelessWidget {
         const SizedBox(height: 115),
 
         Padding(
-          padding: const EdgeInsets.only(left: 35.0),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: buildHeaderText(),
         ),
         
         const SizedBox(height: 8),
 
         Padding(
-          padding: const EdgeInsets.only(left: 35.0),
+          padding: const EdgeInsets.symmetric(horizontal: 28),
           child: buildSubText(),
         ),
       
@@ -103,8 +105,6 @@ class MainPage extends StatelessWidget {
       ],
     );
   }
-
-  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {

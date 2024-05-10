@@ -21,10 +21,12 @@ import 'package:logger/logger.dart';
 import 'package:video_player/video_player.dart';
 
 class PreviewVideo extends StatefulWidget {
+
   const PreviewVideo({Key? key}) : super(key: key);
 
   @override
   State<PreviewVideo> createState() => PreviewVideoState();
+  
 }
 
 class PreviewVideoState extends State<PreviewVideo> {
@@ -402,7 +404,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   Widget buildVideoAndComponents() {
     return Stack(
       children: [
-        
+
         Padding(
           padding: const EdgeInsets.only(top: 25.0),
           child: Stack(
