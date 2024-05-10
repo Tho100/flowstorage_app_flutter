@@ -8,6 +8,7 @@ import 'package:flowstorage_fsc/widgets/header_text.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PasswordRecoveryPage extends StatefulWidget {
 
@@ -30,7 +31,7 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
   final suffixIconVisibilityNotifier = ValueNotifier<bool>(false);
 
-  Widget _buildTextField(String hintText, TextEditingController mainController, BuildContext context, bool isSecured) {
+  Widget _buildTextField(String hintText, TextEditingController mainController) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -43,27 +44,14 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
             child: ValueListenableBuilder<bool>(
               valueListenable: suffixIconVisibilityNotifier,
               builder: (_, isVisible, __) => TextFormField(
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                   color: ThemeColor.secondaryWhite,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                 ),
-                enabled: true,
                 controller: mainController,
-                obscureText: isSecured ? !isVisible : false,
                 maxLines: 1,
                 maxLength: null,
-                decoration: GlobalsStyle.setupTextFieldDecoration(
-                  hintText,
-                  customSuffix: isSecured
-                  ? IconButton(
-                      icon: Icon(
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                        color: const Color.fromARGB(255, 141, 141, 141),
-                      ),
-                      onPressed: () => suffixIconVisibilityNotifier.value = !isVisible,
-                    )
-                  : null,
-                ),
+                decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
               ),
             ),
           ),
@@ -86,11 +74,11 @@ class PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
 
         const SizedBox(height: 35),
 
-        _buildTextField("Enter your email address", emailController,context,false),
+        _buildTextField("Enter your email address", emailController),
 
         const SizedBox(height: 12),
 
-        _buildTextField("Enter your Recovery Key", recoveryController,context,false),
+        _buildTextField("Enter your Recovery Key", recoveryController),
 
         const SizedBox(height: 20),
         
