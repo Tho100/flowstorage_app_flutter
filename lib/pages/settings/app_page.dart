@@ -90,13 +90,13 @@ class SettingsAppSettings extends StatelessWidget {
 
               const Spacer(),
 
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
                 child: Text("2.1.4",
-                  style: TextStyle(
-                    fontSize: 17,
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
                     color: ThemeColor.thirdWhite,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
