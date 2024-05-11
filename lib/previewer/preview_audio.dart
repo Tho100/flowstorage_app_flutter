@@ -202,7 +202,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 SliderTheme(
                   data: const SliderThemeData(
                     thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: 6.0
+                      enabledThumbRadius: 5.2
                     )
                   ),
                   child: Slider(value: audioPosition,
@@ -265,23 +265,20 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: ValueListenableBuilder(
         valueListenable: iconPausePlayNotifier,
         builder: (context, value, child) {
-          return Container(
-            decoration: BoxDecoration(
-              color: ThemeColor.justWhite,
-              border: Border.all(
-                color: ThemeColor.justWhite,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(65),
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              backgroundColor: ThemeColor.justWhite,
+              foregroundColor: ThemeColor.thirdWhite,
             ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () async {
-                value == Icons.replay_rounded 
-                  ? await onReplayPressed()
-                  : await playOrPauseAudioAsync();
-              },
-              icon: Icon(value, color: ThemeColor.darkPurple, size: 45),
+            onPressed: () async {
+              value == Icons.replay_rounded 
+                ? await onReplayPressed()
+                : await playOrPauseAudioAsync();
+            },
+            child: Transform.translate(
+              offset: const Offset(-2, 0),
+              child: Icon(value, color: ThemeColor.darkPurple, size: 45),
             ),
           );
         },
@@ -329,7 +326,7 @@ class PreviewAudioState extends State<PreviewAudio> {
               padding: EdgeInsets.zero,
               onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
               icon: Icon(CupertinoIcons.repeat, 
-                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 35
+                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 30.5
               ),
             );
           },
@@ -345,7 +342,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: SplashWidget(
         child: IconButton(
           onPressed: () => NavigatePage.goToPageFileComment(tempData.selectedFileName),
-          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 32.5),
+          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 29.5),
         ),
       ),
     );
