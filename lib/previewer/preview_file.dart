@@ -77,7 +77,7 @@ class PreviewFileState extends State<PreviewFile> {
   };
 
   final filesInfrontAppBar = {
-    GlobalsTable.homeText, GlobalsTable.homePdf, 
+    GlobalsTable.homeText, GlobalsTable.homePdf,
     GlobalsTable.psText, GlobalsTable.psPdf
   };
 
@@ -832,6 +832,7 @@ class PreviewFileState extends State<PreviewFile> {
     };
 
     final isCenterAppBar = tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching;
+    final isAudio = Globals.audioType.contains(tempData.selectedFileName.split('.').last);
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
@@ -850,9 +851,11 @@ class PreviewFileState extends State<PreviewFile> {
                   : true,
                 child: AppBar(
                   centerTitle: isCenterAppBar,
-                  backgroundColor: filesInfrontAppBar.contains(currentTable)
-                    ? ThemeColor.darkBlack
-                    : const Color(0x44000000),
+                  backgroundColor: isAudio 
+                    ? const Color.fromARGB(0, 0, 0, 0) 
+                      : filesInfrontAppBar.contains(currentTable)
+                        ? ThemeColor.darkBlack
+                        : const Color(0x44000000),
                   actions: _buildAppBarActions(),
                   title: _buildAppBarTitle(),
                 ),

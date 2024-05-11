@@ -35,8 +35,8 @@ class PreviewAudioState extends State<PreviewAudio> {
   Duration durationGradient = const Duration(milliseconds: 859);
 
   final gradientColors = [
-    [ThemeColor.secondaryPurple, ThemeColor.justWhite],
-    [ThemeColor.secondaryWhite, ThemeColor.darkPurple],
+    [ThemeColor.darkPurple, ThemeColor.darkPurple],
+    [ThemeColor.darkPurple, const Color.fromARGB(255, 15, 1, 31)],
   ];
 
   final currentGradientIndexNotifier = ValueNotifier<int>(0);
@@ -280,7 +280,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             },
             child: Transform.translate(
               offset: const Offset(-2, 0),
-              child: Icon(value, color: ThemeColor.darkPurple, size: 45),
+              child: Icon(value, color: ThemeColor.darkBlack, size: 45),
             ),
           );
         },
@@ -377,99 +377,92 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   Widget buildBody() {
-
-    final mediaQuery = MediaQuery.of(context).size;
-
-    return Column(
+    return Stack(
       children: [
 
-        const SizedBox(height: 45),
-
-        Text("PLAYING FROM",
-          style: GoogleFonts.inter(
-            color: ThemeColor.secondaryWhite,
-            fontWeight: FontWeight.w800,
-            fontSize: 12.5,
-          )
+        ValueListenableBuilder(
+          valueListenable: currentGradientIndexNotifier,
+          builder: (context, value, child) {
+            return AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: gradientColors[value],
+                ),
+              ),
+            );
+          },
         ),
 
-        const SizedBox(height: 4),
-
-        Text(tempData.appBarTitle,
-          style: GoogleFonts.inter(
-            color: ThemeColor.justWhite,
-            fontWeight: FontWeight.w800,
-            fontSize: 14.5,
-          )
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(top: 115.0),
-          child: SizedBox(
-            width: mediaQuery.width-90,
-            height: mediaQuery.height-570,
-            child: ValueListenableBuilder(
-              valueListenable: currentGradientIndexNotifier,
-              builder: (context, value, child) {
-                return AnimatedContainer(
-                  duration: const Duration(seconds: 1),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: gradientColors[value],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-
-        const Spacer(),
-
-        buildHeader(),
-
-        const SizedBox(height: 10),
-
-        buildSlider(),
-
-        const SizedBox(height: 10),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Column(
           children: [
-
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: buildCommentIconButton(),
+    
+            const SizedBox(height: 42),
+    
+            Text("PLAYING FROM",
+              style: GoogleFonts.inter(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w800,
+                fontSize: 12.5,
+              )
             ),
-
-            const Spacer(),
-
-            const SizedBox(width: 12),
-
-            buildFastBackward(),
-            buildPlayPauseButton(),
-            buildFastForward(),
-
-            const Spacer(),
-
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: buildKeepPlaying(),
+    
+            const SizedBox(height: 4),
+    
+            Text(tempData.appBarTitle,
+              style: GoogleFonts.inter(
+                color: ThemeColor.justWhite,
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+              )
             ),
-
+    
+            const Spacer(),
+    
+            buildHeader(),
+    
+            const SizedBox(height: 10),
+    
+            buildSlider(),
+    
+            const SizedBox(height: 10),
+    
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+    
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: buildCommentIconButton(),
+                ),
+    
+                const Spacer(),
+    
+                const SizedBox(width: 12),
+    
+                buildFastBackward(),
+                buildPlayPauseButton(),
+                buildFastForward(),
+    
+                const Spacer(),
+    
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: buildKeepPlaying(),
+                ),
+    
+              ],
+            ),
+    
+            const SizedBox(height: 48),
+    
           ],
+          
         ),
-
-        const SizedBox(height: 48),
-
       ],
-      
     );
-
   }
 
   void forwardingImplementation(String value) {
