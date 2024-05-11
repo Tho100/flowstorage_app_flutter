@@ -221,7 +221,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                  padding: const EdgeInsets.only(left: 24.5, right: 24.5),
                   child: Row(
                     children: [
                       ValueListenableBuilder<String>(
@@ -262,8 +262,8 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildPlayPauseButton() {
     return SizedBox(
-      width: 72,
-      height: 72,
+      width: 68,
+      height: 68,
       child: ValueListenableBuilder(
         valueListenable: iconPausePlayNotifier,
         builder: (context, value, child) {
@@ -280,7 +280,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             },
             child: Transform.translate(
               offset: const Offset(-2, 0),
-              child: Icon(value, color: ThemeColor.darkBlack, size: 45),
+              child: Icon(value, color: ThemeColor.darkBlack, size: 40),
             ),
           );
         },
@@ -310,7 +310,7 @@ class PreviewAudioState extends State<PreviewAudio> {
         child: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () => forwardingImplementation("positive"),
-          icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 50),
+          icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 48),
         ),
       ),
     );
@@ -328,7 +328,7 @@ class PreviewAudioState extends State<PreviewAudio> {
               padding: EdgeInsets.zero,
               onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
               icon: Icon(CupertinoIcons.repeat, 
-                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 30.5
+                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 28.5
               ),
             );
           },
@@ -344,7 +344,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: SplashWidget(
         child: IconButton(
           onPressed: () => NavigatePage.goToPageFileComment(tempData.selectedFileName),
-          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 29.5),
+          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 27.5),
         ),
       ),
     );
