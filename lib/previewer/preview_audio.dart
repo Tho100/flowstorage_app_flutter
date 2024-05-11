@@ -399,7 +399,7 @@ class PreviewAudioState extends State<PreviewAudio> {
         Column(
           children: [
     
-            const SizedBox(height: 42),
+            const SizedBox(height: 45),
     
             Text("PLAYING FROM",
               style: GoogleFonts.inter(
@@ -440,7 +440,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     
                 const Spacer(),
     
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
     
                 buildFastBackward(),
                 buildPlayPauseButton(),
