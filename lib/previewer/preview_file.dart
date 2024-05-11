@@ -12,7 +12,6 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
-import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
@@ -78,7 +77,7 @@ class PreviewFileState extends State<PreviewFile> {
   };
 
   final filesInfrontAppBar = {
-    GlobalsTable.homeText, GlobalsTable.homePdf, 
+    GlobalsTable.homeText, GlobalsTable.homePdf,
     GlobalsTable.psText, GlobalsTable.psPdf
   };
 
@@ -443,37 +442,6 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  Widget _buildCommentIconButtonAudio() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2.4),
-      child: IconButton(
-        onPressed: () {
-          Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
-          );
-        },
-        icon: const Icon(CupertinoIcons.ellipses_bubble, size: 25.5),
-      ),
-    );
-  }
-
-  BoxDecoration _buildBackgroundDecoration() {
-    return BoxDecoration(
-      gradient: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)
-      ? const LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            ThemeColor.darkPurple,
-            ThemeColor.secondaryPurple,
-          ],
-        )
-      : null,
-      color: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable) ? null : ThemeColor.darkBlack,
-    );
-  }
-
   Widget _buildMoreIconButton() {
     return Transform.translate(
       offset: const Offset(-4, 0),
@@ -826,36 +794,33 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBody() {
-    return Container(
-      decoration: _buildBackgroundDecoration(),
-      child: Column(
-        children: [
-        
-          _buildTextHeaderTitle(),
-    
-          Expanded(
-            child: _buildFilePreviewOnCondition()
-          ),
+    return Column(
+      children: [
       
-          Transform.translate(
-            offset: const Offset(0, -10),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: bottomBarVisibleNotifier,
-              builder: (context, value, child) {
-                return AnimatedOpacity(
-                  opacity: value ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 250),
-                  child: Visibility(
-                    visible: value,
-                    child: _buildBottomBar(context)
-                  ),
-                );
-              },
-            ),
+        _buildTextHeaderTitle(),
+  
+        Expanded(
+          child: _buildFilePreviewOnCondition()
+        ),
+    
+        Transform.translate(
+          offset: const Offset(0, -10),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: bottomBarVisibleNotifier,
+            builder: (context, value, child) {
+              return AnimatedOpacity(
+                opacity: value ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 250),
+                child: Visibility(
+                  visible: value,
+                  child: _buildBottomBar(context)
+                ),
+              );
+            },
           ),
-          
-        ],
-      ),
+        ),
+        
+      ]
     );
   }
 
@@ -867,6 +832,7 @@ class PreviewFileState extends State<PreviewFile> {
     };
 
     final isCenterAppBar = tempData.origin != OriginFile.public && tempData.origin != OriginFile.publicSearching;
+    final isAudio = Globals.audioType.contains(tempData.selectedFileName.split('.').last);
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(55.0),
@@ -885,9 +851,11 @@ class PreviewFileState extends State<PreviewFile> {
                   : true,
                 child: AppBar(
                   centerTitle: isCenterAppBar,
-                  backgroundColor: filesInfrontAppBar.contains(currentTable)
-                    ? ThemeColor.darkBlack
-                    : const Color(0x44000000),
+                  backgroundColor: isAudio 
+                    ? const Color.fromARGB(0, 0, 0, 0) 
+                      : filesInfrontAppBar.contains(currentTable)
+                        ? ThemeColor.darkBlack
+                        : const Color(0x44000000),
                   actions: _buildAppBarActions(),
                   title: _buildAppBarTitle(),
                 ),
@@ -906,10 +874,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     if ([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTable)) {
       actions.add(_buildReadingModeIconButton());
-    }
-
-    if ([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)) {
-      actions.add(_buildCommentIconButtonAudio());
     }
 
     actions.add(_buildMoreIconButton());

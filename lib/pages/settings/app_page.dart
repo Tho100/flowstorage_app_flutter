@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/widgets/buttons/settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 
 class SettingsAppSettings extends StatelessWidget {
@@ -91,7 +92,7 @@ class SettingsAppSettings extends StatelessWidget {
               const Spacer(),
 
               Padding(
-                padding: EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(right: 18.0, top: 8, bottom: 8),
                 child: Text("2.1.4",
                   style: GoogleFonts.inter(
                     fontSize: 16,

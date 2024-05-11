@@ -7,12 +7,14 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/process_audio.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/splash_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,10 +22,12 @@ import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
 
 class PreviewAudio extends StatefulWidget {
+
   const PreviewAudio({super.key});
 
   @override
   State<PreviewAudio> createState() => PreviewAudioState();
+
 }
 
 class PreviewAudioState extends State<PreviewAudio> {
@@ -31,8 +35,8 @@ class PreviewAudioState extends State<PreviewAudio> {
   Duration durationGradient = const Duration(milliseconds: 859);
 
   final gradientColors = [
-    [ThemeColor.secondaryPurple, ThemeColor.justWhite],
-    [ThemeColor.secondaryWhite, ThemeColor.darkPurple],
+    [ThemeColor.darkPurple, ThemeColor.darkPurple],
+    [ThemeColor.darkPurple, const Color.fromARGB(255, 15, 1, 31)],
   ];
 
   final currentGradientIndexNotifier = ValueNotifier<int>(0);
@@ -158,8 +162,10 @@ class PreviewAudioState extends State<PreviewAudio> {
     callNotificationOnAudioPlaying();
 
     await audioPlayerController.seek(Duration.zero);
+
     audioPlayerController.play();
     iconPausePlayNotifier.value = Icons.pause;
+
   }
 
   void callNotificationOnAudioPlaying() async {
@@ -194,10 +200,11 @@ class PreviewAudioState extends State<PreviewAudio> {
           builder: (context, audioPosition, _) {
             return Column(
               children: [
+
                 SliderTheme(
                   data: const SliderThemeData(
                     thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: 6.0
+                      enabledThumbRadius: 5.2
                     )
                   ),
                   child: Slider(value: audioPosition,
@@ -230,7 +237,9 @@ class PreviewAudioState extends State<PreviewAudio> {
                           );
                         }
                       ),
+
                       const Spacer(),
+
                       Text(
                         audioDuration,
                         style: GoogleFonts.inter(
@@ -239,6 +248,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                           fontSize: 15
                         ),
                       ),
+
                     ]
                   ),
                 ),
@@ -257,25 +267,20 @@ class PreviewAudioState extends State<PreviewAudio> {
       child: ValueListenableBuilder(
         valueListenable: iconPausePlayNotifier,
         builder: (context, value, child) {
-          return Container(
-            decoration: BoxDecoration(
-              color: ThemeColor.justWhite,
-              border: Border.all(
-                color: ThemeColor.justWhite,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(65),
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+              backgroundColor: ThemeColor.justWhite,
+              foregroundColor: ThemeColor.thirdWhite,
             ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () async {
-                if(value == Icons.replay_rounded) {
-                  await onReplayPressed();
-                } else {
-                  await playOrPauseAudioAsync();
-                }
-              },
-              icon: Icon(value, color: ThemeColor.darkPurple, size: 45),
+            onPressed: () async {
+              value == Icons.replay_rounded 
+                ? await onReplayPressed()
+                : await playOrPauseAudioAsync();
+            },
+            child: Transform.translate(
+              offset: const Offset(-2, 0),
+              child: Icon(value, color: ThemeColor.darkBlack, size: 45),
             ),
           );
         },
@@ -322,11 +327,24 @@ class PreviewAudioState extends State<PreviewAudio> {
             return IconButton(
               padding: EdgeInsets.zero,
               onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
-              icon: Icon(Icons.autorenew_rounded, 
-                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 35
+              icon: Icon(CupertinoIcons.repeat, 
+                color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 30.5
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget buildCommentIconButton() {
+    return SizedBox(
+      width: 45,
+      height: 45,
+      child: SplashWidget(
+        child: IconButton(
+          onPressed: () => NavigatePage.goToPageFileComment(tempData.selectedFileName),
+          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 29.5),
         ),
       ),
     );
@@ -336,7 +354,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     return Column(
       children: [
         Text(
-          tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4),
+          tempData.selectedFileName.substring(0, tempData.selectedFileName.length-4),
           style: GoogleFonts.inter(
             color: ThemeColor.justWhite,
             fontSize: 23,
@@ -359,64 +377,91 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   Widget buildBody() {
-
-    final mediaQuery = MediaQuery.of(context).size;
-
-    return Column(
+    return Stack(
       children: [
 
-        Padding(
-          padding: const EdgeInsets.only(top: 172.0),
-          child: SizedBox(
-            width: mediaQuery.width-90,
-            height: mediaQuery.height-570,
-            child: ValueListenableBuilder(
-              valueListenable: currentGradientIndexNotifier,
-              builder: (context, value, child) {
-                return AnimatedContainer(
-                  duration: const Duration(seconds: 1),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: gradientColors[value],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+        ValueListenableBuilder(
+          valueListenable: currentGradientIndexNotifier,
+          builder: (context, value, child) {
+            return AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: gradientColors[value],
+                ),
+              ),
+            );
+          },
         ),
 
-        const Spacer(),
-
-        buildHeader(),
-
-        const SizedBox(height: 10),
-
-        buildSlider(),
-
-        const SizedBox(height: 10),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Column(
           children: [
-
-            const SizedBox(width: 42),
-
-            buildFastBackward(),
-            buildPlayPauseButton(),
-            buildFastForward(),
-            buildKeepPlaying(),
-
+    
+            const SizedBox(height: 50),
+    
+            Text("PLAYING FROM",
+              style: GoogleFonts.inter(
+                color: ThemeColor.secondaryWhite,
+                fontWeight: FontWeight.w800,
+                fontSize: 12.5,
+              )
+            ),
+    
+            const SizedBox(height: 4),
+    
+            Text(tempData.appBarTitle,
+              style: GoogleFonts.inter(
+                color: ThemeColor.justWhite,
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+              )
+            ),
+    
+            const Spacer(),
+    
+            buildHeader(),
+    
+            const SizedBox(height: 10),
+    
+            buildSlider(),
+    
+            const SizedBox(height: 10),
+    
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+    
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: buildCommentIconButton(),
+                ),
+    
+                const Spacer(),
+    
+                const SizedBox(width: 5),
+    
+                buildFastBackward(),
+                buildPlayPauseButton(),
+                buildFastForward(),
+    
+                const Spacer(),
+    
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: buildKeepPlaying(),
+                ),
+    
+              ],
+            ),
+    
+            const SizedBox(height: 48),
+    
           ],
+          
         ),
-
-        const SizedBox(height: 48),
-
       ],
-      
     );
   }
 
@@ -451,8 +496,10 @@ class PreviewAudioState extends State<PreviewAudio> {
 
     if (fileType == "wav") {
       audioContentType = 'audio/wav';
+
     } else if (fileType == "mp3") {
       audioContentType = 'audio/mpeg';
+
     }
 
   }
@@ -490,4 +537,5 @@ class PreviewAudioState extends State<PreviewAudio> {
   Widget build(BuildContext context) {
     return buildBody();
   }
+
 }
