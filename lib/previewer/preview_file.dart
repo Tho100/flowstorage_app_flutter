@@ -442,22 +442,6 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
-  BoxDecoration _buildBackgroundDecoration() {
-    return BoxDecoration(
-      gradient: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)
-      ? const LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            ThemeColor.darkPurple,
-            ThemeColor.secondaryPurple,
-          ],
-        )
-      : null,
-      color: [GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable) ? null : ThemeColor.darkBlack,
-    );
-  }
-
   Widget _buildMoreIconButton() {
     return Transform.translate(
       offset: const Offset(-4, 0),
@@ -810,36 +794,33 @@ class PreviewFileState extends State<PreviewFile> {
   }
 
   Widget _buildBody() {
-    return Container(
-      decoration: _buildBackgroundDecoration(),
-      child: Column(
-        children: [
-        
-          _buildTextHeaderTitle(),
-    
-          Expanded(
-            child: _buildFilePreviewOnCondition()
-          ),
+    return Column(
+      children: [
       
-          Transform.translate(
-            offset: const Offset(0, -10),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: bottomBarVisibleNotifier,
-              builder: (context, value, child) {
-                return AnimatedOpacity(
-                  opacity: value ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 250),
-                  child: Visibility(
-                    visible: value,
-                    child: _buildBottomBar(context)
-                  ),
-                );
-              },
-            ),
+        _buildTextHeaderTitle(),
+  
+        Expanded(
+          child: _buildFilePreviewOnCondition()
+        ),
+    
+        Transform.translate(
+          offset: const Offset(0, -10),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: bottomBarVisibleNotifier,
+            builder: (context, value, child) {
+              return AnimatedOpacity(
+                opacity: value ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 250),
+                child: Visibility(
+                  visible: value,
+                  child: _buildBottomBar(context)
+                ),
+              );
+            },
           ),
-          
-        ],
-      ),
+        ),
+        
+      ]
     );
   }
 

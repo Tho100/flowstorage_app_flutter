@@ -162,8 +162,10 @@ class PreviewAudioState extends State<PreviewAudio> {
     callNotificationOnAudioPlaying();
 
     await audioPlayerController.seek(Duration.zero);
+
     audioPlayerController.play();
     iconPausePlayNotifier.value = Icons.pause;
+
   }
 
   void callNotificationOnAudioPlaying() async {
@@ -381,8 +383,28 @@ class PreviewAudioState extends State<PreviewAudio> {
     return Column(
       children: [
 
+        const SizedBox(height: 45),
+
+        Text("PLAYING FROM",
+          style: GoogleFonts.inter(
+            color: ThemeColor.secondaryWhite,
+            fontWeight: FontWeight.w800,
+            fontSize: 12.5,
+          )
+        ),
+
+        const SizedBox(height: 4),
+
+        Text(tempData.appBarTitle,
+          style: GoogleFonts.inter(
+            color: ThemeColor.justWhite,
+            fontWeight: FontWeight.w800,
+            fontSize: 14.5,
+          )
+        ),
+
         Padding(
-          padding: const EdgeInsets.only(top: 172.0),
+          padding: const EdgeInsets.only(top: 115.0),
           child: SizedBox(
             width: mediaQuery.width-90,
             height: mediaQuery.height-570,
