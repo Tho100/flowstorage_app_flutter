@@ -7,12 +7,14 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
+import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/process_audio.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/splash_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,10 +22,12 @@ import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
 
 class PreviewAudio extends StatefulWidget {
+
   const PreviewAudio({super.key});
 
   @override
   State<PreviewAudio> createState() => PreviewAudioState();
+
 }
 
 class PreviewAudioState extends State<PreviewAudio> {
@@ -194,6 +198,7 @@ class PreviewAudioState extends State<PreviewAudio> {
           builder: (context, audioPosition, _) {
             return Column(
               children: [
+
                 SliderTheme(
                   data: const SliderThemeData(
                     thumbShape: RoundSliderThumbShape(
@@ -230,7 +235,9 @@ class PreviewAudioState extends State<PreviewAudio> {
                           );
                         }
                       ),
+
                       const Spacer(),
+
                       Text(
                         audioDuration,
                         style: GoogleFonts.inter(
@@ -239,6 +246,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                           fontSize: 15
                         ),
                       ),
+
                     ]
                   ),
                 ),
@@ -269,11 +277,9 @@ class PreviewAudioState extends State<PreviewAudio> {
             child: IconButton(
               padding: EdgeInsets.zero,
               onPressed: () async {
-                if(value == Icons.replay_rounded) {
-                  await onReplayPressed();
-                } else {
-                  await playOrPauseAudioAsync();
-                }
+                value == Icons.replay_rounded 
+                  ? await onReplayPressed()
+                  : await playOrPauseAudioAsync();
               },
               icon: Icon(value, color: ThemeColor.darkPurple, size: 45),
             ),
@@ -322,7 +328,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             return IconButton(
               padding: EdgeInsets.zero,
               onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
-              icon: Icon(Icons.autorenew_rounded, 
+              icon: Icon(CupertinoIcons.repeat, 
                 color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 35
               ),
             );
@@ -332,11 +338,24 @@ class PreviewAudioState extends State<PreviewAudio> {
     );
   }
 
+  Widget buildCommentIconButton() {
+    return SizedBox(
+      width: 45,
+      height: 45,
+      child: SplashWidget(
+        child: IconButton(
+          onPressed: () => NavigatePage.goToPageFileComment(tempData.selectedFileName),
+          icon: const Icon(CupertinoIcons.ellipses_bubble, color: ThemeColor.justWhite, size: 32.5),
+        ),
+      ),
+    );
+  }
+
   Widget buildHeader() {
     return Column(
       children: [
         Text(
-          tempData.selectedFileName.substring(0,tempData.selectedFileName.length-4),
+          tempData.selectedFileName.substring(0, tempData.selectedFileName.length-4),
           style: GoogleFonts.inter(
             color: ThemeColor.justWhite,
             fontSize: 23,
@@ -403,12 +422,25 @@ class PreviewAudioState extends State<PreviewAudio> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            const SizedBox(width: 42),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: buildCommentIconButton(),
+            ),
+
+            const Spacer(),
+
+            const SizedBox(width: 12),
 
             buildFastBackward(),
             buildPlayPauseButton(),
             buildFastForward(),
-            buildKeepPlaying(),
+
+            const Spacer(),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: buildKeepPlaying(),
+            ),
 
           ],
         ),
@@ -418,6 +450,7 @@ class PreviewAudioState extends State<PreviewAudio> {
       ],
       
     );
+
   }
 
   void forwardingImplementation(String value) {
@@ -451,8 +484,10 @@ class PreviewAudioState extends State<PreviewAudio> {
 
     if (fileType == "wav") {
       audioContentType = 'audio/wav';
+
     } else if (fileType == "mp3") {
       audioContentType = 'audio/mpeg';
+
     }
 
   }
@@ -490,4 +525,5 @@ class PreviewAudioState extends State<PreviewAudio> {
   Widget build(BuildContext context) {
     return buildBody();
   }
+
 }

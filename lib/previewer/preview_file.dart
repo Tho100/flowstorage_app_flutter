@@ -12,7 +12,6 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
-import 'package:flowstorage_fsc/pages/comment_page.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
@@ -440,21 +439,6 @@ class PreviewFileState extends State<PreviewFile> {
       icon: bottomBarVisibleNotifier.value 
         ? const Icon(CupertinoIcons.book, size: 26)
         : const Icon(Icons.edit_note_outlined, size: 32),
-    );
-  }
-
-  Widget _buildCommentIconButtonAudio() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2.4),
-      child: IconButton(
-        onPressed: () {
-          Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (context) => CommentPage(fileName: widget.selectedFilename)),
-          );
-        },
-        icon: const Icon(CupertinoIcons.ellipses_bubble, size: 25.5),
-      ),
     );
   }
 
@@ -906,10 +890,6 @@ class PreviewFileState extends State<PreviewFile> {
 
     if ([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTable)) {
       actions.add(_buildReadingModeIconButton());
-    }
-
-    if ([GlobalsTable.homeAudio, GlobalsTable.psAudio].contains(currentTable)) {
-      actions.add(_buildCommentIconButtonAudio());
     }
 
     actions.add(_buildMoreIconButton());
