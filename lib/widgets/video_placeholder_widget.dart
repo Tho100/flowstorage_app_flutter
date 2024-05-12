@@ -26,4 +26,5 @@ class VideoPlaceholderWidget extends StatelessWidget {
       child: Icon(Icons.videocam_outlined, color: ThemeColor.justWhite, size: customIconSize)
     );
   }
+  
 }

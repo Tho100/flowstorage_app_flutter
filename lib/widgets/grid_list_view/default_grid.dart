@@ -48,84 +48,90 @@ class DefaultGridListView extends StatelessWidget {
     final fileDates = getProperDate(storageData.fileDateFilteredList[index]);
 
     return Column(
-        children: [
-          
-          const SizedBox(height: 14),
-      
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  width: size.width - 95,
-                  height: 145,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: ThemeColor.mediumGrey,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    child: Image.memory(imageBytes,
-                      cacheHeight: isGeneralFile || isOfflineVideo ? 55 : null,
-                      cacheWidth: isGeneralFile || isOfflineVideo ? 55 : null,
-                      fit: isGeneralFile || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover,
-                    ),
+      children: [
+        
+        const SizedBox(height: 14),
+    
+        Expanded(
+          child: Stack(
+            children: [
+              
+              Container(
+                width: size.width - 95,
+                height: 145,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: ThemeColor.mediumGrey,
                   ),
                 ),
-                if (Globals.videoType.contains(actualFileType))
-                const Align(
-                  alignment: Alignment.center,
-                  child: VideoPlaceholderWidget(
-                    customHeight: 35,
-                    customWidth: 35,
-                    customIconSize: 24,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: Image.memory(imageBytes,
+                    cacheHeight: isGeneralFile || isOfflineVideo ? 55 : null,
+                    cacheWidth: isGeneralFile || isOfflineVideo ? 55 : null,
+                    fit: isGeneralFile || isOfflineVideo ? BoxFit.scaleDown : BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              if (Globals.videoType.contains(actualFileType))
+              const Align(
+                alignment: Alignment.center,
+                child: VideoPlaceholderWidget(
+                  customHeight: 35,
+                  customWidth: 35,
+                  customIconSize: 24,
+                ),
+              ),
+              
+            ],
           ),
-      
-          const SizedBox(height: 10),
-          
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 4.0, bottom: 4),
-              child: SizedBox(
-                width: size.width-95,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      fileNames,
-                      style: GoogleFonts.inter(
-                        color: ThemeColor.secondaryWhite,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+        ),
+    
+        const SizedBox(height: 10),
+        
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4.0, bottom: 4),
+            child: SizedBox(
+              width: size.width-95,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    fileNames,
+                    style: GoogleFonts.inter(
+                      color: ThemeColor.secondaryWhite,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      fileDates,
-                      style: GoogleFonts.inter(
-                        color: ThemeColor.thirdWhite,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Text(
+                    fileDates,
+                    style: GoogleFonts.inter(
+                      color: ThemeColor.thirdWhite,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
                     ),
-                  ],
-                ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+
+                ],
               ),
             ),
           ),
-            
-        ],
-    
+        ),
+          
+      ],
     );
   }
 

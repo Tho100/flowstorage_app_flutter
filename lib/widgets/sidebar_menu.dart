@@ -138,6 +138,7 @@ class CustomSideBarMenu extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return Row(
             children: [
+
               ProfilePicture(
                 notifierValue: snapshot.data,
                 customBackgroundColor: ThemeColor.justWhite,
@@ -152,8 +153,11 @@ class CustomSideBarMenu extends StatelessWidget {
                   ),
                 ),
               ),
+
               const Spacer(),
+              
               _buildShowAccountsButton(context),
+
             ],
           );
 
@@ -171,6 +175,7 @@ class CustomSideBarMenu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
           Text(
             userData.username,
             style: GoogleFonts.inter(
@@ -179,7 +184,9 @@ class CustomSideBarMenu extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
+
           const SizedBox(height: 5),
+
           Text(
             userData.email,
             style: GoogleFonts.inter(
@@ -188,6 +195,7 @@ class CustomSideBarMenu extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
+
         ],
       ),
     );
@@ -267,8 +275,11 @@ class CustomSideBarMenu extends StatelessWidget {
           padding: const EdgeInsets.only(left: 24.0),
           child: Row(
             children: [
+
               const Icon(Icons.cloud_outlined, color: Color.fromARGB(255, 215, 215, 215), size: 19),
+
               const SizedBox(width: 8),
+
               FutureBuilder<int>(
                 future: usageProgress,
                 builder: (context, storageUsageSnapshot) {
@@ -331,6 +342,7 @@ class CustomSideBarMenu extends StatelessWidget {
             }
           ),
         ),
+
       ],
     );
   }
@@ -379,6 +391,7 @@ class CustomSideBarMenu extends StatelessWidget {
         color: ThemeColor.darkBlack,
           child: Column(
             children: [
+
               DrawerHeader(
                 decoration: const BoxDecoration(
                   color: ThemeColor.darkBlack,
@@ -408,7 +421,7 @@ class CustomSideBarMenu extends StatelessWidget {
               const SizedBox(height: 15),
     
               const Padding(
-                padding: EdgeInsets.only(left: 19, right: 19),
+                padding: EdgeInsets.symmetric(horizontal: 19),
                 child: Divider(color: ThemeColor.lightGrey),
               ),
     

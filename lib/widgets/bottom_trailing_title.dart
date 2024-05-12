@@ -14,7 +14,6 @@ class BottomTrailingTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12.0, top: 25.0),
         child: Text(

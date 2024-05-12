@@ -59,6 +59,7 @@ class NavigationButtons extends StatelessWidget {
                     builder: (context, value, child) {
                       return Row(
                         children: [
+
                           Text(
                             value,
                             style: GoogleFonts.inter(
@@ -67,7 +68,9 @@ class NavigationButtons extends StatelessWidget {
                               color: ThemeColor.secondaryWhite
                             ),
                           ),
+
                           const SizedBox(width: 2),
+
                           ValueListenableBuilder(
                             valueListenable: ascendingDescendingCaret, 
                             builder: (context, value, child) {
@@ -77,6 +80,7 @@ class NavigationButtons extends StatelessWidget {
                               );
                             }
                           ),
+
                         ],
                       );
                     }
@@ -120,4 +124,5 @@ class NavigationButtons extends StatelessWidget {
       ),
     );
   }
+  
 }
