@@ -411,7 +411,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     
             const SizedBox(height: 4),
     
-            Text(tempData.appBarTitle,
+            Text(Globals.originToName[tempData.origin]!,
               style: GoogleFonts.inter(
                 color: ThemeColor.justWhite,
                 fontWeight: FontWeight.w800,

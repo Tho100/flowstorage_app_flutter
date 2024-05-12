@@ -14,6 +14,7 @@ import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SubmitReportPage extends StatelessWidget {
 
@@ -73,10 +74,10 @@ class SubmitReportPage extends StatelessWidget {
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(reportTypeToFull[reportType]!,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.secondaryWhite,
-                fontSize: 24,
-                fontWeight: FontWeight.bold
+                fontSize: 23,
+                fontWeight: FontWeight.w800
               ),
             ),
           ),
@@ -87,10 +88,10 @@ class SubmitReportPage extends StatelessWidget {
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(reportTypeToDescription[reportType]!,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.secondaryWhite,
-                fontSize: 15,
-                fontWeight: FontWeight.bold
+                fontSize: 14,
+                fontWeight: FontWeight.w800
               ),
             ),
           ),
@@ -138,24 +139,24 @@ class SubmitReportPage extends StatelessWidget {
 
                       Text(
                         ShortenText().cutText(fileName, customLength: 42),
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.justWhite,
-                          fontSize: 16,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
 
                       const SizedBox(height: 5),
 
                       Text(
                         "Uploaded by ${psStorageData.psUploaderList.elementAt(storageData.fileNamesFilteredList.indexOf(fileName))}",
-                        style: const TextStyle(
+                        style: GoogleFonts.inter(
                           color: ThemeColor.thirdWhite,
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       
                     ],
@@ -180,10 +181,10 @@ class SubmitReportPage extends StatelessWidget {
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(violationToQuestion[reportType]!,
-              style: const TextStyle(
+              style: GoogleFonts.inter(
                 color: ThemeColor.secondaryWhite,
-                fontSize: 21,
-                fontWeight: FontWeight.bold
+                fontSize: 20,
+                fontWeight: FontWeight.w800
               ),
             ),
           ),
@@ -214,6 +215,7 @@ class SubmitReportPage extends StatelessWidget {
               ),
               child: Row(
                 children: [
+
                   ValueListenableBuilder(
                     valueListenable: isMyEntityNotifier,
                     builder: (context, value, child) {
@@ -226,14 +228,16 @@ class SubmitReportPage extends StatelessWidget {
                       );
                     },
                   ),
-                  const Text(
+
+                  Text(
                     "Either yours or that of an individual or entity \nyou represent.",
-                    style: TextStyle(
-                      color: Color.fromARGB(225, 225, 225, 225),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                    style: GoogleFonts.inter(
+                      color: const Color.fromARGB(225, 225, 225, 225),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -262,6 +266,7 @@ class SubmitReportPage extends StatelessWidget {
               ),
               child: Row(
                 children: [
+
                   ValueListenableBuilder(
                     valueListenable: isNotMyEntityNotifier,
                     builder: (context, value, child) {
@@ -274,14 +279,16 @@ class SubmitReportPage extends StatelessWidget {
                       );
                     },
                   ),
-                  const Text(
+
+                  Text(
                     "Someone's else.",
-                    style: TextStyle(
-                      color: Color.fromARGB(225, 225, 225, 225),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                    style: GoogleFonts.inter(
+                      color: const Color.fromARGB(225, 225, 225, 225),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
                     ),
                   ),
+
                 ],
               ),
             ),

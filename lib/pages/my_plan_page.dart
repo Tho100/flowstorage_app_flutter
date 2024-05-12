@@ -19,6 +19,7 @@ class MyPlanPage extends StatefulWidget {
 
   @override
   State<MyPlanPage> createState() => MyPlanPageState();
+  
 }
 
 class MyPlanPageState extends State<MyPlanPage> {
@@ -201,51 +202,6 @@ class MyPlanPageState extends State<MyPlanPage> {
           );
         }
       } 
-    );
-  }
-
-  Widget buildHeader(String typeTag, String priceTag, String featuresTag) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          typeTag,
-          style: const TextStyle(
-            color: ThemeColor.justWhite,
-            fontWeight: FontWeight.w700,
-            fontSize: 45
-          ),
-          textAlign: TextAlign.start,
-        ),
-        const SizedBox(height: 5),
-        Text(
-          "Charged \$$priceTag monthly",
-          style: const TextStyle(
-            color: ThemeColor.darkBlack,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-          ),
-          textAlign: TextAlign.start,
-        ),
-        const SizedBox(height: 22),
-        const Text(
-          "FEATURES",
-          style: TextStyle(
-            color: ThemeColor.justWhite,
-            fontSize: 16,
-            fontWeight: FontWeight.w900
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          featuresTag,
-          style: const TextStyle(
-            color: ThemeColor.darkBlack,
-            fontSize: 16,
-            fontWeight: FontWeight.w900
-          ),
-        ),
-      ],
     );
   }
 
