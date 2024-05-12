@@ -23,6 +23,7 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+
         Expanded(
           child: InkWell(
             onTap: onPressed,
@@ -37,12 +38,15 @@ class SettingsButton extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       Text(
                         topText,
                         style: GlobalsStyle.settingsLeftTextStyle,
                         textAlign: TextAlign.center,
                       ),
+
                       const Spacer(),
+
                       if(!hideCaret!)
                       Transform.translate(
                         offset: const Offset(0, 10),
@@ -56,7 +60,9 @@ class SettingsButton extends StatelessWidget {
                           child: const Icon(Icons.arrow_forward_ios, color: ThemeColor.thirdWhite, size: 20)
                         )
                       ),
+
                       const SizedBox(width: 25),
+
                     ],
                   ),
                   
@@ -82,6 +88,7 @@ class SettingsButton extends StatelessWidget {
             ),
           ),
         ),
+        
       ],
     );
   }

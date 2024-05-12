@@ -44,7 +44,6 @@ class ProfilePicture extends StatelessWidget {
             child: Image.memory(
               imageBytes,
               fit: BoxFit.cover,
-              alignment: Alignment.center,
             ),
           );
         }

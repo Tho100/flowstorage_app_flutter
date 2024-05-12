@@ -181,11 +181,15 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Row(
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("MAX",
                           style: GoogleFonts.poppins(
                             color: const Color.fromARGB(255, 250, 195, 4),
@@ -194,9 +198,12 @@ class UpgradePageState extends State<UpgradePage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -204,6 +211,7 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildPrice(3)
                       ],
                     ),
+
                   ],
                 ),
 
@@ -212,19 +220,26 @@ class UpgradePageState extends State<UpgradePage> {
                 Row( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     const SizedBox(width: 30),
+
                     Column(  
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
                         _buildFeatures("+ Upload Up To 150 Files"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Upload Up To 5 Folders"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Unlocked Folder Download"),
+
                       ],
                     ),
+                    
                   ],
                 ), 
                 
@@ -294,7 +309,9 @@ class UpgradePageState extends State<UpgradePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,                        
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("SUPREME",
                           style: GoogleFonts.poppins(
                             color: ThemeColor.darkPurple,
@@ -303,9 +320,12 @@ class UpgradePageState extends State<UpgradePage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -313,6 +333,7 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildPrice(20),
                       ],
                     ),
+
                   ],
                 ),
 
@@ -324,15 +345,21 @@ class UpgradePageState extends State<UpgradePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,                        
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 2000 Files"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 20 Folders"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Upload Up To 5 Directories"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Unlocked Folder Download"),
+
                       ],
                     ),
                   ],
@@ -403,7 +430,9 @@ class UpgradePageState extends State<UpgradePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,                        
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("EXPRESS",
                           style: GoogleFonts.poppins(
                             color: const Color.fromARGB(255, 40, 100, 169),
@@ -412,9 +441,12 @@ class UpgradePageState extends State<UpgradePage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -422,6 +454,7 @@ class UpgradePageState extends State<UpgradePage> {
                         _buildPrice(8),
                       ],
                     ),
+
                   ],
                 ),
 
@@ -430,19 +463,26 @@ class UpgradePageState extends State<UpgradePage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,                        
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
                         _buildFeatures("+ Upload Up To 800 Files"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Upload Up To 10 Folders"),
+
                         const SizedBox(height: 5),
                         _buildFeatures("+ Unlocked Folder Download"),
+
                       ],
                     ),
+
                   ],
                 ),
                 
@@ -489,6 +529,7 @@ class UpgradePageState extends State<UpgradePage> {
       length: 3,
       child: Column(
         children: [
+
           CustomTabBar(
             tabs: [
               Tab(
@@ -511,6 +552,7 @@ class UpgradePageState extends State<UpgradePage> {
               ),
             ],
           ),
+
           Expanded(
             child: TabBarView(
               children: [
@@ -520,6 +562,7 @@ class UpgradePageState extends State<UpgradePage> {
               ],
             ),
           ),
+          
         ],
       ),
     );

@@ -22,6 +22,7 @@ class CustomNavigationBar extends StatefulWidget {
 
   @override
   CustomNavigationBarState createState() => CustomNavigationBarState();
+
 }
 
 class CustomNavigationBarState extends State<CustomNavigationBar> {
@@ -32,12 +33,6 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
   final isPhotosPressedNotifier = ValueNotifier<bool>(false);
 
   final bottomPadding = 4.5;
-
-  @override
-  void dispose() {
-    bottomNavigationBarIndex.dispose();
-    super.dispose();
-  }
 
   Widget _buildHome(bool isSelected) {
     return Padding(
@@ -93,10 +88,12 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+
         Container(
           height: 0.6,
           color: ThemeColor.lightGrey,
         ),
+
         Container(
           height: 68,
           color: ThemeColor.lightGrey,
@@ -165,11 +162,18 @@ class CustomNavigationBarState extends State<CustomNavigationBar> {
             },
           ),
         ),
+
         const SizedBox(height: 3.5),
+
       ],
     );
   }
 
+  @override
+  void dispose() {
+    bottomNavigationBarIndex.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -238,14 +238,18 @@ class PsGridListView extends StatelessWidget {
                 customPadding: const EdgeInsets.only(left: 17.5),
                 child: Row(
                   children: [
+
                     const Icon(CupertinoIcons.bubble_left, color: ThemeColor.justWhite, size: 19),
+                    
                     const SizedBox(width: 8),
+
                     Text("Comments", 
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w800,
                         fontSize: 12
                       )
                     ),
+                    
                   ]
                 ),
                 onPressed: () {

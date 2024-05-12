@@ -22,4 +22,5 @@ class DefaultSwitch extends StatelessWidget {
       onChanged: onChanged
     );
   }
+  
 }

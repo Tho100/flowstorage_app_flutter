@@ -45,9 +45,12 @@ class RecentPsListView extends StatelessWidget {
       onLongPress: fileOnLongPressed,
       child: Row(
         children: [
+          
           const SizedBox(width: 3),
+
           Stack(
             children: [
+
               Container(
                 width: 75,
                 height: 75,
@@ -78,10 +81,13 @@ class RecentPsListView extends StatelessWidget {
 
             ],
           ),
+
           const SizedBox(width: 10),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               Text(
                 ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
                 style: GoogleFonts.inter(
@@ -90,6 +96,7 @@ class RecentPsListView extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
+
               Text(
                 "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 12)} ${GlobalsStyle.dotSeparator} $uploadDate",
                 style: GoogleFonts.inter(
@@ -98,7 +105,9 @@ class RecentPsListView extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
+
               const SizedBox(height: 8),
+
               Container(
                 width: 100,
                 height: 23,
@@ -118,11 +127,14 @@ class RecentPsListView extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 3),
 
             ],
           ),
+
           const SizedBox(width: 3),
+
         ],
       ),
     );

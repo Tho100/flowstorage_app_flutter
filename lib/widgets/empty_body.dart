@@ -45,6 +45,7 @@ class EmptyBody extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               Text(
                 originToHeaderMessage[tempData.origin]!,
                 style: GoogleFonts.inter(
@@ -54,7 +55,9 @@ class EmptyBody extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
+
               const SizedBox(height: 10),
+
               Text(
                 originToSubMessage[tempData.origin]!,
                 style: GoogleFonts.inter(
@@ -64,6 +67,7 @@ class EmptyBody extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
+              
             ],
           ),
         ),

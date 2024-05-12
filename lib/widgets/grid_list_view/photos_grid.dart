@@ -35,6 +35,7 @@ class PhotosGridListView extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
+
               Container(
                 width: 335,
                 decoration: BoxDecoration(

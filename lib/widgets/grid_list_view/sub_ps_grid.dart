@@ -79,12 +79,15 @@ class SubPsListView extends StatelessWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
+
               Padding(
                 padding: const EdgeInsets.only(right: 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     Text(
                       ShortenText().cutText(psStorageData.psTitleList[index], customLength: 17),
                       style: GoogleFonts.inter(
@@ -93,7 +96,9 @@ class SubPsListView extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+
                     const SizedBox(height: 2),
+
                     Text(
                       ShortenText().cutText(fileName, customLength: 16),
                       style: GoogleFonts.inter(
@@ -102,7 +107,9 @@ class SubPsListView extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+
                     const SizedBox(height: 4),
+
                     Text(
                       "${ShortenText().cutText(psStorageData.psUploaderList[index], customLength: 17)} ${GlobalsStyle.dotSeparator} $uploadDate",
                       style: GoogleFonts.inter(
@@ -111,7 +118,9 @@ class SubPsListView extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Container(
                       width: 100,
                       height: 23,
@@ -133,9 +142,12 @@ class SubPsListView extends StatelessWidget {
                   ],
                 ),
               ),
-            const SizedBox(height: 8),
+
+              const SizedBox(height: 8),
+
             ],
           ),
+
           const SizedBox(width: 3),
 
         ],
