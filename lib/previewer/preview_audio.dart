@@ -32,15 +32,6 @@ class PreviewAudio extends StatefulWidget {
 
 class PreviewAudioState extends State<PreviewAudio> {
 
-  Duration durationGradient = const Duration(milliseconds: 859);
-
-  final gradientColors = [
-    [ThemeColor.darkPurple, ThemeColor.darkPurple],
-    [ThemeColor.darkPurple, const Color.fromARGB(255, 15, 1, 31)],
-  ];
-
-  final currentGradientIndexNotifier = ValueNotifier<int>(0);
-
   final tempData = GetIt.instance<TempDataProvider>();
   final userData = GetIt.instance<UserDataProvider>();
 
@@ -380,21 +371,23 @@ class PreviewAudioState extends State<PreviewAudio> {
     return Stack(
       children: [
 
-        ValueListenableBuilder(
-          valueListenable: currentGradientIndexNotifier,
-          builder: (context, value, child) {
-            return AnimatedContainer(
-              duration: const Duration(seconds: 1),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: gradientColors[value],
-                ),
-              ),
-            );
-          },
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors:
+                [
+                ThemeColor.darkPurple, 
+                ThemeColor.darkPurple, 
+                ThemeColor.darkPurple, 
+                Color.fromARGB(255, 15, 1, 31)
+              ],
+            ),
+          ),
         ),
+    
+      
 
         Column(
           children: [
@@ -504,21 +497,11 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   }
 
-  void initializeGradient() {
-    Timer.periodic(durationGradient, (timer) {
-      if(iconPausePlayNotifier.value == Icons.pause) {
-        currentGradientIndexNotifier.value = 
-        (currentGradientIndexNotifier.value + 1) % gradientColors.length;
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     initializeAudioContentType();
     playOrPauseAudioAsync();
-    initializeGradient();
   }
 
   @override
@@ -528,7 +511,6 @@ class PreviewAudioState extends State<PreviewAudio> {
     iconPausePlayNotifier.dispose();
     keepPlayingIconColorNotifier.dispose();
     isKeepPlayingEnabledNotifier.dispose();
-    currentGradientIndexNotifier.dispose();
     audioPlayerController.dispose();
     super.dispose();
   }

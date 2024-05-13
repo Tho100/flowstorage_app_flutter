@@ -9,6 +9,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -126,31 +127,21 @@ class UploadPsPage extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 2.0),
-          child: TextFormField(
-            style: GoogleFonts.inter(
-              color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w800,
-            ),
-            enabled: true,
-            controller: titleController,
+          child: MainTextField(
+            hintText: "Enter a title (Optional)",
             maxLines: 1,
             maxLength: 45,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter a title (Optional)"),
+            controller: titleController,
           ),
         ),
 
         Padding(
           padding: const EdgeInsets.all(15.0),
-          child: TextFormField(
-            style: GoogleFonts.inter(
-              color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w500,
-            ),
-            enabled: true,
-            controller: commentController,
+          child: MainTextField(
+            hintText: "Enter a comment (Optional)",
             maxLines: 15,
             maxLength: 250,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
+            controller: commentController,
           ),
         ),
 

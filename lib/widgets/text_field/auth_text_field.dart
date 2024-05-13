@@ -18,9 +18,8 @@ class AuthTextField {
       child: TextFormField(
         style: GoogleFonts.inter(
           color: ThemeColor.secondaryWhite,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
         ),
-        enabled: true,
         controller: controller,
         obscureText: true,
         maxLength: 3,
@@ -47,9 +46,8 @@ class AuthTextField {
           return TextFormField(
             style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
             ),
-            enabled: true,
             controller: controller,
             obscureText: !value,
             decoration: GlobalsStyle.setupTextFieldDecoration(

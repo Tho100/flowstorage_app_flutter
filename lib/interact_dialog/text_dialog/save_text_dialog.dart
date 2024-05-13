@@ -1,7 +1,7 @@
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,16 +44,11 @@ class SaveTextDialog {
                 color: ThemeColor.mediumBlack
               ),
             ),
-            child: TextFormField(
+            child: MainTextField(
+              hintText: "Untitled text file",
+              autoFocus: true,
               maxLength: 40,
-              autofocus: true,
-              style: GoogleFonts.inter(
-                color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w800,
-              ),
-              enabled: true,
               controller: fileNameController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Untitled text file")
             ),
           ),
         ),

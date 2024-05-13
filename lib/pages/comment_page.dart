@@ -171,9 +171,9 @@ class CommentPageState extends State<CommentPage> {
                       readOnly: true,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      style: GoogleFonts.roboto(
+                      style: GoogleFonts.inter(
                         color: const Color.fromARGB(255, 224, 223, 223),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w700,
                       ),
                       decoration: const InputDecoration(
                         focusedBorder: UnderlineInputBorder(
@@ -215,9 +215,9 @@ class CommentPageState extends State<CommentPage> {
                   controller: noCommentController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.inter(
                     color: const Color.fromARGB(255, 224, 223, 223),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                   ),
                   decoration: const InputDecoration(
                     focusedBorder: UnderlineInputBorder(

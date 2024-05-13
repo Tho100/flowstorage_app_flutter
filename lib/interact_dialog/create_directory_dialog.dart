@@ -1,7 +1,7 @@
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,17 +39,11 @@ class CreateDirectoryDialog {
         const Divider(color: ThemeColor.lightGrey),
 
         Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 6.0, top: 6.0),
-          child: TextFormField(
-            autofocus: true,
-            style: GoogleFonts.inter(
-              color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w800,
-            ),
-            enabled: true,
-            maxLength: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6.0),
+          child: MainTextField(
+            hintText: "Enter directory name",
+            autoFocus: true,
             controller: directoryNameController,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter directory name"),
           ),
         ),
 

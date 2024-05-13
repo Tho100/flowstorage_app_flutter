@@ -12,11 +12,11 @@ import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/process_file_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/buttons/right_text_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flowstorage_fsc/widgets/video_placeholder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -100,29 +100,19 @@ class ShareFilePage extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 10, top: 15),
-          child: TextFormField(
-            style: GoogleFonts.inter(
-              color: ThemeColor.justWhite,
-              fontWeight: FontWeight.w800,
-            ),
-            enabled: true,
+          child: MainTextField(
+            hintText: "Enter receiver username",
             controller: shareToController,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter receiver username"),
           ),
         ),
          
         Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
-          child: TextFormField(
-            style: GoogleFonts.inter(
-              color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w800,
-            ),
-            enabled: true,
-            controller: commentController,
+          child: MainTextField(
+            hintText: "Enter a comment (Optional)",
             maxLines: 12,
             maxLength: 100,
-            decoration: GlobalsStyle.setupTextFieldDecoration("Enter a comment (Optional)"),
+            controller: commentController,
           ),
         ),
 
