@@ -28,7 +28,6 @@ class MainTextField extends StatelessWidget {
         fontWeight: FontWeight.w700,
       ),
       autofocus: autoFocus ?? false,
-      enabled: true,
       maxLines: maxLines,
       maxLength: maxLength,
       controller: controller,

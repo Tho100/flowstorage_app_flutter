@@ -20,7 +20,6 @@ class AuthTextField {
           color: ThemeColor.secondaryWhite,
           fontWeight: FontWeight.w700,
         ),
-        enabled: true,
         controller: controller,
         obscureText: true,
         maxLength: 3,
@@ -49,7 +48,6 @@ class AuthTextField {
               color: ThemeColor.secondaryWhite,
               fontWeight: FontWeight.w700,
             ),
-            enabled: true,
             controller: controller,
             obscureText: !value,
             decoration: GlobalsStyle.setupTextFieldDecoration(
