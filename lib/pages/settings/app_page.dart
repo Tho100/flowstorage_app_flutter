@@ -82,6 +82,7 @@ class SettingsAppSettings extends StatelessWidget {
 
           Row(
             children: [
+
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
                 child: Text("App version",
@@ -101,6 +102,7 @@ class SettingsAppSettings extends StatelessWidget {
                   ),
                 ),
               ),
+              
             ],
           ),
                   

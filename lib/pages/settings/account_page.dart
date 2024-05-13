@@ -22,6 +22,7 @@ class SettingsAccountPage extends StatelessWidget {
   Widget _buildRow(String leftText,String rightText) {
     return Row(
       children: [
+
         Padding(
           padding: const EdgeInsets.only(left: 18.0, top: 8, bottom: 8),
           child: Text(leftText,
@@ -41,6 +42,7 @@ class SettingsAccountPage extends StatelessWidget {
             ),
           ),
         ),
+
       ],
     );
   }
@@ -89,7 +91,7 @@ class SettingsAccountPage extends StatelessWidget {
           ),
               
           const Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Divider(color: ThemeColor.lightGrey),
           ),
 

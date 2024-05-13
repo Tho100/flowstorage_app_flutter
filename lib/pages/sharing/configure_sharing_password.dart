@@ -42,7 +42,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
         const SizedBox(height: 8),
 
         Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+          padding: const EdgeInsets.symmetric(horizontal: 18.0), 
           child: Row(
             children: [
 
@@ -51,6 +51,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
                 style: GlobalsStyle.settingsLeftTextStyle,
                 textAlign: TextAlign.center,
               ),
+
               const Spacer(),
 
               ValueListenableBuilder(
@@ -100,7 +101,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
     );
   }
 
-  Future<void> _loadPasswordStatus() async {
+  Future<void> loadPasswordStatus() async {
 
     if(userData.sharingPasswordDisabled.isEmpty) {
       final passwordIsDisabled = await SharingOptions.retrievePasswordStatus(userData.username);
@@ -114,7 +115,7 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   @override
   void initState() {
     super.initState();
-    _loadPasswordStatus();
+    loadPasswordStatus();
   }
 
   @override

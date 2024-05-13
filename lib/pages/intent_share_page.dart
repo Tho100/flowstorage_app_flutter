@@ -64,25 +64,27 @@ class IntentSharingPage extends StatelessWidget {
 
               Stack(
                 children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.memory(
-                      base64.decode(imageBase64Encoded!),
-                      width: 105,
-                      height: 105,
-                      fit: Globals.generalFileTypes.contains(fileType) 
-                        ? BoxFit.scaleDown : BoxFit.fitWidth,
-                    )
+                  
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.memory(
+                        base64.decode(imageBase64Encoded!),
+                        width: 105,
+                        height: 105,
+                        fit: Globals.generalFileTypes.contains(fileType) 
+                          ? BoxFit.scaleDown : BoxFit.fitWidth,
+                      )
+                    ),
                   ),
-                ),
 
-                if(Globals.videoType.contains(fileType))
-                const Padding(
-                  padding: EdgeInsets.only(left: 18.0, top: 18.0),
-                  child: VideoPlaceholderWidget(),
+                  if(Globals.videoType.contains(fileType))
+                  const Padding(
+                    padding: EdgeInsets.only(left: 18.0, top: 18.0),
+                    child: VideoPlaceholderWidget(),
                   ), 
+
                 ],
               ),
 

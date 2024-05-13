@@ -311,10 +311,12 @@ class ActivityPageState extends State<ActivityPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           GestureDetector(
             onTap: () => NavigatePage.goToPageUpgrade(),
             child: Stack(
               children: [
+
                 Container(
                   width: width-35,
                   height: 125,
@@ -323,6 +325,7 @@ class ActivityPageState extends State<ActivityPage> {
                     gradient: linearGradientBorder, 
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(2),
                   child: Container(
@@ -337,8 +340,10 @@ class ActivityPageState extends State<ActivityPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
                           Row(
                             children: [
+
                               Text("Get more storage & features with",
                                 style: GoogleFonts.poppins(
                                   color: ThemeColor.justWhite,
@@ -346,10 +351,14 @@ class ActivityPageState extends State<ActivityPage> {
                                   fontSize: 17
                                 ),
                               ),
+
                               const Spacer(),
+
                               const Icon(Icons.chevron_right, color: ThemeColor.justWhite)
+
                             ],
                           ),
+
                           Text("Supreme",
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
@@ -357,6 +366,7 @@ class ActivityPageState extends State<ActivityPage> {
                               fontSize: 28,
                             ),
                           ),
+
                         ],
                       ),
                     ),
@@ -368,6 +378,7 @@ class ActivityPageState extends State<ActivityPage> {
         ],
       ),
     );
+    
   }
 
   Widget buildLastBottomContainers(double width) {

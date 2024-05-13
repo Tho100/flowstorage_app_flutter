@@ -199,6 +199,7 @@ class FileDetailsPageState extends State<FileDetailsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         Text(title,
           style: GoogleFonts.inter(
             color: ThemeColor.thirdWhite,
@@ -207,7 +208,9 @@ class FileDetailsPageState extends State<FileDetailsPage> {
           ),
           textAlign: TextAlign.start,
         ),
+
         const SizedBox(height: 6),
+
         title == "Resolution" 
           ? buildResolutionForImage() 
           : title == "Size" 
@@ -263,10 +266,12 @@ class FileDetailsPageState extends State<FileDetailsPage> {
 
     return Column(
       children: [
+
         Align(
           alignment: Alignment.centerLeft,
           child: Stack(
             children: [
+
               Padding(
                 padding: const EdgeInsets.only(left: 14, top: 12, bottom: 12),
                 child: GestureDetector(
@@ -294,11 +299,13 @@ class FileDetailsPageState extends State<FileDetailsPage> {
                   ),
                 ),
               ),
+
               if (Globals.videoType.contains(fileType))
               const Padding(
                 padding: EdgeInsets.all(26.0),
                 child: VideoPlaceholderWidget(),
               ),
+
             ],
           ),
         ),
@@ -311,11 +318,15 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             alignment: Alignment.centerLeft,
             child: Row(
               children: [
+
                 buildHeader("Type", fileTypeMap[fileType]!),
+
                 const SizedBox(width: 28),
                 buildHeader("Created", uploadDate),
+
                 const SizedBox(width: 28),
                 buildHeader("Size","0Mb"),
+
               ],
             )
           ),
@@ -329,10 +340,13 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             alignment: Alignment.centerLeft,
             child: Row(
               children: [
+                
                 buildHeader("Location", originToLocation[tempData.origin]!),
                 const SizedBox(width: 28),
+
                 if(Globals.imageType.contains(fileType))
                 buildHeader("Resolution","240x240"),
+
               ],
             ),
           ),

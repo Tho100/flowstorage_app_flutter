@@ -18,6 +18,7 @@ class UserAccountsPage extends StatefulWidget {
 
   @override
   State<UserAccountsPage> createState() => UserAccountsPageState();
+
 }
 
 class UserAccountsPageState extends State<UserAccountsPage> {
@@ -94,10 +95,13 @@ class UserAccountsPageState extends State<UserAccountsPage> {
           title: localAccountUsernamesList[index] == userData.username 
           ? Row(
             children: [
+
               Text(localAccountUsernamesList[index],
                 style: titleTextStyle,
               ),
+
               const Spacer(),
+
               Transform.translate(
                 offset: const Offset(0, 4),
                 child: const Padding( 
@@ -108,6 +112,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
                   ),
                 ),
               ),
+              
             ],
           )
           : Text(localAccountUsernamesList[index],
@@ -119,6 +124,7 @@ class UserAccountsPageState extends State<UserAccountsPage> {
         );
       },      
     );
+
   }
 
   Widget buildBody() {

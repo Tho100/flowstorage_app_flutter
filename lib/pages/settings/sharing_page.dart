@@ -35,7 +35,7 @@ class SettingsSharingPage extends StatelessWidget {
           const SizedBox(height: 8),
 
           Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+            padding: const EdgeInsets.symmetric(horizontal: 18.0), 
             child: Row(
               children: [
 

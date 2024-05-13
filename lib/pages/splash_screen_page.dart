@@ -26,10 +26,12 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class SplashScreen extends StatefulWidget {
+  
   const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => SplashScreenState();
+
 }
 
 class SplashScreenState extends State<SplashScreen> {

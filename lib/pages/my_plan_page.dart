@@ -230,11 +230,15 @@ class MyPlanPageState extends State<MyPlanPage> {
 
                 Row(
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("MAX",
                           style: GoogleFonts.poppins(
                             color: const Color.fromARGB(255, 250, 195, 4),
@@ -243,16 +247,22 @@ class MyPlanPageState extends State<MyPlanPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("CHARGED"),
                         _buildPrice(3)
+
                       ],
                     ),
+
                   ],
                 ),
 
@@ -261,17 +271,24 @@ class MyPlanPageState extends State<MyPlanPage> {
                 Row( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(  
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 150 Files"),
                         const SizedBox(height: 5),
+                        
                         _buildFeatures("+ Upload Up To 5 Folders"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Unlocked Folder Download"),
+                        
                       ],
                     ),
                   ],
@@ -326,11 +343,15 @@ class MyPlanPageState extends State<MyPlanPage> {
 
                 Row(
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("EXPRESS",
                           style: GoogleFonts.poppins(
                             color: const Color.fromARGB(255, 40, 100, 169),
@@ -339,14 +360,19 @@ class MyPlanPageState extends State<MyPlanPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("CHARGED"),
                         _buildPrice(8)
+
                       ],
                     ),
                   ],
@@ -357,17 +383,24 @@ class MyPlanPageState extends State<MyPlanPage> {
                 Row( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(  
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 800 Files"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 10 Folders"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Unlocked Folder Download"),
+
                       ],
                     ),
                   ],
@@ -422,11 +455,15 @@ class MyPlanPageState extends State<MyPlanPage> {
 
                 Row(
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("SUPREME",
                           style: GoogleFonts.poppins(
                             color: ThemeColor.darkPurple,
@@ -435,14 +472,19 @@ class MyPlanPageState extends State<MyPlanPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("CHARGED"),
                         _buildPrice(20)
+
                       ],
                     ),
                   ],
@@ -453,19 +495,27 @@ class MyPlanPageState extends State<MyPlanPage> {
                 Row( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     const SizedBox(width: 30),
+
                     Column(  
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 2000 Files"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 20 Folders"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 5 Directories"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Unlocked Folder Download"),
+
                       ],
                     ),
                   ],
@@ -520,11 +570,15 @@ class MyPlanPageState extends State<MyPlanPage> {
 
                 Row(
                   children: [
+
                     const SizedBox(width: 30),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("PLAN"),
+
                         Text("BASIC",
                           style: GoogleFonts.poppins(
                             color: ThemeColor.mediumBlack,
@@ -533,13 +587,18 @@ class MyPlanPageState extends State<MyPlanPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
+
                     const SizedBox(width: 50),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("CHARGED"),
+
                         Text("Free",
                           style: GoogleFonts.poppins(
                             color: const Color.fromARGB(255, 15, 15, 15),
@@ -548,6 +607,7 @@ class MyPlanPageState extends State<MyPlanPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+
                       ],
                     ),
                   ],
@@ -558,17 +618,24 @@ class MyPlanPageState extends State<MyPlanPage> {
                 Row( 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     const SizedBox(width: 30),
+
                     Column(  
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         _buildSubHeader("FEATURES"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 25 Files"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 3 Folders"),
                         const SizedBox(height: 5),
+
                         _buildFeatures("+ Upload Up To 2 Directories"),
+
                       ],
                     ),
                   ],
