@@ -1,11 +1,11 @@
 import 'package:flowstorage_fsc/encryption/hash_model.dart';
 import 'package:flowstorage_fsc/sharing_query/share_file_data.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/ui_dialog/loading/single_text_loading.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -52,14 +52,9 @@ class SharingPassword {
                 color: ThemeColor.mediumBlack
               ),
             ),
-            child: TextFormField(
-              style: GoogleFonts.inter(
-                color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w800,
-              ),
-              enabled: true,
+            child: MainTextField(
+              hintText: "Enter password",
               controller: sharingPasswordController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter password")
             ),
           ),
         ),

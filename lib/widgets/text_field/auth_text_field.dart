@@ -18,7 +18,7 @@ class AuthTextField {
       child: TextFormField(
         style: GoogleFonts.inter(
           color: ThemeColor.secondaryWhite,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
         ),
         enabled: true,
         controller: controller,
@@ -47,7 +47,7 @@ class AuthTextField {
           return TextFormField(
             style: GoogleFonts.inter(
               color: ThemeColor.secondaryWhite,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
             ),
             enabled: true,
             controller: controller,

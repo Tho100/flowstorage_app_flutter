@@ -2,10 +2,10 @@ import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/sharing_query/add_password_sharing.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
-import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/alert_dialog.dart';
 import 'package:flowstorage_fsc/widgets/interact_dialog.dart';
 import 'package:flowstorage_fsc/widgets/buttons/main_dialog_button.dart';
+import 'package:flowstorage_fsc/widgets/text_field/main_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +25,7 @@ class AddSharingPassword {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
+              padding: const EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
                 "Password for File Sharing",
                 style: GoogleFonts.inter(
@@ -50,15 +50,10 @@ class AddSharingPassword {
                 color: ThemeColor.mediumBlack
               ),
             ),
-            child: TextFormField(
-              style: GoogleFonts.inter(
-                color: ThemeColor.justWhite,
-                fontWeight: FontWeight.w800,
-              ),
-              enabled: true,
+            child: MainTextField(
+              hintText: "Enter password",
               maxLength: 90,
               controller: addPasswordController,
-              decoration: GlobalsStyle.setupTextFieldDecoration("Enter password")
             ),
           ),
         ),

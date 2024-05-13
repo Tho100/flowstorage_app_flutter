@@ -7,13 +7,17 @@ class MainTextField extends StatelessWidget {
 
   final String hintText;
   final int? maxLength;
+  final int? maxLines;
+  final bool? autoFocus;
   final TextEditingController controller;
   
   const MainTextField({
     super.key,
     required this.hintText,
     required this.controller,
-    this.maxLength
+    this.maxLength,
+    this.maxLines,
+    this.autoFocus,
   });
 
   @override
@@ -21,9 +25,11 @@ class MainTextField extends StatelessWidget {
     return TextFormField(
       style: GoogleFonts.inter(
         color: ThemeColor.secondaryWhite,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       ),
+      autofocus: autoFocus ?? false,
       enabled: true,
+      maxLines: maxLines,
       maxLength: maxLength,
       controller: controller,
       decoration: GlobalsStyle.setupTextFieldDecoration(hintText),
