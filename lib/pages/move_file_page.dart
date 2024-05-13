@@ -186,6 +186,7 @@ class MoveFilePageState extends State<MoveFilePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
           Text(
             "No directory found",
             style: GoogleFonts.inter(
@@ -195,7 +196,9 @@ class MoveFilePageState extends State<MoveFilePage> {
             ),
             textAlign: TextAlign.center,
           ),
+
           const SizedBox(height: 12),
+
           Text(
             "Add a new directory to move this file",
             style: GoogleFonts.inter(
@@ -205,6 +208,7 @@ class MoveFilePageState extends State<MoveFilePage> {
             ),
             textAlign: TextAlign.center,
           ),
+          
         ]
       ),
     );
@@ -320,7 +324,6 @@ class MoveFilePageState extends State<MoveFilePage> {
     }
 
     return false;
-
 
   }
 

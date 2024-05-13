@@ -53,6 +53,7 @@ class ShareFilePage extends StatelessWidget {
           children: [
             Stack(
               children: [
+
                 Padding(
                   padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
                   child: ClipRRect(
@@ -71,6 +72,7 @@ class ShareFilePage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 22.0, left: 24.0),
                   child: VideoPlaceholderWidget(),
                 ),
+
               ],
             ),
 
@@ -94,6 +96,7 @@ class ShareFilePage extends StatelessWidget {
             
           ],
         ),
+
         const SizedBox(height: 5),
 
         const Divider(color: ThemeColor.lightGrey, height: 2),
@@ -150,6 +153,7 @@ class ShareFilePage extends StatelessWidget {
 
       ],
     );
+    
   }
 
   void shareExternalOnPressed() async {

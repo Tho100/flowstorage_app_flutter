@@ -80,6 +80,7 @@ class SettingsPageState extends State<SettingsPage> {
       ),
       child: Row(
         children: [
+
           Container(
             width: 35,
             height: 35,
@@ -93,10 +94,13 @@ class SettingsPageState extends State<SettingsPage> {
               color: Colors.white,
             ),
           ),
+
           const SizedBox(width: 16.0),
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               Text(
                 title,
                 style: GoogleFonts.inter(
@@ -105,7 +109,9 @@ class SettingsPageState extends State<SettingsPage> {
                   color: ThemeColor.secondaryWhite, 
                 ),
               ),
+
               const SizedBox(height: 5),
+
               Text(
                 subheader,
                 style: GoogleFonts.inter(
@@ -114,6 +120,7 @@ class SettingsPageState extends State<SettingsPage> {
                   color: ThemeColor.thirdWhite, 
                 ),
               ),
+
             ],
           ),
         ],
@@ -144,6 +151,7 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               child: Row(
                 children: [
+
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: GestureDetector(
@@ -153,9 +161,11 @@ class SettingsPageState extends State<SettingsPage> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
+
                           ProfilePicture(
                             notifierValue: profilePicNotifier
                           ),
+
                           if(profilePicNotifier.value!.isNotEmpty)
                           Container(
                             width: 32,
@@ -170,6 +180,7 @@ class SettingsPageState extends State<SettingsPage> {
                               size: 16,
                             ),
                           ),
+
                         ],
                       ),
                     ),
@@ -181,6 +192,7 @@ class SettingsPageState extends State<SettingsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       GestureDetector(
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: userData.username));
@@ -195,7 +207,9 @@ class SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 3),
+
                       Text(
                         userData.accountType,
                         style: GoogleFonts.inter(
@@ -204,6 +218,7 @@ class SettingsPageState extends State<SettingsPage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
+                      
                     ],
                   ),
                   

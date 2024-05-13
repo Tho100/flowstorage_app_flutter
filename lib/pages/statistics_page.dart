@@ -15,6 +15,7 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/ui_dialog/snack_dialog.dart';
 import 'package:flowstorage_fsc/user_settings/account_plan_config.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
+import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -42,10 +43,12 @@ class ChartUploadCountValue {
 }
 
 class StatisticsPage extends StatefulWidget {
+
   const StatisticsPage({super.key});
 
   @override
   State<StatisticsPage> createState() => StatsPageState();
+  
 }
 
 class StatsPageState extends State<StatisticsPage> {
@@ -75,19 +78,6 @@ class StatsPageState extends State<StatisticsPage> {
   
   final tempData = GetIt.instance<TempDataProvider>();
   final tempStorageData = GetIt.instance<TempStorageProvider>();
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeStatsData();
-  }
-
-  @override
-  void dispose() {
-    dataIsLoading.dispose();
-    tempStorageData.statsFileNameList.clear();
-    super.dispose();
-  }
 
   Future<void> _initializeStatsData() async {
 
@@ -212,10 +202,14 @@ class StatsPageState extends State<StatisticsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         Row(
           children: [
+
             Icon(icon, size: 21),
+
             const SizedBox(width: 5),
+
             Text(
               header,
               style: GoogleFonts.poppins(
@@ -225,8 +219,10 @@ class StatsPageState extends State<StatisticsPage> {
               ),
               textAlign: TextAlign.left,
             ),
+
           ],
         ),
+
         Padding(
           padding: const EdgeInsets.only(left: 2.0, top: 2.0),
           child: Text(subHeader,
@@ -238,6 +234,7 @@ class StatsPageState extends State<StatisticsPage> {
             textAlign: TextAlign.left,
           ),
         ),
+        
       ],
     );
   }
@@ -264,52 +261,69 @@ class StatsPageState extends State<StatisticsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Padding(
                       padding: const EdgeInsets.only(left: 16.5, top: 18),
                       child: _buildInfoWidget(
                         "MOST UPLOADED", categoryWithMostUpload, Icons.arrow_upward_outlined),
                     ),
+
                     const SizedBox(width: 30),
+
                     Padding(
                       padding: const EdgeInsets.only(left: 16.5, top: 18),
                       child: _buildInfoWidget(
                         "LEAST UPLOADED", categoryWithLeastUpload, Icons.arrow_downward_outlined),
                     ),
+
                   ],
                 ),
+
                 const SizedBox(height: 8),
+
                 Row(
                   children: [
+
                     Padding(
                       padding: const EdgeInsets.only(left: 16.5, top: 16),
                       child: _buildInfoWidget(
                         "TOTAL UPLOAD", totalFilesUpload.toString(), Icons.stacked_line_chart_outlined),
                     ),
+
                     const SizedBox(width: 30),
+
                     Padding(
                       padding: const EdgeInsets.only(left: 33.5, top: 14),
                       child: _buildInfoWidget(
                         "OFFLINE UPLOAD", totalOfflineFilesUpload.toString(), Icons.offline_bolt_outlined),
                     ),
+
                   ],
                 ),
+
                 const SizedBox(height: 8),
+
                 Row(
                   children: [
+
                     Padding(
                       padding: const EdgeInsets.only(left: 16.5, top: 14),
                       child: _buildInfoWidget(
                         "DIRECTORY COUNT", directoryCount.toString(), Icons.folder_outlined),
                     ),
+
                     const SizedBox(width: 30),
+
                     Padding(
                       padding: const EdgeInsets.only(left: 4.5, top: 14),
                       child: _buildInfoWidget(
                         "FOLDER COUNT", folderCount.toString(), Icons.folder_outlined),
                     ),
+
                   ],
                 ),
               ],
@@ -318,6 +332,7 @@ class StatsPageState extends State<StatisticsPage> {
         ),
       ],
     );
+
   }
 
   Widget _buildChart(context) {
@@ -372,10 +387,13 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             const SizedBox(height: 15),
             _buildChart(context),
+
             const SizedBox(height: 5),
             _buildInfoContainer(),
+
           ],
         ),
       ),
@@ -388,6 +406,7 @@ class StatsPageState extends State<StatisticsPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Text(
             headerText,
             style: GoogleFonts.poppins(
@@ -397,7 +416,9 @@ class StatsPageState extends State<StatisticsPage> {
             ),
             textAlign: TextAlign.left,
           ),
+
           const Spacer(),
+
           Text(
             subText,
             style: GoogleFonts.poppins(
@@ -407,6 +428,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
             textAlign: TextAlign.left,
           ),
+
         ],
       ),
     );
@@ -437,6 +459,7 @@ class StatsPageState extends State<StatisticsPage> {
 
     return Row(
       children: [
+
         Container(
           width: 26,
           height: 26,
@@ -449,16 +472,20 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
         ),
+
         const SizedBox(width: 8),
+
         Text("$totalUpload Uploads",
           style: GoogleFonts.poppins(
             color: ThemeColor.darkGrey,
             fontSize: 15,
             fontWeight: FontWeight.w600
           ),
-        )
+        ),
+
       ],
     );
+
   }
 
   Widget _buildLegendLimit() {
@@ -472,6 +499,7 @@ class StatsPageState extends State<StatisticsPage> {
 
     return Row(
       children: [
+
         Container(
           width: 26,
           height: 26,
@@ -484,16 +512,20 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
         ),
+
         const SizedBox(width: 8),
+
         Text("$numberOfUploadLeft Uploads left",
           style: GoogleFonts.poppins(
             color: ThemeColor.darkGrey,
             fontSize: 14,
             fontWeight: FontWeight.w600
           ),
-        )
+        ),
+
       ],
     );
+
   }
 
   Widget _buildUsageContainer() {
@@ -529,9 +561,13 @@ class StatsPageState extends State<StatisticsPage> {
               padding: const EdgeInsets.only(left: 22.5),
               child: Row(
                 children: [
+
                   _buildLegendUsage(),
+
                   const SizedBox(width: 25),
+
                   _buildLegendLimit(),
+
                 ],
               ),
             ),
@@ -540,6 +576,7 @@ class StatsPageState extends State<StatisticsPage> {
         ),
       ),
     );
+
   }
 
   Widget _buildAccountPlanContainer() {
@@ -568,6 +605,7 @@ class StatsPageState extends State<StatisticsPage> {
                 
                 Row(
                   children: [
+
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text("PLAN",
@@ -585,6 +623,7 @@ class StatsPageState extends State<StatisticsPage> {
                       alignment: Alignment.topRight,
                       child: Row(
                         children: [
+
                           Text("Upgrade",
                             style: GoogleFonts.poppins(
                               fontSize: 14,
@@ -592,10 +631,12 @@ class StatsPageState extends State<StatisticsPage> {
                               color: ThemeColor.lightGrey,
                             ),
                           ),
+
                           const Icon(Icons.arrow_forward_ios,
                             color: ThemeColor.lightGrey,
                             size: 20,
-                          )
+                          ),
+
                         ],
                       ),
                     ),
@@ -620,6 +661,7 @@ class StatsPageState extends State<StatisticsPage> {
         ),
       ),
     );
+
   }
 
   Widget _buildDictionaryFolderCount(String header, String totalUpload, String uploadLimit) {
@@ -635,10 +677,14 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Row(
               children: [
+
                 const Icon(Icons.folder_outlined, size: 21),
+
                 const SizedBox(width: 5),
+
                 Text(
                   header,
                   style: GoogleFonts.poppins(
@@ -648,8 +694,10 @@ class StatsPageState extends State<StatisticsPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
               ],
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 2.0, top: 4.0),
               child: Text("$totalUpload/$uploadLimit",
@@ -661,6 +709,7 @@ class StatsPageState extends State<StatisticsPage> {
                 textAlign: TextAlign.left,
               ),
             ),
+
           ],
         ),
       ),
@@ -679,6 +728,7 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Row(
               children: [
                 Text(
@@ -692,6 +742,7 @@ class StatsPageState extends State<StatisticsPage> {
                 ),
               ],
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(cacheSize,
@@ -703,6 +754,7 @@ class StatsPageState extends State<StatisticsPage> {
                 textAlign: TextAlign.left,
               ),
             ),
+
           ],
         ),
       ),
@@ -728,11 +780,13 @@ class StatsPageState extends State<StatisticsPage> {
         padding: const EdgeInsets.all(18.0),
         child: Stack(
           children: [
+            
             _buildGaugeChart(
               maxValue: maxValue.toDouble(), 
               dataValue: totalUpload.toDouble(),
               text: "${percentage.toString()}%"
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 5),
               child: Center(
@@ -744,10 +798,12 @@ class StatsPageState extends State<StatisticsPage> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
     );
+
   }
 
   Widget _buildUsageGaugeByTypeContainer() {
@@ -783,6 +839,7 @@ class StatsPageState extends State<StatisticsPage> {
               children: [
                 Row(
                   children: [
+                    
                     SizedBox(
                       width: 75,
                       height: 75,
@@ -794,17 +851,20 @@ class StatsPageState extends State<StatisticsPage> {
                         textSize: 12.5
                       ),
                     ),
+
                     Text(
                       "Image", 
                       style: GoogleFonts.poppins(
                         fontSize: 15, fontWeight: FontWeight.bold
                       ),
                     ),
+
                   ],
                 ),
   
                 Row(
                   children: [
+
                     SizedBox(
                       width: 75,
                       height: 75,
@@ -816,12 +876,14 @@ class StatsPageState extends State<StatisticsPage> {
                         textSize: 12.5
                       ),
                     ),
+
                     Text(
                       "Others", 
                       style: GoogleFonts.poppins(
                         fontSize: 15, fontWeight: FontWeight.bold
                       ),
                     ),
+
                   ],
                 ),
               ],
@@ -831,6 +893,7 @@ class StatsPageState extends State<StatisticsPage> {
         ),
       ),
     );
+    
   }
 
   Widget _buildGaugeChart({
@@ -842,6 +905,7 @@ class StatsPageState extends State<StatisticsPage> {
   }) {
     return Stack(
       children: [
+
         SfCircularChart(
           series: <CircularSeries>[
             RadialBarSeries<GaugeChartData, String>(
@@ -862,6 +926,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ],
         ),
+
         Padding(
           padding: const EdgeInsets.only(left: 5),
           child: Center(
@@ -873,6 +938,7 @@ class StatsPageState extends State<StatisticsPage> {
             ),
           ),
         ),
+
       ],
     );
   }
@@ -894,43 +960,61 @@ class StatsPageState extends State<StatisticsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             _buildUsageContainer(),
+
             Padding(
               padding: const EdgeInsets.only(left: 10.0, top: 14.0, right: 8.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Expanded(
                     child: _buildUsageGaugeContainer()
                   ),
+
                   const SizedBox(width: 12),
+
                   Expanded(
                     child: _buildUsageGaugeByTypeContainer(),
                   ),
+
                 ],
               ),
             ),
+
             _buildAccountPlanContainer(),
+
             Padding(
               padding: const EdgeInsets.only(top: 14, left: 8.0, right: 8.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Column(
                     children: [
+
                       _buildDictionaryFolderCount("DICTIONARY", dictionaryTotalUpload, dictionaryUploadLimit),
+
                       const SizedBox(height: 5),
+
                       _buildDictionaryFolderCount("FOLDER", folderTotalUpload, folderUploadLimit),
+
                     ],
                   ),
+
                   const SizedBox(width: 10),
+
                   Expanded(
                     child: _buildAppCache(cacheToString)
                   ),
+
                 ],
               ),
             ),
+
             const SizedBox(height: 2),
+
           ],
         ),
       ),
@@ -938,10 +1022,17 @@ class StatsPageState extends State<StatisticsPage> {
     
   }
 
-  Widget _buildLoading() {
-    return const Center(
-      child: CircularProgressIndicator(color: ThemeColor.darkPurple),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _initializeStatsData();
+  }
+
+  @override
+  void dispose() {
+    dataIsLoading.dispose();
+    tempStorageData.statsFileNameList.clear();
+    super.dispose();
   }
 
   @override
@@ -956,30 +1047,33 @@ class StatsPageState extends State<StatisticsPage> {
             preferredSize: const Size.fromHeight(50.0),
             child: CustomTabBar(
               tabs: [
+
                 Tab(
                   child: Text(
                     'Details',
                     style: GlobalsStyle.tabBarTextStyle,
                   ),
                 ),
+
                 Tab(
                   child: Text(
                     'Storage',
                     style: GlobalsStyle.tabBarTextStyle,
                   ),
                 ),
+
               ],
             ),
           ),
         ).buildAppBar(),
         body: TabBarView(
           children: [
-            dataIsLoading.value ? _buildLoading() : _buildStatsDetailsPage(context),
-            dataIsLoading.value ? _buildLoading() : FutureBuilder<Widget>(
+            dataIsLoading.value ? const LoadingIndicator() : _buildStatsDetailsPage(context),
+            dataIsLoading.value ? const LoadingIndicator() : FutureBuilder<Widget>(
               future: _buildUsagePage(),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting) {
-                  return _buildLoading();
+                  return const LoadingIndicator();
                 } else {
                   return snapshot.data!;
                 }
