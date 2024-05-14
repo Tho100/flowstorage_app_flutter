@@ -97,10 +97,10 @@ class PreviewText extends StatelessWidget {
                 controller: textController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                style: GoogleFonts.roboto(
+                style: GoogleFonts.inter(
                   color: const Color.fromARGB(255, 220, 220, 220),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
                 ),
                 decoration: const InputDecoration(
                   disabledBorder: UnderlineInputBorder(

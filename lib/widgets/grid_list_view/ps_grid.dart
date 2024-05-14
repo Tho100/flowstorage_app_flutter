@@ -48,7 +48,7 @@ class PsGridListView extends StatelessWidget {
     return Padding(
       padding: customPadding,
       child: Align(
-        alignment: isMiniActionButton 
+        alignment: isMiniActionButton
           ? Alignment.bottomRight : Alignment.bottomLeft,
         child: SizedBox(
           width: isMiniActionButton ? 52 : 126, 

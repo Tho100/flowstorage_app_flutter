@@ -1999,28 +1999,24 @@ class HomePageState extends State<HomePage> {
         onLongPress: () {
           if (togglePhotosPressed) {
             _onHoldPhotosItem(index);
-
           } else {
             if (!isPsRecent) {
               _callBottomTrailing(index);
             }
-
           }
         },
-
         onTap: () {
           if (togglePhotosPressed && selectedPhotosIndex.isNotEmpty) {
             _onPhotosItemSelected(index);
-
           } else {
             if (!isPsRecent) {
               _navigateToPreviewFile(index);
             }
-            
           }
         },
         child: Column(
           children: [
+
             if (isPsRecent && tempData.origin == OriginFile.public && index == 0) ... [
               Align(
                 alignment: Alignment.topLeft,
@@ -2028,8 +2024,11 @@ class HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 18.0, top: 12),
                   child: Row(
                     children: [
+
                       const Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
+
                       const SizedBox(width: 8),
+
                       Text(
                         "Recent",
                         style: GoogleFonts.inter(
@@ -2038,15 +2037,19 @@ class HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
+
                     ],
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
+
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
+
                     const SizedBox(width: 10),
                     _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0),
 
@@ -2065,9 +2068,13 @@ class HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+
               const SizedBox(height: 8),
+
               const Divider(color: ThemeColor.lightGrey),
+
             ],
+
             if (tempData.origin == OriginFile.public && index == 3) ... [
               Transform.translate(
                 offset: const Offset(0, -12),
@@ -2077,28 +2084,31 @@ class HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
+
                         const SizedBox(width: 5),
                         _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
                         
                         const SizedBox(width: 26),
                         if (storageData.imageBytesFilteredList.length > 4)
-                          _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
               
                         const SizedBox(width: 26),
                         if (storageData.imageBytesFilteredList.length > 5)
-                          _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
               
                         const SizedBox(width: 26),
                         if (storageData.imageBytesFilteredList.length > 6)
-                          _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
+                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
               
                         const SizedBox(width: 5),
+
                       ],
                     ),
                   ),
                 ),
               ),
             ],
+
             if (tempData.origin == OriginFile.public && !isPsRecent && index > 6) ... [
               if (index == 7)
               Transform.translate(
@@ -2107,8 +2117,11 @@ class HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 18.0),
                   child: Row(
                     children: [
+
                       const Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
+
                       const SizedBox(width: 8),
+
                       Text( 
                         "Discover",
                         style: GoogleFonts.inter(
@@ -2117,6 +2130,7 @@ class HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
+
                     ],
                   ),
                 ),
@@ -2127,10 +2141,10 @@ class HomePageState extends State<HomePage> {
             ],
             
             if (tempData.origin != OriginFile.public && !togglePhotosPressed)
-              IntrinsicHeight(child: _buildDefaultGridListView(imageBytes, index)),
+            IntrinsicHeight(child: _buildDefaultGridListView(imageBytes, index)),
 
             if (tempData.origin != OriginFile.public && togglePhotosPressed)
-              IntrinsicHeight(child: _buildPhotosGridListView(index)),
+            IntrinsicHeight(child: _buildPhotosGridListView(index)),
 
           ],
         ),
