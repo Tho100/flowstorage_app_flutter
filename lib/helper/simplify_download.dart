@@ -26,7 +26,7 @@ class SimplifyDownload {
     currentTableValue = currentTable;
   } 
 
-  Future<void> _videoGallerySaver(Uint8List videoData) async {
+  Future<void> _videoGallerySaver() async {
 
     final directory = Platform.isAndroid 
       ? await getExternalStorageDirectory()
@@ -35,7 +35,7 @@ class SimplifyDownload {
     final videoPath = '${directory!.path}/Flowstorage-$fileNameValue';
     final videoFile = File(videoPath);
     
-    await videoFile.writeAsBytes(videoData);
+    await videoFile.writeAsBytes(fileDataValue!);
 
     await GallerySaver.saveVideo(videoPath);
     
@@ -47,20 +47,22 @@ class SimplifyDownload {
 
     try {
 
-      const generalFilesTableName = {GlobalsTable.homeText, GlobalsTable.psText, GlobalsTable.homeVideo, GlobalsTable.psVideo};
+      const generalFilesTableName = {
+        GlobalsTable.homeText, GlobalsTable.psText, 
+        GlobalsTable.homeVideo, GlobalsTable.psVideo
+      };
 
       if([GlobalsTable.homeImage, GlobalsTable.psImage].contains(currentTableValue)) {
         final setupName = "Flowstorage-$fileNameValue";
         await ImageGallerySaver.saveImage(fileDataValue!, name: setupName);
 
+      } else if ([GlobalsTable.homeVideo, GlobalsTable.psVideo].contains(currentTableValue)) { 
+        await _videoGallerySaver();
+
       } else if ([GlobalsTable.homeText, GlobalsTable.psText].contains(currentTableValue)) {
         final textFileContent = utf8.decode(fileDataValue!);
-        
         await SaveApi().saveFile(
           fileName: fileNameValue!, fileData: textFileContent);
-        
-      } else if ([GlobalsTable.homeVideo, GlobalsTable.psVideo].contains(currentTableValue)) { 
-        await _videoGallerySaver(fileDataValue!);
 
       } else if (!(generalFilesTableName.contains(currentTableValue))) {
         await SaveApi().saveFile(

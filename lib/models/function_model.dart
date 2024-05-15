@@ -131,11 +131,10 @@ class FunctionModel {
   }
 
   Future<void> multipleFilesDownload({
-    required String directoryPath,
     required Set<String> checkedItemsName
   }) async {
 
-    final loadingDialog = SingleTextLoading();    
+    final loadingDialog = SingleTextLoading();
 
     loadingDialog.startLoading(title: "Saving...", context: navigatorKey.currentContext!);
 
@@ -153,8 +152,7 @@ class FunctionModel {
                 ? await OfflineModel().loadOfflineFileByte(fileName)
                 : await _callFileByteData(fileName, tableName!));
 
-        await SaveApi().saveMultipleFiles(
-          directoryPath: directoryPath, 
+        await SaveApi().saveFile(
           fileName: fileName, 
           fileData: getBytes
         );
@@ -188,7 +186,7 @@ class FunctionModel {
       final isItemDirectory = fileType == fileName;
 
       if(isItemDirectory) {
-        await SaveDirectory().selectDirectoryUserDirectory(directoryName: fileName, context: navigatorKey.currentContext!);
+        await SaveDirectory().downloadDirectoryFiles(directoryName: fileName, context: navigatorKey.currentContext!);
         return;
       }
       

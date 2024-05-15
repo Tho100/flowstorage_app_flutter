@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/save_api.dart';
 import 'package:flowstorage_fsc/connection/cluster_fsc.dart';
 import 'package:flowstorage_fsc/encryption/encryption_model.dart';
@@ -71,42 +70,30 @@ class SaveFolder {
 
   }
 
-  Future<void> selectDirectoryUserFolder({
+  Future<void> downloadFolderFiles({
     required String folderName,
     required BuildContext context
   }) async {
 
-    String? directoryPath = await FilePicker.platform.getDirectoryPath();
+    final loadingDialog = SingleTextLoading();     
 
-    if (directoryPath != null) {
-      await downloadDirectoryFiles(
-        folderName: folderName, directoryPath: directoryPath,context: context);
-
-    } else {
-      return;
-      
-    }
-    
-  }
-
-  Future<void> downloadDirectoryFiles({
-    required String folderName,
-    required String directoryPath,
-    required BuildContext context
-  }) async {
+    loadingDialog.startLoading(title: "Saving...", context: context);
 
     try {
-
-      final loadingDialog = SingleTextLoading();      
-      loadingDialog.startLoading(title: "Saving...", context: context);
 
       final dataList = await retrieveParams(folderName);
 
       final nameList = dataList.map((data) => data['name'] as String).toList();
       final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
 
+      await SaveApi().createDirectoryFolder(folderName: folderName);
+
       for(int i=0; i<nameList.length; i++) {
-        await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: nameList[i], fileData: byteList[i]);
+        await SaveApi().saveDirectoryFolderFiles(
+          folderName: folderName, 
+          fileName: nameList[i], 
+          fileData: byteList[i]
+        );
       }
 
       loadingDialog.stopLoading();

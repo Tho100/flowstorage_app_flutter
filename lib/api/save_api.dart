@@ -1,63 +1,84 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:file_picker/file_picker.dart';
 import 'package:logger/logger.dart';
 
 class SaveApi {
   
   final logger = Logger();
 
+  final downloadPath = "/storage/emulated/0/Download";
+
   Future<String> saveFile({
     required String fileName, 
-    required dynamic fileData,
+    required dynamic fileData
   }) async {
-    
-    final result = await FilePicker.platform.getDirectoryPath();
 
-    if (result != null && result.isNotEmpty) {
+    final filePath = "$downloadPath/Flowstorage-$fileName";
+    final file = File(filePath);
 
-      final getFilePath = '$result/$fileName';
-      final file = File(getFilePath);
+    await file.create();
 
-      if (fileData is Uint8List) {
-        await file.writeAsBytes(fileData);
+    try {
 
-      } else if (fileData is String) {
+      if(fileData is Uint8List?) {
+        await file.writeAsBytes(fileData!);
+
+      } else if(fileData is String) {
         await file.writeAsString(fileData);
-
-      } else {
-        logger.e('Exception from saveMultipleFiles {save_api}: unsupported file format');
 
       }
 
-      return file.path;
+      return filePath;
 
+    } catch (err) {
+      logger.e('Exception from saveFile {save_api}');
     }
 
     return "";
     
   }
 
-  Future<void> saveMultipleFiles({
-    required String directoryPath,
-    required String fileName,
-    required dynamic fileData,
+  Future<void> createDirectoryFolder({
+    required String folderName
   }) async {
 
-    final path = '$directoryPath/$fileName';
-    final file = File(path);
-   
-    if (fileData is Uint8List) {
-      await file.writeAsBytes(fileData);
-      
-    } else if (fileData is String) {
-      await file.writeAsString(fileData);
+    final folder = Directory('$downloadPath/$folderName');
+
+    if (!(await folder.exists())) {
+      await folder.create(recursive: true); 
 
     } else {
-      logger.e('Exception from saveMultipleFiles {save_api}: unsupported file format');
+      return;
 
     }
 
+  }
+
+  Future<void> saveDirectoryFolderFiles({
+    required String folderName,
+    required String fileName,
+    required dynamic fileData
+  }) async {
+
+    final filePath = "$downloadPath/$folderName/Flowstorage-$fileName";
+    final file = File(filePath);
+
+    await file.create();
+
+    try {
+
+      if(fileData is Uint8List) {
+        await file.writeAsBytes(fileData);
+
+      } else if(fileData is String) {
+        await file.writeAsString(fileData);
+
+      }
+
+    } catch (err) {
+      logger.e('Exception from saveFile {save_api}');
+    }
+    
   }
 
 }

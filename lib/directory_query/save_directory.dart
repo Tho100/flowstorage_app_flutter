@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -77,27 +76,8 @@ class SaveDirectory {
 
   }
 
-  Future<void> selectDirectoryUserDirectory({
-    required String directoryName,
-    required BuildContext context
-  }) async {
-
-    String? directoryPath = await FilePicker.platform.getDirectoryPath();
-
-    if (directoryPath != null) {
-      await downloadDirectoryFiles(
-        directoryName: directoryName, directoryPath: directoryPath, context: context);
-
-    } else {
-      return;
-
-    }
-    
-  }
-
   Future<void> downloadDirectoryFiles({
     required String directoryName,
-    required String directoryPath,
     required BuildContext context
   }) async {
 
@@ -112,8 +92,14 @@ class SaveDirectory {
       final nameList = dataList.map((data) => data['name'] as String).toList();
       final byteList = dataList.map((data) => data['file_data'] as Uint8List).toList();
       
+      await SaveApi().createDirectoryFolder(folderName: directoryName);
+
       for(int i=0; i<nameList.length; i++) {
-        await SaveApi().saveMultipleFiles(directoryPath: directoryPath, fileName: nameList[i], fileData: byteList[i]);
+        await SaveApi().saveDirectoryFolderFiles(
+          folderName: directoryName, 
+          fileName: nameList[i], 
+          fileData: byteList[i]
+        );
       }
 
       loadingDialog.stopLoading();
@@ -131,4 +117,5 @@ class SaveDirectory {
     }
 
   }
+  
 }

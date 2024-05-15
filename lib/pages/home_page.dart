@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flowstorage_fsc/api/notification_api.dart';
 import 'package:flowstorage_fsc/constant.dart';
 import 'package:flowstorage_fsc/data_classes/data_caller.dart';
@@ -1172,23 +1171,6 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Future<void> _selectDirectoryOnMultipleDownload() async {
-
-    final directoryPath = await FilePicker.platform.getDirectoryPath();
-
-    if (directoryPath!.isNotEmpty) {
-      await functionModel.multipleFilesDownload(
-        checkedItemsName: checkedItemsName, 
-        directoryPath: directoryPath
-      );
-
-    } else {
-      return;
-
-    }
-
-  }
-
   Future<void> _renameDirectory({
     required String oldDirName, 
     required String newDirName
@@ -1240,7 +1222,9 @@ class HomePageState extends State<HomePage> {
         await _makeMultipleSelectedFilesOffline();
       }, 
       saveOnPressed: () async {
-        await _selectDirectoryOnMultipleDownload();
+        await functionModel.multipleFilesDownload(
+          checkedItemsName: checkedItemsName, 
+        );
       }, 
       moveOnPressed: () {
         Navigator.pop(context);
@@ -1470,7 +1454,7 @@ class HomePageState extends State<HomePage> {
           );
           
         } else {
-          await SaveFolder().selectDirectoryUserFolder(folderName: folderName, context: context);
+          await SaveFolder().downloadFolderFiles(folderName: folderName, context: context);
         }
         
       }, 
