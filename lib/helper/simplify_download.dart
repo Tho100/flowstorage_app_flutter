@@ -47,7 +47,10 @@ class SimplifyDownload {
 
     try {
 
-      const generalFilesTableName = {GlobalsTable.homeText, GlobalsTable.psText, GlobalsTable.homeVideo, GlobalsTable.psVideo};
+      const generalFilesTableName = {
+        GlobalsTable.homeText, GlobalsTable.psText, 
+        GlobalsTable.homeVideo, GlobalsTable.psVideo
+      };
 
       if([GlobalsTable.homeImage, GlobalsTable.psImage].contains(currentTableValue)) {
         final setupName = "Flowstorage-$fileNameValue";

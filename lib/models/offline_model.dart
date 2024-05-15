@@ -124,7 +124,7 @@ class OfflineModel {
     };
 
     final file = File('${offlineDirs.path}/$fileName');
-    final fileDataValue = file.readAsBytesSync();
+    final fileDataValue = await file.readAsBytes();
     
     final fileType = fileName.split('.').last;
 
