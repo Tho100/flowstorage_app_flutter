@@ -15,7 +15,6 @@ import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
-import 'package:flowstorage_fsc/widgets/loading_indicator.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mysql_client/mysql_client.dart';
-import 'package:provider/provider.dart';
 
 class FileSearchPagePs extends StatefulWidget {
 
@@ -90,13 +88,17 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           padding: const EdgeInsets.only(left: 12.0, top: 6.0),
           child: Row(
             children: [
+
               Flexible(
                 child: buildSearchBar(),
               ),
+
               const SizedBox(width: 6),
               buildSearchButton(),
+
               const SizedBox(width: 6),
               buildMoreOptionsButton(),
+
             ],
           ),
         ),
@@ -169,8 +171,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
         Align(
           alignment: Alignment.topLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 14.0, top: 6),
-            child: Text("Discover", 
+            padding: const EdgeInsets.only(left: 14.0, top: 6, bottom: 10),
+            child: Text("Upload date", 
               style: GoogleFonts.inter(
                 color: ThemeColor.secondaryWhite,
                 fontWeight: FontWeight.w800,
@@ -180,7 +182,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           ),
         ),
 
-        buildResultWidget(),
+        buildUploadDateButtonsColumn(),
 
       ],
     );
@@ -227,10 +229,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               selectedFilterSearch = "uploader_name";
               searchBarHintTextNotifier.value = "Search uploader name";
             },
-            onPast24HoursPressed: () => onPast24HoursPressed(),
-            onPastWeekPressed: () => onPastWeekPressed(),
-            onPastMonthPressed: () => onPastMonthPressed(),
-            onPastYearPressed: () => onPastYearPressed()
           );
         },
         child: const Icon(CupertinoIcons.ellipsis_vertical, color: ThemeColor.justWhite)
@@ -320,109 +318,100 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     );
   }
 
-  Widget buildListView() {
+  Widget buildUploadDateButton({
+    required String header, 
+    required String subheader,
+    required VoidCallback onPressed,
+  }) {
+    return Row(
+      children: [
 
-    const itemExtentValue = 90.0;
-    const bottomExtraSpacesHeight = 95.0;
+        Expanded(
+          child: InkWell(
+            onTap: onPressed,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18.0, top: 12.0, bottom: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
 
-    return Consumer<PsStorageDataProvider>(
-      builder: (context, storageData, child) {
-        return RawScrollbar(
-          radius: const Radius.circular(38),
-          thumbColor: ThemeColor.darkWhite,
-          minThumbLength: 2,
-          thickness: 2,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
-            itemExtent: itemExtentValue,
-            itemCount: storageData.psSearchTitleList.length,
-            itemBuilder: (context, index) {
-
-              final imageBytes = base64.decode(psStorageData.psSearchImageBytesList[index]);
-              
-              final title = storageData.psSearchTitleList[index];
-              final uploaderName = storageData.psSearchUploaderList[index];
-              final uploadDate = uploadDateList[index];
-
-              return InkWell(
-                onTap: () => openSearchedFile(index),
-                child: Ink(
-                  color: ThemeColor.darkBlack,
-                  child: ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: Image.memory(imageBytes,
-                        fit: BoxFit.cover, height: 70, width: 62
-                      ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: ThemeColor.darkPurple,
+                      borderRadius: BorderRadius.circular(35),
                     ),
-                    title: Transform.translate(
-                      offset: const Offset(0, -6),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: GoogleFonts.inter(
-                              color: ThemeColor.justWhite,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 17,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),              
-                          const SizedBox(height: 3),      
-                          Text(
-                            "Uploaded by $uploaderName",
-                            style: GoogleFonts.inter(
-                              color: ThemeColor.secondaryWhite,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 13,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(uploadDate!,
-                            style: GoogleFonts.inter(
-                              color: ThemeColor.thirdWhite, 
-                              fontWeight: FontWeight.w800,
-                              fontSize: 11.8
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: const Icon(Icons.replay, color: ThemeColor.justWhite),
                   ),
-                ),
-              );
-            },
+                
+                  const SizedBox(width: 15),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Text(
+                        header,
+                        style: GlobalsStyle.settingsLeftTextStyle,
+                        textAlign: TextAlign.start,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Transform.translate(
+                        offset: const Offset(0, -4),
+                        child: SizedBox(
+                          width: 305,
+                          child: Text(
+                            subheader,
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w800,
+                              color: ThemeColor.thirdWhite
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
           ),
-        );
-      },
+        ),
+        
+      ],
     );
   }
 
-  Widget buildResultWidget() {
-
-    final mediaQuery = isTagsVisibleNotifier.value 
-      ? MediaQuery.of(context).size.height-328
-      : MediaQuery.of(context).size.height-195;
-
-    final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
-
-    if (isSearchingForFile) {
-      return const LoadingIndicator();
-
-    } else if (verifySearching) {
-      return SizedBox(
-        height: mediaQuery,
-        child: buildListView(),
-      );
-
-    } else {
-      return buildOnEmpty();
-
-    } 
-
+  Widget buildUploadDateButtonsColumn() {
+    return Column(
+      children: [
+        buildUploadDateButton(
+          header: "Past day", 
+          subheader: "Uploads from last 24 hours",
+          onPressed: onPast24HoursPressed
+        ),
+        buildUploadDateButton(
+          header: "Past week", 
+          subheader: "Uploads from last 7 days",
+          onPressed: onPastWeekPressed
+        ),
+        buildUploadDateButton(
+          header: "Past month", 
+          subheader: "Uploads from last 30 days",
+          onPressed: onPastMonthPressed
+        ),
+        buildUploadDateButton(
+          header: "Past year", 
+          subheader: "Uploads from last 365 days",
+          onPressed: onPastYearPressed
+        ),
+      ]
+    );
   }
 
   Future<List<Map<String, String>>> getSearchedFileData(String keywordInput) async {
