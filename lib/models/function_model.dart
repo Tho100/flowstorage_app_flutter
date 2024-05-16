@@ -186,7 +186,7 @@ class FunctionModel {
       final isItemDirectory = fileType == fileName;
 
       if(isItemDirectory) {
-        await SaveDirectory().downloadDirectoryFiles(directoryName: fileName, context: navigatorKey.currentContext!);
+        await SaveDirectory().downloadDirectoryFiles(directoryName: fileName);
         return;
       }
       

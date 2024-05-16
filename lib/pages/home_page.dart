@@ -1454,7 +1454,7 @@ class HomePageState extends State<HomePage> {
           );
           
         } else {
-          await SaveFolder().downloadFolderFiles(folderName: folderName, context: context);
+          await SaveFolder().downloadFolderFiles(folderName: folderName);
         }
         
       }, 

@@ -1,6 +1,7 @@
 import 'package:flowstorage_fsc/api/compressor_api.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
+import 'package:flowstorage_fsc/main.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -72,12 +73,11 @@ class SaveFolder {
 
   Future<void> downloadFolderFiles({
     required String folderName,
-    required BuildContext context
   }) async {
 
     final loadingDialog = SingleTextLoading();     
 
-    loadingDialog.startLoading(title: "Saving...", context: context);
+    loadingDialog.startLoading(title: "Saving...", context: navigatorKey.currentContext!);
 
     try {
 
