@@ -177,12 +177,10 @@ class FunctionModel {
 
     try {
 
-      final fileType = fileName.split('.').last;
-
-      final tableName = tempData.origin != OriginFile.home 
-        ? Globals.fileTypesToTableNamesPs[fileType]! 
-        : Globals.fileTypesToTableNames[fileType]!;
-
+      final fileType = fileName.contains('.') 
+        ? fileName.split('.').last
+        : fileName;
+      
       final isItemDirectory = fileType == fileName;
 
       if(isItemDirectory) {
@@ -191,6 +189,10 @@ class FunctionModel {
       }
       
       loadingDialog.startLoading(title: "Downloading...", context: navigatorKey.currentContext!);
+
+      final tableName = tempData.origin != OriginFile.home 
+        ? Globals.fileTypesToTableNamesPs[fileType]! 
+        : Globals.fileTypesToTableNames[fileType]!;
 
       if(tempData.origin != OriginFile.offline) {
 
