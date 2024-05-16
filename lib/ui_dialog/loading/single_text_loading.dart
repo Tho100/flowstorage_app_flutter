@@ -19,7 +19,7 @@ class SingleTextLoading {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => _buildLoadingDialog(context),
+      builder: (_) => _buildLoadingDialog(),
     );
   }
 
@@ -27,7 +27,7 @@ class SingleTextLoading {
     Navigator.pop(context);
   }
 
-  AlertDialogWidget _buildLoadingDialog(BuildContext context) {
+  AlertDialogWidget _buildLoadingDialog() {
     
     const color = ThemeColor.darkPurple;
 
