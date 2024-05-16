@@ -194,15 +194,16 @@ class PreviewAudioState extends State<PreviewAudio> {
 
                 SliderTheme(
                   data: const SliderThemeData(
+                    trackHeight: 2.5,
                     thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: 5.2
+                      enabledThumbRadius: 5.6
                     )
                   ),
                   child: Slider(value: audioPosition,
                     min: 0,
                     max: audioPlayerController.duration?.inSeconds.toDouble() ?? 100,
                     thumbColor: ThemeColor.justWhite,
-                    inactiveColor: ThemeColor.thirdWhite,
+                    inactiveColor: ThemeColor.darkPurple,
                     activeColor: ThemeColor.justWhite,
                     onChanged: (double value) {
                       sliderValueController.add(value);
@@ -215,6 +216,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                   padding: const EdgeInsets.only(left: 24.5, right: 24.5),
                   child: Row(
                     children: [
+
                       ValueListenableBuilder<String>(
                         valueListenable: currentAudioDuration,
                         builder: (context, value, child) {
@@ -223,7 +225,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                             style: GoogleFonts.inter(
                               color: ThemeColor.secondaryWhite,
                               fontWeight: FontWeight.w800,
-                              fontSize: 15
+                              fontSize: 14
                             ),
                           );
                         }
@@ -236,7 +238,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                         style: GoogleFonts.inter(
                           color: ThemeColor.secondaryWhite,
                           fontWeight: FontWeight.w800,
-                          fontSize: 15
+                          fontSize: 14
                         ),
                       ),
 
@@ -253,8 +255,8 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildPlayPauseButton() {
     return SizedBox(
-      width: 68,
-      height: 68,
+      width: 66.5,
+      height: 66.5,
       child: ValueListenableBuilder(
         valueListenable: iconPausePlayNotifier,
         builder: (context, value, child) {
@@ -271,7 +273,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             },
             child: Transform.translate(
               offset: const Offset(-2, 0),
-              child: Icon(value, color: ThemeColor.darkBlack, size: 40),
+              child: Icon(value, color: ThemeColor.darkBlack, size: 38.5),
             ),
           );
         },
@@ -281,13 +283,13 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildFastBackward() {
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: 96,
+      height: 96,
       child: SplashWidget(
         child: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () => forwardingImplementation("negative"),
-          icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 50),
+          icon: const Icon(Icons.fast_rewind_rounded, color: ThemeColor.justWhite, size: 47.5),
         ),
       ),
     );
@@ -295,13 +297,13 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   Widget buildFastForward() {
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: 96,
+      height: 96,
       child: SplashWidget(
         child: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () => forwardingImplementation("positive"),
-          icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 48),
+          icon: const Icon(Icons.fast_forward_rounded, color: ThemeColor.justWhite, size: 47.5),
         ),
       ),
     );
@@ -344,6 +346,7 @@ class PreviewAudioState extends State<PreviewAudio> {
   Widget buildHeader() {
     return Column(
       children: [
+
         Text(
           tempData.selectedFileName.substring(0, tempData.selectedFileName.length-4),
           style: GoogleFonts.inter(
@@ -353,7 +356,9 @@ class PreviewAudioState extends State<PreviewAudio> {
           ),
           textAlign: TextAlign.center,
         ),
+
         const SizedBox(height: 6),
+
         Text(
           userData.username,
           style: GoogleFonts.inter(
@@ -363,6 +368,7 @@ class PreviewAudioState extends State<PreviewAudio> {
           ),
           textAlign: TextAlign.center,
         ),
+
       ],
     );
   }
@@ -387,8 +393,6 @@ class PreviewAudioState extends State<PreviewAudio> {
           ),
         ),
     
-      
-
         Column(
           children: [
     
@@ -427,7 +431,7 @@ class PreviewAudioState extends State<PreviewAudio> {
               children: [
     
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 22.0),
                   child: buildCommentIconButton(),
                 ),
     
@@ -442,7 +446,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 const Spacer(),
     
                 Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
+                  padding: const EdgeInsets.only(right: 24.0),
                   child: buildKeepPlaying(),
                 ),
     
