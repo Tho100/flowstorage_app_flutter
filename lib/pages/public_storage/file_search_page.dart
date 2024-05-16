@@ -114,7 +114,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 14.0, bottom: 6),
+                      padding: const EdgeInsets.only(left: 14.0, bottom: 14),
                       child: Text("Tags", 
                         style: GoogleFonts.inter(
                           color: ThemeColor.secondaryWhite,
@@ -126,7 +126,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
+                    padding: const EdgeInsets.only(left: 14.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: SingleChildScrollView(
@@ -143,7 +143,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
+                    padding: const EdgeInsets.only(left: 14.0),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -236,27 +236,30 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
 
   Widget buildTagsButton(String tagName) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: ElevatedButton(
-        onPressed: () async => await searchByTagsOnPressed(tagName),
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor: GlobalsStyle.psTagsToColor[tagName],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(35.0),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.label_outline, color: ThemeColor.justWhite), 
-            const SizedBox(width: 8),
-            Text(tagName,
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800
-              )
+      padding: const EdgeInsets.only(right: 8.0, bottom: 10.0, top: 1.5),
+      child: SizedBox(
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () async => await searchByTagsOnPressed(tagName),
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            backgroundColor: GlobalsStyle.psTagsToColor[tagName],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35.0),
             ),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.label_outline, color: ThemeColor.justWhite), 
+              const SizedBox(width: 8),
+              Text(tagName,
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w800
+                )
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -309,7 +312,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
                       color: ThemeColor.darkPurple,
                       borderRadius: BorderRadius.circular(35),
                     ),
-                    child: const Icon(Icons.replay, color: ThemeColor.justWhite),
+                    child: const Icon(Icons.history, color: ThemeColor.justWhite),
                   ),
                 
                   const SizedBox(width: 15),
