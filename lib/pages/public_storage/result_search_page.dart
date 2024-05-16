@@ -40,32 +40,34 @@ class ResultSearchPagePs extends StatelessWidget {
   }
 
   Widget buildOnEmpty() {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "No results found",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800,
-                color: ThemeColor.secondaryWhite,
-                fontSize: 21,
-              ),
-              textAlign: TextAlign.center,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          Text(
+            "No results found",
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w800,
+              color: ThemeColor.secondaryWhite,
+              fontSize: 21,
             ),
-            const SizedBox(height: 8),
-            Text(
-              "Check the spelling or try different keywords",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800,
-                color: ThemeColor.thirdWhite,
-                fontSize: 15,
-              ),
-              textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(
+            "Check the spelling or try different keywords",
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w800,
+              color: ThemeColor.thirdWhite,
+              fontSize: 15,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+
+        ],
       ),
     );
   }
@@ -112,6 +114,7 @@ class ResultSearchPagePs extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        
                         Text(
                           title,
                           style: GoogleFonts.inter(
@@ -121,17 +124,21 @@ class ResultSearchPagePs extends StatelessWidget {
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),              
+
                         const SizedBox(height: 3),      
+
                         Text(
                           "Uploaded by $uploaderName",
                           style: GoogleFonts.inter(
                             color: ThemeColor.secondaryWhite,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w800,
                             fontSize: 13,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
+
                         const SizedBox(height: 8),
+
                         Text(uploadDate!,
                           style: GoogleFonts.inter(
                             color: ThemeColor.thirdWhite, 
@@ -139,6 +146,7 @@ class ResultSearchPagePs extends StatelessWidget {
                             fontSize: 12.8
                           ),
                         ),
+
                       ],
                     ),
                   ),

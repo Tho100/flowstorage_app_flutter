@@ -2,7 +2,6 @@ import 'package:flowstorage_fsc/themes/theme_style.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_title.dart';
-import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_date_search_filter.dart';
 import 'package:flowstorage_fsc/widgets/sheet_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +33,6 @@ class BottomTrailingPsSearchFilter {
     required BuildContext context,
     required VoidCallback onTitlePressed,
     required VoidCallback onUploaderNamePressed,
-    required VoidCallback onPast24HoursPressed,
-    required VoidCallback onPastWeekPressed,
-    required VoidCallback onPastMonthPressed,
-    required VoidCallback onPastYearPressed,
   }) {
     return BottomTrailing().buildTrailing(
       context: context, 
@@ -54,20 +49,6 @@ class BottomTrailingPsSearchFilter {
         _buildFilterButton(
           text: "File title",
           onPressed: onTitlePressed,
-          context: context
-        ),
-
-        _buildFilterButton(
-          text: "Upload date",
-          onPressed: () {
-            PsDateSearchFilterBottomTrailing().buildBottomTrailing(
-              context: context,
-              onPast24HoursPressed: onPast24HoursPressed,
-              onPastWeekPressed: onPastWeekPressed,
-              onPastMonthPressed: onPastMonthPressed,
-              onPastYearPressed: onPastYearPressed,
-            );
-          },
           context: context
         ),
 
