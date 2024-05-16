@@ -34,7 +34,6 @@ class FileSearchPagePs extends StatefulWidget {
 
 class FileSearchPagePsState extends State<FileSearchPagePs> {
 
-  bool shouldReloadListView = false; 
   bool isSearchingForFile = false; 
 
   String selectedFilterSearch = "title";
@@ -80,7 +79,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
   };
 
   Widget buildBody() {
-
     return Column(
       children: [
 
@@ -257,37 +255,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w800
               )
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildOnEmpty() {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "No results found",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800,
-                color: ThemeColor.secondaryWhite,
-                fontSize: 21,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Check the spelling or try different keywords",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w800,
-                color: ThemeColor.thirdWhite,
-                fontSize: 15,
-              ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -527,7 +494,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     }
 
     setState(() {
-      shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
 
@@ -583,7 +549,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     }
 
     setState(() {
-      shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
 
@@ -745,7 +710,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     }
 
     setState(() {
-      shouldReloadListView = !shouldReloadListView;
       isSearchingForFile = false;
     });
 
@@ -842,8 +806,6 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     for(final title in titles) {
       psStorageData.setPsSearchTitle(title);
     }
-
-    shouldReloadListView = !shouldReloadListView;
     
     tempData.setOrigin(OriginFile.publicSearching);
 
