@@ -102,6 +102,7 @@ class SaveFolder {
       await CallNotify().customNotification(title: "Folder Saved", subMessage: "${nameList.length} File(s) has been downloaded");
 
     } catch (err) {
+      loadingDialog.stopLoading();
       SnackAlert.errorSnack("Failed to save folder.");
     }
 

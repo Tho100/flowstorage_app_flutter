@@ -28,6 +28,7 @@ class DeleteDialog {
             ),
           ),
           actions: [
+
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
@@ -38,6 +39,7 @@ class DeleteDialog {
                 ),
               ),
             ),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: ThemeColor.mediumBlack,
@@ -55,6 +57,7 @@ class DeleteDialog {
                 ),
               ),
             ),
+            
           ],
         );
       },

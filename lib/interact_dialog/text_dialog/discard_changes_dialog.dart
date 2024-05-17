@@ -17,6 +17,7 @@ class DiscardChangesDialog {
             )
           ),
           actions: [
+
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('Cancel',
@@ -26,6 +27,7 @@ class DiscardChangesDialog {
                 ),
               ),
             ),
+
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: Text('Discard',
@@ -35,6 +37,7 @@ class DiscardChangesDialog {
                 ),
               ),
             ),
+            
           ],
         );
       },

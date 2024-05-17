@@ -76,9 +76,12 @@ class CreateDirectoryDialog {
             ),
             
             const SizedBox(width: 18),
+            
           ],
         ),
+
         const SizedBox(height: 12)
+
       ]
     );
   }
