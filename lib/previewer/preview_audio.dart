@@ -20,6 +20,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logger/logger.dart';
+import 'package:marquee/marquee.dart';
 
 class PreviewAudio extends StatefulWidget {
 
@@ -344,17 +345,52 @@ class PreviewAudioState extends State<PreviewAudio> {
   }
 
   Widget buildHeader() {
+
+    final availableWidth = MediaQuery.sizeOf(context).width - 45;
+    
+    final fileName = tempData.selectedFileName.split('.').first;
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: fileName,
+        style: GoogleFonts.inter(
+          color: Colors.white,
+          fontSize: 23,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+
+    final textWidth = textPainter.width;
+
     return Column(
       children: [
 
-        Text(
-          tempData.selectedFileName.substring(0, tempData.selectedFileName.length-4),
-          style: GoogleFonts.inter(
-            color: ThemeColor.justWhite,
-            fontSize: 23,
-            fontWeight: FontWeight.w800
-          ),
-          textAlign: TextAlign.center,
+        SizedBox(
+          width: availableWidth,
+          height: 32,
+          child: textWidth > availableWidth
+            ? Marquee(
+                text: fileName,
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.w800,
+                ),
+                blankSpace: 45.0,
+              )  
+            : Text(
+                fileName,
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.w800,
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
         ),
 
         const SizedBox(height: 6),
