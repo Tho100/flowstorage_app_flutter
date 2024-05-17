@@ -18,6 +18,7 @@ class SaveTextDialog {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0, left: 18.0, right: 18.0, top: 16.0),
               child: Text(
@@ -79,9 +80,12 @@ class SaveTextDialog {
             ),
             
             const SizedBox(width: 18),
+            
           ],
         ),
+
         const SizedBox(height: 12),
+
       ]
     );
   }
