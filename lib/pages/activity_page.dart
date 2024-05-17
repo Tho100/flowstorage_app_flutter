@@ -132,8 +132,11 @@ class ActivityPageState extends State<ActivityPage> {
 
           Row(
             children: [
+
               buildHeader("Legacy", Icons.hourglass_bottom_outlined),
+
               const Spacer(),
+
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
                 child: Text("Files older than 30 days",
@@ -144,6 +147,7 @@ class ActivityPageState extends State<ActivityPage> {
                   ),
                 ),
               ),
+
             ],
           ),
 
@@ -188,8 +192,11 @@ class ActivityPageState extends State<ActivityPage> {
         padding: const EdgeInsets.only(top: 8.0, left: 18.0),
         child: Row(
           children: [
+
             Icon(icon, color: ThemeColor.justWhite, size: 20),
+
             const SizedBox(width: 8),
+
             Text(headerMessage, 
               style: GoogleFonts.inter(
                 fontSize: 17, 
@@ -197,6 +204,7 @@ class ActivityPageState extends State<ActivityPage> {
                 fontWeight: FontWeight.w800,
               ),
             ),
+
           ],
         ),
       ),
@@ -228,6 +236,7 @@ class ActivityPageState extends State<ActivityPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         GestureDetector(
           onTap: () {
             final fileName = mostUploadedFilesName[index];
@@ -291,6 +300,7 @@ class ActivityPageState extends State<ActivityPage> {
             ),
           ),
         ),
+
       ],
     );
 
@@ -318,7 +328,7 @@ class ActivityPageState extends State<ActivityPage> {
               children: [
 
                 Container(
-                  width: width-35,
+                  width: width-40,
                   height: 125,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
@@ -329,8 +339,8 @@ class ActivityPageState extends State<ActivityPage> {
                 Padding(
                   padding: const EdgeInsets.all(2),
                   child: Container(
-                    width: width- 35 - 4,
-                    height: 125 - 4,
+                    width: width - 40 - 4,
+                    height: 121,
                     decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(16),
@@ -411,11 +421,11 @@ class ActivityPageState extends State<ActivityPage> {
           const SizedBox(width: 4),
 
           Padding(
-            padding: const EdgeInsets.only(right: 18.5),
+            padding: const EdgeInsets.only(right: 24.5),
             child: GestureDetector(
               onTap: () => NavigatePage.goToPageStatistics(),
               child: Container(
-                width: width-280,
+                width: width-260,
                 height: 95,
                 decoration: BoxDecoration(
                   color: ThemeColor.justWhite,
@@ -426,6 +436,7 @@ class ActivityPageState extends State<ActivityPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text("Go to \nstatistics",
                         style: GoogleFonts.poppins(
                           color: ThemeColor.secondaryPurple,
@@ -433,8 +444,11 @@ class ActivityPageState extends State<ActivityPage> {
                           fontSize: 19
                         ),
                       ),
+
                       const Spacer(),
+
                       const Icon(Icons.chevron_right, color: ThemeColor.secondaryPurple)
+
                     ],
                   ),
                 ),
@@ -445,7 +459,6 @@ class ActivityPageState extends State<ActivityPage> {
         ],
       ),
     );
-
   } 
 
   Widget buildMostUploaded(double width) {
@@ -461,6 +474,7 @@ class ActivityPageState extends State<ActivityPage> {
     
           Column(
             children: [
+
               Container(
                 width: width-205,
                 height: 95,
@@ -605,15 +619,18 @@ class ActivityPageState extends State<ActivityPage> {
         padding: const EdgeInsets.only(right: 18.0),
         child: Row(
           children: [
+
             Image.asset(
               'assets/images/dir1.jpg',
               width: 70,
               height: 70,
             ),
+
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Text(name,
                   style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
@@ -622,6 +639,7 @@ class ActivityPageState extends State<ActivityPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
                 Text(type,
                   style: GoogleFonts.inter(
                     color: ThemeColor.thirdWhite,
@@ -629,9 +647,11 @@ class ActivityPageState extends State<ActivityPage> {
                     fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left
-                )
+                ),
+
               ],
             ),
+
           ],
         ),
       ),
@@ -683,6 +703,7 @@ class ActivityPageState extends State<ActivityPage> {
         padding: const EdgeInsets.only(right: 18.0),
         child: Row(
           children: [
+
             Padding(
               padding: const EdgeInsets.only(left: 12.0, right: 8.0),
               child: ClipRRect(
@@ -695,10 +716,12 @@ class ActivityPageState extends State<ActivityPage> {
                 ),
               ),
             ),
+
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Text(fileName,
                   style: GoogleFonts.inter(
                     color: ThemeColor.secondaryWhite,
@@ -707,6 +730,7 @@ class ActivityPageState extends State<ActivityPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
                 Text(date,
                   style: GoogleFonts.inter(
                     color: ThemeColor.thirdWhite,
@@ -714,9 +738,11 @@ class ActivityPageState extends State<ActivityPage> {
                     fontWeight: FontWeight.w800
                   ),
                   textAlign: TextAlign.left
-                )
+                ),
+
               ],
             ),
+
           ],
         ),
       ),
@@ -778,6 +804,7 @@ class ActivityPageState extends State<ActivityPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Text("Discover Public Storage",
                   style: GoogleFonts.poppins(
                     color: ThemeColor.darkWhite,
@@ -786,6 +813,7 @@ class ActivityPageState extends State<ActivityPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
                 Text("Open community for file sharing",  
                   style: GoogleFonts.poppins(
                     color: ThemeColor.thirdWhite,
@@ -794,6 +822,7 @@ class ActivityPageState extends State<ActivityPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+
               ],
             ),
 
@@ -900,24 +929,34 @@ class ActivityPageState extends State<ActivityPage> {
   }
 
   String getDayOfWeek(int weekday) {
+
     switch (weekday) {
       case DateTime.monday:
         return 'Monday';
+
       case DateTime.tuesday:
         return 'Tuesday';
+
       case DateTime.wednesday:
         return 'Wednesday';
+
       case DateTime.thursday:
         return 'Thursday';
+
       case DateTime.friday:
         return 'Friday';
+
       case DateTime.saturday:
         return 'Saturday';
+
       case DateTime.sunday:
         return 'Sunday';
+
       default:
         return '';
+        
     }
+
   }
 
   List<String> filterNamesByType(String fileType, int count) {
