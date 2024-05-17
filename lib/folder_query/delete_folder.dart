@@ -17,11 +17,11 @@ class DeleteFolder {
 
   Future<void> delete() async {
 
-    const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle";
+    const deleteFolderQuery = "DELETE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldname";
     final params = {
       'username': userData.username, 
-      'foldtitle': EncryptionClass().encrypt(folderName)
-      };
+      'foldname': EncryptionClass().encrypt(folderName)
+    };
 
     await crud.delete(
       query: deleteFolderQuery, 
@@ -31,4 +31,5 @@ class DeleteFolder {
     tempStorageData.folderNameList.remove(folderName);
 
   }
+
 }
