@@ -421,11 +421,11 @@ class ActivityPageState extends State<ActivityPage> {
           const SizedBox(width: 4),
 
           Padding(
-            padding: const EdgeInsets.only(right: 24.5),
+            padding: const EdgeInsets.only(right: 20.5),
             child: GestureDetector(
               onTap: () => NavigatePage.goToPageStatistics(),
               child: Container(
-                width: width-260,
+                width: width-250,
                 height: 95,
                 decoration: BoxDecoration(
                   color: ThemeColor.justWhite,
