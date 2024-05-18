@@ -190,17 +190,22 @@ class PreviewVideoState extends State<PreviewVideo> {
               child: IconButton(
                 padding: EdgeInsets.zero,
                 onPressed: () {
+
                   setState(() {
                     isLandscapeMode = !isLandscapeMode;
                   });
+
                   if (isLandscapeMode) {
                     toLandscapeMode();
                     PreviewFileState.bottomBarVisibleNotifier.value = false;
+
                   } else {
                     toPortraitMode();
                     PreviewFileState.bottomBarVisibleNotifier.value = true;
                     videoIsTappedNotifier.value = true;
+
                   }
+
                 },
                 icon: isLandscapeMode
                   ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
@@ -298,17 +303,21 @@ class PreviewVideoState extends State<PreviewVideo> {
                             iconPausePlayNotifier.value = Icons.pause;
                             videoPlayerController.play();
                             videoIsEnded = false;
+
                           } else {
                             iconPausePlayNotifier.value = buttonPlayPausePressed 
                               ? Icons.play_arrow
                               : Icons.pause;
+
                           }
                           
                           if (buttonPlayPausePressed) {
                             videoPlayerController.pause();
+
                           } else {                
                             iconPausePlayNotifier.value = Icons.pause;
                             videoPlayerController.play();
+                            
                           }
                       
                           Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);

@@ -14,6 +14,7 @@ class PreviewImage extends StatefulWidget {
 
   @override
   PreviewImageState createState() => PreviewImageState();
+
 }
 
 class PreviewImageState extends State<PreviewImage> {
@@ -56,17 +57,15 @@ class PreviewImageState extends State<PreviewImage> {
 
     if (tempData.origin == OriginFile.publicSearching || tempData.origin == OriginFile.public) {
       return buildImageWidget(currentSelectedIndex);
+    } 
 
-    } else {
-      return PageView.builder(
-        physics: const ClampingScrollPhysics(),
-        controller: pageController,
-        itemCount: filteredNames.length,
-        onPageChanged: handlePageChange,
-        itemBuilder: (context, index) => buildImageWidget(index),
-      );
-
-    }
+    return PageView.builder(
+      physics: const ClampingScrollPhysics(),
+      controller: pageController,
+      itemCount: filteredNames.length,
+      onPageChanged: handlePageChange,
+      itemBuilder: (context, index) => buildImageWidget(index),
+    );
 
   }
   

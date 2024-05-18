@@ -35,8 +35,6 @@ class LocalStorageModel {
 
     try {
 
-      List<String> dataList = [];
-
       final localDir = await _retrieveLocalDirectory(
         customFolder: customFolder
       );
@@ -45,11 +43,7 @@ class LocalStorageModel {
 
       final fileContent = await setupFiles.readAsLines();
       
-      for(final item in fileContent) {
-        dataList.add(item);
-      }
-
-      return dataList;
+      return fileContent;
       
     } catch(err, st) {
       logger.e('Exception from readLocalAccountUsernames {local_storage_model}', err, st); 
@@ -196,6 +190,7 @@ class LocalStorageModel {
     }
 
     List<String> accountInfo = [];
+
     accountInfo.add(encryption.decrypt(username));
     accountInfo.add(encryption.decrypt(email));
     accountInfo.add(accountType);
@@ -220,6 +215,7 @@ class LocalStorageModel {
 
     final getDirApplication = await getApplicationDocumentsDirectory();
     final setupPath = '${getDirApplication.path}/$folderName';
+    
     return Directory(setupPath);
 
   }

@@ -68,12 +68,11 @@ class PreviewText extends StatelessWidget {
       resetData();
       return await discardChangesConfirmation(context);
 
-    } else {
-      resetData();
-      return true;
-      
-    }
+    } 
 
+    resetData();
+    return true;
+    
   }
 
   @override
@@ -83,10 +82,14 @@ class PreviewText extends StatelessWidget {
       child: FutureBuilder<Uint8List>(
         future: callTextDataAsync(),
         builder: (context, snapshot) {
+
           if (snapshot.hasData) {
+
             final emptyLines = List.filled(5, '\n').join();
             final decodedText = utf8.decode(snapshot.data!);
+            
             textController.text = "$decodedText$emptyLines";
+
             return Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 30.0),
               child: TextFormField(
@@ -119,10 +122,10 @@ class PreviewText extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const FailedLoad();
     
-          } else {
-            return const LoadingIndicator();
-    
-          }
+          } 
+
+          return const LoadingIndicator();
+  
         },
       ),
     );

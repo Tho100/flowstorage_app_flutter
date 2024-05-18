@@ -289,12 +289,11 @@ class FunctionModel {
       final index = psStorageData.psSearchNameList.indexOf(tempData.selectedFileName);
       return base64.decode(psStorageData.psSearchImageBytesList[index]);
 
-    } else {
-      return psStorageData.isFromMyPs 
-        ? psStorageData.myPsImageBytesList[originalIndex]
-        : psStorageData.psImageBytesList[originalIndex];
-
-    }
+    } 
+    
+    return psStorageData.isFromMyPs 
+      ? psStorageData.myPsImageBytesList[originalIndex]
+      : psStorageData.psImageBytesList[originalIndex];
 
   }
 
@@ -355,9 +354,9 @@ class FunctionModel {
     required String fileName
   }) async {
 
-    try {
+    final singleLoading = SingleTextLoading();
 
-      final singleLoading = SingleTextLoading();
+    try {
 
       final fileType = fileName.split('.').last;
       final tableName = Globals.fileTypesToTableNames[fileType]!;
@@ -391,6 +390,7 @@ class FunctionModel {
       await CallNotify().customNotification(title: "Offline", subMessage: "1 Item now available offline");
 
     } catch (err, st) {
+      singleLoading.stopLoading();
       logger.e('Exception from makeAvailableOffline {function_model}', err, st); 
     }
 
@@ -410,20 +410,17 @@ class FunctionModel {
         final index = storageData.fileNamesFilteredList.indexOf(fileName);
         return storageData.imageBytesFilteredList.elementAt(index)!;
 
-      } else {
-
-        if(tempData.origin != OriginFile.offline) {
-          return isCompressed 
-            ? CompressorApi.compressByte(
-              await _callFileByteData(fileName, fileTable))
-            : await _callFileByteData(fileName, fileTable);
-          
-        } else {
-          return await OfflineModel().loadOfflineFileByte(fileName);
-
-        }
-
       }
+
+      if(tempData.origin != OriginFile.offline) {
+        return isCompressed 
+          ? CompressorApi.compressByte(
+            await _callFileByteData(fileName, fileTable))
+          : await _callFileByteData(fileName, fileTable);
+       
+      }
+
+      return await OfflineModel().loadOfflineFileByte(fileName);
 
     } catch (err, st) {
       logger.e('Exception from retrieveFileData {function_model}', err, st); 
@@ -444,13 +441,12 @@ class FunctionModel {
         final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
         return storageData.imageBytesFilteredList.elementAt(index)!; 
 
-      } else {
-        return isCompressed 
-          ? CompressorApi.compressByte(tempData.fileByteData)
-          : tempData.fileByteData;
+      } 
 
-      }
-      
+      return isCompressed 
+        ? CompressorApi.compressByte(tempData.fileByteData)
+        : tempData.fileByteData;
+
     } catch (err, st) {
       logger.e('Exception from retrieveFileDataPreviewer {function_model}', err, st); 
       return Uint8List(0);
