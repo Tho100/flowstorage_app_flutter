@@ -36,7 +36,6 @@ class DeleteData {
 
         query = "DELETE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
         params = {'username': userData.username, 'filename': encryptedFileName};
-
         break;
 
       case OriginFile.directory:

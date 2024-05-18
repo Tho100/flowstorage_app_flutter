@@ -97,9 +97,13 @@ class SaveFolder {
       }
 
       loadingDialog.stopLoading();
-      SnackAlert.okSnack(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
       
-      await CallNotify().customNotification(title: "Folder Saved", subMessage: "${nameList.length} File(s) has been downloaded");
+      SnackAlert.okSnack(message: "${nameList.length} item(s) has been saved.", icon: Icons.check);
+      
+      await CallNotify().customNotification(
+        title: "Folder Saved", 
+        subMessage: "${nameList.length} File(s) has been downloaded"
+      );
 
     } catch (err) {
       loadingDialog.stopLoading();

@@ -61,20 +61,21 @@ class PreviewPdf extends StatelessWidget {
       child: FutureBuilder<Uint8List>(
         future: callPDFDataAsync(),
         builder: (context, snapshot) {
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingIndicator();
 
           } else if (snapshot.hasError) {
             return const FailedLoad();
 
-          } else {
-            return SfPdfViewer.memory(
-              snapshot.data!,
-              enableDoubleTapZooming: true,
-              enableTextSelection: true,
-            );
-          
-          }
+          } 
+
+          return SfPdfViewer.memory(
+            snapshot.data!,
+            enableDoubleTapZooming: true,
+            enableTextSelection: true,
+          );
+        
         },
       ),
     );

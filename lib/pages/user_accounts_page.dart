@@ -137,11 +137,10 @@ class UserAccountsPageState extends State<UserAccountsPage> {
             padding: const EdgeInsets.only(left: 4.0, top: 12),
             child: _buildLocalAccountListView(),
           );
+        } 
 
-        } else {
-          return const CircularProgressIndicator(color: ThemeColor.darkPurple);
+        return const CircularProgressIndicator(color: ThemeColor.darkPurple);
 
-        }
       }
     );
   }

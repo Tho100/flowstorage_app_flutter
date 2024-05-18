@@ -394,10 +394,9 @@ class PreviewFileState extends State<PreviewFile> {
     } else if (fileType == "pdf") {
       return const PreviewPdf();
 
-    } else {
-      return _buildPreviewerUnavailable();
+    } 
 
-    }
+    return _buildPreviewerUnavailable();
     
   }
 
@@ -423,10 +422,9 @@ class PreviewFileState extends State<PreviewFile> {
       bottomBarVisibleNotifier.value = false;
       return const PreviewAudio();
 
-    } else {
-      return _buildFilePreview();
-
-    }
+    } 
+    
+    return _buildFilePreview();
 
   }
 
@@ -748,9 +746,11 @@ class PreviewFileState extends State<PreviewFile> {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, top: 12.0, bottom: 8),
                 child: SizedBox(
@@ -765,6 +765,7 @@ class PreviewFileState extends State<PreviewFile> {
                   ),
                 ),
               ),
+
               if (WidgetVisibility.setVisibleList([OriginFile.public, OriginFile.publicSearching]))
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -781,15 +782,16 @@ class PreviewFileState extends State<PreviewFile> {
                   textAlign: TextAlign.start,
                 ),
               ),
+
             ],
           ),
+
         ],
       );
 
-    } else {
-      return const SizedBox();
+    } 
 
-    }
+    return const SizedBox();
 
   }
 

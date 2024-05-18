@@ -104,7 +104,7 @@ class SaveDirectory {
 
       loadingDialog.stopLoading();
       
-      SnackAlert.okSnack(message: "${nameList.length} item(s) has been saved.",icon: Icons.check);
+      SnackAlert.okSnack(message: "${nameList.length} item(s) has been saved.", icon: Icons.check);
 
       await CallNotify().customNotification(
         title: "Directory Saved", 
