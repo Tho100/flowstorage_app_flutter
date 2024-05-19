@@ -164,12 +164,15 @@ class MyPlanPageState extends State<MyPlanPage> {
     return FutureBuilder<String>(
       future: _convertToLocalCurrency(value),
       builder: (context, priceSnapshot) {
+        
         if(priceSnapshot.connectionState == ConnectionState.waiting) {
+
           return const SizedBox(
             width: 25,
             height: 25,
             child: CircularProgressIndicator(color: ThemeColor.darkBlack)
           );
+
         } else if (priceSnapshot.hasError) {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
@@ -179,6 +182,7 @@ class MyPlanPageState extends State<MyPlanPage> {
             ),
             textAlign: TextAlign.left,
           );
+
         } else if (priceSnapshot.hasData) {
           final price = priceSnapshot.data!;
           final indexOfDot = price.indexOf('.');
@@ -191,16 +195,18 @@ class MyPlanPageState extends State<MyPlanPage> {
             ),
             textAlign: TextAlign.left,
           );
-        } else {
-          return Text("\$$value/mo.",
-            style: GoogleFonts.poppins(
-              color: const Color.fromARGB(255, 15, 15, 15),
-              fontWeight: FontWeight.w600,
-              fontSize: 28
-            ),
-            textAlign: TextAlign.left,
-          );
-        }
+
+        } 
+
+        return Text("\$$value/mo.",
+          style: GoogleFonts.poppins(
+            color: const Color.fromARGB(255, 15, 15, 15),
+            fontWeight: FontWeight.w600,
+            fontSize: 28
+          ),
+          textAlign: TextAlign.left,
+        );
+      
       } 
     );
   }

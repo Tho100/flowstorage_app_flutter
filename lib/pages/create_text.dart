@@ -231,11 +231,9 @@ class CreateTextPageState extends State<CreateText> {
 
     if(isAskForSave) {
       return await _discardChangesConfirmation();
-
-    } else {
-      return true;
-
-    }
+    } 
+    
+    return true;
 
   }
 

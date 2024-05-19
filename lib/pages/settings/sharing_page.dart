@@ -23,7 +23,9 @@ class SettingsSharingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     sharingDisabledStatusNotifier.value = isSharingDisabled;
+    
     return Scaffold(
       appBar: CustomAppBar(
         context: context, 
@@ -86,4 +88,5 @@ class SettingsSharingPage extends StatelessWidget {
       ),
     );
   }
+
 }

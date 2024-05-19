@@ -36,19 +36,9 @@ class AddPasscodePageState extends State<AddPasscodePage> {
 
     const storage = FlutterSecureStorage();
 
-    String passCode = "";
+    final passCode = controllers.map((controller) => controller.text).join();
 
-    List<String> inputs = [];
-
-    for (final controller in controllers) {
-      inputs.add(controller.text);
-    }
-
-    for(String inputCode in inputs) {
-      passCode += inputCode;
-    }
-
-    await storage.write(key: "key0015",value: passCode);
+    await storage.write(key: "key0015", value: passCode);
     await storage.write(key: "isEnabled", value: "true");
 
     CallToast.call(message: "Passcode added.");
@@ -137,6 +127,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
                   textAlign: TextAlign.center,
                   decoration: GlobalsStyle.setupPasscodeFieldDecoration(),
                   onChanged: (value) {
+
                     if (value.isNotEmpty) {
                       if (index < 3) {
                         FocusScope.of(context).requestFocus(focusNodes[index + 1]);
@@ -145,13 +136,16 @@ class AddPasscodePageState extends State<AddPasscodePage> {
                         processInput();
                         focusNodes[index].unfocus();
                       }
+
                     } else {
                       controllers[index].clear();
                       if (index > 0) {
                         FocusScope.of(context).requestFocus(focusNodes[index - 1]);
                         currentActiveField = index - 1;
                       }
+
                     }
+
                   },
                 ),
               ),
@@ -239,6 +233,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Text(
               input,
               style: GoogleFonts.inter(
@@ -247,7 +242,9 @@ class AddPasscodePageState extends State<AddPasscodePage> {
                 fontWeight: FontWeight.w800,
               ),
             ),
+
             const SizedBox(height: 5),
+
             Text(
               bottomInput,
               style: GoogleFonts.inter(
@@ -256,6 +253,7 @@ class AddPasscodePageState extends State<AddPasscodePage> {
                 fontSize: 16,
               ),
             ),
+            
           ],
         ),
       ),

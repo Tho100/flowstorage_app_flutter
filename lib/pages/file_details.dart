@@ -152,18 +152,17 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             height: 15,
             child: CircularProgressIndicator(color: ThemeColor.darkPurple)
           );
+        } 
 
-        } else {
-          return Text(snapshot.data!,
-            style: GoogleFonts.inter(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 15,
-              fontWeight: FontWeight.w800
-            ),
-            textAlign: TextAlign.start,
-          );
-
-        }
+        return Text(snapshot.data!,
+          style: GoogleFonts.inter(
+            color: ThemeColor.secondaryWhite,
+            fontSize: 15,
+            fontWeight: FontWeight.w800
+          ),
+          textAlign: TextAlign.start,
+        );
+      
       }
     );
   }
@@ -179,18 +178,17 @@ class FileDetailsPageState extends State<FileDetailsPage> {
             height: 15,
             child: CircularProgressIndicator(color: ThemeColor.darkPurple),
           );
-
-        } else {
-          return Text("${snapshot.data!}Mb",
-            style: GoogleFonts.inter(
-              color: ThemeColor.secondaryWhite,
-              fontSize: 15,
-              fontWeight: FontWeight.w800
-            ),
-            textAlign: TextAlign.start,
-          );
-
-        }
+        } 
+        
+        return Text("${snapshot.data!}Mb",
+          style: GoogleFonts.inter(
+            color: ThemeColor.secondaryWhite,
+            fontSize: 15,
+            fontWeight: FontWeight.w800
+          ),
+          textAlign: TextAlign.start,
+        );
+      
       }
     );
   }

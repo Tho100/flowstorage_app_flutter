@@ -59,7 +59,7 @@ class SettingsAppSettings extends StatelessWidget {
           ),
 
           const Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Divider(color: ThemeColor.lightGrey),
           ),
 
