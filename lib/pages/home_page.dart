@@ -1055,11 +1055,9 @@ class HomePageState extends State<HomePage> {
 
       if(togglePhotosPressed) {
         return;
+      } 
 
-      } else {
-        _itemSearchingImplementation('');
-
-      }
+      _itemSearchingImplementation('');
 
     } catch (err, st) {
       logger.e('Exception from _removeFileFromListView {main}', err, st);

@@ -1072,11 +1072,13 @@ class StatsPageState extends State<StatisticsPage> {
             dataIsLoading.value ? const LoadingIndicator() : FutureBuilder<Widget>(
               future: _buildUsagePage(),
               builder: (context, snapshot) {
+                
                 if(snapshot.connectionState == ConnectionState.waiting) {
                   return const LoadingIndicator();
-                } else {
-                  return snapshot.data!;
-                }
+                } 
+
+                return snapshot.data!;
+                
               },
             ),
           ],

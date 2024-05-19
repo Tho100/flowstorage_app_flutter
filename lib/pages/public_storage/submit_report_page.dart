@@ -347,9 +347,11 @@ class SubmitReportPage extends StatelessWidget {
         context: context,
         title: "Submit a Report",
         actions: [
+
           RightTextButton(
             text: "Submit",
             onPressed: () {
+
               if(violationReport.contains(reportType) && !isMyEntityNotifier.value && !isNotMyEntityNotifier.value) {
                 CustomAlertDialog.alertDialog("We need your input on the last question. Please choose at least one checkbox.");
                 return;
@@ -358,8 +360,10 @@ class SubmitReportPage extends StatelessWidget {
               processOnSubmit();
 
               Navigator.pop(context);
+
             }
           ),
+          
         ],
       ).buildAppBar(),
       body: buildBody(),

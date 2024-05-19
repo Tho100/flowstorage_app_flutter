@@ -233,6 +233,7 @@ class PasscodePageState extends State<PasscodePage> {
                   textAlign: TextAlign.center,
                   decoration: GlobalsStyle.setupPasscodeFieldDecoration(),
                   onChanged: (value) {
+
                     if (value.isNotEmpty) {
                       if (index < 3) {
                         FocusScope.of(context).requestFocus(focusNodes[index + 1]);
@@ -241,13 +242,16 @@ class PasscodePageState extends State<PasscodePage> {
                         processInput();
                         focusNodes[index].unfocus();
                       }
+                      
                     } else {
                       controllers[index].clear();
                       if (index > 0) {
                         FocusScope.of(context).requestFocus(focusNodes[index - 1]);
                         currentActiveField = index - 1;
                       }
+
                     }
+
                   },
                 ),
               ),

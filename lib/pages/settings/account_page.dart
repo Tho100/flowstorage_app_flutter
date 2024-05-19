@@ -66,7 +66,7 @@ class SettingsAccountPage extends StatelessWidget {
           const SizedBox(height: 5),
 
           const Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Divider(color: ThemeColor.lightGrey),
           ),
 
@@ -89,7 +89,7 @@ class SettingsAccountPage extends StatelessWidget {
             bottomText: "See your plan details", 
             onPressed: () => NavigatePage.goToPageMyPlan(),
           ),
-              
+
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Divider(color: ThemeColor.lightGrey),

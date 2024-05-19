@@ -146,6 +146,7 @@ class IntentSharingPage extends StatelessWidget {
         ),
 
         const SizedBox(height: 8),
+        
         const Divider(color: ThemeColor.lightGrey, height: 2),
 
       ],
@@ -235,6 +236,7 @@ class IntentSharingPage extends StatelessWidget {
         context: context,
         title: "Upload to Flowstorage",
         actions: [
+
           RightTextButton(
             text: "Upload",
             onPressed: () async {
@@ -257,8 +259,10 @@ class IntentSharingPage extends StatelessWidget {
               }
         
               await processFileUpload(context);
+
             },
           ),
+
         ],
       ).buildAppBar(),
       body: buildBody(context),

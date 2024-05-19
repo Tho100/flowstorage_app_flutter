@@ -65,8 +65,8 @@ class SortingModel {
     itemList = itemList.where((item) => item['file_name'].contains('.')).toList();
 
     sortingIsAscendingUploadDate
-        ? itemList.sort((a, b) => a['upload_date'].compareTo(b['upload_date']))
-        : itemList.sort((a, b) => b['upload_date'].compareTo(a['upload_date']));
+      ? itemList.sort((a, b) => a['upload_date'].compareTo(b['upload_date']))
+      : itemList.sort((a, b) => b['upload_date'].compareTo(a['upload_date']));
 
     storageData.fileDateFilteredList.clear();
     storageData.fileNamesFilteredList.clear();
@@ -103,8 +103,8 @@ class SortingModel {
     }
 
     sortingIsAscendingItemName 
-    ? itemList.sort((a, b) => a['file_name'].compareTo(b['file_name']))
-    : itemList.sort((a, b) => b['file_name'].compareTo(a['file_name']));
+      ? itemList.sort((a, b) => a['file_name'].compareTo(b['file_name']))
+      : itemList.sort((a, b) => b['file_name'].compareTo(a['file_name']));
 
     storageData.fileNamesFilteredList.clear();
     storageData.imageBytesFilteredList.clear();

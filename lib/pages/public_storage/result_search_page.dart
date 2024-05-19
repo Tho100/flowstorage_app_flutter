@@ -31,11 +31,9 @@ class ResultSearchPagePs extends StatelessWidget {
 
     if (verifySearching) {
       return buildListView(width, height);
+    } 
 
-    } else {
-      return buildOnEmpty();
-
-    }
+    return buildOnEmpty();
     
   }
 

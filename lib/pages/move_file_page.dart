@@ -121,6 +121,7 @@ class MoveFilePageState extends State<MoveFilePage> {
                 leading: FutureBuilder(
                 future: GetAssets().loadAssetsData('dir1.jpg'), 
                 builder: (context, snapshot) {
+
                   if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                     return Image.memory(
                       snapshot.data!,
@@ -128,13 +129,14 @@ class MoveFilePageState extends State<MoveFilePage> {
                       height: 40,
                       width: 40,
                     );
-                  } else {
-                    return Container(
-                      width: 25,
-                      height: 25,
-                      color: Colors.grey,
-                    );
-                  }
+                  } 
+
+                  return Container(
+                    width: 25,
+                    height: 25,
+                    color: Colors.grey,
+                  );
+                
                 },
               ),
               title: Text(
@@ -316,10 +318,9 @@ class MoveFilePageState extends State<MoveFilePage> {
         CustomAlertDialog.alertDialogTitle("Failed to move this file", "Cannot move duplicated file");
         return false;
 
-      } else {
-        return true;
-
-      }
+      } 
+      
+      return true;
 
     }
 

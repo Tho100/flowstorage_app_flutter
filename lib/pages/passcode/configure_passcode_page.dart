@@ -33,7 +33,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
         const SizedBox(height: 8),
 
         Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0), 
+          padding: const EdgeInsets.symmetric(horizontal: 18.0), 
           child: Row(
             children: [
               
@@ -48,6 +48,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
               DefaultSwitch(
                 value: isPasscodeEnabled, 
                 onChanged: (value) async {
+
                   setState(() {
                     isPasscodeEnabled = value;
                   });
@@ -65,6 +66,7 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
                     togglePasscode(isEnabled);
                           
                   }
+
                 }
               ),
               
@@ -89,10 +91,10 @@ class ConfigurePasscodePageState extends State<ConfigurePasscodePage> {
 
   Future<void> _loadPasscodeStatus() async {
     
-    bool isPasscodeExist = await storage.containsKey(key: 'key0015');
+    bool isPasscodeExist = await storage.containsKey(key: "key0015");
 
     if(isPasscodeExist) {
-      final isEnabled = await storage.read(key: 'isEnabled');
+      final isEnabled = await storage.read(key: "isEnabled");
       setState(() {
         isPasscodeEnabled = isEnabled == "true";
       });

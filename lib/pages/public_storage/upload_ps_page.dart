@@ -259,6 +259,7 @@ class UploadPsPage extends StatelessWidget {
   }
 
   void setValuesOnUpload() {
+    
     titleController.text.isEmpty 
       ? psUploadData.setTitleValue("Untitled")
       : psUploadData.setTitleValue(titleController.text);
@@ -267,6 +268,7 @@ class UploadPsPage extends StatelessWidget {
     onUploadPressed();
 
     clearController();
+    
   }
 
   @override
@@ -276,17 +278,23 @@ class UploadPsPage extends StatelessWidget {
         context: context,
         title: "Public Storage",
         actions: [
+
           RightTextButton(
             text: "Upload",
             onPressed: () {
+
               if(selectedTagValue.value.isNotEmpty) {
                 setValuesOnUpload();
                 Navigator.pop(context);
+
               } else {
                 CustomAlertDialog.alertDialog("Please select a tag.");
+
               }
+
             }
           ),
+
         ],
       ).buildAppBar(),
       body: buildBody(context),
