@@ -1,14 +1,14 @@
-import 'package:flowstorage_fsc/connection/auth_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 class SqlConnection {
 
   static final _dbClusterFsc = MySQLConnectionPool(
-    host: AuthConfig.auth0,
-    port: AuthConfig.auth01,
-    userName: AuthConfig.auth02,
-    password: AuthConfig.auth002,
-    databaseName: AuthConfig.authLast,
+    host: dotenv.env['domain']!,
+    port: int.tryParse(dotenv.env['port']!)!,
+    userName: dotenv.env['name']!,
+    password: dotenv.env['password']!,
+    databaseName: dotenv.env['database']!,
     maxConnections: 12,
   );
 

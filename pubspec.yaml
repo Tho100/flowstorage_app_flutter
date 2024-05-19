@@ -48,6 +48,7 @@ dependencies:
   crypto: ^3.0.3
   cupertino_icons: ^1.0.0
   marquee: ^2.2.3
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,7 @@ flutter:
 
   assets:
     - assets/images/
+    - .env
 
 flutter_icons:
   android: true
