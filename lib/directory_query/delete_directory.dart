@@ -15,7 +15,7 @@ class DeleteDirectory {
 
   Future<void> delete() async {
 
-    const List<String> deleteDirectoryQueries = [
+    const deleteDirectoryQueries = [
       "DELETE FROM file_info_directory WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username",
       "DELETE FROM upload_info_directory WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username"
     ];

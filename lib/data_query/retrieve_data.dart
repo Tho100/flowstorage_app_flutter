@@ -36,32 +36,32 @@ class RetrieveData {
     final encryptedFileName = encryption.encrypt(fileName);
 
     late final String query;
-    late final Map<String, String> queryParams;
+    late final Map<String, String> params;
 
     switch (tempData.origin) {
       case OriginFile.home:
         query = "SELECT CUST_FILE FROM $tableName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username, "filename": encryptedFileName};
+        params = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.folder:
         query = "SELECT CUST_FILE FROM folder_upload_info WHERE CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
+        params = {"username": username, "foldtitle": encryption.encrypt(tempData.folderName), "filename": encryptedFileName};
         break;
 
       case OriginFile.directory:
         query = "SELECT CUST_FILE FROM upload_info_directory WHERE CUST_USERNAME = :username AND DIR_NAME = :dirname AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
+        params = {"username": username, "dirname": encryption.encrypt(tempData.directoryName), "filename": encryptedFileName};
         break;
 
       case OriginFile.sharedMe:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username, "filename": encryptedFileName};
+        params = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.sharedOther:
         query = "SELECT CUST_FILE FROM CUST_SHARING WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": username, "filename": encryptedFileName};
+        params = {"username": username, "filename": encryptedFileName};
         break;
 
       case OriginFile.public:
@@ -72,7 +72,7 @@ class RetrieveData {
         final uploaderName = psStorageData.psUploaderList[indexUploaderName];
 
         query = "SELECT CUST_FILE FROM $toPsFileName WHERE CUST_USERNAME = :username AND CUST_FILE_PATH = :filename";
-        queryParams = {"username": uploaderName, "filename": encryptedFileName};
+        params = {"username": uploaderName, "filename": encryptedFileName};
         break;
 
       case OriginFile.offline:
@@ -80,7 +80,7 @@ class RetrieveData {
 
     }
 
-    final row = (await conn.execute(query, queryParams)).rows.first;
+    final row = (await conn.execute(query, params)).rows.first;
     
     final decryptedData = specialFile.ignoreEncryption(fileType)
       ? row.assoc()['CUST_FILE']! 

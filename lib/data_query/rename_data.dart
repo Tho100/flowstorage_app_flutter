@@ -26,7 +26,7 @@ class RenameData {
           'oldName': encryption.encrypt(oldFileName!),
           'username': userData.username,
         };
-      break;
+        break;
 
       case OriginFile.sharedOther:
         query = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_FROM = :username";
@@ -35,7 +35,7 @@ class RenameData {
           'newname': encryption.encrypt(newFileName),
           'oldname': encryption.encrypt(oldFileName),
         };
-      break;
+        break;
 
       case OriginFile.sharedMe:
         query = "UPDATE cust_sharing SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_TO = :username";
@@ -44,18 +44,17 @@ class RenameData {
           'newname': encryption.encrypt(newFileName),
           'oldname': encryption.encrypt(oldFileName),
         };
-      break;
+        break;
 
       case OriginFile.folder:
-        const updateFileNameQuery = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle";
-        query = updateFileNameQuery;
+        query = "UPDATE folder_upload_info SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND FOLDER_NAME = :foldtitle";
         params =  {
           'username': userData.username,
           'newname': encryption.encrypt(newFileName),
           'oldname': encryption.encrypt(oldFileName),
           'foldtitle': encryption.encrypt(tempData.folderName),
         };
-      break;
+        break;
 
       case OriginFile.directory:
         query = "UPDATE upload_info_directory SET CUST_FILE_PATH = :newname WHERE CUST_FILE_PATH = :oldname AND CUST_USERNAME = :username AND DIR_NAME = :dirname";
@@ -65,7 +64,7 @@ class RenameData {
           'oldname': encryption.encrypt(oldFileName),
           'dirname': encryption.encrypt(tempData.directoryName),
         };
-      break;
+        break;
 
       case OriginFile.offline:
         break;

@@ -18,17 +18,15 @@ class RenameFolder {
 
   Future<void> rename() async {
 
-    const updateFolderName = "UPDATE folder_upload_info SET FOLDER_NAME = :newname WHERE FOLDER_NAME = :oldname AND CUST_USERNAME = :username";
-
-    final Map<String,String> params = 
-    {
+    const updateFolderNameQuery = "UPDATE folder_upload_info SET FOLDER_NAME = :newname WHERE FOLDER_NAME = :oldname AND CUST_USERNAME = :username";
+    final params = {
       'username': userData.username,
       'newname': EncryptionClass().encrypt(newFolderTitle),
       'oldname': EncryptionClass().encrypt(oldFolderTitle),
     };
 
     await crud.update(
-      query: updateFolderName, 
+      query: updateFolderNameQuery, 
       params: params
     );
     
