@@ -668,9 +668,13 @@ class HomePageState extends State<HomePage> {
       selectedItemsCheckedList[index] = isChecked;
       selectedItemIsChecked = selectedItemsCheckedList.any((item) => item);
 
-      isChecked 
+      isChecked
         ? checkedItemsName.add(storageData.fileNamesFilteredList[index])
         : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
+      
+      checkedItemsName.length == storageData.fileNamesFilteredList.length 
+        ? editAllIsPressed = true
+        : editAllIsPressed = false;
     });
 
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";
