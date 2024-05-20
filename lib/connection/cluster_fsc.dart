@@ -9,7 +9,7 @@ class SqlConnection {
     userName: dotenv.env['name']!,
     password: dotenv.env['password']!,
     databaseName: dotenv.env['database']!,
-    maxConnections: 12,
+    maxConnections: 8,
   );
 
   static Future<MySQLConnectionPool> initializeConnection() async {
