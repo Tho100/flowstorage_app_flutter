@@ -9,11 +9,10 @@ class UserDataGetter {
     required String? email
   }) async {
 
-    const retrieveCase =
-        "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
+    const query = "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
     final params = {'email': email};
 
-    final retrievedData = await conn.execute(retrieveCase,params);
+    final retrievedData = await conn.execute(query, params);
 
     return retrievedData.rows.last.assoc()['ACC_TYPE']!;
 
@@ -38,16 +37,17 @@ class UserDataGetter {
     required String? email
   }) async {
 
-    const retrieveCase1 =
-        "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
-    const retrieveCase2 =
-        "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
+    const getUsernameQuery =
+      "SELECT CUST_USERNAME FROM information WHERE CUST_EMAIL = :email";
+
+    const getAccountPlanQuery =
+      "SELECT ACC_TYPE FROM cust_type WHERE CUST_EMAIL = :email";
+
     final params = {'email': email};
 
-
     final results = await Future.wait([
-      conn.execute(retrieveCase1, params),
-      conn.execute(retrieveCase2, params),
+      conn.execute(getUsernameQuery, params),
+      conn.execute(getAccountPlanQuery, params),
     ]);
 
     return results
@@ -78,11 +78,11 @@ class UserDataGetter {
 
   Future<String> getRecoveryToken(String username) async {
 
-    const selectAuth = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
+    const getRecoveryToken = "SELECT RECOV_TOK FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': username};    
 
     final returnAuth = await Crud().select(
-      query: selectAuth, 
+      query: getRecoveryToken, 
       returnedColumn: "RECOV_TOK", 
       params: params
     );

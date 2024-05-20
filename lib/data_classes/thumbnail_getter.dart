@@ -34,6 +34,7 @@ class ThumbnailGetter {
         query += " AND CUST_FILE_PATH = :filename";
 
       }
+      
     }
 
     final param = {'username': userData.username};

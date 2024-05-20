@@ -87,9 +87,9 @@ class InsertData {
     String encryptedFileData,
   ) async {
 
-    final insertFileData = 'INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE) VALUES (?, ?, ?, ?)';
+    final insertFileDataQuery = "INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE) VALUES (?, ?, ?, ?)";
 
-    await conn.prepare(insertFileData)
+    await conn.prepare(insertFileDataQuery)
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData]);
   }
 
@@ -102,9 +102,9 @@ class InsertData {
     String? thumb,
   ) async {
 
-    final insertVideoMetadata = 'INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, CUST_FILE, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?)';
+    final insertVideoDataQuery = "INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, CUST_FILE, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?)";
 
-    await conn.prepare(insertVideoMetadata)
+    await conn.prepare(insertVideoDataQuery)
         ..execute([encryptedFilePath, userName, encryptedFileData, dateNow, thumb]);
   }
 
@@ -121,7 +121,7 @@ class InsertData {
 
     final encryptedDirName = encryption.encrypt(directoryName);
 
-    const insertFileDataQuery = 'INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?)';
+    const insertFileDataQuery = "INSERT INTO upload_info_directory (CUST_USERNAME, CUST_FILE, DIR_NAME, CUST_FILE_PATH, UPLOAD_DATE, CUST_THUMB) VALUES (?, ?, ?, ?, ?, ?)";
 
     await conn.prepare(insertFileDataQuery)
         ..execute([userName, encryptedFileData, encryptedDirName, encryptedFilePath, dateNow, thumb]);
@@ -140,8 +140,8 @@ class InsertData {
 
     final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
 
-    const insertCommentQuery = 'INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)';
-    final insertFileDataQuery = 'INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?)';
+    const insertCommentQuery = "INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)";
+    final insertFileDataQuery = "INSERT INTO $tableName (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?)";
 
     await conn.prepare(insertCommentQuery)
         ..execute([encryptedFilePath, encryptedComment]);
@@ -166,13 +166,13 @@ class InsertData {
 
     final encryptedComment = encryption.encrypt(psUploadData.psCommentValue);
 
-    const insertCommentQuery = 'INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)';
-    const insertFileDataQuery = 'INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const insertCommentQuery = "INSERT INTO ps_info_comment (CUST_FILE_NAME, CUST_COMMENT) VALUES (?, ?)";
+    const insertVideoDataQuery = "INSERT INTO ps_info_video (CUST_FILE_PATH, CUST_USERNAME, UPLOAD_DATE, CUST_FILE, CUST_THUMB, CUST_TAG, CUST_TITLE) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     await conn.prepare(insertCommentQuery)
         ..execute([encryptedFilePath, encryptedComment]);
 
-    await conn.prepare(insertFileDataQuery)
+    await conn.prepare(insertVideoDataQuery)
         ..execute([encryptedFilePath, userName, dateNow, encryptedFileData, thumb, tag, title]);
 
     tempData.addPsTotalUpload();

@@ -40,6 +40,7 @@ class UpdateTextData {
   late final MySQLConnectionPool conn;
 
   String _returnEncryptedTextData() {
+
     final List<int> getUnits = newValue.codeUnits;
     final base64StringTextData = base64.encode(getUnits);
     
@@ -47,9 +48,11 @@ class UpdateTextData {
     final compressedBase64TextData = base64.encode(compressedTextData);
 
     return encryption.encrypt(compressedBase64TextData);
+
   }
 
   void _updateOfflineData() {
+
     final toUtf8Bytes = utf8.encode(newValue);
     final base64Encoded = base64.encode(toUtf8Bytes);
     final base64Bytes = base64.decode(base64Encoded);
@@ -58,6 +61,7 @@ class UpdateTextData {
     final compressedFileBase64 = base64.encode(compressedFileBytes);
 
     OfflineModel().saveOfflineTextFile(inputValue: compressedFileBase64, fileName: tempData.selectedFileName);
+    
   }
 
   Future<void> _updateDatabase(String updateQuery, Map<String, dynamic> params) async {
@@ -86,6 +90,7 @@ class UpdateTextData {
   }
 
   Future<void> _updateSharedOthersData() async {
+
     final encryptedFileText = _returnEncryptedTextData();
     final receiverUsername = tempStorageData.sharedNameList[tappedIndex];
 
@@ -98,9 +103,11 @@ class UpdateTextData {
     };
 
     await conn.execute(query, params);
+
   }
 
   Future<void> _updateSharedMeData() async {
+
     final encryptedFileText = _returnEncryptedTextData();
     final sharerUsername = tempStorageData.sharedNameList[tappedIndex];
 
@@ -113,6 +120,7 @@ class UpdateTextData {
     };
 
     await conn.execute(query, params);
+
   }
 
   Future<void> _updatePublicData() async {

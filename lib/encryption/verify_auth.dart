@@ -6,9 +6,10 @@ class AuthVerification {
 
     final conn = await SqlConnection.initializeConnection();
 
-    final que = "SELECT $columnName FROM information WHERE CUST_USERNAME = :username";
+    final query = "SELECT $columnName FROM information WHERE CUST_USERNAME = :username";
     final params = {'username': getUsername};
-    final result = await conn.execute(que,params);
+    
+    final result = await conn.execute(query, params);
 
     for(final row in result.rows) {
       final getAuthRows = columnName == "CUST_PASSWORD" ? row.assoc()['CUST_PASSWORD'] : row.assoc()['CUST_PIN'];

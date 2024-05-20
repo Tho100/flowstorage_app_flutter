@@ -94,7 +94,6 @@ class DirectoryDataReceiver {
           fileBytes = base64.decode(thumbnailBase64);
 
         } else {
-
           fileBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
 
         }

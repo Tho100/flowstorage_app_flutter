@@ -19,7 +19,7 @@ class RenameDirectory {
 
   Future<void> rename() async {
 
-    const List<String> updateDirectoryQueries = [
+    const updateDirectoryQueries = [
       "UPDATE file_info_directory SET DIR_NAME = :newname WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username",
       "UPDATE upload_info_directory SET DIR_NAME = :newname WHERE DIR_NAME = :dirname AND CUST_USERNAME = :username"
     ];

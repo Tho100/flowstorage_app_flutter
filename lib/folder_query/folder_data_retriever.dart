@@ -105,7 +105,9 @@ class FolderDataReceiver {
           'date': formattedDate,
           'file_data': bufferedFileBytes,
         };
+        
         dataSet.add(data);
+
       }
 
       return dataSet.toList();
