@@ -124,7 +124,7 @@ class ShareFilePage extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
-              width: 138,
+              width: 145,
               height: 45,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
