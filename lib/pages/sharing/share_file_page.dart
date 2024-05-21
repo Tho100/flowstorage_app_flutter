@@ -55,7 +55,7 @@ class ShareFilePage extends StatelessWidget {
               children: [
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                  padding: const EdgeInsets.only(left: 18, top: 12, bottom: 12),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
@@ -69,7 +69,7 @@ class ShareFilePage extends StatelessWidget {
 
                 if(Globals.videoType.contains(fileName.split('.').last))
                 const Padding(
-                  padding: EdgeInsets.only(top: 22.0, left: 24.0),
+                  padding: EdgeInsets.only(top: 22.0, left: 28.0),
                   child: VideoPlaceholderWidget(),
                 ),
 
