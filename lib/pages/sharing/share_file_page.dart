@@ -110,7 +110,7 @@ class ShareFilePage extends StatelessWidget {
         ),
          
         Padding(
-          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
+          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15),
           child: MainTextField(
             hintText: "Enter a comment (Optional)",
             maxLines: 12,
