@@ -672,9 +672,11 @@ class HomePageState extends State<HomePage> {
         ? checkedItemsName.add(storageData.fileNamesFilteredList[index])
         : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
       
-      checkedItemsName.length == storageData.fileNamesFilteredList.length 
-        ? editAllIsPressed = true
-        : editAllIsPressed = false;
+      if(editAllIsPressed == false) {
+        checkedItemsName.length == storageData.fileNamesFilteredList.length 
+          ? editAllIsPressed = true
+          : editAllIsPressed = false;
+      }
     });
 
     final setAppBarTitle = "${selectedItemsCheckedList.where((item) => item).length} selected";

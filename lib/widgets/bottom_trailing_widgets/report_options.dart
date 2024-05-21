@@ -53,7 +53,7 @@ class BottomTrailingReport {
       shape: GlobalsStyle.bottomDialogBorderStyle,
       builder: (context) {
         return SizedBox(
-          height: 250,
+          height: 270,
           child: Column(
             children: [
 
@@ -84,10 +84,6 @@ class BottomTrailingReport {
 
                             _buildReportTypeButtons("Copyright violation", "cv"),
 
-                            const SizedBox(width: 8),
-
-                            _buildReportTypeButtons("Malware", "ma"),
-
                           ],
                         ),
               
@@ -101,14 +97,25 @@ class BottomTrailingReport {
               
                           const SizedBox(width: 8),
               
-                          _buildReportTypeButtons("Privacy violation", "pv"),
-              
-                          const SizedBox(width: 8),
-              
                           _buildReportTypeButtons("Spam", "sp"),
               
                         ],
                       ),
+
+                        const SizedBox(height: 10),
+
+                        Row(
+                          children: [
+
+                            _buildReportTypeButtons("Malware", "ma"),
+                            
+                            const SizedBox(width: 8),
+                            
+                            _buildReportTypeButtons("Privacy violation", "pv"),
+
+                          ],
+                        ),
+
                       ],
                     ),    
                   ],

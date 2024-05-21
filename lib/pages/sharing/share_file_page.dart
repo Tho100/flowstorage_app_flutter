@@ -55,7 +55,7 @@ class ShareFilePage extends StatelessWidget {
               children: [
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                  padding: const EdgeInsets.only(left: 18, top: 12, bottom: 12),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image(
@@ -69,7 +69,7 @@ class ShareFilePage extends StatelessWidget {
 
                 if(Globals.videoType.contains(fileName.split('.').last))
                 const Padding(
-                  padding: EdgeInsets.only(top: 22.0, left: 24.0),
+                  padding: EdgeInsets.only(top: 22.0, left: 28.0),
                   child: VideoPlaceholderWidget(),
                 ),
 
@@ -110,7 +110,7 @@ class ShareFilePage extends StatelessWidget {
         ),
          
         Padding(
-          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15, top: 0),
+          padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 15),
           child: MainTextField(
             hintText: "Enter a comment (Optional)",
             maxLines: 12,
@@ -124,7 +124,7 @@ class ShareFilePage extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
-              width: 138,
+              width: 145,
               height: 45,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
