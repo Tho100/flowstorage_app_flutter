@@ -64,7 +64,7 @@ class PreviewImageState extends State<PreviewImage> {
     } 
 
     return PageView.builder(
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       controller: pageController,
       itemCount: filteredNames.length,
       onPageChanged: handlePageChange,
