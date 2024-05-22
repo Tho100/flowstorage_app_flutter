@@ -35,21 +35,25 @@ class PreviewImageState extends State<PreviewImage> {
   }
 
   Widget buildImageWidget(int index) {
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-            minHeight: MediaQuery.of(context).size.height-65,
-          ),
-          child: InteractiveViewer(
-            child: Image.memory(
-              filteredImages[index]!,
-              fit: BoxFit.fitWidth,
+    return InteractiveViewer(
+      child: Container(
+        color: Colors.transparent,
+        child: Transform.scale(
+          scale: 0.80,
+          child: Transform.translate(
+            offset: const Offset(0, 10),
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28),
+                child: Image.memory(
+                  filteredImages[index]!,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -60,7 +64,7 @@ class PreviewImageState extends State<PreviewImage> {
     } 
 
     return PageView.builder(
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       controller: pageController,
       itemCount: filteredNames.length,
       onPageChanged: handlePageChange,
@@ -85,7 +89,6 @@ class PreviewImageState extends State<PreviewImage> {
 
     currentSelectedIndex = filteredNames.indexOf(tempData.selectedFileName);
     pageController = PageController(initialPage: currentSelectedIndex);
-    
   }
 
   @override
