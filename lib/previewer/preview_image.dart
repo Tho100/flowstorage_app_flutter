@@ -40,7 +40,7 @@ class PreviewImageState extends State<PreviewImage> {
       child: Transform.scale(
         scale: 0.80,
         child: Transform.translate(
-          offset: const Offset(0, 10),
+          offset: const Offset(0, 20),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(25),
