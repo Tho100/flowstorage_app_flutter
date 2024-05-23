@@ -227,7 +227,7 @@ class PreviewFileState extends State<PreviewFile> {
       .retrieveFileDataPreviewer(isCompressed: false);
 
     final result = await ExternalApp(
-      fileName: tempData.selectedFileName, 
+      fileName: tempData.selectedFileName,
       bytes: fileByteData
     ).openFileInExternalApp();
 
