@@ -13,6 +13,7 @@ import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
+import 'package:flowstorage_fsc/previewer/preview_full_scaled_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_pdf.dart';
 import 'package:flowstorage_fsc/previewer/preview_text.dart';
@@ -201,6 +202,25 @@ class PreviewFileState extends State<PreviewFile> {
     );
   }
 
+  void _navigateToFullScaledImage() {
+    
+    final index = storageData.fileNamesFilteredList.indexOf(tempData.selectedFileName);
+    final imageBytes = storageData.imageBytesFilteredList[index];
+
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PreviewFullScaledImage(
+          imageBytes: imageBytes,
+        ),
+        transitionDuration: const Duration(microseconds: 0), 
+      ),
+    );
+    
+    _toggleUIVisibility(false);
+
+  }
+
   void _openWithOnPressed() async {
 
     final fileByteData = await functionModel
@@ -385,10 +405,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     final fileType = widget.selectedFilename.split('.').last;
 
-    if(Globals.imageType.contains(fileType)) {
-      return PreviewImage(onPageChanged: _onSlidingUpdate);
-
-    } else if (Globals.videoType.contains(fileType)) {
+    if (Globals.videoType.contains(fileType)) {
       return const PreviewVideo();
 
     } else if (fileType == "pdf") {
@@ -414,15 +431,22 @@ class PreviewFileState extends State<PreviewFile> {
     
     const textTables = {GlobalsTable.homeText, GlobalsTable.psText};
     const audioTables = {GlobalsTable.homeAudio, GlobalsTable.psAudio};
+    const imageTables = {GlobalsTable.homeImage, GlobalsTable.psImage};
 
     if(textTables.contains(currentTable)) {
       return const PreviewText();
+
+    } else if (imageTables.contains(currentTable)) {
+      return GestureDetector(
+        onTap: () => _navigateToFullScaledImage(),
+        child: PreviewImage(onPageChanged: _onSlidingUpdate)
+      );
 
     } else if (audioTables.contains(currentTable)) {
       bottomBarVisibleNotifier.value = false;
       return const PreviewAudio();
 
-    } 
+    }
     
     return _buildFilePreview();
 

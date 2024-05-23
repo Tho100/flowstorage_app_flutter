@@ -35,20 +35,18 @@ class PreviewImageState extends State<PreviewImage> {
   }
 
   Widget buildImageWidget(int index) {
-    return InteractiveViewer(
-      child: Container(
-        color: Colors.transparent,
-        child: Transform.scale(
-          scale: 0.80,
-          child: Transform.translate(
-            offset: const Offset(0, 10),
-            child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(28),
-                child: Image.memory(
-                  filteredImages[index]!,
-                  fit: BoxFit.contain,
-                ),
+    return Container(
+      color: Colors.transparent,
+      child: Transform.scale(
+        scale: 0.80,
+        child: Transform.translate(
+          offset: const Offset(0, 10),
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: Image.memory(
+                filteredImages[index]!,
+                fit: BoxFit.contain,
               ),
             ),
           ),
