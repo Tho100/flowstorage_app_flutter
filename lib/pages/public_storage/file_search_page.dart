@@ -13,6 +13,7 @@ import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/themes/theme_style.dart';
+import 'package:flowstorage_fsc/ui_dialog/loading/just_loading.dart';
 import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flowstorage_fsc/widgets/bottom_trailing_widgets/ps_filter_search.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
@@ -366,7 +367,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           onPressed: onPast24HoursPressed
         ),
         buildUploadDateButton(
-          header: "Past week", 
+          header: "Past week",
           subheader: "Uploads from last 7 days",
           onPressed: onPastWeekPressed
         ),
@@ -485,6 +486,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
+    final loading = JustLoading();
+
+    loading.startLoading(context: context);
+
     final fileDataList = await getSearchedFileByDate(
       startDate, endDate, filter);
 
@@ -500,22 +505,16 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = false;
     });
 
-    String title = "";
+    loading.stopLoading();
 
-    switch(filter) {
-      case "24_hours":
-        title = "past 24 hours ago";
-        break;
-      case "week":
-        title = "past week";
-        break;
-      case "month":
-        title = "past month";
-        break;
-      case "year":
-        title = "past year";
-        break;
-    }
+    final filterMap = {
+      "24_hours": "past 24 hours ago",
+      "week": "past week",
+      "month": "past month",
+      "year": "past year",
+    };
+
+    final title = filterMap[filter];
 
     if(context.mounted) {
       Navigator.push(
@@ -541,6 +540,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
+    final loading = JustLoading();
+
+    loading.startLoading(context: context);
+
     final fileDataList = await getSearchedFileByTags(tagName);
 
     for(final fileData in fileDataList) {
@@ -554,6 +557,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = false;
     });
+
+    loading.stopLoading();
 
     if(context.mounted) {
       Navigator.push(
@@ -701,6 +706,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
+    final loading = JustLoading();
+
+    loading.startLoading(context: context);
+
     final keywordInput = psSearchBarController.text;
     final fileDataList = await getSearchedFileData(keywordInput);
 
@@ -715,6 +724,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = false;
     });
+
+    loading.stopLoading();
 
     if(context.mounted) {
       Navigator.push(
