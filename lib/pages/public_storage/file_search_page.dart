@@ -706,6 +706,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
+    final loading = JustLoading();
+
+    loading.startLoading(context: context);
+
     final keywordInput = psSearchBarController.text;
     final fileDataList = await getSearchedFileData(keywordInput);
 
@@ -720,6 +724,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = false;
     });
+
+    loading.stopLoading();
 
     if(context.mounted) {
       Navigator.push(
