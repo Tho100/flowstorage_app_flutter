@@ -540,6 +540,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       isSearchingForFile = true;
     });
 
+    final loading = JustLoading();
+
+    loading.startLoading(context: context);
+
     final fileDataList = await getSearchedFileByTags(tagName);
 
     for(final fileData in fileDataList) {
@@ -553,6 +557,8 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     setState(() {
       isSearchingForFile = false;
     });
+
+    loading.stopLoading();
 
     if(context.mounted) {
       Navigator.push(
