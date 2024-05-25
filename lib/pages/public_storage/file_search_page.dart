@@ -366,7 +366,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
           onPressed: onPast24HoursPressed
         ),
         buildUploadDateButton(
-          header: "Past week", 
+          header: "Past week",
           subheader: "Uploads from last 7 days",
           onPressed: onPastWeekPressed
         ),

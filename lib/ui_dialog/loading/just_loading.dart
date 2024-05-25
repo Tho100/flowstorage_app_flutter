@@ -23,14 +23,11 @@ class JustLoading {
   }
 
   AlertDialogWidget buildLoadingDialog() {
-    
-    const color = ThemeColor.darkPurple;
-
     return const AlertDialogWidget(
       content: SizedBox(
         height: 100,
         child: Center(
-          child: CircularProgressIndicator(color: color),
+          child: CircularProgressIndicator(color: ThemeColor.darkPurple),
         ),
       ),
     );
