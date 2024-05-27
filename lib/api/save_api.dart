@@ -23,7 +23,7 @@ class SaveApi {
       if(fileData is Uint8List?) {
         await file.writeAsBytes(fileData!);
 
-      } else if(fileData is String) {
+      } else if (fileData is String) {
         await file.writeAsString(fileData);
 
       }
@@ -70,7 +70,7 @@ class SaveApi {
       if(fileData is Uint8List) {
         await file.writeAsBytes(fileData);
 
-      } else if(fileData is String) {
+      } else if (fileData is String) {
         await file.writeAsString(fileData);
 
       }
