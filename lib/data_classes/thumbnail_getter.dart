@@ -47,7 +47,7 @@ class ThumbnailGetter {
   
   }
 
-  Future<String?> getSingleThumbnail({
+  Future<String?> getSingleThumbnailSharing({
     required String? fileName,
   }) async {
     
@@ -55,33 +55,18 @@ class ThumbnailGetter {
 
     final encryptedFileName = encryption.encrypt(fileName);
 
-    if (tempData.origin == OriginFile.sharedOther) {
-
-      const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename";
-      final params = {
-        'username': userData.username,
-        'filename': encryptedFileName,
-      };
-
-      final results = await conn.execute(query,params);
-
-      return results.rows.last.assoc()['CUST_THUMB'];
-
-    } else if (tempData.origin == OriginFile.sharedMe) {
-
-      const query = "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
-      final params = {
-        'username': userData.username,
-        'filename': encryptedFileName,
-      };
-
-      final results = await conn.execute(query,params);
-
-      return results.rows.last.assoc()['CUST_THUMB'];
-
-    }
+    final query = tempData.origin == OriginFile.sharedOther
+      ? "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_FROM = :username AND CUST_FILE_PATH = :filename"
+      : "SELECT CUST_THUMB FROM cust_sharing WHERE CUST_TO = :username AND CUST_FILE_PATH = :filename";
   
-    return '';
+    final params = {
+      'username': userData.username,
+      'filename': encryptedFileName,
+    };
+
+    final results = await conn.execute(query, params);
+
+    return results.rows.last.assoc()['CUST_THUMB'] ?? '';
 
   }
   

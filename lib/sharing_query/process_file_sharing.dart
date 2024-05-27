@@ -128,7 +128,7 @@ class ProcessFileSharing {
 
     if(Globals.videoType.contains(fileType)) {
       thumbnailBase64 = await Future.value(
-        ThumbnailGetter().getSingleThumbnail(fileName: fileName)
+        ThumbnailGetter().getSingleThumbnailSharing(fileName: fileName)
       );
     }
 
