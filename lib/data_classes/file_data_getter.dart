@@ -35,17 +35,14 @@ class FileDataGetter {
     if (tableName == GlobalsTable.homeImage) {
 
       if(storageData.homeImageBytesList.isEmpty) {
-        return getFileInfoParams(conn, username);
-        
-      } else {
-        return storageData.homeImageBytesList;
+        return getFileInfoParams(conn, username); 
+      } 
 
-      }
+      return storageData.homeImageBytesList;
 
-    } else {
-      return getOtherTableParams(conn, username, tableName);
-
-    }
+    } 
+    
+    return getOtherTableParams(conn, username, tableName);
 
   }
 

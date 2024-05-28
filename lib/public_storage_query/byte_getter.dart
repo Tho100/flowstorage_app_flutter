@@ -35,16 +35,13 @@ class ByteGetterPs {
 
       if(psStorageData.psImageBytesList.isEmpty) {
         return getFileInfoParams(conn, false);
+      } 
 
-      } else {
-        return psStorageData.psImageBytesList;
-
-      }
-
-    } else {
-      return getOtherTableParams(conn, tableName, isFromMyPs: false);
+      return psStorageData.psImageBytesList;
 
     }
+    
+    return getOtherTableParams(conn, tableName, isFromMyPs: false);
 
   }
 
@@ -54,11 +51,9 @@ class ByteGetterPs {
 
       if(psStorageData.myPsImageBytesList.isEmpty) {
         return getFileInfoParams(conn, true);
+      } 
 
-      } else {
-        return psStorageData.myPsImageBytesList;
-
-      }
+      return psStorageData.myPsImageBytesList;
 
     } else {
       return getOtherTableParams(conn, tableName, isFromMyPs: true);
@@ -94,8 +89,8 @@ class ByteGetterPs {
     }).toList();
     
     isFromMyPs 
-    ? psStorageData.setMyPsImageBytes(bytesData)
-    : psStorageData.setPsImageBytes(bytesData);
+      ? psStorageData.setMyPsImageBytes(bytesData)
+      : psStorageData.setPsImageBytes(bytesData);
 
     return bytesData;
 
@@ -115,7 +110,6 @@ class ByteGetterPs {
       final IResultSet executedRows;
       
       if(isFromMyPs) {
-
         query = 'SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username';
         final params = {'username': userData.username};
 
@@ -124,6 +118,7 @@ class ByteGetterPs {
       } else {
         query = 'SELECT COUNT(*) FROM $tableName';
         executedRows = await conn.execute(query);
+
       }
 
       int totalCount = 0;
@@ -153,8 +148,9 @@ class ByteGetterPs {
 
       } else {
         isFromMyPs 
-        ? getByteValue.addAll(psStorageData.myPsThumbnailBytesList)
-        : getByteValue.addAll(psStorageData.psThumbnailBytesList);
+          ? getByteValue.addAll(psStorageData.myPsThumbnailBytesList)
+          : getByteValue.addAll(psStorageData.psThumbnailBytesList);
+
       }
 
     } else {
