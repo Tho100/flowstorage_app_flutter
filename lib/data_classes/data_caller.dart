@@ -85,22 +85,15 @@ class DataCaller {
       final fileName = path.basename(file.path);
       final fileType = fileName.split('.').last;
 
-      Uint8List imageBytes;
-      String actualFileSize = '';
-
       final fileBytes = await file.readAsBytes();
       final fileSize = fileBytes.length;
       final fileSizeMB = fileSize / (1024 * 1024);
 
-      actualFileSize = "${fileSizeMB.toStringAsFixed(2)}Mb";
+      final actualFileSize = "${fileSizeMB.toStringAsFixed(2)}Mb";
 
-      if (Globals.imageType.contains(fileType)) {
-        imageBytes = await file.readAsBytes();
-
-      } else {
-        imageBytes = await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
-
-      }
+      final imageBytes = Globals.imageType.contains(fileType)
+        ? await file.readAsBytes()
+        : await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
 
       fileNames.add(fileName);
       dates.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");

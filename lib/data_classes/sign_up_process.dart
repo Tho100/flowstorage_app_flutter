@@ -26,7 +26,7 @@ class SignUpUser {
     final conn = await SqlConnection.initializeConnection();
 
     final createdAccounts = await LocalStorageModel()
-                                    .readLocalAccountUsernames();
+      .readLocalAccountUsernames();
 
     final countCreatedAccounts = createdAccounts.length;
 

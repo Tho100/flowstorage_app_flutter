@@ -99,7 +99,7 @@ class SignInUser {
     try {
 
       final username = await userDataGetter
-                            .getUsername(email: email, conn: conn);
+        .getUsername(email: email, conn: conn);
 
       if (username.isNotEmpty) {
 

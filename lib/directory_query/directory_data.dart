@@ -60,7 +60,7 @@ class DirectoryDataReceiver {
       final results = await conn.execute(querySelectMetadata, params);
       final dataSet = <Map<String, dynamic>>[];
 
-      late Uint8List fileBytes = Uint8List(0);
+      Uint8List fileBytes = Uint8List(0);
 
       for (final row in results.rows) {
 

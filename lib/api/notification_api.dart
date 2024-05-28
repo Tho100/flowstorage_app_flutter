@@ -86,4 +86,5 @@ class NotificationApi {
   static Future stopNotification(int id) async {
     await _notifications.cancel(id);
   }
+  
 }

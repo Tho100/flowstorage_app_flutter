@@ -16,10 +16,8 @@ class ThumbnailGetter {
   final encryption = EncryptionClass();
 
   Future<List<Uint8List>> getThumbnails(MySQLConnectionPool conn) async {
-    
-    String query;
-  
-    query = "SELECT CUST_THUMB FROM ";
+      
+    String query = "SELECT CUST_THUMB FROM ";
 
     if (tempData.origin == OriginFile.home) {
       query += "${GlobalsTable.homeVideo} WHERE CUST_USERNAME = :username";

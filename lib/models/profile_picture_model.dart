@@ -86,7 +86,7 @@ class ProfilePictureModel {
 
   Future<Uint8List?> getProfilePicData() async {
     
-    late Uint8List profilePicData = Uint8List(0);
+    Uint8List profilePicData = Uint8List(0);
     
     final userData = GetIt.instance<UserDataProvider>();
 

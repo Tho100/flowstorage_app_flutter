@@ -9,8 +9,7 @@ class FileDateGetter {
     
     try {
 
-      final selectUploadDate =
-          "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
+      final selectUploadDate = "SELECT UPLOAD_DATE FROM $tableName WHERE CUST_USERNAME = :username";
       final params = {'username': username};
       
       final retrievedDate = await conn.execute(selectUploadDate, params);
