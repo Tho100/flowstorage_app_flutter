@@ -183,8 +183,8 @@ class ShareFilePage extends StatelessWidget {
           loadingDialog.startLoading(title: "Fetching data...", context: navigatorKey.currentContext!);
 
           final tableName = tempData.origin == OriginFile.public && tempData.origin == OriginFile.publicSearching
-              ? Globals.fileTypesToTableNamesPs[fileType]!
-              : Globals.fileTypesToTableNames[fileType]!;
+            ? Globals.fileTypesToTableNamesPs[fileType]!
+            : Globals.fileTypesToTableNames[fileType]!;
 
           if(tempData.fileByteData.isEmpty) {
             fileBytes = await retrieveData.getFileData(

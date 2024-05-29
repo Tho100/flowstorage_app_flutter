@@ -27,9 +27,9 @@ class ConfigureSharingPasswordState extends State<ConfigureSharingPasswordPage> 
   void togglePasscode(String disabled) async {
 
     disabled == "0"
-    ? await UpdatePasswordSharing().enable(username: userData.username)
-    : await UpdatePasswordSharing().disable(username: userData.username);
-    
+      ? await UpdatePasswordSharing().enable(username: userData.username)
+      : await UpdatePasswordSharing().disable(username: userData.username);
+      
     userData.setSharingPasswordStatus(disabled);
 
   }
