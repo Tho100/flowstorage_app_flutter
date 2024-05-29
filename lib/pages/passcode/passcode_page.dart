@@ -116,12 +116,9 @@ class PasscodePageState extends State<PasscodePage> {
     try {
 
       const storage = FlutterSecureStorage();
-      String? storedValue = await storage.read(key: 'key0015');
-      String userInput = "";
 
-      for(final input in inputs) {
-        userInput += input;
-      }
+      final storedValue = await storage.read(key: 'key0015');
+      final userInput = inputs.join();
 
       totalAttempts++;
 
