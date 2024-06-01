@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flowstorage_fsc/models/system_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,24 +13,17 @@ class PreviewFullScaledImage extends StatelessWidget {
     Key? key
   }) : super(key: key);
 
-  void toggleSystemUI() {
-      SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual, 
-      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        toggleSystemUI();
+        SystemToggle().toggleStatusBarVisibility(true);
         return true;
       },
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
-            toggleSystemUI();
+            SystemToggle().toggleStatusBarVisibility(true);
             Navigator.pop(context);
           },
           child: InteractiveViewer(
