@@ -6,6 +6,7 @@ import 'package:flowstorage_fsc/global/global_table.dart';
 import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
+import 'package:flowstorage_fsc/models/system_toggle.dart';
 import 'package:flowstorage_fsc/previewer/preview_file.dart';
 import 'package:flowstorage_fsc/provider/storage_data_provider.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
@@ -32,6 +33,8 @@ class PreviewVideo extends StatefulWidget {
 class PreviewVideoState extends State<PreviewVideo> {
 
   late VideoPlayerController videoPlayerController;
+
+  final systemToggle = SystemToggle();
 
   final storageData = GetIt.instance<StorageDataProvider>();
   final tempData = GetIt.instance<TempDataProvider>();
@@ -196,11 +199,11 @@ class PreviewVideoState extends State<PreviewVideo> {
                   });
 
                   if (isLandscapeMode) {
-                    toLandscapeMode();
+                    systemToggle.toLandscapeMode();
                     PreviewFileState.bottomBarVisibleNotifier.value = false;
 
                   } else {
-                    toPortraitMode();
+                    systemToggle.toPortraitMode();
                     PreviewFileState.bottomBarVisibleNotifier.value = true;
                     videoIsTappedNotifier.value = true;
 
@@ -562,28 +565,6 @@ class PreviewVideoState extends State<PreviewVideo> {
     
   }
 
-  void toPortraitMode() {
-    toggleUIVisibility(true);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
-  void toLandscapeMode() {
-    toggleUIVisibility(false);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-  }
-  
-  void toggleUIVisibility(bool visible) {
-    visible 
-      ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
-      : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -593,7 +574,7 @@ class PreviewVideoState extends State<PreviewVideo> {
 
   @override
   void dispose() {
-    toPortraitMode();
+    systemToggle.toPortraitMode();
     videoPlayerController.removeListener(videoPlayerListener);
     videoPlayerController.dispose();
     videoDurationNotifier.dispose();
@@ -601,7 +582,7 @@ class PreviewVideoState extends State<PreviewVideo> {
     currentVideoDurationNotifier.dispose();
     iconPausePlayNotifier.dispose();
     sliderValueController.close();
-    toggleUIVisibility(true);
+    systemToggle.toggleStatusBarVisibility(true);
     super.dispose();
   }
 
@@ -611,8 +592,9 @@ class PreviewVideoState extends State<PreviewVideo> {
       onTap: () {
         videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
         if(!isLandscapeMode) {
-        PreviewFileState.bottomBarVisibleNotifier.value =
-          !PreviewFileState.bottomBarVisibleNotifier.value;
+          systemToggle.toggleStatusBarVisibility(videoIsTappedNotifier.value);
+          PreviewFileState.bottomBarVisibleNotifier.value =
+            !PreviewFileState.bottomBarVisibleNotifier.value;
         }
       },
       child: Center(

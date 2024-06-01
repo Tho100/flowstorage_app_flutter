@@ -12,6 +12,7 @@ import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
+import 'package:flowstorage_fsc/models/system_toggle.dart';
 import 'package:flowstorage_fsc/previewer/preview_audio.dart';
 import 'package:flowstorage_fsc/previewer/preview_full_scaled_image.dart';
 import 'package:flowstorage_fsc/previewer/preview_image.dart';
@@ -110,9 +111,7 @@ class PreviewFileState extends State<PreviewFile> {
 
   void _toggleUIVisibility(bool visible) {
     if(tempData.origin != OriginFile.publicSearching) {
-      visible 
-        ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom])
-        : SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+      SystemToggle().toggleStatusBarVisibility(visible);
     }
   }
 
