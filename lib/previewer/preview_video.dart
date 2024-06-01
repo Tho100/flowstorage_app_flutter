@@ -592,6 +592,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       onTap: () {
         videoIsTappedNotifier.value = !videoIsTappedNotifier.value;
         if(!isLandscapeMode) {
+          systemToggle.toggleStatusBarVisibility(videoIsTappedNotifier.value);
           PreviewFileState.bottomBarVisibleNotifier.value =
             !PreviewFileState.bottomBarVisibleNotifier.value;
         }
