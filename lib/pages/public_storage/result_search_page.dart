@@ -125,6 +125,9 @@ class ResultSearchPagePs extends StatelessWidget {
         minThumbLength: 2,
         thickness: 2,
         child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics()
+          ),
           padding: const EdgeInsets.only(bottom: bottomExtraSpacesHeight),
           itemExtent: itemExtentValue,
           itemCount: psStorageData.psSearchTitleList.length,
