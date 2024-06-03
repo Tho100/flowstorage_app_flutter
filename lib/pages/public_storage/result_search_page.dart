@@ -30,11 +30,52 @@ class ResultSearchPagePs extends StatelessWidget {
     final verifySearching = psStorageData.psSearchTitleList.isNotEmpty;
 
     if (verifySearching) {
-      return buildListView(width, height);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          
+          const SizedBox(height: 10),
+          buildTopHeader(),
+
+          const SizedBox(height: 15),
+          buildListView(width, height),
+
+        ],
+      );
     } 
 
     return buildOnEmpty();
     
+  }
+
+  Widget buildTopHeader() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 18.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+    
+          Text("Showing results",
+            style: GoogleFonts.inter(
+              color: ThemeColor.thirdWhite,
+              fontWeight: FontWeight.w800,
+              fontSize: 14
+            )
+          ),
+          
+          const SizedBox(height: 6),
+    
+          Text(selectedCategory,
+            style: GoogleFonts.inter(
+              color: ThemeColor.secondaryWhite,
+              fontWeight: FontWeight.w800,
+              fontSize: 17
+            )
+          ),
+    
+        ],
+      ),
+    );
   }
 
   Widget buildOnEmpty() {
@@ -180,12 +221,12 @@ class ResultSearchPagePs extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height-150;
 
     return Scaffold(
       appBar: CustomAppBar(
-        context: context, 
-        title: selectedCategory
+        title: "", 
+        context: context,
       ).buildAppBar(),
       body: buildResultWidget(width, height),
     );
