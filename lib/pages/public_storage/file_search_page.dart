@@ -508,10 +508,10 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
     loading.stopLoading();
 
     final filterMap = {
-      "24_hours": "past 24 hours ago",
-      "week": "past week",
-      "month": "past month",
-      "year": "past year",
+      "24_hours": "From yesterday",
+      "week": "From past week",
+      "month": "From past month",
+      "year": "From past year",
     };
 
     final title = filterMap[filter];
@@ -520,7 +520,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ResultSearchPagePs(
-          selectedCategory: "Results from $title", 
+          selectedCategory: title!, 
           searchDateList: uploadDateList, 
         ))
       );
@@ -731,7 +731,7 @@ class FileSearchPagePsState extends State<FileSearchPagePs> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ResultSearchPagePs(
-          selectedCategory: "Results for $keywordInput", 
+          selectedCategory: keywordInput, 
           searchDateList: uploadDateList, 
         ))
       );
