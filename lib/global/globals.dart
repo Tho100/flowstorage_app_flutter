@@ -148,6 +148,12 @@ class Globals {
 
     "mp3": "music0.jpg",
     "wav": "music0.jpg",
+    
+    "mp4": "vid0.jpg",
+    "wmv": "vid0.jpg",
+    "avi": "vid0.jpg",
+    "mov": "vid0.jpg",
+    "mkv": "vid0.jpg",
   };
 
 }
