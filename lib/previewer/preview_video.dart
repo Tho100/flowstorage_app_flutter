@@ -418,7 +418,7 @@ class PreviewVideoState extends State<PreviewVideo> {
       children: [
 
         Padding(
-          padding: const EdgeInsets.only(top: 25.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Stack(
             children: [
               Center(
