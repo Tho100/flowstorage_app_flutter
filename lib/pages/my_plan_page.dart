@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:flowstorage_fsc/api/geographic_api.dart';
+import 'package:flowstorage_fsc/api/currency_converter_api.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -11,7 +9,6 @@ import 'package:flowstorage_fsc/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 
 class MyPlanPage extends StatefulWidget {
 
@@ -29,59 +26,9 @@ class MyPlanPageState extends State<MyPlanPage> {
   final cardBorderRadius = 25.0;
 
   Future<String> _convertToLocalCurrency(double usdValue) async {
-
-    final countryCodeToCurrency = {
-      "US": "USD",
-      "DE": "EUR",
-      "GB": "GBP",
-      "ID": "IDR",
-      "MY": "MYR",
-      "BN": "BND",
-      "SG": "SGD",
-      "TH": "THB",
-      "PH": "PHP",
-      "VN": "VND",
-      "CN": "CNY",
-      "HK": "HKD",
-      "TW": "TWD",
-      "KO": "KRW",
-      "BR": "BRL",
-      "ME": "MXN",
-      "AU": "AUD",
-      "NZ": "NZD",
-      "IN": "INR",
-      "LK": "LKR",
-      "PA": "PKR",
-      "SA": "SAR",
-      "AR": "AED",
-      "IS": "ILS",
-      "EG": "EGP",
-      "TU": "TND",
-      "CH": "CHF",
-      "ES": "EUR",
-      "SW": "SEK"
-    };
-
-    String countryCode = 'US';
-    String countryCurrency = 'USD';
-    double conversionRate = 2.0;
-
-    countryCode = await GeographicApi().countryCode();
-    countryCurrency = countryCodeToCurrency[countryCode]!;
-
-    final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      conversionRate = data['data'][countryCurrency]; 
-      
-    } else {
-      throw Exception('Failed to load exchange rates');
-
-    }
-
-    return ("$countryCurrency${usdValue*conversionRate}").toString();
-
+    return await CurrencyConverterApi().convert(
+      usdValue: usdValue, isFromMyPlan: true
+    );
   }
 
   Widget _buildSubHeader(String text, {double? customFont}) {

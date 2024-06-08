@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:flowstorage_fsc/api/geographic_api.dart';
+import 'package:flowstorage_fsc/api/currency_converter_api.dart';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
@@ -22,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 class UpgradePage extends StatefulWidget {
 
@@ -594,69 +591,9 @@ class UpgradePageState extends State<UpgradePage> {
   }
 
   Future<String> _convertToLocalCurrency(double usdValue) async {
-
-    final countryCodeToCurrency = {
-      "US": "USD",
-      "DE": "EUR",
-      "GB": "GBP",
-      "ID": "IDR",
-      "MY": "MYR",
-      "BN": "BND",
-      "SG": "SGD",
-      "TH": "THB",
-      "PH": "PHP",
-      "VN": "VND",
-      "CN": "CNY",
-      "HK": "HKD",
-      "TW": "TWD",
-      "KO": "KRW",
-      "BR": "BRL",
-      "ME": "MXN",
-      "AU": "AUD",
-      "NZ": "NZD",
-      "IN": "INR",
-      "LK": "LKR",
-      "PA": "PKR",
-      "SA": "SAR",
-      "AR": "AED",
-      "IS": "ILS",
-      "EG": "EGP",
-      "TU": "TND",
-      "CH": "CHF",
-      "ES": "EUR",
-      "SW": "SEK"
-    };
-
-    String countryCode = 'US';
-    String countryCurrency = 'USD';
-    double conversionRate = 2.0;
-
-    if(tempData.countryCode.isEmpty && tempData.currencyConversionRate == 0.0) {
-
-      countryCode = await GeographicApi().countryCode();
-      countryCurrency = countryCodeToCurrency[countryCode]!;
-
-      tempData.setCountryCode(countryCode);
-      tempData.setCountryCurrency(countryCurrency);
-
-      final response = await http.get(Uri.parse('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v'));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        conversionRate = data['data'][countryCurrency]; 
-        tempData.setCurrencyConversion(conversionRate);
-      } else {
-        throw Exception('Failed to load exchange rates');
-      }
-
-    } else {
-      countryCode = tempData.countryCode;
-      countryCurrency = tempData.countryCurrency;
-      conversionRate = tempData.currencyConversionRate;
-    }
-
-    return ("$countryCurrency${usdValue*conversionRate}").toString();
-    
+    return await CurrencyConverterApi().convert(
+      usdValue: usdValue, isFromMyPlan: false
+    );
   }
 
   Future<void> _updateUserAccountPlan(String customerId) async {
