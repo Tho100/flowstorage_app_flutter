@@ -77,7 +77,7 @@ class UpgradePageState extends State<UpgradePage> {
     );
   }
 
-  Widget _buildGetNowButton(String plan, VoidCallback getNowOnPressed) {
+  Widget _buildSubscribeButton(String plan, VoidCallback subscribeOnPressed) {
 
     final isCurrentPlan = plan == userData.accountType;
 
@@ -93,7 +93,7 @@ class UpgradePageState extends State<UpgradePage> {
             borderRadius: BorderRadius.circular(26),
           )
         ),
-        onPressed: getNowOnPressed,
+        onPressed: subscribeOnPressed,
         child: Text(
           'Subscribe',
           style: GoogleFonts.inter(
@@ -244,7 +244,7 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton("Max", () {
+                  child: _buildSubscribeButton("Max", () {
                     _subscribeOnPressed("Max");
                   }),
                 ),
@@ -357,7 +357,7 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton("Express", () {
+                  child: _buildSubscribeButton("Express", () {
                     _subscribeOnPressed("Express");
                   }),
                 ),
@@ -470,7 +470,7 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton("Supreme", () {
+                  child: _buildSubscribeButton("Supreme", () {
                     _subscribeOnPressed("Supreme");
                   }),
                 ),
@@ -541,7 +541,7 @@ class UpgradePageState extends State<UpgradePage> {
   }
 
   void _subscribeOnPressed(String type) {
-    
+
     if (_userIsAlreadySubscribed()) {
       return;
     }
@@ -550,21 +550,21 @@ class UpgradePageState extends State<UpgradePage> {
 
     switch (type) {
       case "Max":
-        navigateToPage(const MaxPage(), "Max");
+        _navigateToPage(const MaxPage(), "Max");
         break;
 
       case "Express":
-        navigateToPage(const ExpressPage(), "Express");
+        _navigateToPage(const ExpressPage(), "Express");
         break;
 
       case "Supreme":
-        navigateToPage(const SupremePage(), "Supreme");
+        _navigateToPage(const SupremePage(), "Supreme");
         break;
     }
 
   }
 
-  void navigateToPage(Widget page, String plan) {
+  void _navigateToPage(Widget page, String plan) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => page))
         .then((value) {
