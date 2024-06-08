@@ -77,7 +77,7 @@ class UpgradePageState extends State<UpgradePage> {
     );
   }
 
-  Widget _buildGetNowButton(String plan, VoidCallback getNowOnPressed) {
+  Widget _buildSubscribeButton(String plan, VoidCallback subscribeOnPressed) {
 
     final isCurrentPlan = plan == userData.accountType;
 
@@ -93,7 +93,7 @@ class UpgradePageState extends State<UpgradePage> {
             borderRadius: BorderRadius.circular(26),
           )
         ),
-        onPressed: getNowOnPressed,
+        onPressed: subscribeOnPressed,
         child: Text(
           'Subscribe',
           style: GoogleFonts.inter(
@@ -244,17 +244,8 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton("Max", () {
-                    if(_userIsAlreadySubscribed()) {
-                      return;
-                    }
-                    userSelectedPlan = "Max";
-                    Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const MaxPage()))
-                      .then((value) {
-                        _validatePaymentOnTime("Max");
-                    });
-
+                  child: _buildSubscribeButton("Max", () {
+                    _subscribeOnPressed("Max");
                   }),
                 ),
 
@@ -263,127 +254,6 @@ class UpgradePageState extends State<UpgradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildSubHeader(userData.accountType == "Max" ? "" : "Cancel anytime without extra charges", customFont: 13)
-                ),
-
-                const SizedBox(height: 35),
-
-              ],
-            ),
-          ),
-        ],
-      ),        
-    );
-  }
-
-  Widget _buildSupremePage(double width, double height) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Column(
-        children: [
-
-          const SizedBox(height: 34),
-        
-          Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(cardBorderRadius), 
-                topRight: Radius.circular(cardBorderRadius)
-              ),
-              color: ThemeColor.justWhite,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                const SizedBox(height: 30),
-
-                Row(
-                  children: [
-                    const SizedBox(width: 30),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,                        
-                      children: [
-
-                        _buildSubHeader("PLAN"),
-
-                        Text("SUPREME",
-                          style: GoogleFonts.poppins(
-                            color: ThemeColor.darkPurple,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 28
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-
-                      ],
-                    ),
-
-                    const SizedBox(width: 50),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildSubHeader("PRICE"),
-                        _buildPrice(20),
-                      ],
-                    ),
-
-                  ],
-                ),
-
-                const SizedBox(height: 25),
-
-                Row(
-                  children: [
-                    const SizedBox(width: 30),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,                        
-                      children: [
-
-                        _buildSubHeader("FEATURES"),
-                        const SizedBox(height: 5),
-
-                        _buildFeatures("+ Upload Up To 2000 Files"),
-                        const SizedBox(height: 5),
-
-                        _buildFeatures("+ Upload Up To 20 Folders"),
-
-                        const SizedBox(height: 5),
-                        _buildFeatures("+ Upload Up To 5 Directories"),
-
-                        const SizedBox(height: 5),
-                        _buildFeatures("+ Unlocked Folder Download"),
-
-                      ],
-                    ),
-                  ],
-                ),
-                
-                const Spacer(),
-
-                Align(
-                  alignment: Alignment.center,
-                  child: _buildGetNowButton("Supreme", () {
-                    if(_userIsAlreadySubscribed()) {
-                      return;
-                    }
-                    userSelectedPlan = "Supreme";
-                    Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const SupremePage()))
-                      .then((value) {
-                        _validatePaymentOnTime("Supreme");
-                    });
-                  }),
-                ),
-
-                const SizedBox(height: 12),
-
-                Align(
-                  alignment: Alignment.center,
-                  child: _buildSubHeader(userData.accountType == "Supreme" ? "" : "Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -487,16 +357,8 @@ class UpgradePageState extends State<UpgradePage> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: _buildGetNowButton("Express", () {
-                    if(_userIsAlreadySubscribed()) {
-                      return;
-                    }
-                    userSelectedPlan = "Express";
-                    Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const ExpressPage()))
-                      .then((value) {
-                        _validatePaymentOnTime("Express");
-                    });
+                  child: _buildSubscribeButton("Express", () {
+                    _subscribeOnPressed("Express");
                   }),
                 ),
 
@@ -505,6 +367,119 @@ class UpgradePageState extends State<UpgradePage> {
                 Align(
                   alignment: Alignment.center,
                   child: _buildSubHeader(userData.accountType == "Express" ? "" : "Cancel anytime without extra charges", customFont: 13)
+                ),
+
+                const SizedBox(height: 35),
+
+              ],
+            ),
+          ),
+        ],
+      ),        
+    );
+  }
+
+  Widget _buildSupremePage(double width, double height) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Column(
+        children: [
+
+          const SizedBox(height: 34),
+        
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(cardBorderRadius), 
+                topRight: Radius.circular(cardBorderRadius)
+              ),
+              color: ThemeColor.justWhite,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                const SizedBox(height: 30),
+
+                Row(
+                  children: [
+                    const SizedBox(width: 30),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,                        
+                      children: [
+
+                        _buildSubHeader("PLAN"),
+
+                        Text("SUPREME",
+                          style: GoogleFonts.poppins(
+                            color: ThemeColor.darkPurple,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+
+                      ],
+                    ),
+
+                    const SizedBox(width: 50),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSubHeader("PRICE"),
+                        _buildPrice(20),
+                      ],
+                    ),
+
+                  ],
+                ),
+
+                const SizedBox(height: 25),
+
+                Row(
+                  children: [
+                    const SizedBox(width: 30),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,                        
+                      children: [
+
+                        _buildSubHeader("FEATURES"),
+                        const SizedBox(height: 5),
+
+                        _buildFeatures("+ Upload Up To 2000 Files"),
+                        const SizedBox(height: 5),
+
+                        _buildFeatures("+ Upload Up To 20 Folders"),
+
+                        const SizedBox(height: 5),
+                        _buildFeatures("+ Upload Up To 5 Directories"),
+
+                        const SizedBox(height: 5),
+                        _buildFeatures("+ Unlocked Folder Download"),
+
+                      ],
+                    ),
+                  ],
+                ),
+                
+                const Spacer(),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: _buildSubscribeButton("Supreme", () {
+                    _subscribeOnPressed("Supreme");
+                  }),
+                ),
+
+                const SizedBox(height: 12),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: _buildSubHeader(userData.accountType == "Supreme" ? "" : "Cancel anytime without extra charges", customFont: 13)
                 ),
 
                 const SizedBox(height: 35),
@@ -563,6 +538,38 @@ class UpgradePageState extends State<UpgradePage> {
         ],
       ),
     );
+  }
+
+  void _subscribeOnPressed(String type) {
+
+    if (_userIsAlreadySubscribed()) {
+      return;
+    }
+
+    userSelectedPlan = type.toLowerCase();
+
+    switch (type) {
+      case "Max":
+        _navigateToPage(const MaxPage(), "Max");
+        break;
+
+      case "Express":
+        _navigateToPage(const ExpressPage(), "Express");
+        break;
+
+      case "Supreme":
+        _navigateToPage(const SupremePage(), "Supreme");
+        break;
+    }
+
+  }
+
+  void _navigateToPage(Widget page, String plan) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => page))
+        .then((value) {
+      _validatePaymentOnTime(plan);
+    });
   }
 
   void _validatePaymentOnTime(String planType) async {
