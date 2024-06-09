@@ -23,7 +23,7 @@ class DeleteFolder {
       'foldname': EncryptionClass().encrypt(folderName)
     };
 
-    await crud.delete(
+    await crud.execute(
       query: deleteFolderQuery, 
       params: params
     );

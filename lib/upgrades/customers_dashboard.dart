@@ -131,14 +131,13 @@ class StripeCustomers {
       
       if (cancelResponse.statusCode == 200) {
         
-        await crud.update(
+        await crud.execute(
           query: "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email", 
           params: {"type": "Basic", "email": userData.email});
 
-        await crud.delete(
+        await crud.execute(
           query: "DELETE FROM cust_buyer WHERE CUST_USERNAME = :username", 
           params: {"username": userData.username});
-
 
         userData.setAccountType("Basic");
 

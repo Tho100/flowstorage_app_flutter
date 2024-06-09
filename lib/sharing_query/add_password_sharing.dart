@@ -16,12 +16,12 @@ class UpdatePasswordSharing {
     const updateSharingStatus = "UPDATE sharing_info SET PASSWORD_DISABLED = 0 WHERE CUST_USERNAME = :username";
     final paramStatus = {'username': username};
 
-    await crud.update(
+    await crud.execute(
       query: updateSharingAuth, 
       params: params
     );
   
-    await crud.update(
+    await crud.execute(
       query: updateSharingStatus, 
       params: paramStatus
     );
@@ -33,7 +33,7 @@ class UpdatePasswordSharing {
     const query = "UPDATE sharing_info SET PASSWORD_DISABLED = 0 WHERE CUST_USERNAME = :username";
     final params = {'username': username};
 
-    await crud.update(
+    await crud.execute(
       query: query, 
       params: params
     );
@@ -47,7 +47,7 @@ class UpdatePasswordSharing {
     const query = "UPDATE sharing_info SET PASSWORD_DISABLED = 1 WHERE CUST_USERNAME = :username";
     final params = {'username': username};
 
-    await crud.update(
+    await crud.execute(
       query: query, 
       params: params
     );

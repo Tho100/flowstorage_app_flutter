@@ -26,7 +26,7 @@ class DeleteDirectory {
     };
 
     for(final query in deleteDirectoryQueries) {
-      await crud.delete(query: query, params: params);
+      await crud.execute(query: query, params: params);
     }
 
   }

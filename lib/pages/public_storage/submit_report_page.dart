@@ -318,7 +318,7 @@ class SubmitReportPage extends StatelessWidget {
       'report_type': reportType
     };
 
-    await Crud().insert(query: query, params: params);
+    await Crud().execute(query: query, params: params);
 
   }
 

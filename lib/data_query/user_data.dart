@@ -21,7 +21,7 @@ class UserData {
       'username': customUsername ?? userData.username
     };
 
-    await crud.update(query: updateAuthQuery, params: params);
+    await crud.execute(query: updateAuthQuery, params: params);
 
   }
 
@@ -33,12 +33,12 @@ class UserData {
 
     for(final tables in GlobalsTable.tableNames) {
       final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
-      await crud.delete(query: query, params: params);
+      await crud.execute(query: query, params: params);
     }
 
     for(final tables in GlobalsTable.tableNamesPs) {
       final query = "DELETE FROM $tables WHERE CUST_USERNAME = :username";
-      await crud.delete(query: query, params: params);
+      await crud.execute(query: query, params: params);
     }
 
     final queries = [
@@ -53,7 +53,7 @@ class UserData {
     ];
 
     for (final query in queries) {
-      await crud.delete(query: query, params: params);
+      await crud.execute(query: query, params: params);
     }
     
   }

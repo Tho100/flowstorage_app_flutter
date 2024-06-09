@@ -4,42 +4,21 @@ import 'package:get_it/get_it.dart';
 
 class Crud {
 
-  Future<void> processCud(
-    String? query,
-    Map<String,dynamic>? params
-  ) async {
+  Future<void> execute({
+    required String? query,
+    required Map<String, dynamic>? params
+  }) async {
     final conn = await SqlConnection.initializeConnection();
-    await conn.execute(query!,params!);
-  }
-
-  Future<void> insert({
-    required String? query,
-    required Map<String,dynamic>? params
-  }) async {
-    await processCud(query,params);
-  }
-
-  Future<void> update({
-    required String? query,
-    required Map<String,dynamic>? params
-  }) async {
-    await processCud(query,params);
-  }
-
-  Future<void> delete({
-    required String? query,
-    required Map<String,dynamic>? params
-  }) async {
-    await processCud(query,params);
+    await conn.execute(query!, params!);
   }
 
   Future<int> count({
     required String? query, 
-    required Map<String,String>? params
+    required Map<String, String>? params
   }) async {
 
     final conn = await SqlConnection.initializeConnection();
-    final results = await conn.execute(query!,params!);
+    final results = await conn.execute(query!, params!);
 
     for(final row in results.rows) {
       return row.typedColAt<int>(0)!;
@@ -52,12 +31,12 @@ class Crud {
   Future<dynamic> select({
     required String? query,
     required String? returnedColumn,
-    required Map<String,String>? params
+    required Map<String, String>? params
   }) async {
 
     final conn = await SqlConnection.initializeConnection();
     
-    final results = await conn.execute(query!,params!);
+    final results = await conn.execute(query!, params!);
 
     for(final row in results.rows) {
       return row.assoc()[returnedColumn]!;
@@ -74,7 +53,7 @@ class Crud {
     final countRowQuery = "SELECT COUNT(*) FROM $tableName WHERE CUST_USERNAME = :username";
     final params = {'username': userData.username};
 
-    final results = await conn.execute(countRowQuery,params);
+    final results = await conn.execute(countRowQuery, params);
 
     for(final row in results.rows) {
       return row.typedColAt<int>(0)!;
