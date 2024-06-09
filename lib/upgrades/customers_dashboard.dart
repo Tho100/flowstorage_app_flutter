@@ -9,8 +9,6 @@ import 'package:logger/logger.dart';
 
 class StripeCustomers {
 
-  static final _locator = GetIt.instance;
-
   static Future<String> getCustomerIdByEmail(String email) async {
 
     const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
@@ -24,6 +22,7 @@ class StripeCustomers {
     );
 
     if (response.statusCode == 200) {
+
       final jsonData = jsonDecode(response.body);
       final List<dynamic> data = jsonData['data'];
 
@@ -38,6 +37,7 @@ class StripeCustomers {
     } else {
       throw Exception('Failed to retrieve customer emails');
     }
+
   }
 
   static Future<List<dynamic>> getCustomersEmails(String customEmail) async {
@@ -80,10 +80,14 @@ class StripeCustomers {
     };
 
     final response = await http.get(url, headers: headers);
+
     if (response.statusCode == 200) {
+
       final jsonData = jsonDecode(response.body);
       final customerData = jsonData['data'] as List<dynamic>;
+
       if (customerData.isNotEmpty) {
+
         final customer = customerData.first;
         final customerId = customer['id'];
         final subscriptionsUrl = Uri.https('api.stripe.com', '/v1/customers/$customerId/subscriptions');
@@ -93,20 +97,24 @@ class StripeCustomers {
           final subscriptionsData = jsonDecode(subscriptionsResponse.body);
           final List<dynamic> subscriptions = subscriptionsData['data'] as List<dynamic>;
           return subscriptions;
+
         } else {
           throw Exception('Failed to fetch customer subscriptions: ${subscriptionsResponse.body}');
         }
+
       } else {
         throw Exception('No customer found for the given email.');
       }
+
     } else {
       throw Exception('Failed to retrieve customer data: ${response.body}');
     }
+
   }
 
   static Future<void> cancelCustomerSubscriptionByEmail(String email, BuildContext context) async {
 
-    final userData = _locator<UserDataProvider>();
+    final userData = GetIt.instance<UserDataProvider>();
 
     final crud = Crud();
 
@@ -162,6 +170,7 @@ class StripeCustomers {
   }
 
   static Future<void> deleteEmail(String customerId) async {
+
     const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
     final url = 'https://api.stripe.com/v1/customers/$customerId';
 
