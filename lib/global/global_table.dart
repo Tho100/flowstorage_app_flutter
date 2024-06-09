@@ -39,7 +39,7 @@ class GlobalsTable {
     psMsi, psExe, psApk, psPdf, psPtx
   };
 
-  static const Map<String,String> publicToPsTables = {
+  static const Map<String, String> publicToPsTables = {
     homeImage: psImage,
     homeVideo: psVideo,
     homeExcel: psExcel,
