@@ -92,14 +92,16 @@ class DeleteAccountPage extends StatelessWidget {
         return;
       }
 
-      final pinIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(pinInput), "CUST_PIN");
+      final pinIsIncorrect = await AuthVerification()
+        .notEqual(userData.username, AuthModel().computeAuth(pinInput), "CUST_PIN");
 
       if(pinIsIncorrect) {
         CustomAlertDialog.alertDialog("Entered PIN is incorrect.");
         return;
       }
 
-      final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, AuthModel().computeAuth(passwordInput), "CUST_PASSWORD");
+      final passwordIsIncorrect = await AuthVerification()
+        .notEqual(userData.username, AuthModel().computeAuth(passwordInput), "CUST_PASSWORD");
 
       if(passwordIsIncorrect) {
         CustomAlertDialog.alertDialog("Password is incorrect.");

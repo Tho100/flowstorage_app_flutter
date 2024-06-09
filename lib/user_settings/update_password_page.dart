@@ -97,8 +97,11 @@ class UpdatePasswordPageState extends State<UpdatePasswordPage> {
       return;
     }
 
-    final passwordIsIncorrect = await AuthVerification().notEqual(userData.username, currentPasswordAuth, "CUST_PASSWORD");
-    final pinIsIncorrect = await AuthVerification().notEqual(userData.username, pinAuth, "CUST_PIN");
+    final passwordIsIncorrect = await AuthVerification()
+      .notEqual(userData.username, currentPasswordAuth, "CUST_PASSWORD");
+      
+    final pinIsIncorrect = await AuthVerification()
+      .notEqual(userData.username, pinAuth, "CUST_PIN");
     
     if (!passwordIsIncorrect && !pinIsIncorrect) {
 
