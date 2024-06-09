@@ -77,7 +77,7 @@ class RenameData {
         
     }
 
-    await crud.update(query: query, params: params);
+    await crud.execute(query: query, params: params);
    
   }
   

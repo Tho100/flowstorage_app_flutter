@@ -40,7 +40,7 @@ class ShareFileData {
         'comment': comment ?? '',
       };
 
-      await crud.insert(query: insertDataQuery, params: params);
+      await crud.execute(query: insertDataQuery, params: params);
 
     } catch (err, st) {
       Logger().e("Exception from startSharing {share_file}", err, st);

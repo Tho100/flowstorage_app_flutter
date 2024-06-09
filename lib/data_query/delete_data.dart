@@ -69,7 +69,7 @@ class DeleteData {
     }
 
     if (query!.isNotEmpty) {
-      await crud.delete(query: query, params: params);
+      await crud.execute(query: query, params: params);
     }
 
   }
@@ -118,7 +118,7 @@ class DeleteData {
         break;
     }
 
-    await crud.delete(query: query, params: params);
+    await crud.execute(query: query, params: params);
 
   }
 

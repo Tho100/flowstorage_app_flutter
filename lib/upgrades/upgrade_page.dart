@@ -609,11 +609,11 @@ class UpgradePageState extends State<UpgradePage> {
 
     const queryUpdateAccType = "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email AND CUST_USERNAME = :username";
     final params = {"username": userData.username,"email": userData.email,"type": userSelectedPlan};
-    await Crud().update(query: queryUpdateAccType, params: params);
+    await Crud().execute(query: queryUpdateAccType, params: params);
 
     const queryInsertBuyer = "INSERT INTO cust_buyer(CUST_USERNAME, CUST_EMAIL, ACC_TYPE, CUST_ID, PURCHASE_DATE) VALUES (:username, :email, :type, :id, :date)";
     final paramsBuyer = {"username": userData.username,"email": userData.email,"type": userSelectedPlan,"id": customerId,"date": dateToStr};
-    await Crud().insert(query: queryInsertBuyer, params: paramsBuyer);
+    await Crud().execute(query: queryInsertBuyer, params: paramsBuyer);
 
   }
 

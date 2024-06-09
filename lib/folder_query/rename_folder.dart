@@ -25,7 +25,7 @@ class RenameFolder {
       'oldname': EncryptionClass().encrypt(oldFolderTitle),
     };
 
-    await crud.update(
+    await crud.execute(
       query: updateFolderNameQuery, 
       params: params
     );

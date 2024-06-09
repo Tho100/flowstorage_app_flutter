@@ -99,7 +99,7 @@ class SignUpUser {
       final query = insertExtraInfoQuery[i];
       final param = params[i];
 
-      await crud.insert(
+      await crud.execute(
         query: query,
         params: param,
       );
