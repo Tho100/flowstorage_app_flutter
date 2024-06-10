@@ -104,6 +104,7 @@ class UpgradePageState extends State<UpgradePage> {
         ),
       ),
     );
+    
   }
 
   Widget _buildPrice(double value) {
@@ -116,6 +117,7 @@ class UpgradePageState extends State<UpgradePage> {
             height: 25,
             child: CircularProgressIndicator(color: ThemeColor.darkBlack)
           );
+
         } else if (priceSnapshot.hasError) {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
@@ -125,6 +127,7 @@ class UpgradePageState extends State<UpgradePage> {
             ),
             textAlign: TextAlign.left,
           );
+
         } else if (priceSnapshot.hasData) {
           final price = priceSnapshot.data!;
           final indexOfDot = price.indexOf('.');
@@ -137,6 +140,7 @@ class UpgradePageState extends State<UpgradePage> {
             ),
             textAlign: TextAlign.left,
           );
+
         } else {
           return Text("\$$value/mo.",
             style: GoogleFonts.poppins(
@@ -146,6 +150,7 @@ class UpgradePageState extends State<UpgradePage> {
             ),
             textAlign: TextAlign.left,
           );
+
         }
       } 
     );

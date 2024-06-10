@@ -24,7 +24,7 @@ class StripeCustomers {
     if (response.statusCode == 200) {
 
       final jsonData = jsonDecode(response.body);
-      final List<dynamic> data = jsonData['data'];
+      final data = jsonData['data'] as List<dynamic>;
 
       for (final customer in data) {
         if (customer['email'] == email) {
@@ -55,8 +55,8 @@ class StripeCustomers {
     if (response.statusCode == 200) {
 
       final jsonData = jsonDecode(response.body);
-      final List<dynamic> data = jsonData['data'];
-      final List emails = data.map((customer) => customer['email']).toList();
+      final data = jsonData['data'] as List<dynamic>;
+      final emails = data.map((customer) => customer['email']).toList();
 
       if(customEmail != "") {
         return emails.where((email) => email == customEmail).toList();
@@ -93,14 +93,13 @@ class StripeCustomers {
         final subscriptionsUrl = Uri.https('api.stripe.com', '/v1/customers/$customerId/subscriptions');
         final subscriptionsResponse = await http.get(subscriptionsUrl, headers: headers);
 
-        if (subscriptionsResponse.statusCode == 200) {
-          final subscriptionsData = jsonDecode(subscriptionsResponse.body);
-          final List<dynamic> subscriptions = subscriptionsData['data'] as List<dynamic>;
-          return subscriptions;
-
-        } else {
+        if(subscriptionsResponse.statusCode != 200) {
           throw Exception('Failed to fetch customer subscriptions: ${subscriptionsResponse.body}');
         }
+
+        final subscriptionsData = jsonDecode(subscriptionsResponse.body);
+        final subscriptions = subscriptionsData['data'] as List<dynamic>;
+        return subscriptions;
 
       } else {
         throw Exception('No customer found for the given email.');
@@ -122,46 +121,42 @@ class StripeCustomers {
 
     final subscriptions = await getCustomerSubscriptionsByEmail(email);
 
-    if (subscriptions.isNotEmpty) {
-      
-      final subscriptionId = subscriptions[0]['id'];
-
-      final cancelUrl = Uri.https('api.stripe.com', '/v1/subscriptions/$subscriptionId');
-      final headers = {
-        'Authorization': 'Bearer $apiKey',
-      };
-
-      final cancelData = {
-        'cancel_at_period_end': true,
-      };
-      
-      final cancelResponse = await http.delete(cancelUrl, headers: headers, body: jsonEncode(cancelData));
-      
-      if (cancelResponse.statusCode == 200) {
-        
-        await crud.execute(
-          query: "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email", 
-          params: {"type": "Basic", "email": userData.email});
-
-        await crud.execute(
-          query: "DELETE FROM cust_buyer WHERE CUST_USERNAME = :username", 
-          params: {"username": userData.username});
-
-        userData.setAccountType("Basic");
-
-        await deleteEmailByEmail(userData.email);
-
-        await LocalStorageModel().setupLocalAutoLogin(
-          userData.username, userData.email, "Basic");
-
-      } else {
-        return;
-      }
-      
-    } else {      
+    if(subscriptions.isEmpty) {
       return;
     }
-  
+      
+    final subscriptionId = subscriptions[0]['id'];
+
+    final cancelUrl = Uri.https('api.stripe.com', '/v1/subscriptions/$subscriptionId');
+    final headers = {
+      'Authorization': 'Bearer $apiKey',
+    };
+
+    final cancelData = {
+      'cancel_at_period_end': true,
+    };
+    
+    final cancelResponse = await http.delete(cancelUrl, headers: headers, body: jsonEncode(cancelData));
+    
+    if(cancelResponse.statusCode != 200) {
+      return;
+    }
+      
+    await crud.execute(
+      query: "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email", 
+      params: {"type": "Basic", "email": userData.email});
+
+    await crud.execute(
+      query: "DELETE FROM cust_buyer WHERE CUST_USERNAME = :username", 
+      params: {"username": userData.username});
+
+    userData.setAccountType("Basic");
+
+    await deleteEmailByEmail(userData.email);
+
+    await LocalStorageModel().setupLocalAutoLogin(
+      userData.username, userData.email, "Basic");
+
   }
 
   static Future<void> deleteEmailByEmail(String email) async {
@@ -183,8 +178,10 @@ class StripeCustomers {
 
     if (response.statusCode == 200) {
       Logger().i('Email deleted successfully.');
+      
     } else {
       Logger().i('Failed to delete email');
+
     }
 
   }
