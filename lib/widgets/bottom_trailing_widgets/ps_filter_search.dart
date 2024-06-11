@@ -20,10 +20,13 @@ class BottomTrailingPsSearchFilter {
       style: GlobalsStyle.btnBottomDialogBackgroundStyle,
       child: Row(
         children: [
+          
           const SizedBox(width: 15.0),
+
           Text(text,
             style: GlobalsStyle.btnBottomDialogTextStyle
           ),
+
         ],
       ),
     );
@@ -64,4 +67,5 @@ class BottomTrailingPsSearchFilter {
     );
 
   }
+
 }
