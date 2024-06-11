@@ -179,27 +179,14 @@ class DataCaller {
     final dataList = await PublicStorageDataRetriever()
       .getFilesInfo(isFromMyPs: false);
 
-    final fileNames = <String>{};
-    final bytes = <Uint8List>{};
-    final dates = <String>[];
+    final extractedData = _extractPsDataList(dataList);
 
-    final uploader = <String>[];
-    final titles = <String>[];
-
-    for (final result in dataList) {
-      final fileName = result['name'] as List<String>;
-      final fileData = result['file_data'] as List<Uint8List>;
-      final uploadDate = result['date'] as List<String>;
-
-      final fileUploader = result['uploader_name'] as List<String>;
-      final fileTitle = result['titles'] as List<String>;
-
-      fileNames.addAll(fileName);
-      bytes.addAll(fileData);
-      dates.addAll(uploadDate);
-      uploader.addAll(fileUploader);
-      titles.addAll(fileTitle);
-    }
+    final fileNames = extractedData['name']!.toSet() as Set<String>;
+    final bytes = extractedData['file_data']!.toSet() as Set<Uint8List>;
+    
+    final dates = extractedData['date'] as List<String>;
+    final uploader = extractedData['uploader_name'] as List<String>;
+    final titles = extractedData['titles'] as List<String>;
 
     final getTagsValue = dates.map((tags) => tags.split(' ').last).toList();
 
@@ -236,27 +223,14 @@ class DataCaller {
     final dataList = await PublicStorageDataRetriever()
       .getFilesInfo(isFromMyPs: true);
 
-    final fileNames = <String>{};
-    final bytes = <Uint8List>{};
-    final dates = <String>[];
+    final extractedData = _extractPsDataList(dataList);
 
-    final uploader = <String>[];
-    final titles = <String>[];
+    final fileNames = extractedData['name']!.toSet() as Set<String>;
+    final bytes = extractedData['file_data']!.toSet() as Set<Uint8List>;
 
-    for (final result in dataList) {
-      final fileName = result['name'] as List<String>;
-      final fileData = result['file_data'] as List<Uint8List>;
-      final uploadDate = result['date'] as List<String>;
-
-      final fileUploader = result['uploader_name'] as List<String>;
-      final fileTitle = result['titles'] as List<String>;
-
-      fileNames.addAll(fileName);
-      bytes.addAll(fileData);
-      dates.addAll(uploadDate);
-      uploader.addAll(fileUploader);
-      titles.addAll(fileTitle);
-    }
+    final dates = extractedData['date'] as List<String>;
+    final uploader = extractedData['uploader_name'] as List<String>;
+    final titles = extractedData['titles'] as List<String>;
 
     final getTagsValue = dates.map((tags) => tags.split(' ').last).toList();
 
@@ -363,6 +337,38 @@ class DataCaller {
         : await _dateGetterHome.getUploadDate(conn, username, table);
       return [fileNames, bytes, dates];
     }).toList();
+
+  }
+
+  Map<String, List<dynamic>> _extractPsDataList(List<Map<String, dynamic>> dataList) {
+
+    final fileNames = <String>[];
+    final bytes = <Uint8List>[];
+    final dates = <String>[];
+    final uploader = <String>[];
+    final titles = <String>[];
+
+    for (final result in dataList) {
+      final fileName = result['name'] as List<String>;
+      final fileData = result['file_data'] as List<Uint8List>;
+      final uploadDate = result['date'] as List<String>;
+      final fileUploader = result['uploader_name'] as List<String>;
+      final fileTitle = result['titles'] as List<String>;
+
+      fileNames.addAll(fileName);
+      bytes.addAll(fileData);
+      dates.addAll(uploadDate);
+      uploader.addAll(fileUploader);
+      titles.addAll(fileTitle);
+    }
+
+    return {
+      'name': fileNames,
+      'file_data': bytes,
+      'date': dates,
+      'uploader_name': uploader,
+      'titles': titles,
+    };
 
   }
 
