@@ -321,7 +321,7 @@ class PreviewAudioState extends State<PreviewAudio> {
             return IconButton(
               padding: EdgeInsets.zero,
               onPressed: () => isKeepPlayingEnabledNotifier.value = !isKeepPlayingEnabledNotifier.value,
-              icon: Icon(CupertinoIcons.repeat, 
+              icon: Icon(CupertinoIcons.arrow_2_squarepath, 
                 color: value ? ThemeColor.justWhite : ThemeColor.thirdWhite, size: 28.5
               ),
             );
