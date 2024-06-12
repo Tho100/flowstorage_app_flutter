@@ -10,6 +10,7 @@ import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/process_audio.dart';
+import 'package:flowstorage_fsc/pages/current_device_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
@@ -394,22 +395,30 @@ class PreviewAudioState extends State<PreviewAudio> {
 
         if(isBluetoothEnabled) ... [
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            const Icon(Icons.bluetooth, color: ThemeColor.secondaryPurple, size: 18),
-
-            Text(bluetoothDeviceName,
-              style: GoogleFonts.inter(
-                color: ThemeColor.secondaryPurple,
-                fontSize: 17,
-                fontWeight: FontWeight.w800
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => BluetoothCurrentDevicePage(deviceName: bluetoothDeviceName)
+            ));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+        
+              const Icon(Icons.bluetooth, color: ThemeColor.secondaryPurple, size: 18),
+        
+              Text(bluetoothDeviceName,
+                style: GoogleFonts.inter(
+                  color: ThemeColor.secondaryPurple,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w800
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-
-          ]
+        
+            ]
+          ),
         ),
 
         const SizedBox(height: 6),
