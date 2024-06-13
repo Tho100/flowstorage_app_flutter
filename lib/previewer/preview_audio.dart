@@ -539,7 +539,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 const Spacer(),
     
                 Padding(
-                  padding: const EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 26.0),
                   child: buildKeepPlaying(),
                 ),
     
