@@ -71,9 +71,8 @@ class PreviewAudioState extends State<PreviewAudio> {
       if(devices.isNotEmpty) {
         setState(() {
           isBluetoothEnabled = true;
-          bluetoothDeviceName = devices[0];
+          bluetoothDeviceName = devices[devices.length - 1];
         });
-
       } 
 
     } catch (e) {
