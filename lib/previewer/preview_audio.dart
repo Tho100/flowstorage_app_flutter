@@ -10,14 +10,12 @@ import 'package:flowstorage_fsc/helper/call_preview_file_data.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
 import 'package:flowstorage_fsc/models/offline_model.dart';
 import 'package:flowstorage_fsc/models/process_audio.dart';
-import 'package:flowstorage_fsc/pages/current_device_page.dart';
 import 'package:flowstorage_fsc/provider/temp_data_provider.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
 import 'package:flowstorage_fsc/themes/theme_color.dart';
 import 'package:flowstorage_fsc/widgets/splash_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -52,33 +50,10 @@ class PreviewAudioState extends State<PreviewAudio> {
 
   final audioPlayerController = AudioPlayer();  
 
-  final flutterBlue = FlutterBlue.instance;
-
-  bool isBluetoothEnabled = false;
-  String bluetoothDeviceName = "";
-
   String audioDuration = "0:00";
 
   late String? audioContentType;
   late Uint8List? byteAudio = Uint8List(0);
-
-  void checkBluetooth() {
-    flutterBlue.isOn.then((isOn) {
-      if (isOn) {
-        isBluetoothEnabled = true;
-      } 
-    });
-  }
-
-  void getConnectedBluetoothDeviceName() {
-    if(isBluetoothEnabled) {
-      flutterBlue.connectedDevices.then((List<BluetoothDevice> devices) {
-        for (BluetoothDevice device in devices) {
-          bluetoothDeviceName = device.name;
-        }
-      });
-    }
-  }
 
   Future<Uint8List> callAudioDataAsync() async {
 
@@ -393,7 +368,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     return Column(
       children: [
 
-        if(isBluetoothEnabled) ... [
+        /*if(isBluetoothEnabled) ... [
 
         GestureDetector(
           onTap: () {
@@ -423,7 +398,7 @@ class PreviewAudioState extends State<PreviewAudio> {
 
         const SizedBox(height: 6),
 
-        ],
+        ],*/
 
         SizedBox(
           width: availableWidth,
@@ -539,7 +514,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 const Spacer(),
     
                 Padding(
-                  padding: const EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 32.0),
                   child: buildKeepPlaying(),
                 ),
     
@@ -599,8 +574,6 @@ class PreviewAudioState extends State<PreviewAudio> {
     super.initState();
     initializeAudioContentType();
     playOrPauseAudioAsync();
-    checkBluetooth();
-    getConnectedBluetoothDeviceName();
   }
 
   @override
