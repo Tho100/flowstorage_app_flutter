@@ -60,13 +60,13 @@ class PreviewAudioState extends State<PreviewAudio> {
   late String? audioContentType;
   late Uint8List? byteAudio = Uint8List(0);
 
-  static const bluetoothChannel = MethodChannel('bluetooth_channel');
-
   void getBluetoothConnectedDevices() async {
 
     try {
 
-      final List<dynamic> devices = await bluetoothChannel.invokeMethod('getConnectedDevices');
+      const bluetoothChannel = MethodChannel('bluetooth_channel');
+
+      List<dynamic> devices = await bluetoothChannel.invokeMethod('getConnectedDevices');
 
       if(devices.isNotEmpty) {
         setState(() {
