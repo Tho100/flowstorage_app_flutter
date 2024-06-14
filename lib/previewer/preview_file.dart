@@ -536,14 +536,17 @@ class PreviewFileState extends State<PreviewFile> {
       OriginFile.offline,
     };
 
-    return Text(
-      generalOrigin.contains(tempData.origin) 
-      ? "   Uploaded By" : "   Shared To",
-      textAlign: TextAlign.start,
-      style: GoogleFonts.inter(
-        fontSize: 11,
-        color: ThemeColor.darkWhite,
-        fontWeight: FontWeight.w800,
+    return Padding(
+      padding: const EdgeInsets.only(left: 2.0),
+      child: Text(
+        generalOrigin.contains(tempData.origin) 
+        ? "   Uploaded By" : "   Shared To",
+        textAlign: TextAlign.start,
+        style: GoogleFonts.inter(
+          fontSize: 11,
+          color: ThemeColor.darkWhite,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
 
