@@ -653,7 +653,7 @@ class PreviewFileState extends State<PreviewFile> {
                       shape: const StadiumBorder(),
                     ), 
                     child: Transform.translate(
-                      offset: const Offset(-12, 0),
+                      offset: const Offset(-13, 0),
                       child: const Icon(Icons.keyboard_arrow_down)
                     ),
                   ),
