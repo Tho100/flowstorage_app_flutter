@@ -533,7 +533,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     
                 const Spacer(),
     
-                const SizedBox(width: 5),
+                const SizedBox(width: 4),
     
                 buildFastBackward(),
                 buildPlayPauseButton(),
@@ -542,7 +542,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 const Spacer(),
     
                 Padding(
-                  padding: const EdgeInsets.only(right: 32.0),
+                  padding: const EdgeInsets.only(right: 36.0),
                   child: buildKeepPlaying(),
                 ),
     
