@@ -339,8 +339,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _saveTextChangesOnPressed() async {
 
     final textValue = PreviewText.textController.text;
-    final isTextType = Globals.textType.contains(
-        tempData.selectedFileName.split('.').last);
+    final isTextType = Globals.textType.contains(tempData.selectedFileName.split('.').last);
 
     if(textValue.isNotEmpty && isTextType) {
       PreviewText.isChangesSaved = true;
@@ -707,7 +706,7 @@ class PreviewFileState extends State<PreviewFile> {
               const Spacer(),
   
               Visibility(
-                visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
+                visible: Globals.textType.contains(fileType),
                 child: _buildBottomButtons(
                   textStyle: const Icon(CupertinoIcons.floppy_disk, size: 22.5), 
                   color: ThemeColor.darkBlack, 
@@ -767,7 +766,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     if (textTables.contains(currentTable)) {
       final displayFileName =
-          tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
+        tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
 
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
