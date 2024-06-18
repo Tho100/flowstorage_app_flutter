@@ -344,13 +344,13 @@ class PreviewFileState extends State<PreviewFile> {
       onRenamePressed: () {
         Navigator.pop(context);
         OpenOptionsDialog(
-          onPressed: () => _onRenameItemPressed, 
+          onPressed: () => _onRenameItemPressed(fileName), 
           fileName: fileName
         ).renameDialog();
       }, 
       onDeletePressed: () {
         OpenOptionsDialog(
-          onPressed: () => _onDeleteItemPressed, 
+          onPressed: () => _onDeleteItemPressed(fileName), 
           fileName: fileName
         ).deleteDialog();
       },

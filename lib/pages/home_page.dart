@@ -1058,7 +1058,7 @@ class HomePageState extends State<HomePage> {
     
   }
 
-  void _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+  void _onDeleteItemPressed(String fileName) async {
 
     try {
 
@@ -1237,13 +1237,13 @@ class HomePageState extends State<HomePage> {
       onRenamePressed: () {
         Navigator.pop(context);
         OpenOptionsDialog(
-          onPressed: () => _onRenameItemPressed,
+          onPressed: () => _onRenameItemPressed(fileName),
           fileName: fileName
         ).renameDialog();
       }, 
       onDeletePressed: () {
         OpenOptionsDialog(
-          onPressed: () => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
+          onPressed: () => _onDeleteItemPressed(fileName),
           fileName: fileName
         ).deleteDialog();
       },
