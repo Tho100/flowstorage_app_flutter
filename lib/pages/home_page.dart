@@ -17,6 +17,7 @@ import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/generate_thumbnail.dart';
 import 'package:flowstorage_fsc/helper/get_assets.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/helper/open_dialog.dart';
 import 'package:flowstorage_fsc/helper/shorten_text.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
 import 'package:flowstorage_fsc/interact_dialog/bottom_trailing/folder_dialog.dart';
@@ -350,20 +351,6 @@ class HomePageState extends State<HomePage> {
 
     await NotificationApi.stopNotification(0);
 
-  }
-
-  void _openDeleteDialog(String fileName) {
-    DeleteDialog().buildDeleteDialog( 
-      fileName: fileName, 
-      onDeletePressed:() => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
-    );
-  }
-
-  void _openRenameDialog(String fileName) {
-     RenameDialog().buildRenameFileDialog(
-      fileName: fileName, 
-      onRenamePressed: () => _onRenameItemPressed(fileName), 
-    );
   }
 
   void _openRenameFolderDialog(String folderName) {
@@ -1071,7 +1058,7 @@ class HomePageState extends State<HomePage> {
     
   }
 
-  void _onDeleteItemPressed(String fileName, List<String> fileValues, List<String> filteredSearchedFiles, List<Uint8List?> imageByteValues, Function onTextChanged) async {
+  void _onDeleteItemPressed(String fileName) async {
 
     try {
 
@@ -1249,15 +1236,21 @@ class HomePageState extends State<HomePage> {
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
-        _openRenameDialog(fileName);
+        OpenOptionsDialog(
+          onPressed: () => _onRenameItemPressed(fileName),
+          fileName: fileName
+        ).renameDialog();
       }, 
+      onDeletePressed: () {
+        OpenOptionsDialog(
+          onPressed: () => _onDeleteItemPressed(fileName),
+          fileName: fileName
+        ).deleteDialog();
+      },
       onDownloadPressed: () async {
         Navigator.pop(context);
         await functionModel.downloadFileData(fileName: fileName);
       }, 
-      onDeletePressed: () {
-        _openDeleteDialog(fileName);
-      },
       onSharingPressed: () {
         Navigator.pop(context);
         NavigatePage.goToPageSharing(fileName);

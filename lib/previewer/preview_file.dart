@@ -8,8 +8,8 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/helper/open_dialog.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/system_toggle.dart';
@@ -302,20 +302,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  void _openDeleteDialog() {
-    DeleteDialog().buildDeleteDialog(
-      fileName: tempData.selectedFileName, 
-      onDeletePressed: () => _onDeleteItemPressed(tempData.selectedFileName), 
-    );
-  }
-
-  void _openRenameDialog() {
-    RenameDialog().buildRenameFileDialog(
-      fileName: tempData.selectedFileName, 
-      onRenamePressed: () => _onRenameItemPressed(tempData.selectedFileName),
-    );
-  }
-
   void _updateTextChanges(String changesUpdate) async {
 
     try {
@@ -339,8 +325,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _saveTextChangesOnPressed() async {
 
     final textValue = PreviewText.textController.text;
-    final isTextType = Globals.textType.contains(
-        tempData.selectedFileName.split('.').last);
+    final isTextType = Globals.textType.contains(tempData.selectedFileName.split('.').last);
 
     if(textValue.isNotEmpty && isTextType) {
       PreviewText.isChangesSaved = true;
@@ -358,8 +343,17 @@ class PreviewFileState extends State<PreviewFile> {
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
-        _openRenameDialog();
+        OpenOptionsDialog(
+          onPressed: () => _onRenameItemPressed(fileName), 
+          fileName: fileName
+        ).renameDialog();
       }, 
+      onDeletePressed: () {
+        OpenOptionsDialog(
+          onPressed: () => _onDeleteItemPressed(fileName), 
+          fileName: fileName
+        ).deleteDialog();
+      },
       onDownloadPressed: () async {
         Navigator.pop(context);
         await functionModel.downloadFileData(fileName: fileName);
@@ -380,7 +374,6 @@ class PreviewFileState extends State<PreviewFile> {
         Navigator.pop(context);
         _openMoveFileOnPressed();
       },
-      onDeletePressed: () => _openDeleteDialog(),
       onOpenWithPressed: () => _openWithOnPressed(),
       context: context
     );
@@ -390,7 +383,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openMoveFileOnPressed() async {
 
     final fileByteData = await functionModel
-        .retrieveFileDataPreviewer(isCompressed: true);
+      .retrieveFileDataPreviewer(isCompressed: true);
 
     final base64Data = base64.encode(fileByteData);
 
@@ -536,14 +529,17 @@ class PreviewFileState extends State<PreviewFile> {
       OriginFile.offline,
     };
 
-    return Text(
-      generalOrigin.contains(tempData.origin) 
-      ? "   Uploaded By" : "   Shared To",
-      textAlign: TextAlign.start,
-      style: GoogleFonts.inter(
-        fontSize: 11,
-        color: ThemeColor.darkWhite,
-        fontWeight: FontWeight.w800,
+    return Padding(
+      padding: const EdgeInsets.only(left: 2.0),
+      child: Text(
+        generalOrigin.contains(tempData.origin) 
+        ? "   Uploaded By" : "   Shared To",
+        textAlign: TextAlign.start,
+        style: GoogleFonts.inter(
+          fontSize: 11,
+          color: ThemeColor.darkWhite,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
 
@@ -650,7 +646,7 @@ class PreviewFileState extends State<PreviewFile> {
                       shape: const StadiumBorder(),
                     ), 
                     child: Transform.translate(
-                      offset: const Offset(-12, 0),
+                      offset: const Offset(-13, 0),
                       child: const Icon(Icons.keyboard_arrow_down)
                     ),
                   ),
@@ -704,7 +700,7 @@ class PreviewFileState extends State<PreviewFile> {
               const Spacer(),
   
               Visibility(
-                visible: Globals.textType.contains(tempData.selectedFileName.split('.').last),
+                visible: Globals.textType.contains(fileType),
                 child: _buildBottomButtons(
                   textStyle: const Icon(CupertinoIcons.floppy_disk, size: 22.5), 
                   color: ThemeColor.darkBlack, 
@@ -764,7 +760,7 @@ class PreviewFileState extends State<PreviewFile> {
 
     if (textTables.contains(currentTable)) {
       final displayFileName =
-          tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
+        tempData.selectedFileName.replaceAll(RegExp(r'\.[^\.]*$'), '');
 
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,

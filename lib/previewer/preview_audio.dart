@@ -60,13 +60,13 @@ class PreviewAudioState extends State<PreviewAudio> {
   late String? audioContentType;
   late Uint8List? byteAudio = Uint8List(0);
 
-  static const bluetoothChannel = MethodChannel('bluetooth_channel');
-
   void getBluetoothConnectedDevices() async {
 
     try {
 
-      final List<dynamic> devices = await bluetoothChannel.invokeMethod('getConnectedDevices');
+      const bluetoothChannel = MethodChannel('bluetooth_channel');
+
+      List<dynamic> devices = await bluetoothChannel.invokeMethod('getConnectedDevices');
 
       if(devices.isNotEmpty) {
         setState(() {
@@ -533,7 +533,7 @@ class PreviewAudioState extends State<PreviewAudio> {
     
                 const Spacer(),
     
-                const SizedBox(width: 5),
+                const SizedBox(width: 4),
     
                 buildFastBackward(),
                 buildPlayPauseButton(),
@@ -542,7 +542,7 @@ class PreviewAudioState extends State<PreviewAudio> {
                 const Spacer(),
     
                 Padding(
-                  padding: const EdgeInsets.only(right: 32.0),
+                  padding: const EdgeInsets.only(right: 36.0),
                   child: buildKeepPlaying(),
                 ),
     
