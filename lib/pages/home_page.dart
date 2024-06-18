@@ -1236,13 +1236,13 @@ class HomePageState extends State<HomePage> {
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
-        OpenFileOptionsDialog(
+        OpenOptionsDialog(
           onPressed: () => _onRenameItemPressed,
           fileName: fileName
         ).renameDialog();
       }, 
       onDeletePressed: () {
-        OpenFileOptionsDialog(
+        OpenOptionsDialog(
           onPressed: () => _onDeleteItemPressed(fileName, storageData.fileNamesList, storageData.fileNamesFilteredList, storageData.imageBytesList, _itemSearchingImplementation),
           fileName: fileName
         ).deleteDialog();

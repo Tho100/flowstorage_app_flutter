@@ -1,12 +1,12 @@
 import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 
-class OpenFileOptionsDialog {
+class OpenOptionsDialog {
 
   final String fileName;
   final Function onPressed;
 
-  const OpenFileOptionsDialog({
+  const OpenOptionsDialog({
     required this.onPressed, 
     required this.fileName
   });
