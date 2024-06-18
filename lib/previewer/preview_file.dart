@@ -8,8 +8,8 @@ import 'package:flowstorage_fsc/global/globals.dart';
 import 'package:flowstorage_fsc/helper/call_toast.dart';
 import 'package:flowstorage_fsc/helper/external_app.dart';
 import 'package:flowstorage_fsc/helper/navigate_page.dart';
+import 'package:flowstorage_fsc/helper/open_dialog.dart';
 import 'package:flowstorage_fsc/helper/visibility_checker.dart';
-import 'package:flowstorage_fsc/interact_dialog/delete_dialog.dart';
 import 'package:flowstorage_fsc/interact_dialog/rename_dialog.dart';
 import 'package:flowstorage_fsc/models/function_model.dart';
 import 'package:flowstorage_fsc/models/system_toggle.dart';
@@ -302,20 +302,6 @@ class PreviewFileState extends State<PreviewFile> {
 
   }
 
-  void _openDeleteDialog() {
-    DeleteDialog().buildDeleteDialog(
-      fileName: tempData.selectedFileName, 
-      onDeletePressed: () => _onDeleteItemPressed(tempData.selectedFileName), 
-    );
-  }
-
-  void _openRenameDialog() {
-    RenameDialog().buildRenameFileDialog(
-      fileName: tempData.selectedFileName, 
-      onRenamePressed: () => _onRenameItemPressed(tempData.selectedFileName),
-    );
-  }
-
   void _updateTextChanges(String changesUpdate) async {
 
     try {
@@ -357,8 +343,17 @@ class PreviewFileState extends State<PreviewFile> {
       fileName: fileName, 
       onRenamePressed: () {
         Navigator.pop(context);
-        _openRenameDialog();
+        OpenFileOptionsDialog(
+          onPressed: () => _onRenameItemPressed, 
+          fileName: fileName
+        ).renameDialog();
       }, 
+      onDeletePressed: () {
+        OpenFileOptionsDialog(
+          onPressed: () => _onDeleteItemPressed, 
+          fileName: fileName
+        ).deleteDialog();
+      },
       onDownloadPressed: () async {
         Navigator.pop(context);
         await functionModel.downloadFileData(fileName: fileName);
@@ -379,7 +374,6 @@ class PreviewFileState extends State<PreviewFile> {
         Navigator.pop(context);
         _openMoveFileOnPressed();
       },
-      onDeletePressed: () => _openDeleteDialog(),
       onOpenWithPressed: () => _openWithOnPressed(),
       context: context
     );
@@ -389,7 +383,7 @@ class PreviewFileState extends State<PreviewFile> {
   void _openMoveFileOnPressed() async {
 
     final fileByteData = await functionModel
-        .retrieveFileDataPreviewer(isCompressed: true);
+      .retrieveFileDataPreviewer(isCompressed: true);
 
     final base64Data = base64.encode(fileByteData);
 
