@@ -59,14 +59,13 @@ import 'package:flowstorage_fsc/widgets/checkbox_item.dart';
 import 'package:flowstorage_fsc/widgets/empty_body.dart';
 import 'package:flowstorage_fsc/widgets/navigation_bar.dart';
 import 'package:flowstorage_fsc/widgets/navigation_buttons.dart';
+import 'package:flowstorage_fsc/widgets/public_storage_widgets.dart';
 import 'package:flowstorage_fsc/widgets/responsive_list_view.dart';
 import 'package:flowstorage_fsc/widgets/responsive_search_bar.dart';
 import 'package:flowstorage_fsc/widgets/sidebar_menu.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/default_grid.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/photos_grid.dart';
 import 'package:flowstorage_fsc/widgets/grid_list_view/ps_grid.dart';
-import 'package:flowstorage_fsc/widgets/grid_list_view/recent_ps_grid.dart';
-import 'package:flowstorage_fsc/widgets/grid_list_view/sub_ps_grid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1480,7 +1479,6 @@ class HomePageState extends State<HomePage> {
         await _callSharingData("sharedToMe");
 
         loading.stopLoading();
-
       }, 
       sharedToOthersOnPressed: () async {
         Navigator.pop(context);
@@ -1490,9 +1488,9 @@ class HomePageState extends State<HomePage> {
         await _callSharingData("sharedFiles");
 
         loading.stopLoading();
-        
       }
     );
+
   }
 
   Future _callBottomTrailingSorting() {
@@ -1808,6 +1806,7 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
+
   }
 
   Widget _buildEmptyBody() {
@@ -1926,46 +1925,6 @@ class HomePageState extends State<HomePage> {
 
   }
 
-  Widget _buildRecentPsFiles(Uint8List imageBytes, int index) {
-
-    final originalDateValues = storageData.fileDateFilteredList[index];
-
-    final daysDate = originalDateValues.split(' ')[0];
-    final inputDate = "$daysDate days";
-    final shortFormDate = inputDate == "Just days" 
-      ? "Just now" 
-      : DateShortForm(input: inputDate).convert();
-
-    return RecentPsListView(
-      imageBytes: imageBytes, 
-      index: index, 
-      uploadDate: shortFormDate,
-      fileOnPressed: () => _navigateToPreviewFile(index),
-      fileOnLongPressed: () => _callBottomTrailing(index),
-    );
-
-  }
-
-  Widget _buildSubPsFiles(Uint8List imageBytes, int index) {
-
-    final originalDateValues = storageData.fileDateFilteredList[index];
-
-    final daysDate = originalDateValues.split(' ')[0];
-    final inputDate = "$daysDate days";
-    final shortFormDate = inputDate == "Just days" 
-      ? "Just now" 
-      : DateShortForm(input: inputDate).convert();
-
-    return SubPsListView(
-      imageBytes: imageBytes, 
-      index: index, 
-      uploadDate: shortFormDate,
-      fileOnPressed: () => _navigateToPreviewFile(index), 
-      fileOnLongPressed: () => _callBottomTrailing(index),
-    ); 
-
-  }
-
   Widget _buildGridListViewItems(int index) {
 
     final imageBytes = storageData.imageBytesFilteredList[index]!;
@@ -1998,127 +1957,22 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: [
 
-            if (isPsRecent && tempData.origin == OriginFile.public && index == 0) ... [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0, top: 12),
-                  child: Row(
-                    children: [
+            if (isPsRecent && tempData.origin == OriginFile.public && index == 0)
+            PublicStorageWidgets(
+              navigateToPreviewFile: () => _navigateToPreviewFile(index),
+              callBottomTrailing: () => _callBottomTrailing(index),
+            ).buildRecentFiles(),
 
-                      const Icon(Icons.schedule, color: ThemeColor.justWhite, size: 20),
-
-                      const SizedBox(width: 8),
-
-                      Text(
-                        "Recent",
-                        style: GoogleFonts.inter(
-                          fontSize: 22,
-                          color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-
-                    const SizedBox(width: 10),
-                    _buildRecentPsFiles(storageData.imageBytesFilteredList[0]!, 0),
-
-                    if (storageData.imageBytesFilteredList.length > 1) ... [
-                      const SizedBox(width: 25),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[1]!, 1),
-                    ],
-
-                    if (storageData.imageBytesFilteredList.length > 2) ... [
-                      const SizedBox(width: 25),
-                      _buildRecentPsFiles(storageData.imageBytesFilteredList[2]!, 2),
-                    ],
-
-                    const SizedBox(width: 15),
-
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Divider(color: ThemeColor.lightGrey),
-
-            ],
-
-            if (tempData.origin == OriginFile.public && index == 3) ... [
-              Transform.translate(
-                offset: const Offset(0, -12),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-
-                        const SizedBox(width: 5),
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[3]!, 3),
-                        
-                        const SizedBox(width: 26),
-                        if (storageData.imageBytesFilteredList.length > 4)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[4]!, 4),
-              
-                        const SizedBox(width: 26),
-                        if (storageData.imageBytesFilteredList.length > 5)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[5]!, 5),
-              
-                        const SizedBox(width: 26),
-                        if (storageData.imageBytesFilteredList.length > 6)
-                        _buildSubPsFiles(storageData.imageBytesFilteredList[6]!, 6),
-              
-                        const SizedBox(width: 5),
-
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            if (tempData.origin == OriginFile.public && index == 3)
+            PublicStorageWidgets(
+              navigateToPreviewFile: () => _navigateToPreviewFile(index),
+              callBottomTrailing: () => _callBottomTrailing(index),
+            ).buildSubFiles(),
 
             if (tempData.origin == OriginFile.public && !isPsRecent && index > 6) ... [
               if (index == 7)
-              Transform.translate(
-                offset: const Offset(0, -12),  
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Row(
-                    children: [
-
-                      const Icon(Icons.explore_outlined, color: ThemeColor.justWhite, size: 20),
-
-                      const SizedBox(width: 8),
-
-                      Text( 
-                        "Discover",
-                        style: GoogleFonts.inter(
-                          fontSize: 22,
-                          color: ThemeColor.justWhite,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-
+              PublicStorageWidgets().buildDiscoverText(),
               IntrinsicHeight(child: _buildPsGridListView(imageBytes, index)),
-
             ],
             
             if (tempData.origin != OriginFile.public && !togglePhotosPressed)
