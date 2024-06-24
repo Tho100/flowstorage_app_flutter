@@ -55,6 +55,7 @@ class PreviewVideoState extends State<PreviewVideo> {
   bool videoIsLoading = false;
   bool videoIsEnded = false;
   bool buttonPlayPausePressed = true;
+  bool isPlayingManually = false; 
 
   bool isLandscapeMode = false;
 
@@ -299,32 +300,31 @@ class PreviewVideoState extends State<PreviewVideo> {
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         onPressed: () {
-                          
-                          buttonPlayPausePressed = !buttonPlayPausePressed;
-                      
-                          if(videoIsEnded) {
-                            iconPausePlayNotifier.value = Icons.pause;
+
+                          if (videoIsEnded) {
                             videoPlayerController.play();
+                            iconPausePlayNotifier.value = Icons.pause;
                             videoIsEnded = false;
+                            buttonPlayPausePressed = false;
+                            isPlayingManually = true; 
 
                           } else {
-                            iconPausePlayNotifier.value = buttonPlayPausePressed 
-                              ? Icons.play_arrow
-                              : Icons.pause;
+                            buttonPlayPausePressed = !buttonPlayPausePressed;
+
+                            if (buttonPlayPausePressed) {
+                              videoPlayerController.pause();
+                              iconPausePlayNotifier.value = Icons.play_arrow;
+                              isPlayingManually = false; 
+                              
+                            } else {
+                              videoPlayerController.play();
+                              iconPausePlayNotifier.value = Icons.pause;
+                              isPlayingManually = true; 
+
+                            }
 
                           }
-                          
-                          if (buttonPlayPausePressed) {
-                            videoPlayerController.pause();
 
-                          } else {                
-                            iconPausePlayNotifier.value = Icons.pause;
-                            videoPlayerController.play();
-                            
-                          }
-                      
-                          Future.delayed(const Duration(milliseconds: 0), videoPlayerListener);
-                      
                         },
                         icon: ValueListenableBuilder(
                           valueListenable: iconPausePlayNotifier,
@@ -538,17 +538,20 @@ class PreviewVideoState extends State<PreviewVideo> {
 
     final isVideoInitialized = videoPlayerController.value.isInitialized;
     final isVideoPlaying = videoPlayerController.value.isPlaying;
-    final isVideoEnded = isVideoInitialized &&
-        !isVideoPlaying &&
-        duration - position <= endThreshold;
+    final isVideoEnded = isVideoInitialized && !isVideoPlaying &&
+      duration - position <= endThreshold;
 
-    if (isVideoInitialized && !isVideoPlaying && isVideoEnded) {
+    if (isVideoInitialized && isVideoEnded && !isPlayingManually) {
       iconPausePlayNotifier.value = Icons.replay;
       videoIsEnded = true;
       videoIsTappedNotifier.value = true;
-      if(!isLandscapeMode) {
+      if (!isLandscapeMode) {
         PreviewFileState.bottomBarVisibleNotifier.value = true;
       }
+
+    } else if (isPlayingManually && isVideoPlaying) {
+      isPlayingManually = false;
+      
     }
 
   }
