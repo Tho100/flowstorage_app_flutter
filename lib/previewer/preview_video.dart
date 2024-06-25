@@ -193,24 +193,7 @@ class PreviewVideoState extends State<PreviewVideo> {
               ),
               child: IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {
-
-                  setState(() {
-                    isLandscapeMode = !isLandscapeMode;
-                  });
-
-                  if (isLandscapeMode) {
-                    systemToggle.toLandscapeMode();
-                    PreviewFileState.bottomBarVisibleNotifier.value = false;
-
-                  } else {
-                    systemToggle.toPortraitMode();
-                    PreviewFileState.bottomBarVisibleNotifier.value = true;
-                    videoIsTappedNotifier.value = true;
-
-                  }
-
-                },
+                onPressed: () => changeLandscapeOnPressed(),
                 icon: isLandscapeMode
                   ? const Icon(Icons.zoom_in_map_outlined, color: ThemeColor.secondaryWhite, size: 22)
                   : const Icon(Icons.crop_free_outlined, color: ThemeColor.secondaryWhite, size: 22),
@@ -237,7 +220,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () => forwardingImplementation("positive"),
+              onPressed: () => forwardingOnPressed(1),
               icon: const Icon(Icons.forward_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),
@@ -261,7 +244,7 @@ class PreviewVideoState extends State<PreviewVideo> {
             ),
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () => forwardingImplementation("negative"),
+              onPressed: () => forwardingOnPressed(-1),
               icon: const Icon(Icons.replay_5_rounded, color: ThemeColor.secondaryWhite, size: 35),
             ),
           ),
@@ -463,12 +446,31 @@ class PreviewVideoState extends State<PreviewVideo> {
     );
   }
 
-  void forwardingImplementation(String value) {
+  void changeLandscapeOnPressed() {
+
+    setState(() {
+      isLandscapeMode = !isLandscapeMode;
+    });
+
+    if (isLandscapeMode) {
+      systemToggle.toLandscapeMode();
+      PreviewFileState.bottomBarVisibleNotifier.value = false;
+
+    } else {
+      systemToggle.toPortraitMode();
+      PreviewFileState.bottomBarVisibleNotifier.value = true;
+      videoIsTappedNotifier.value = true;
+
+    }
+    
+  }
+
+  void forwardingOnPressed(int value) {
 
     final position = videoPlayerController.value.position;
     final duration = videoPlayerController.value.duration;
 
-    final newPosition = value == "positive" 
+    final newPosition = value == 1 
       ? position + const Duration(seconds: 5) 
       : position - const Duration(seconds: 5);
 
