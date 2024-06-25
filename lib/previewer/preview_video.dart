@@ -299,33 +299,7 @@ class PreviewVideoState extends State<PreviewVideo> {
                       ),
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: () {
-
-                          if (videoIsEnded) {
-                            videoPlayerController.play();
-                            iconPausePlayNotifier.value = Icons.pause;
-                            videoIsEnded = false;
-                            buttonPlayPausePressed = false;
-                            isPlayingManually = true; 
-
-                          } else {
-                            buttonPlayPausePressed = !buttonPlayPausePressed;
-
-                            if (buttonPlayPausePressed) {
-                              videoPlayerController.pause();
-                              iconPausePlayNotifier.value = Icons.play_arrow;
-                              isPlayingManually = false; 
-                              
-                            } else {
-                              videoPlayerController.play();
-                              iconPausePlayNotifier.value = Icons.pause;
-                              isPlayingManually = true; 
-
-                            }
-
-                          }
-
-                        },
+                        onPressed: () => playPauseReplayOnPressed(),
                         icon: ValueListenableBuilder(
                           valueListenable: iconPausePlayNotifier,
                           builder: (context, value, child) {
@@ -504,6 +478,25 @@ class PreviewVideoState extends State<PreviewVideo> {
     } else {
       iconPausePlayNotifier.value = Icons.pause;
       videoPlayerController.play();
+
+    }
+    
+  }
+
+  void playPauseReplayOnPressed() {
+
+    if (videoIsEnded || !buttonPlayPausePressed) {
+      videoPlayerController.play();
+      iconPausePlayNotifier.value = Icons.pause;
+      videoIsEnded = false;
+      buttonPlayPausePressed = false;
+      isPlayingManually = true;
+
+    } else {
+      videoPlayerController.pause();
+      iconPausePlayNotifier.value = Icons.play_arrow;
+      isPlayingManually = false;
+      buttonPlayPausePressed = true;
 
     }
     
