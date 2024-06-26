@@ -64,6 +64,8 @@ class DataCaller {
     tempData.setAppBarTitle("Offline");
 
     final getAssets = GetAssets();
+    final now = DateTime.now();
+    
     final offlineDirPath = await _offlineMode.returnOfflinePath();
 
     if(!offlineDirPath.existsSync()) {
@@ -78,25 +80,21 @@ class DataCaller {
 
     for (final file in files) {
 
-      final lastModified = file.lastModifiedSync();
+      final lastModified = await file.lastModified();
       final formattedDate = DateFormat('MMM d yyyy')
                               .format(lastModified);
 
+      final difference = now.difference(lastModified).inDays;
+
       final fileName = path.basename(file.path);
       final fileType = fileName.split('.').last;
-
-      final fileBytes = await file.readAsBytes();
-      final fileSize = fileBytes.length;
-      final fileSizeMB = fileSize / (1024 * 1024);
-
-      final actualFileSize = "${fileSizeMB.toStringAsFixed(2)}Mb";
 
       final imageBytes = Globals.imageType.contains(fileType)
         ? await file.readAsBytes()
         : await getAssets.loadAssetsData(Globals.fileTypeToAssets[fileType]!);
 
       fileNames.add(fileName);
-      dates.add("$actualFileSize ${GlobalsStyle.dotSeparator} $formattedDate");
+      dates.add("$difference ${GlobalsStyle.dotSeparator} $formattedDate");
       bytes.add(imageBytes);
 
     }

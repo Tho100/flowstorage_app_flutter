@@ -52,17 +52,17 @@ class BottomTrailingSorting {
 
         const Divider(color: ThemeColor.lightGrey),
 
-        if (WidgetVisibility.setNotVisibleList([OriginFile.offline, OriginFile.sharedMe, OriginFile.sharedOther]))
-          _buildSortButton(
-            onPressed: sortUploadDateOnPressed,
-            sortType: sortType,
-            icon: sortType == "Upload Date"
-              ? isNameAscending
-                ? const Icon(Icons.keyboard_arrow_up, color: ThemeColor.secondaryWhite)
-                : const Icon(Icons.keyboard_arrow_down, color: ThemeColor.secondaryWhite)
-              : const SizedBox(width: 25.0),
-            label: 'Upload Date',
-          ),
+        if (WidgetVisibility.setNotVisibleList([OriginFile.sharedMe, OriginFile.sharedOther]))
+        _buildSortButton(
+          onPressed: sortUploadDateOnPressed,
+          sortType: sortType,
+          icon: sortType == "Upload Date"
+            ? isNameAscending
+              ? const Icon(Icons.keyboard_arrow_up, color: ThemeColor.secondaryWhite)
+              : const Icon(Icons.keyboard_arrow_down, color: ThemeColor.secondaryWhite)
+            : const SizedBox(width: 25.0),
+          label: 'Upload Date',
+        ),
 
         _buildSortButton(
           onPressed: sortItemNameOnPressed,
