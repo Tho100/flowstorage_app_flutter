@@ -1859,16 +1859,13 @@ class HomePageState extends State<HomePage> {
 
   void _openMoveMultipleFilePage(List<String> fileNames) async {
 
-    List<String> fileBase64 = [];
-
-    for(final fileName in fileNames)  {
+    final fileBase64 = await Future.wait(fileNames.map((fileName) async {
       final fileData = await functionModel.retrieveFileData(
-        fileName: fileName, isCompressed: true);
-
-      final base64Data = base64.encode(fileData);
-      fileBase64.add(base64Data);
-
-    }
+        fileName: fileName, 
+        isCompressed: true
+      );
+      return base64.encode(fileData);
+    }).toList());
 
     NavigatePage.goToPageMoveFile(
       fileNames, fileBase64
