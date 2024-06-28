@@ -87,7 +87,7 @@ class DataCaller {
       final difference = now.difference(lastModified).inDays;
 
       final fileName = path.basename(file.path);
-      final fileType = fileName.split('.').last;
+      final fileType = fileName.split('.').last;  
 
       final imageBytes = Globals.imageType.contains(fileType)
         ? await file.readAsBytes()
@@ -149,12 +149,7 @@ class DataCaller {
 
     final futures = await Future.wait(getFileNames);
 
-    final fileNames = <String>[];
-
-    for (final result in futures) {
-      final fileNamesForTable = result[0];
-      fileNames.addAll(fileNamesForTable);
-    }
+    final fileNames = futures.expand((result) => result[0]).toList();
 
     tempStorageData.setStatsFilesName(fileNames);
 
