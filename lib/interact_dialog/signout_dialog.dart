@@ -14,7 +14,7 @@ class SignOutDialog {
       builder: (context) {
         return AlertDialogWidget(
           content: Text(
-            'Are you sure you want to sign out from your Flowstorage account?',
+            'Sign out?',
             style: GoogleFonts.inter(
               color: ThemeColor.justWhite,
               fontWeight: FontWeight.w800
