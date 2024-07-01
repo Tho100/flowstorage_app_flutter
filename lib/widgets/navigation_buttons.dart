@@ -38,9 +38,8 @@ class NavigationButtons extends StatelessWidget {
       child: Column(
         children: [
 
-          tempData.origin == OriginFile.public 
-          ? const SizedBox(height: 0)
-          : const SizedBox(height: 12),
+          if(tempData.origin != OriginFile.public)
+          const SizedBox(height: 12),
     
           Row(
             children: [
