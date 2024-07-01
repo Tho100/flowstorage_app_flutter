@@ -89,9 +89,7 @@ class UpgradePageState extends State<UpgradePage> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeColor.darkBlack,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
-          )
+          shape: const StadiumBorder(),
         ),
         onPressed: subscribeOnPressed,
         child: Text(
