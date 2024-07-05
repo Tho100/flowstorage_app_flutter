@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class GeographicApi {
 
   Future<String> countryCode() async {
     
-    final response = await http.get(Uri.parse('http://apiip.net/api/check?accessKey=61d755d2-ac10-4b0c-afb8-487a1f4f2cdd'));
+    final apiKey = dotenv.env['geographic_key']!;
+
+    final response = await http.get(Uri.parse('http://apiip.net/api/check?accessKey=$apiKey'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

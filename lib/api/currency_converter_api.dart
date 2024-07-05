@@ -1,4 +1,5 @@
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -7,8 +8,6 @@ import 'package:flowstorage_fsc/api/geographic_api.dart';
 class CurrencyConverterApi {
 
   final tempData = GetIt.instance<TempPaymentProvider>();
-
-  final apiUrl = 'https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_2N9mYDefob9ZEMqWT3cXAjl964IFfNkPMr01YS5v';
 
   final countryCodeToCurrency = {
     "US": "USD",
@@ -81,6 +80,10 @@ class CurrencyConverterApi {
   }
 
   Future<double> _fetchConversionRate(String currency) async {
+
+    final apiKey = dotenv.env['currency_converter_key']!;
+
+    final apiUrl = 'https://api.freecurrencyapi.com/v1/latest?apikey=$apiKey';
 
     final response = await http.get(Uri.parse(apiUrl));
 

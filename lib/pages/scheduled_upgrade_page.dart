@@ -176,9 +176,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ThemeColor.justWhite,
                   foregroundColor: ThemeColor.thirdWhite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )
+                  shape: const StadiumBorder(),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -205,9 +203,7 @@ class ScheduledUpgradePageState extends State<ScheduledUpgradePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ThemeColor.darkBlack,
                   foregroundColor: ThemeColor.thirdWhite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )
+                  shape: const StadiumBorder(),
                 ),
                 onPressed: () => Navigator.pop(context),
                 child: Text(

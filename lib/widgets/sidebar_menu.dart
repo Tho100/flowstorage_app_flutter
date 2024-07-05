@@ -210,9 +210,7 @@ class CustomSideBarMenu extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           elevation: 0,
           padding: const EdgeInsets.symmetric(vertical: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
-          ),
+          shape: const StadiumBorder(),
           foregroundColor: ThemeColor.thirdWhite,
           backgroundColor: ThemeColor.justWhite,
         ),
