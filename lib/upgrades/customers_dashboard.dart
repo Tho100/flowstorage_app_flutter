@@ -11,7 +11,7 @@ class StripeCustomers {
 
   static Future<String> getCustomerIdByEmail(String email) async {
 
-    const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
+    const apiKey = dotenv.env['stripe_test_key'];
     const url = 'https://api.stripe.com/v1/customers';
 
     final response = await http.get(
@@ -42,7 +42,7 @@ class StripeCustomers {
 
   static Future<List<dynamic>> getCustomersEmails(String customEmail) async {
 
-    const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
+    const apiKey = dotenv.env['stripe_test_key'];
     const url = 'https://api.stripe.com/v1/customers';
 
     final response = await http.get(
@@ -72,7 +72,7 @@ class StripeCustomers {
 
   static Future<List<dynamic>> getCustomerSubscriptionsByEmail(String email) async {
 
-    const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
+    const apiKey = dotenv.env['stripe_test_key'];
     
     final url = Uri.https('api.stripe.com', '/v1/customers', {'email': email});
     final headers = {
@@ -117,7 +117,7 @@ class StripeCustomers {
 
     final crud = Crud();
 
-    const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
+    const apiKey = dotenv.env['stripe_test_key'];
 
     final subscriptions = await getCustomerSubscriptionsByEmail(email);
 
@@ -166,7 +166,7 @@ class StripeCustomers {
 
   static Future<void> deleteEmail(String customerId) async {
 
-    const apiKey = 'sk_test_51MO4YYF2lxRV33xsBfTJLQypyLBjhoxYdz18VoLrZZ6hin4eJrAV9O6NzduqR02vosmC4INFgBgxD5TkrkpM3sZs00hqhx3ZzN';
+    const apiKey = dotenv.env['stripe_test_key'];
     final url = 'https://api.stripe.com/v1/customers/$customerId';
 
     final response = await http.delete(
