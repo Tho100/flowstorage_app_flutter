@@ -1,5 +1,5 @@
 import 'package:flowstorage_fsc/api/currency_converter_api.dart';
-import 'package:flowstorage_fsc/data_query/crud.dart';
+import 'package:flowstorage_fsc/data_query/update_account.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/helper/call_notification.dart';
 import 'package:flowstorage_fsc/provider/temp_payment_provider.dart';
@@ -19,7 +19,6 @@ import 'package:flowstorage_fsc/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class UpgradePage extends StatefulWidget {
 
@@ -555,11 +554,9 @@ class UpgradePageState extends State<UpgradePage> {
       case "Max":
         _navigateToPage(const MaxPage(), "Max");
         break;
-
       case "Express":
         _navigateToPage(const ExpressPage(), "Express");
         break;
-
       case "Supreme":
         _navigateToPage(const SupremePage(), "Supreme");
         break;
@@ -606,53 +603,38 @@ class UpgradePageState extends State<UpgradePage> {
     );
   }
 
-  Future<void> _updateUserAccountPlan(String customerId) async {
-
-    final dateToStr = DateFormat('yyyy/MM/dd').format(DateTime.now());
-
-    const queryUpdateAccType = "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email AND CUST_USERNAME = :username";
-    final params = {"username": userData.username,"email": userData.email,"type": userSelectedPlan};
-    await Crud().execute(query: queryUpdateAccType, params: params);
-
-    const queryInsertBuyer = "INSERT INTO cust_buyer(CUST_USERNAME, CUST_EMAIL, ACC_TYPE, CUST_ID, PURCHASE_DATE) VALUES (:username, :email, :type, :id, :date)";
-    final paramsBuyer = {"username": userData.username,"email": userData.email,"type": userSelectedPlan,"id": customerId,"date": dateToStr};
-    await Crud().execute(query: queryInsertBuyer, params: paramsBuyer);
-
-  }
-
   Future<void> _validatePayment() async {
 
     try {
 
       singleLoading.startLoading(title: "Validating...", context: context);
 
-      final returnedEmail = await StripeCustomers.getCustomersEmails("");
+      final returnedEmail = await StripeCustomers(customerEmail: '').getCustomersEmails();
 
       singleLoading.stopLoading();
 
-      if(returnedEmail.contains(userData.email)) {
-        
-        if(mounted) {
-          singleLoading.startLoading(title: "Upgrading...", context: context);
-        }
-
-        final returnedId = await StripeCustomers.getCustomerIdByEmail(userData.email);
-      
-        await _updateUserAccountPlan(returnedId);
-
-        userData.setAccountType(userSelectedPlan);      
-
-        await _updateLocalDataOnSubscribed();
-
-        singleLoading.stopLoading();
-
-        CallNotify().customNotification(title: "Account Upgraded", subMessage: "Thank you for subscribing to our service! You subscribed for $userSelectedPlan plan");
-
-        CustomAlertDialog.alertDialogTitle("Account Upgraded","You've subscribed to Flowstorage $userSelectedPlan account plan.");
-
-      } else {
+      if(!returnedEmail.contains(userData.email)) {
         CustomAlertDialog.alertDialogTitle("Payment failed", "No payment has been made.");
+        return;
       }
+        
+      if(mounted) {
+        singleLoading.startLoading(title: "Upgrading...", context: context);
+      }
+
+      await _initializeNewAccountPlan();
+
+      singleLoading.stopLoading();
+
+      CallNotify().customNotification(
+        title: "Account Upgraded", 
+        subMessage: "Thank you for subscribing to our service! You subscribed for $userSelectedPlan plan"
+      );
+
+      CustomAlertDialog.alertDialogTitle(
+        "Account Upgraded", 
+        "You've subscribed to Flowstorage $userSelectedPlan account plan."
+      );
 
       returnedEmail.clear();
 
@@ -660,6 +642,23 @@ class UpgradePageState extends State<UpgradePage> {
       singleLoading.stopLoading();
     }
     
+  }
+
+  Future<void> _initializeNewAccountPlan() async {
+
+    final currentUserCustomerId = await StripeCustomers(
+      customerEmail: userData.email
+    ).getCustomerIdByEmail();
+
+    await UpdateAccount(
+      customerId: currentUserCustomerId, 
+      selectdPlan: userSelectedPlan
+    ).updateUserAccountPlan().then(
+      (_) => userData.setAccountType(userSelectedPlan)
+    );
+
+    await _updateLocalDataOnSubscribed();
+
   }
 
   Future<void> _updateLocalDataOnSubscribed() async {

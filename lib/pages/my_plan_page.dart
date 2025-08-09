@@ -73,19 +73,18 @@ class MyPlanPageState extends State<MyPlanPage> {
 
               try {
 
-                await StripeCustomers.
-                cancelCustomerSubscriptionByEmail(userData.email, context);
-
-                if(mounted) {
-                  Navigator.pop(context);
-                }
+                await StripeCustomers(
+                  customerEmail: userData.email
+                ).cancelCustomerSubscriptionByEmail().then(
+                  (value) => Navigator.pop(context)
+                );
 
                 CustomAlertDialog.alertDialogTitle(
                   "Subscription plan cancelled successfully", 
                   "Thank you for being previously a part of our customer!"
                 );
 
-              } catch (er) {
+              } catch (_) {
                 SnackAlert.errorSnack("Subscription cancellation failed.");
                 return;
               }

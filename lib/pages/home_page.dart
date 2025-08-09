@@ -121,10 +121,8 @@ class HomePageState extends State<HomePage> {
   final gridListViewSelected = ValueNotifier<bool>(false);
   final selectAllItemsIsPressedNotifier = ValueNotifier<bool>(false);
 
-  final selectAllItemsIconNotifier = ValueNotifier<IconData>(
-                                      CupertinoIcons.square);
-  final ascendingDescendingIconNotifier = ValueNotifier<IconData>(
-                                      Icons.expand_more);
+  final selectAllItemsIconNotifier = ValueNotifier<IconData>(CupertinoIcons.square);
+  final ascendingDescendingIconNotifier = ValueNotifier<IconData>(Icons.expand_more);
 
   late StreamSubscription intentDataStreamSubscription;
 
@@ -370,8 +368,7 @@ class HomePageState extends State<HomePage> {
           return;
         }
 
-        await functionModel.renameFolderData(
-          folderName, newFolderName);
+        await functionModel.renameFolderData(folderName, newFolderName);
 
         RenameFolderDialog.folderRenameController.clear();
 
@@ -658,7 +655,7 @@ class HomePageState extends State<HomePage> {
         ? checkedItemsName.add(storageData.fileNamesFilteredList[index])
         : checkedItemsName.removeWhere((item) => item == storageData.fileNamesFilteredList[index]);
       
-      if(editAllIsPressed == false) {
+      if(!editAllIsPressed) {
         checkedItemsName.length == storageData.fileNamesFilteredList.length 
           ? editAllIsPressed = true
           : editAllIsPressed = false;
@@ -721,17 +718,20 @@ class HomePageState extends State<HomePage> {
   void _itemSearchingImplementation(String value) async {
 
     debounceSearchingTimer?.cancel();
+
     debounceSearchingTimer = Timer(const Duration(milliseconds: 10), () {
-      final searchTerms =
-          value.split(",").map((term) => term.trim().toLowerCase()).toList();
+
+      final searchTerms = value.split(",").map((term) => term.trim().toLowerCase()).toList();
 
       final filteredFiles = storageData.fileNamesList.where((file) {
         return searchTerms.any((term) => file.toLowerCase().contains(term));
       }).toList();
 
       final filteredByteValues = storageData.imageBytesList
-          .where((bytes) => filteredFiles.contains(storageData.fileNamesList[storageData.imageBytesList.indexOf(bytes)]))
-          .toList();
+        .asMap().entries
+        .where((entry) => filteredFiles.contains(storageData.fileNamesList[entry.key]))
+        .map((entry) => entry.value)
+        .toList();
 
       final filteredFilesDate = <String>[];
 
@@ -1025,11 +1025,11 @@ class HomePageState extends State<HomePage> {
 
     try {
 
-      final indexOfFile = searchBarController.text != "" 
+      final indexOfFile = searchBarController.text.isNotEmpty
         ? storageData.fileNamesFilteredList.indexOf(fileName)
         : storageData.fileNamesList.indexOf(fileName);
 
-      final fileListLength = searchBarController.text != "" 
+      final fileListLength = searchBarController.text.isNotEmpty
         ? storageData.fileNamesFilteredList.length
         : storageData.fileNamesList.length;
 
@@ -1041,7 +1041,7 @@ class HomePageState extends State<HomePage> {
         Navigator.pop(context);
       }
 
-      if(searchBarController.text != "") {
+      if(searchBarController.text.isNotEmpty) {
         searchBarController.clear();
       }
 
@@ -1062,20 +1062,18 @@ class HomePageState extends State<HomePage> {
     try {
 
       final fileType = fileName.split('.').last;
+
       final isItemDirectory = fileType == fileName && !Globals.supportedFileTypes.contains(fileType);
 
       if(isItemDirectory) {
         await functionModel.deleteDirectoryData(fileName);
-        
-      } else {
-        final tableName = tempData.origin == OriginFile.public 
-          ? Globals.fileTypesToTableNamesPs[fileType]
-          : Globals.fileTypesToTableNames[fileType];
-
-        await functionModel.deleteFileData(
-          userData.username, fileName, tableName!);
-
       }
+      
+      final tableName = tempData.origin == OriginFile.public 
+        ? Globals.fileTypesToTableNamesPs[fileType]
+        : Globals.fileTypesToTableNames[fileType];
+
+      await functionModel.deleteFileData(userData.username, fileName, tableName!);
       
       if(tempData.origin == OriginFile.home) {
         storageData.homeImageBytesList.clear();
@@ -1131,6 +1129,7 @@ class HomePageState extends State<HomePage> {
     try {
 
       final verifyItemType = fileName.split('.').last;
+
       final newItemName = RenameDialog.renameController.text;
 
       if(verifyItemType == fileName) {
@@ -1140,8 +1139,7 @@ class HomePageState extends State<HomePage> {
         final indexOldFile = storageData.fileNamesList.indexOf(fileName);
         final indexOldFileSearched = storageData.fileNamesFilteredList.indexOf(fileName);
 
-        storageData.updateRenameFile(
-            newItemName, indexOldFile, indexOldFileSearched);
+        storageData.updateRenameFile(newItemName, indexOldFile, indexOldFileSearched);
         
         return;
       }

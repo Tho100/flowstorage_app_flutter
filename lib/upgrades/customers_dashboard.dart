@@ -2,22 +2,27 @@ import 'dart:convert';
 import 'package:flowstorage_fsc/data_query/crud.dart';
 import 'package:flowstorage_fsc/models/local_storage_model.dart';
 import 'package:flowstorage_fsc/provider/user_data_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
-class StripeCustomers {
+class StripeCustomers extends Crud {
 
-  static Future<String> getCustomerIdByEmail(String email) async {
+  final String customerEmail;
 
-    const apiKey = dotenv.env['stripe_test_key'];
+  StripeCustomers({required this.customerEmail});
+
+  final _testApiKey = dotenv.env['stripe_test_key'];
+
+  Future<String> getCustomerIdByEmail() async {
+
     const url = 'https://api.stripe.com/v1/customers';
 
     final response = await http.get(
       Uri.parse(url),
       headers: {
-        'Authorization': 'Bearer $apiKey',
+        'Authorization': 'Bearer $_testApiKey',
       },
     );
 
@@ -27,7 +32,7 @@ class StripeCustomers {
       final data = jsonData['data'] as List<dynamic>;
 
       for (final customer in data) {
-        if (customer['email'] == email) {
+        if (customer['email'] == customerEmail) {
           return customer['id'];
         }
       }
@@ -40,15 +45,14 @@ class StripeCustomers {
 
   }
 
-  static Future<List<dynamic>> getCustomersEmails(String customEmail) async {
+  Future<List<dynamic>> getCustomersEmails() async {
 
-    const apiKey = dotenv.env['stripe_test_key'];
     const url = 'https://api.stripe.com/v1/customers';
 
     final response = await http.get(
       Uri.parse(url),
       headers: {
-        'Authorization': 'Bearer $apiKey',
+        'Authorization': 'Bearer $_testApiKey',
       },
     );
 
@@ -58,8 +62,8 @@ class StripeCustomers {
       final data = jsonData['data'] as List<dynamic>;
       final emails = data.map((customer) => customer['email']).toList();
 
-      if(customEmail != "") {
-        return emails.where((email) => email == customEmail).toList();
+      if(customerEmail.isNotEmpty) {
+        return emails.where((email) => email == customerEmail).toList();
       }
 
       return emails;
@@ -70,14 +74,15 @@ class StripeCustomers {
     
   }
 
-  static Future<List<dynamic>> getCustomerSubscriptionsByEmail(String email) async {
-
-    const apiKey = dotenv.env['stripe_test_key'];
+  Future<List<dynamic>> getCustomerSubscriptionsByEmail(String email) async {
     
-    final url = Uri.https('api.stripe.com', '/v1/customers', {'email': email});
-    final headers = {
-      'Authorization': 'Bearer $apiKey',
-    };
+    final url = Uri.https(
+      'api.stripe.com', 
+      '/v1/customers', 
+      {'email': email}
+    );
+
+    final headers = {'Authorization': 'Bearer $_testApiKey'};
 
     final response = await http.get(url, headers: headers);
 
@@ -99,6 +104,7 @@ class StripeCustomers {
 
         final subscriptionsData = jsonDecode(subscriptionsResponse.body);
         final subscriptions = subscriptionsData['data'] as List<dynamic>;
+
         return subscriptions;
 
       } else {
@@ -111,15 +117,11 @@ class StripeCustomers {
 
   }
 
-  static Future<void> cancelCustomerSubscriptionByEmail(String email, BuildContext context) async {
+  Future<void> cancelCustomerSubscriptionByEmail() async {
 
     final userData = GetIt.instance<UserDataProvider>();
 
-    final crud = Crud();
-
-    const apiKey = dotenv.env['stripe_test_key'];
-
-    final subscriptions = await getCustomerSubscriptionsByEmail(email);
+    final subscriptions = await getCustomerSubscriptionsByEmail(customerEmail);
 
     if(subscriptions.isEmpty) {
       return;
@@ -129,7 +131,7 @@ class StripeCustomers {
 
     final cancelUrl = Uri.https('api.stripe.com', '/v1/subscriptions/$subscriptionId');
     final headers = {
-      'Authorization': 'Bearer $apiKey',
+      'Authorization': 'Bearer $_testApiKey',
     };
 
     final cancelData = {
@@ -142,48 +144,49 @@ class StripeCustomers {
       return;
     }
       
-    await crud.execute(
+    await execute(
       query: "UPDATE cust_type SET ACC_TYPE = :type WHERE CUST_EMAIL = :email", 
-      params: {"type": "Basic", "email": userData.email});
+      params: {"type": "Basic", "email": userData.email}
+    );
 
-    await crud.execute(
+    await execute(
       query: "DELETE FROM cust_buyer WHERE CUST_USERNAME = :username", 
-      params: {"username": userData.username});
+      params: {"username": userData.username}
+    );
 
     userData.setAccountType("Basic");
 
-    await deleteEmailByEmail(userData.email);
+    await deleteEmailByEmail();
 
     await LocalStorageModel().setupLocalAutoLogin(
-      userData.username, userData.email, "Basic");
+      userData.username, userData.email, "Basic"
+    );
 
   }
 
-  static Future<void> deleteEmailByEmail(String email) async {
-    final customerId = await getCustomerIdByEmail(email);
+  Future<void> deleteEmailByEmail() async {
+    final customerId = await getCustomerIdByEmail();
     await deleteEmail(customerId);
   }
 
-  static Future<void> deleteEmail(String customerId) async {
+  Future<void> deleteEmail(String customerId) async {
 
-    const apiKey = dotenv.env['stripe_test_key'];
     final url = 'https://api.stripe.com/v1/customers/$customerId';
 
     final response = await http.delete(
       Uri.parse(url),
       headers: {
-        'Authorization': 'Bearer $apiKey',
+        'Authorization': 'Bearer $_testApiKey',
       },
     );
 
-    if (response.statusCode == 200) {
-      Logger().i('Email deleted successfully.');
-      
-    } else {
+    if (response.statusCode != 200) {
       Logger().i('Failed to delete email');
-
-    }
-
+      return;
+    } 
+      
+    Logger().i('Email deleted successfully.');
+    
   }
 
 }
