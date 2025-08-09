@@ -169,7 +169,7 @@ class UploadPsPage extends StatelessWidget {
                   valueListenable: selectedTagValue,
                   builder: (context, value, child) {
                     return Visibility(
-                      visible: value != "",
+                      visible: value.isNotEmpty,
                       child: Text(
                         "${GlobalsStyle.dotSeparator} $value",
                         style: GoogleFonts.inter(

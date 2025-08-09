@@ -227,7 +227,7 @@ class CreateTextPageState extends State<CreateText> {
   Future<bool> _onPageClose() async {
 
     final isAskForSave = textEditingController.text.isNotEmpty 
-      && saveVisibilityNotifier.value == true;
+      && saveVisibilityNotifier.value;
 
     if(isAskForSave) {
       return await _discardChangesConfirmation();

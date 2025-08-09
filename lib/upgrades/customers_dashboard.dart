@@ -62,7 +62,7 @@ class StripeCustomers extends Crud {
       final data = jsonData['data'] as List<dynamic>;
       final emails = data.map((customer) => customer['email']).toList();
 
-      if(customerEmail != "") {
+      if(customerEmail.isNotEmpty) {
         return emails.where((email) => email == customerEmail).toList();
       }
 
